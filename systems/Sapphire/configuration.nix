@@ -81,6 +81,8 @@
 		repoManager.enable = true;
 		gitSync.enable = true;
 		bluetooth.enable = true;
+		audio.enable = true;
+		gaming.enable = true;
 		network = {
 			enable = true;
 			useNetworkManager = true;
