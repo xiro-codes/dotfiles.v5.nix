@@ -12,7 +12,7 @@ let
 
     # Call tgpt with the gemini-pro model
     # Note: --provider might vary by tgpt version; often it's 'google' or 'gemini'
-    exec ${pkgs.tgpt}/bin/tgpt --key $GEMINI_API_KEY --provider gemini "$@"
+    exec ${pkgs.tgpt}/bin/tgpt -q --key $GEMINI_API_KEY --provider gemini "$@"
   '';
   aiCommitScript = pkgs.writeShellScriptBin "nix-commit" ''
     cd /etc/nixos
