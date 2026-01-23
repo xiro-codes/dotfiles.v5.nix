@@ -4,6 +4,7 @@ let
   cfg = config.local.bluetooth;
   # Check if the audio module is enabled elsewhere in the system config
   audioEnabled = config.local.audio.enable or false;
+  plasmaEnabled = config.services.desktopManager.plasma6.enable;
 in {
   options.local.bluetooth = {
     enable = lib.mkEnableOption "Modern Bluetooth stack";
@@ -19,7 +20,7 @@ in {
       };
     };
 
-    services.blueman.enable = true;
+    services.blueman.enable = lib.mkIf (!plasmaEnabled) true;
 
     # If audio is enabled, we tell WirePlumber to use high-quality Bluetooth codecs
     services.pipewire.wireplumber.extraConfig = lib.mkIf audioEnabled {
