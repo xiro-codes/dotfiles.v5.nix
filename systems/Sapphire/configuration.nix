@@ -21,7 +21,6 @@
   # networking.proxy.noProxy = "127.0.0.1,localhost,internal.domain";
 
   # Enable networking
-  networking.networkmanager.enable = true;
 
   # Set your time zone.
   time.timeZone = "America/Chicago";
@@ -81,6 +80,10 @@
 		userManager.enable = true;
 		repoManager.enable = true;
 		gitSync.enable = true;
+		network = {
+			enable = true;
+			useNetworkManager = true;
+		};
 	};
 
 	users.users.tod.shell = pkgs.fish;
