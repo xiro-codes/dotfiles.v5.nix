@@ -19,24 +19,28 @@
       hyprland = true;
       plasma6 = false;
     };
+    #backupManager.enable = true;
     userManager.enable = true;
     repoManager.enable = true;
+    shareManager = {
+      enable = true;
+      serverIp = "10.0.0.65";
+      mounts = [
+        {shareName = "Music"; localPath = "/mnt/zima/Music";}
+      ];
+    };
+
     gitSync.enable = true;
+
     bluetooth.enable = true;
     audio.enable = true;
     gaming.enable = true;
+    settings.enable = true;
     network = {
       enable = true;
       useNetworkManager = true;
     };
-    zimaMounts = {
-      enable = true;
-      serverIp = "10.0.0.65";
-      mounts = [
-      {shareName = "Music"; localPath = "/mnt/zima/Music";}
-      ];
-    };
-    settings.enable = true;
+
   };
 
   users.users.tod.shell = pkgs.fish;

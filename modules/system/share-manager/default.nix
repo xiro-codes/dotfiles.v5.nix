@@ -1,7 +1,7 @@
 { config, lib, pkgs, ... }:
 
 let
-  cfg = config.local.zimaMounts;
+  cfg = config.local.shareManager;
   inherit (lib) mkOption mkIf types;
 
   # Helper to create SMB mount units
@@ -13,7 +13,7 @@ let
     options = "guest,noperm,x-systemd.automount,noauto,x-systemd.idle-timeout=60,uid=1000,gid=100,file_mode=0775,dir_mode=0775,soft";
   };
 in {
-  options.local.zimaMounts = {
+  options.local.shareManager = {
     enable = lib.mkEnableOption "Samba mounts from ZimaOS";
     serverIp = mkOption {
       type = types.str;
