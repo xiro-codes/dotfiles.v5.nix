@@ -12,6 +12,8 @@
 	];
 	local = {
     nixvim.enable = true;
+    variables.enable = true;
+    ranger.enable = true;
     kitty.enable = true;
     fonts.enable = true;
   };

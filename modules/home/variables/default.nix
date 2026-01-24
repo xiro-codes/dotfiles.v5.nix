@@ -17,7 +17,7 @@ in {
       VISUAL = cfg.editor;
       GUI_EDITOR = cfg.guiEditor;
       FILEMANAGER = cfg.fileManager;
-      GUI_FILEMANAGER = cfg.guiFIleManager;
+      GUI_FILEMANAGER = cfg.guiFileManager;
       TERMINAL = cfg.terminal;
       GUI_TERMINAL = cfg.terminal;
       LAUNCHER = cfg.launcher;
