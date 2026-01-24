@@ -6,6 +6,7 @@ in {
     enable = lib.mkEnableOption "Enable kitty";
   };
   config = mkIf cfg.enable {
+    local.variables.terminal = "kitty";
     programs.kitty = {
       enable = true;
       font = {
