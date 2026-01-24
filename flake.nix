@@ -19,9 +19,7 @@
 			./parts/discovery.nix
 		];
 		perSystem = { config, pkgs, ...}: {
-			devShells.default = pkgs.mkShell {
-				buildInputs = [ pkgs.git ];
-			};		
+      devShells = { default = pkgs.callPackage ./shells/default/default.nix { inherit pkgs; }; };
 		};
 	};
 }
