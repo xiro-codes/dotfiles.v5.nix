@@ -7,25 +7,25 @@
 {
   imports =
     [ # Include the results of the hardware scan.
-      ./hardware-configuration.nix
+    ./hardware-configuration.nix
     ];
 
-  # Bootloader.
+# Bootloader.
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
 
-  # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
+# networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
 
-  # Configure network proxy if necessary
-  # networking.proxy.default = "http://user:password@proxy:port/";
-  # networking.proxy.noProxy = "127.0.0.1,localhost,internal.domain";
+# Configure network proxy if necessary
+# networking.proxy.default = "http://user:password@proxy:port/";
+# networking.proxy.noProxy = "127.0.0.1,localhost,internal.domain";
 
-  # Enable networking
+# Enable networking
 
-  # Set your time zone.
+# Set your time zone.
   time.timeZone = "America/Chicago";
 
-  # Select internationalisation properties.
+# Select internationalisation properties.
   i18n.defaultLocale = "en_US.UTF-8";
 
   i18n.extraLocaleSettings = {
@@ -42,76 +42,83 @@
 
   services.printing.enable = true;
 
-  # Enable sound with pipewire.
+# Enable sound with pipewire.
 
-  # Enable touchpad support (enabled default in most desktopManager).
-  # services.xserver.libinput.enable = true;
+# Enable touchpad support (enabled default in most desktopManager).
+# services.xserver.libinput.enable = true;
 
-	local = {
-		desktops = {
-			enable = true;
-			enableEnv = true;
-			hyprland = true;
-			plasma6 = true;
-		};
-		userManager.enable = true;
-		repoManager.enable = true;
-		gitSync.enable = true;
-		bluetooth.enable = true;
-		audio.enable = true;
-		gaming.enable = true;
-		network = {
-			enable = true;
-			useNetworkManager = true;
-		};
-	};
+  local = {
+    desktops = {
+      enable = true;
+      enableEnv = true;
+      hyprland = true;
+      plasma6 = true;
+    };
+    userManager.enable = true;
+    repoManager.enable = true;
+    gitSync.enable = true;
+    bluetooth.enable = true;
+    audio.enable = true;
+    gaming.enable = true;
+    network = {
+      enable = true;
+      useNetworkManager = true;
+    };
+    zimaMounts = {
+      enable = true;
+      serverIp = "10.0.0.65";
+      mounts = [
+      {shareName = "Music"; localPath = "/mnt/zima/Music";}
+      ];
+    };
+  };
 
-	users.users.tod.shell = pkgs.fish;
-  # Install firefox.
+  users.users.tod.shell = pkgs.fish;
+# Install firefox.
   programs.firefox.enable = true;
   programs.git = {
-  	enable = true;
-	config = {
-		safe.directory = "/etc/nixos";
-	};
+    enable = true;
+    config = {
+      safe.directory = "/etc/nixos";
+    };
   };
-  # Allow unfree packages
+# Allow unfree packages
   nixpkgs.config.allowUnfree = true;
   nix.settings.experimental-features = ["nix-command" "flakes"];
-  # List packages installed in system profile. To search, run:
-  # $ nix search wget
+# List packages installed in system profile. To search, run:
+# $ nix search wget
   environment.systemPackages = with pkgs; [
-  #  vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
-  #  wget
-  	neovim
-	
+#  vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
+#  wget
+    neovim
+
   ];
 
-  # Some programs need SUID wrappers, can be configured further or are
-  # started in user sessions.
-  # programs.mtr.enable = true;
-  # programs.gnupg.agent = {
-  #   enable = true;
-  #   enableSSHSupport = true;
-  # };
+# Some programs need SUID wrappers, can be configured further or are
+# started in user sessions.
+# programs.mtr.enable = true;
+# programs.gnupg.agent = {
+#   enable = true;
+#   enableSSHSupport = true;
+# };
 
-  # List services that you want to enable:
+# List services that you want to enable:
 
-  # Enable the OpenSSH daemon.
-  # services.openssh.enable = true;
+# Enable the OpenSSH daemon.
+# services.openssh.enable = true;
 
-  # Open ports in the firewall.
-  # networking.firewall.allowedTCPPorts = [ ... ];
-  # networking.firewall.allowedUDPPorts = [ ... ];
-  # Or disable the firewall altogether.
-  # networking.firewall.enable = false;
+# Open ports in the firewall.
+# networking.firewall.allowedTCPPorts = [ ... ];
+# networking.firewall.allowedUDPPorts = [ ... ];
+# Or disable the firewall altogether.
+# networking.firewall.enable = false;
 
-  # This value determines the NixOS release from which the default
-  # settings for stateful data, like file locations and database versions
-  # on your system were taken. It‘s perfectly fine and recommended to leave
-  # this value at the release version of the first install of this system.
-  # Before changing this value read the documentation for this option
-  # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
+# This value determines the NixOS release from which the default
+# settings for stateful data, like file locations and database versions
+# on your system were taken. It‘s perfectly fine and recommended to leave
+# this value at the release version of the first install of this system.
+# Before changing this value read the documentation for this option
+# (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
   system.stateVersion = "25.11"; # Did you read the comment?
 
 }
