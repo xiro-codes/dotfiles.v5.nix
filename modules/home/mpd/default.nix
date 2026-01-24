@@ -6,7 +6,7 @@ in {
     path = lib.mkOption { type = lib.types.str; default = "/mnt/zima/Music";};
   };
   config = lib.mkIf cfg.enable {
-    home.packages = [pkgs.mpc-cli];
+    home.packages = [pkgs.mpc];
     services.mpd =  {
       enable = true;
       musicDirectory = cfg.path;
