@@ -6,7 +6,7 @@ in {
     enable = lib.mkEnableOption "Functional Hyprland setup.";
   };
   config = lib.mkIf cfg.enable {
-    home.file."wallpaper".source = ./gruvbox.png;
+    home.file.".wallpaper".source = ./gruvbox.png;
     wayland.windowManager.hyprland = {
       enable = true;
       xwayland.enable = true;
