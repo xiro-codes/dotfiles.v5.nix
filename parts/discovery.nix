@@ -69,7 +69,7 @@
 						home-manager.useGlobalPkgs = true;
 						home-manager.useUserPackages = true;
 						home-manager.extraSpecialArgs = { inherit inputs; };
-						home-manager.sharedModules = builtins.attrValues discoveredHomeModules;
+						home-manager.sharedModules = [inputs.nixvim.homeModules.nixvim ] ++builtins.attrValues discoveredHomeModules;
 						home-manager.users = builtins.listToAttrs ( map (username: {
 							name = username;
 							value = import (homeDir + "/${username}@${name}.nix");
