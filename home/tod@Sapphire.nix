@@ -10,7 +10,11 @@
 		duf
 		dust
 	];
-	local.nixvim.enable = true;
+	local = {
+    nixvim.enable = true;
+    fonts.enable = true;
+  };
+
 	programs = {
 		home-manager.enable = true;
 		direnv = {
