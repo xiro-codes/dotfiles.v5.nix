@@ -30,6 +30,8 @@ in {
           rounding = 10;
         };
         exec-once = [
+          "steam -silent"
+          "blueman-applet"
           "${pkgs.swaybg}/bin/swaybg -m fill -i ~/.wallpaper"
         ];
         "$mod" = "SUPER";

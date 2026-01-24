@@ -22,7 +22,6 @@
       "tray"
 
       "wireplumber"
-      "bluetooth"
       "mpd"
     ];
     "network" = {
