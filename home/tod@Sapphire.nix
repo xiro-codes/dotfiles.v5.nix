@@ -10,6 +10,7 @@
 		duf
 		dust
 	];
+
 	programs = {
 		home-manager.enable = true;
 		direnv = {
@@ -18,12 +19,11 @@
 		};
 		git = {
 			enable = true;
-			userName = "Travis Davis";
-			userEmail = "me@tdavis.dev";
-			extraConfig = {
+			settings = {
+				user.name = "Travis Davis";
+				user.email = "me@tdavis.dev";
 				credential.helper = "store";
 				safe.directory = "*";
-
 			};
 		};
 	};
