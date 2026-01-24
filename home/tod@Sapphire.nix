@@ -10,7 +10,7 @@
 		duf
 		dust
 	];
-
+	local.fish.enable = true;
 	programs = {
 		home-manager.enable = true;
 		direnv = {
