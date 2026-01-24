@@ -6,6 +6,7 @@ in {
     enable = lib.mkEnableOption "Functional Hyprland setup.";
   };
   config = lib.mkIf cfg.enable {
+    home.file."wallpaper".source = ./gruvbox.png;
     wayland.windowManager.hyprland = {
       enable = true;
       xwayland.enable = true;
@@ -29,7 +30,7 @@ in {
           rounding = 10;
         };
         exec-once = [
-          "${variables.wallpaper}"
+          "${pkgs.swaybg}/bin/swaybg -m fill -i ~/.wallpaper"
         ];
         "$mod" = "SUPER";
         bind = [

@@ -12,12 +12,6 @@
 	];
 	local = {
     hyprland.enable = true;
-    hyprpaper = {
-      enable = true;
-      wallpapers = [
-        ./wallpapers/gruvbox.png
-      ];
-    };
     waybar.enable = true;
     hyprlauncher.enable = true;
     nixvim.enable = true;
