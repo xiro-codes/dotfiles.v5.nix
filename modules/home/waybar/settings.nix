@@ -104,7 +104,7 @@
     };
     "clock" = {
       "interval" = 15;
-      "format" = "{:%R :%d/:%m}";
+      "format" = "{:%R %m/%d/%y}";
       "tooltip-format" = "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>";
     };
     "wireplumber" = {
