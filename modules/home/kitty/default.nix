@@ -1,6 +1,6 @@
 {pkgs, config, lib, ...}: let 
-  inherit (lib) mkIf mkOption types;
-  cfg = config.local.kitty;
+inherit (lib) mkIf mkOption types;
+cfg = config.local.kitty;
 in {
   options.local.kitty = {
     enable = lib.mkEnableOption "Enable kitty";
@@ -13,7 +13,8 @@ in {
         package = pkgs.cascadia-code;
         name = "CascadiaCode";
         size = 10;
-        };
       };
+      extraConfig = lib.readFile ./theme.conf;
+    };
   };
 }
