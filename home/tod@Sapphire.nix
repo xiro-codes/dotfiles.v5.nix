@@ -21,7 +21,18 @@
     fonts.enable = true;
     mpd.enable = true;
   };
-
+  gtk = {
+    enable = true;
+    cursorTheme = {
+      package = pkgs.vanilla-dmz;
+      name = "Vanilla-DMZ";
+      size = 16;
+    };
+    iconTheme = {
+      package = pkgs.gruvbox-dark-icons-gtk;
+      name = "oomox-gruvbox-dark";
+    };
+  };
 	programs = {
 		home-manager.enable = true;
 		direnv = {

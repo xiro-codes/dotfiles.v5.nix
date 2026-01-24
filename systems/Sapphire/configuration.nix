@@ -52,7 +52,7 @@
       enable = true;
       enableEnv = true;
       hyprland = true;
-      plasma6 = true;
+      plasma6 = false;
     };
     userManager.enable = true;
     repoManager.enable = true;
