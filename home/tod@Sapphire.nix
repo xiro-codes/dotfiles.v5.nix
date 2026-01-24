@@ -11,6 +11,14 @@
 		dust
 	];
 	local = {
+    hyprland.enable = true;
+    hyprpaper = {
+      enable = true;
+      wallpapers = [
+        ./wallpapers/gruvbox.png
+      ];
+    };
+    hyprlauncher.enable = true;
     nixvim.enable = true;
     variables.enable = true;
     ranger.enable = true;
