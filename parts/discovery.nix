@@ -58,12 +58,21 @@
 				};
 				modules = [ 
 					(systemDir + "/${name}/configuration.nix")
+					inputs.home-manager.nixosModules.home-manager
+
 					{ 
 						networking.hostName = name; 
 						programs.nh = {
 							enable = true;
 							flake = "/etc/nixos";
 						};
+						home-manager.useGlobalPkgs = true;
+						home-manager.useUserPackages = true;
+						home-manager.extraSpecialArgs = { inherit inputs; };
+						home-manager.users = builtins.listToAttrs ( map (username: {
+							name = username;
+							value = import (homeDir + "/${username}@${name}.nix");
+						}) (hostToUsersMap."${name}" or []));
 					}
 				] ++ ( builtins.attrValues discoveredSystemModules);
 			};
