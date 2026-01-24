@@ -27,14 +27,6 @@ in {
         };
         decoration = {
           rounding = 10;
-          blur = {
-            enable = true;
-            size = 3;
-            passes = 1;
-          };
-          drop_shadow = true;
-          shadow_range = 4;
-          shadow_render_power = 3;
         };
         exec-once = [
           "${variables.wallpaper}"
