@@ -66,6 +66,7 @@ in {
     # Desktop Selection logic using inputs from your flake
     programs.hyprland = mkIf cfg.hyprland {
       enable = true;
+      withUWSM = false;
     };
 
     # Niri Support
