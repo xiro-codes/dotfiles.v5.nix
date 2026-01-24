@@ -1,4 +1,5 @@
 {pkgs, lib, ... }: {
+	home.stateVersion = "25.11";
 	home.packages = with pkgs; [
 		unzip
 		p7zip
