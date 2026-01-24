@@ -10,9 +10,25 @@ in {
 		};
 	};
 	config = lib.mkIf config.local.fish.enable {
+		programs.eza.enable = true;
+		programs.zoxide.enable = true;	
+
+
 		programs.fish = {
 			enable = true;
-			interactiveShellInit = "set -g fish_greeting ''";
+			interactiveShellInit = ''
+				set -g fish_greeting ""
+				zoxide init fish | source
+			'';
+			shellAbbrs = {
+				ls = "eza --icons always";
+				cd = "z";
+				lsa = "eza --icons always --all";
+				lsl = "eza --icons always -al";
+				du = "dust";
+				df = "duf";
+
+			};
 		};
 	};
 }
