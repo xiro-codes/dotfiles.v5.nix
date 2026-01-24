@@ -18,6 +18,7 @@
         ./wallpapers/gruvbox.png
       ];
     };
+    waybar.enable = true;
     hyprlauncher.enable = true;
     nixvim.enable = true;
     variables.enable = true;
