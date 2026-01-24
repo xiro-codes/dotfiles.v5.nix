@@ -103,7 +103,8 @@
       "spacing" = 10;
     };
     "clock" = {
-      "format" = "{: %R   %d/%m}";
+      "interval" = 15;
+      "format" = "{:%R :%d/:%m}";
       "tooltip-format" = "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>";
     };
     "wireplumber" = {
