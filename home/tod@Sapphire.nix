@@ -12,6 +12,7 @@
 	];
 	local = {
     nixvim.enable = true;
+    kitty.enable = true;
     fonts.enable = true;
   };
 
