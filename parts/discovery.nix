@@ -17,9 +17,9 @@
   discoverPackages = path:
     let 
     contents = builtins.readDir path;
-    packageDirs = builtins.filter (name: 
+  packageDirs = builtins.filter (name: 
       contents.${name} == "directory" && builtins.pathExists ( path + "/${name}/default.nix"))
-      (builtins.attrNames contents);
+    (builtins.attrNames contents);
   in builtins.listToAttrs (map (name: { 
         inherit name; 
         value = inputs.nixpkgs.legacyPackages.x86_64-linux.callPackage (path + "/${name}/default.nix") {inherit inputs ; };
@@ -110,4 +110,4 @@
             };
             }) homeFiles );
     };
-                          }
+                     }
