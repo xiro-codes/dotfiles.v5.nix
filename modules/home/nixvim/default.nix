@@ -37,15 +37,6 @@ in
         setUpDefault = true;
       };
       # opts.guifont = "Cascadia Code:h13";
-      extraConfigLua = ''
-        -- Block the window manager from closing via Neovim internal calls
-        vim.api.nvim_create_autocmd("QuitPre", {
-          callback = function(data)
-            print("Terminal Mode Active: Use System Keybind to Exit")
-            vim.cmd("stopinstall") -- Prevents the quit process
-          end,
-        })
-      '';
 
       keymaps = [
         { mode = "n"; key = "gg=G"; action = "<cmd>lua vim.lsp.buf.format()<CR>"; options = { silent = true; desc = "format whole file"; }; }
