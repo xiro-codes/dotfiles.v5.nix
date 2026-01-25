@@ -10,6 +10,11 @@
   ];
 
   local = {
+    cache = {
+      enable = true;
+      watch = true;
+    };
+
     bootloader = {
       mode = "uefi";
       uefiType = "systemd-boot";
@@ -57,6 +62,9 @@
       safe.directory = "/etc/nixos";
     };
   };
+  environment.systemPackages = [
+    pkgs.attic-client
+  ];
   system.stateVersion = "25.11"; # Did you read the comment?
 
 }

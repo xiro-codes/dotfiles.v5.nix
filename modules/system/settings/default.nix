@@ -1,9 +1,14 @@
-{pkgs, lib, config, ...}:let 
-cfg = config.local.settings;
-in {
+{ pkgs, lib, config, ... }:
+let
+  cfg = config.local.settings;
+in
+{
   options.local.settings.enable = lib.mkEnableOption "Enable basic settings";
   config = lib.mkIf cfg.enable {
-    nix.settings.experimental-features = ["nix-command" "flakes"];
+    nix.settings.experimental-features = [ "nix-command" "flakes" ];
+    nix.extraOptions = ''
+      builders-use-substitutes = true
+    '';
     nixpkgs.config.allowUnfree = true;
     time.timeZone = "America/Chicago";
 
