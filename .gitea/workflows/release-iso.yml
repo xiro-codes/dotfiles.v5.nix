@@ -23,10 +23,7 @@ jobs:
       - name: Build ISO
         run: |
           # Build the ISO using your flake's installer-iso output
-          nix build .#iso \
-            --extra-conf-serv "substituters = http://10.0.0.65:8080/main https://cache.nixos.org" \
-            --extra-conf-serv "trusted-public-keys = main:igHqnhKrSh3Enrl8IqgMfFKRli/eE5KOKS5OdOlvNlI= cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY=" \
-            --print-out-paths > iso_path.txt
+          nix build .#iso --print-out-paths > iso_path.txt
           echo "ISO_FILE=$(cat iso_path.txt)/iso/*.iso" >> $GITHUB_ENV
 
       - name: Push to Attic
