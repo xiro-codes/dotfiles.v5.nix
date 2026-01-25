@@ -139,14 +139,14 @@ def main():
     args = parser.parse_args()
 
     target_disk = get_target_disk(args.disk)
-
+    args.target_disk = target_disk
     # Simple Summary
     print(f"\n🚀 Target: {target_disk} | Host: {args.host} | User: {args.user}")
     if input("⚠️  Proceed? (y/N): ").lower() != "y":
         sys.exit(0)
 
     boot_p = partition_and_format(target_disk)
-
+    sleep(2)
     # Mount
     run_cmd(["mount", "/dev/disk/by-label/nixos", "/mnt"])
     os.makedirs("/mnt/boot", exist_ok=True)
