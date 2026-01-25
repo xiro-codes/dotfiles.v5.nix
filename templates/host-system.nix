@@ -1,6 +1,11 @@
-{pkgs, ...}: {
-  imports = [ ./hardware-configuration.nix];
+{ pkgs, ... }: {
+  imports = [ ./hardware-configuration.nix ];
   local = {
+    bootloader = {
+      mode = "TEMPLATE_BOOT_MODE";
+      uefiType = "TEMPLATE_UEFI_TYPE";
+      device = "TEMPLATE_DISK";
+    };
     userManager.enable = true;
     repoManager.enable = true;
     gitSync.enable = true;

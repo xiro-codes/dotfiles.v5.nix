@@ -9,10 +9,11 @@
     ./hardware-configuration.nix
   ];
 
-  boot.loader.systemd-boot.enable = true;
-  boot.loader.efi.canTouchEfiVariables = true;
-
   local = {
+    bootloader = {
+      mode = "uefi";
+      uefiType = "systemd-boot";
+    };
     maintenance = {
       enable = true;
       autoUpgrade = true;

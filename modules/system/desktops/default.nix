@@ -54,14 +54,9 @@ in
       WARP_ENABLE_WAYLAND = "1";
     };
 
-    # The Ly Display Manager (Replaces greetd)
-    services.displayManager.ly = {
+    services.displayManager.sddm = {
       enable = true;
-      settings = {
-        animation = "matrix";
-        restore = true;
-        save = true;
-      };
+      wayland.enable = true;
     };
 
     # Desktop Selection logic using inputs from your flake
