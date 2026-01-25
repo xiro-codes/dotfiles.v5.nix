@@ -1,7 +1,9 @@
-{pkgs, config, lib, ...}: let 
-inherit (lib) mkIf mkOption types;
-cfg = config.local.kitty;
-in {
+{ pkgs, config, lib, ... }:
+let
+  inherit (lib) mkIf mkOption types;
+  cfg = config.local.kitty;
+in
+{
   options.local.kitty = {
     enable = lib.mkEnableOption "Enable kitty";
   };
@@ -9,12 +11,12 @@ in {
     local.variables.terminal = "kitty";
     programs.kitty = {
       enable = true;
-      font = {
-        package = pkgs.cascadia-code;
-        name = "CascadiaCode";
-        size = 10;
-      };
-      extraConfig = lib.readFile ./theme.conf;
+      # font = {
+      # package = pkgs.cascadia-code;
+      # name = "CascadiaCode";
+      # size = 10;
+      # };
+      #extraConfig = lib.readFile ./theme.conf;
     };
   };
 }

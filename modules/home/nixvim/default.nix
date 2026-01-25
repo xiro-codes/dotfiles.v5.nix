@@ -1,10 +1,11 @@
-{pkgs, config, lib, ... }: 
-let 
-cfg = config.local.nixvim;
-inherit (lib) mkOption mkIf types;
-in {
+{ pkgs, config, lib, ... }:
+let
+  cfg = config.local.nixvim;
+  inherit (lib) mkOption mkIf types;
+in
+{
   options.local.nixvim = {
-    enable = mkOption {type = types.bool; default = false; };
+    enable = mkOption { type = types.bool; default = false; };
     rust = mkOption { type = types.bool; default = false; };
     python = mkOption { type = types.bool; default = false; };
     javascript = mkOption { type = types.bool; default = false; };
@@ -12,8 +13,8 @@ in {
   config = mkIf cfg.enable {
     home.packages = with pkgs; [
       nixpkgs-fmt
-        rustfmt
-        black
+      rustfmt
+      black
     ];
     programs.nixvim = {
       enable = true;
@@ -30,19 +31,24 @@ in {
         scrolloff = 8;
         termguicolors = true;
       };
-      colorschemes.catppuccin.enable = true;
+      colorschemes.base16 = {
+        enable = true;
+        setUpDefault = true;
+      };
+      opts.guifont = "Cascadia Code:h13";
+
       keymaps = [
-      { mode = "n"; key = "gg=G"; action = "<cmd>lua vim.lsp.buf.format()<CR>"; options = { silent = true; desc = "format whole file";};}
-      ]; 
+        { mode = "n"; key = "gg=G"; action = "<cmd>lua vim.lsp.buf.format()<CR>"; options = { silent = true; desc = "format whole file"; }; }
+      ];
       plugins = {
         conform-nvim = {
           enable = true;
           settings = {
             formatters_by_ft = {
-              nix = ["nixpkgs_fmt"];
-              rust = ["rustfmt"];
-              python = ["black"];
-              "_" = ["trim_whitespace"];
+              nix = [ "nixpkgs_fmt" ];
+              rust = [ "rustfmt" ];
+              python = [ "black" ];
+              "_" = [ "trim_whitespace" ];
             };
             format_on_save = {
               lspFallback = true;
@@ -74,9 +80,9 @@ in {
         cmp = {
           enable = true;
           settings.sources = [
-          { name = "nvim_lsp"; }
-          { name = "path"; }
-          { name = "buffer";}
+            { name = "nvim_lsp"; }
+            { name = "path"; }
+            { name = "buffer"; }
           ];
         };
 
@@ -85,8 +91,8 @@ in {
 
       extraPackages = with pkgs; [
         ripgrep
-          fd
-          gcc # For treesitter builds
+        fd
+        gcc # For treesitter builds
       ];
     };
   };

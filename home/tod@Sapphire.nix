@@ -1,16 +1,17 @@
-{pkgs, lib, ... }: {
-	home.stateVersion = "25.11";
-	home.packages = with pkgs; [
-		unzip
-		p7zip
-		sysstat
-		grim
-		slurp
-		bottom
-		duf
-		dust
-	];
-	local = {
+{ pkgs, lib, ... }: {
+  home.stateVersion = "25.11";
+  home.packages = with pkgs; [
+    unzip
+    p7zip
+    sysstat
+    grim
+    slurp
+    bottom
+    duf
+    dust
+  ];
+  local = {
+    theming.enable = true;
     hyprland.enable = true;
     waybar.enable = true;
     hyprlauncher.enable = true;
@@ -33,21 +34,21 @@
       name = "oomox-gruvbox-dark";
     };
   };
-	programs = {
-		home-manager.enable = true;
-		direnv = {
-			enable = true;
-			nix-direnv.enable = true;
+  programs = {
+    home-manager.enable = true;
+    direnv = {
+      enable = true;
+      nix-direnv.enable = true;
       silent = true;
-		};
-		git = {
-			enable = true;
-			settings = {
-				user.name = "Travis Davis";
-				user.email = "me@tdavis.dev";
-				credential.helper = "store";
-				safe.directory = "*";
-			};
-		};
-	};
+    };
+    git = {
+      enable = true;
+      settings = {
+        user.name = "Travis Davis";
+        user.email = "me@tdavis.dev";
+        credential.helper = "store";
+        safe.directory = "*";
+      };
+    };
+  };
 }
