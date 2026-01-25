@@ -146,7 +146,7 @@ def main():
         sys.exit(0)
 
     boot_p = partition_and_format(target_disk)
-    sleep(2)
+    time.sleep(2)
     # Mount
     run_cmd(["mount", "/dev/disk/by-label/nixos", "/mnt"])
     os.makedirs("/mnt/boot", exist_ok=True)
