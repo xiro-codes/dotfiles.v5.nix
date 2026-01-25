@@ -26,6 +26,8 @@ in
         popups = 0.95;
       };
       targets = {
+        neovim.enable = false;
+        kitty.enable = true;
         waybar.enable = true;
         hyprland.enable = true;
       };
@@ -39,7 +41,7 @@ in
 
         sizes = {
           applications = 11;
-          terminal = 13;
+          terminal = 10;
           desktop = 10;
           popups = 10;
         };

@@ -35,7 +35,7 @@ in
         enable = true;
         setUpDefault = true;
       };
-      opts.guifont = "Cascadia Code:h13";
+      # opts.guifont = "Cascadia Code:h13";
 
       keymaps = [
         { mode = "n"; key = "gg=G"; action = "<cmd>lua vim.lsp.buf.format()<CR>"; options = { silent = true; desc = "format whole file"; }; }
