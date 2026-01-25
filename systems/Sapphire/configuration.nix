@@ -5,7 +5,7 @@
 { config, pkgs, ... }:
 
 {
-  imports = [ 
+  imports = [
     ./hardware-configuration.nix
   ];
 
@@ -13,6 +13,11 @@
   boot.loader.efi.canTouchEfiVariables = true;
 
   local = {
+    maintenance = {
+      enable = true;
+      autoUpgrade = true;
+    };
+
     desktops = {
       enable = true;
       enableEnv = true;
@@ -26,7 +31,7 @@
       enable = true;
       serverIp = "10.0.0.65";
       mounts = [
-        {shareName = "Music"; localPath = "/mnt/zima/Music";}
+        { shareName = "Music"; localPath = "/mnt/zima/Music"; }
       ];
     };
 

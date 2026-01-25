@@ -49,9 +49,6 @@ in
 
       keymaps = [
         { mode = "n"; key = "gg=G"; action = "<cmd>lua vim.lsp.buf.format()<CR>"; options = { silent = true; desc = "format whole file"; }; }
-        { mode = "n"; key = ":q"; action = "<cmd>echo 'User your WM keybind to close Neovide!'<CR>"; }
-        { mode = "n"; key = ":qa"; action = "<cmd>echo 'User your WM keybind to close Neovide!'<CR>"; }
-        { mode = "n"; key = ":qa"; action = "<cmd>echo 'User your WM keybind to close Neovide!'<CR>"; }
         { mode = "n"; key = "rp"; action = "<cmd>split | term cargo run<CR>i"; options.desc = "Cargo Run Project"; }
         { mode = "n"; key = "rb"; action = "<cmd>split | term cargo build<CR>i"; options.desc = "Cargo Build Project"; }
       ];

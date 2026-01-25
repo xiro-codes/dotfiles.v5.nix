@@ -9,6 +9,7 @@
     bottom
     duf
     dust
+    cascadia-code
   ];
   local = {
     theming.enable = true;
