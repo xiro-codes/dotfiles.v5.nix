@@ -4,7 +4,7 @@
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
     flake-parts.url = "github:hercules-ci/flake-parts";
     stylix.url = "github:danth/stylix";
-
+    # flake-parts-website.url = "github:hercules-ci/flake.parts-website";
     nixvim = {
       url = "github:nix-community/nixvim";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -25,6 +25,7 @@
       imports = [
         ./parts/discovery.nix
       ];
+
       perSystem =
         { config, pkgs, ... }:
         {

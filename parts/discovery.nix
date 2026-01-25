@@ -1,5 +1,39 @@
 { inputs, lib, ... }:
+let
+
+  systemDir = ../systems;
+  systemModulesDir = ../modules/system;
+  homeDir = ../home;
+  homeModulesDir = ../modules/home;
+  packageDir = ../packages;
+in
 {
+  perSystem = { config, pkgs, system, ... }:
+    let
+      discoverPackages =
+        path:
+        let
+          contents = builtins.readDir path;
+          packageDirs = builtins.filter
+            (
+              name: contents.${name} == "directory" && builtins.pathExists (path + "/${name}/default.nix")
+            )
+            (builtins.attrNames contents);
+        in
+        builtins.listToAttrs (
+          map
+            (name: {
+              inherit name;
+              value = inputs.nixpkgs.legacyPackages.x86_64-linux.callPackage (path + "/${name}/default.nix") {
+                inherit inputs;
+              };
+            })
+            packageDirs
+        );
+    in
+    {
+      packages = discoverPackages packageDir;
+    };
   flake =
     let
       inherit (inputs.nixpkgs.lib) attrNames filterAttrs nixosSystem;
@@ -21,8 +55,8 @@
         else
           { };
 
-      discoverPackages =
-        path:
+      mkOverlayFromDir =
+        path: final: prev:
         let
           contents = builtins.readDir path;
           packageDirs = builtins.filter
@@ -35,12 +69,11 @@
           map
             (name: {
               inherit name;
-              value = inputs.nixpkgs.legacyPackages.x86_64-linux.callPackage (path + "/${name}/default.nix") {
-                inherit inputs;
-              };
+              value = final.callPackage (path + "/${name}/default.nix") { inherit inputs; };
             })
             packageDirs
         );
+
 
       getHosts =
         path:
@@ -49,15 +82,9 @@
         else
           [ ];
 
-      systemDir = ../systems;
-      systemModulesDir = ../modules/system;
-      homeDir = ../home;
-      homeModulesDir = ../modules/home;
-      packageDir = ../packages;
 
       discoveredSystemModules = discoverModules systemModulesDir;
       discoveredHomeModules = discoverModules homeModulesDir;
-      discoveredPackages = discoverPackages packageDir;
 
       hostNames = getHosts systemDir;
 
@@ -134,7 +161,7 @@
           hostNames
       );
 
-      packages.x86_64-linux = discoveredPackages;
+      overlays.default = mkOverlayFromDir packageDir;
 
       homeConfigurations = builtins.listToAttrs (
         map
