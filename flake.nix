@@ -37,7 +37,11 @@
             format = "install-iso";
             specialArgs = { inherit inputs; };
             modules = [
+              inputs.self.nixosModules.cache
               {
+                local = {
+                  cache.enable = true;
+                };
                 imports = [
                   "${inputs.nixpkgs}/nixos/modules/installer/cd-dvd/installation-cd-minimal.nix"
                 ];
@@ -46,6 +50,7 @@
 
                   sudo install-system <hostname> <desktop> <user> <password> [disk]
                 '';
+
                 environment.etc."dotfiles-src".source = builtins.path {
                   path = inputs.self.outPath;
                   name = "dotfiles-git-src";

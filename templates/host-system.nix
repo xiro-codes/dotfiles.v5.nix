@@ -1,6 +1,7 @@
 { pkgs, ... }: {
   imports = [ ./hardware-configuration.nix ];
   local = {
+    cache.enable = true;
     bootloader = {
       mode = "TEMPLATE_BOOT_MODE";
       uefiType = "TEMPLATE_UEFI_TYPE";

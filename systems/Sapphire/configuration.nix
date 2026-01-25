@@ -12,9 +12,9 @@
   local = {
     cache = {
       enable = true;
-      serverAddress = "http://10.0.0.65:8080";
-      publicKey = "main:igHqnhKrSh3Enrl8IqgMfFKRli/eE5KOKS5OdOlvNlI=";
+      watch = true;
     };
+
     bootloader = {
       mode = "uefi";
       uefiType = "systemd-boot";

@@ -10,19 +10,20 @@ in
 {
   options.local.cache = {
     enable = lib.mkEnableOption "cache module";
+    watch = lib.mkEnableOption "enable systemd service to watch cache";
     serverAddress = lib.mkOption {
       type = lib.types.str;
       default = "http://10.0.0.65:8080/main";
     };
     publicKey = lib.mkOption {
       type = lib.types.str;
-      default = "main:";
+      default = "main:igHqnhKrSh3Enrl8IqgMfFKRli/eE5KOKS5OdOlvNlI=";
     };
   };
 
   config = lib.mkIf cfg.enable {
     environment.systemPackages = with pkgs; [ attic-client ];
-    systemd.services.attic-watch = {
+    systemd.services.attic-watch = lib.mkIf cfg.watch {
       description = "Watch Nix store and push to Attic cache";
       after = [ "network-online.target" ];
       wantedBy = [ "multi-user.target" ];
@@ -30,7 +31,6 @@ in
         ExecStart = "${lib.getExe pkgs.attic-client} watch-store main";
         Restart = "always";
         RestartSec = 5;
-        User = "tod";
       };
     };
     nix.settings = {
