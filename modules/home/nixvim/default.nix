@@ -15,6 +15,7 @@ in
       nixpkgs-fmt
       rustfmt
       black
+      neovide
     ];
     programs.nixvim = {
       enable = true;
