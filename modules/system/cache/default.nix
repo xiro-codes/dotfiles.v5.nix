@@ -23,16 +23,6 @@ in
 
   config = lib.mkIf cfg.enable {
     environment.systemPackages = with pkgs; [ attic-client ];
-    systemd.services.attic-watch = lib.mkIf cfg.watch {
-      description = "Watch Nix store and push to Attic cache";
-      after = [ "network-online.target" ];
-      wantedBy = [ "multi-user.target" ];
-      serviceConfig = {
-        ExecStart = "${lib.getExe pkgs.attic-client} watch-store main";
-        Restart = "always";
-        RestartSec = 5;
-      };
-    };
     nix.settings = {
       substituters = [
         cfg.serverAddress

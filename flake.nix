@@ -38,9 +38,11 @@
             specialArgs = { inherit inputs; };
             modules = [
               inputs.self.nixosModules.cache
+              inputs.self.nixosModules.settings
               {
                 local = {
                   cache.enable = true;
+                  settings.enable = true;
                 };
                 imports = [
                   "${inputs.nixpkgs}/nixos/modules/installer/cd-dvd/installation-cd-minimal.nix"
