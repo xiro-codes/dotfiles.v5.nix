@@ -31,3 +31,13 @@ new-home-mod name:
     cp templates/module.nix modules/home/{{name}}/default.nix
     sed -i 's/TEMPLATE_NAME/{{name}}/' modules/home/{{name}}/default.nix
     echo "Created home module: {{name}}"
+
+# Build the ISO and launch it immediately
+test:
+    nix build .#iso
+    nix run .#test-iso
+
+# Clear the test environment
+clean-test:
+    rm -f test_disk.qcow2
+    rm -rf result/
