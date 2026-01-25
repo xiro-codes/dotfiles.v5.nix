@@ -1,0 +1,34 @@
+name: Build and Release ISO
+on:
+  push:
+    branches:
+      - release
+
+jobs:
+  build-iso:
+    runs-on: ubuntu-latest # Ensure your runner has Nix installed or use a Nix-native runner
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Install Nix
+        uses: https://github.com/cachix/install-nix-action@v25
+        with:
+          nix_path: nixpkgs=channel:nixos-unstable
+
+      - name: Build ISO
+        run: |
+          # Build the ISO using your flake's installer-iso output
+          nix build .#iso --print-out-paths > iso_path.txt
+          echo "ISO_FILE=$(cat iso_path.txt)/iso/*.iso" >> $GITHUB_ENV
+
+      - name: Create Release and Upload ISO
+        uses: https://gitea.com/actions/gitea-release-action@v1
+        with:
+          files: ${{ env.ISO_FILE }}
+          name: "ISO Release - ${{ gitea.sha }}"
+          tag_name: "v${{ gitea.run_number }}"
+          draft: false
+          prerelease: false
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # Gitea automatically provides this
