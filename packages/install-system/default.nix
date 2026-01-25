@@ -1,1 +1,1 @@
-{writeShellScriptBin, ...}: writeShellScriptBin "install-system" (builtins.readFile ./script.sh)
+{writeScriptBin, ...}: writeScriptBin "install-system" (builtins.readFile ./script.py)

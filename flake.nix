@@ -39,11 +39,16 @@
                 sudo install-system <hostname> <desktop> <user> <password> [disk]
                 '';
               environment.etc."dotfiles-src".source = builtins.path {
-                path = ./.;
+                path = inputs.self.outPath; 
                 name = "dotfiles-git-src";
                 filter = path: type: true;
               };
-              environment.systemPackages = [
+              environment.systemPackages = with pkgs; [
+                python3
+                git
+                parted
+                util-linux
+              ] ++ [
                 inputs.self.packages.x86_64-linux.install-system
               ];
               nixpkgs.config.allowUnfree = true;
