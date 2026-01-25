@@ -39,7 +39,7 @@
                 sudo install-system <hostname> <desktop> <user> <password> [disk]
                 '';
               environment.etc."dotfiles-src".source = builtins.path {
-                path = ../../../.;
+                path = ./.;
                 name = "dotfiles-git-src";
                 filter = path: type: true;
               };
