@@ -10,9 +10,11 @@
     duf
     dust
     cascadia-code
+    libnotify
   ];
   local = {
     theming.enable = true;
+    mako.enable = true;
     hyprland.enable = true;
     waybar.enable = true;
     hyprlauncher.enable = true;
