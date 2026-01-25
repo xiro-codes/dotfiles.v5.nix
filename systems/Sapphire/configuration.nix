@@ -22,7 +22,7 @@
       enable = true;
       enableEnv = true;
       hyprland = true;
-      plasma6 = true;
+      plasma6 = false;
     };
     #backupManager.enable = true;
     userManager.enable = true;

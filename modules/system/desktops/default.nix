@@ -4,7 +4,8 @@ let
   cfg = config.local.desktops;
   inherit (lib) mkOption mkIf mkForce;
   inherit (lib.types) bool;
-in {
+in
+{
   options.local.desktops = {
     enable = mkOption {
       type = bool;
@@ -31,7 +32,7 @@ in {
   config = mkIf cfg.enable {
     # Core Desktop Requirements
     xdg.portal.enable = true;
-    
+
     environment.systemPackages = with pkgs; [
       xdg-user-dirs
       xdg-utils
