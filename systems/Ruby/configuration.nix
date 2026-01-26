@@ -55,7 +55,9 @@
     initialPassword = "rockman";
   };
   services.sshd.enable = true;
+  environment.systemPackages = with pkgs; [ cliphist ];
   programs.firefox.enable = true;
+  programs.gpu-screen-recorder.enable = true;
   programs.git = {
     enable = true;
     config = {

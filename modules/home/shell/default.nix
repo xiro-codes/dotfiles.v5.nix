@@ -10,7 +10,6 @@ in
 
   config = lib.mkIf cfg.enable {
     home.packages = with pkgs; [
-      gpu-screen-recorder
     ];
     programs.caelestia = {
       enable = true;

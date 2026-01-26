@@ -140,6 +140,7 @@ in
                   home-manager.useGlobalPkgs = true;
                   home-manager.useUserPackages = true;
                   home-manager.extraSpecialArgs = { inherit inputs; };
+                  home-manager.overwriteBackup = true;
                   home-manager.sharedModules = [
                     inputs.nixvim.homeModules.nixvim
                     inputs.stylix.homeModules.stylix
