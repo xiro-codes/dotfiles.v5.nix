@@ -1,5 +1,12 @@
 { pkgs, lib, ... }: {
   home.stateVersion = "25.11";
+  nix.settings.substituters = [
+
+    "http://10.0.0.65:8080/main?priority=1"
+  ];
+  nix.settings.trusted-public-keys = [
+    "main:CqlQUu3twINKw6rrCtizlAYkrPOKUicoxMyN6EvYnbk="
+  ];
   home.packages = with pkgs; [
     unzip
     p7zip
