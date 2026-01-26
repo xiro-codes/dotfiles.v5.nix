@@ -58,10 +58,6 @@ in
       enable = true;
       settings = {
         animation = "matrix";
-        bg = "282828"; # Dark Gray (bg0)
-        fg = "fbf1c7"; # Light Cream (fg0)
-        border_fg = "d65d0e"; # Orange border
-        cursor_fg = "b8bb26"; # Green cursor
         restore = true;
         save = true;
       };
