@@ -20,7 +20,7 @@ in
       interactiveShellInit = ''
         				set -g fish_greeting ""
         				zoxide init fish | source
-                caelestia scheme set -n dynamic
+                cat $HOME/.local/state/caelestia/sequences.txt 2>/dev/null 
         			'';
       shellAbbrs = {
         ls = "eza --icons always";

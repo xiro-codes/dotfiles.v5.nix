@@ -33,6 +33,7 @@ in
         termguicolors = true;
       };
 
+
       keymaps = [
         { mode = "n"; key = "gg=G"; action = "<cmd>lua vim.lsp.buf.format()<CR>"; options = { silent = true; desc = "format whole file"; }; }
         { mode = "n"; key = "rp"; action = "<cmd>split | term cargo run<CR>i"; options.desc = "Cargo Run Project"; }
