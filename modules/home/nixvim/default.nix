@@ -32,11 +32,6 @@ in
         scrolloff = 8;
         termguicolors = true;
       };
-      colorschemes.base16 = {
-        enable = false;
-        setUpDefault = false;
-      };
-      # opts.guifont = "Cascadia Code:h13";
 
       keymaps = [
         { mode = "n"; key = "gg=G"; action = "<cmd>lua vim.lsp.buf.format()<CR>"; options = { silent = true; desc = "format whole file"; }; }
