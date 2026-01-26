@@ -28,8 +28,8 @@ in
       targets = {
         neovim.enable = true;
         kitty.enable = true;
-        waybar.enable = true;
         hyprland.enable = true;
+        firefox.enable = true;
       };
       fonts = {
         monospace = {

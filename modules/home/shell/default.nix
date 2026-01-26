@@ -13,6 +13,8 @@ in
       pcmanfm
       pavucontrol
       mpv
+      ddcutil
+      brightnessctl
     ];
     programs.caelestia = {
       enable = true;
