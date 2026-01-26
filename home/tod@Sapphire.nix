@@ -11,6 +11,7 @@
     dust
     cascadia-code
     libnotify
+    plex-desktop
   ];
   local = {
     theming.enable = true;
