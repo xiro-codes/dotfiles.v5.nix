@@ -26,7 +26,7 @@ in
         popups = 0.95;
       };
       targets = {
-        neovim.enable = false;
+        neovim.enable = true;
         kitty.enable = true;
         waybar.enable = true;
         hyprland.enable = true;
