@@ -1,4 +1,4 @@
-{ pkgs, ... }: {
+{ pkgs, inputs, ... }: {
   home.stateVersion = "25.11";
 
   home.packages = with pkgs; [
@@ -15,12 +15,12 @@
     plex-desktop
   ];
   local = {
-    cache.enable = true;
+    cache = {
+      enable = true;
+      watch = true;
+    };
     theming.enable = true;
-    mako.enable = true;
     hyprland.enable = true;
-    waybar.enable = true;
-    hyprlauncher.enable = true;
     nixvim.enable = true;
     variables.enable = true;
     ranger.enable = true;

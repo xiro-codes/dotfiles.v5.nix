@@ -10,7 +10,6 @@ in
 {
   options.local.cache = {
     enable = lib.mkEnableOption "cache module";
-    watch = lib.mkEnableOption "enable systemd service to watch cache";
     serverAddress = lib.mkOption {
       type = lib.types.str;
       default = "http://10.0.0.65:8080/main";

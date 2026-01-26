@@ -8,6 +8,19 @@
       uefiType = "systemd-boot";
       device = "/dev/nvme0n1";
     };
+    backup-manager = {
+      enable = true;
+      paths = [
+        "/home/tod/Documents/"
+      ];
+      exclude = [
+        "*/.cache"
+        "*/target"
+        "*/node_modules"
+        "*/.direnv"
+      ];
+      backupLocation = "/mnt/zima/backups/ruby";
+    };
     maintenance = {
       enable = true;
       autoUpgrade = true;
@@ -27,6 +40,14 @@
       enable = true;
       enableEnv = true;
       hyprland = true;
+    };
+    shareManager = {
+      enable = true;
+      serverIp = "10.0.0.65";
+      mounts = [
+        { shareName = "Backups"; localPath = "/mnt/zima/Backups"; }
+        { shareName = "Music"; localPath = "/mnt/zima/Music"; }
+      ];
     };
   };
   users.users.tod = {

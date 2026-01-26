@@ -5,7 +5,8 @@ let
   # Check if the audio module is enabled elsewhere in the system config
   audioEnabled = config.local.audio.enable or false;
   plasmaEnabled = config.services.desktopManager.plasma6.enable;
-in {
+in
+{
   options.local.bluetooth = {
     enable = lib.mkEnableOption "Modern Bluetooth stack";
   };

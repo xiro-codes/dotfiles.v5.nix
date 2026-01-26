@@ -23,6 +23,25 @@ in
 
   config = lib.mkIf cfg.enable {
     home.packages = with pkgs; [ attic-client ];
+    systemd.user.services.attic-watch = lib.mkIf cfg.watch {
+      Unit = {
+        Description = "Watch Nix store and push to Attic cache";
+        # HM will automatically link this to your graphical session if enabled
+        After = [ "graphical-session.target" ];
+        PartOf = [ "graphical-session.target" ];
+      };
+
+      Service = {
+        # We use the absolute path from the pkgs set to ensure it's always found
+        ExecStart = "${pkgs.attic-client}/bin/attic watch-store main";
+        Restart = "always";
+        RestartSec = 5;
+      };
+
+      Install = {
+        WantedBy = [ "graphical-session.target" ];
+      };
+    };
     nix.settings = {
       trusted-users = [ "@wheel" ];
       substituters = [

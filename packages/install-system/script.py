@@ -56,7 +56,7 @@ def partition_and_format(disk):
 def generate_configs(args):
     """Copies files and populates templates."""
     src_repo = "/etc/dotfiles-src"
-    dest_repo = "/mnt/etc/dotfiles"
+    dest_repo = "/mnt/etc/nixos"
 
     print("📂 Copying files to /etc/dotfiles...")
     os.makedirs("/mnt/etc", exist_ok=True)
@@ -70,11 +70,7 @@ def generate_configs(args):
 
     # 1. Home Configuration
     with open("templates/host-home.nix", "r") as f:
-        content = (
-            f.read()
-            .replace("TEMPLATE_USER", args.user)
-            .replace("TEMPLATE_DESKTOP", args.desktop)
-        )
+        content = f.read().replace("TEMPLATE_USER", args.user)
     with open(f"home/{args.user}@{args.host}.nix", "w") as f:
         f.write(content)
 
@@ -85,7 +81,6 @@ def generate_configs(args):
         content = (
             f.read()
             .replace("TEMPLATE_USER", args.user)
-            .replace("TEMPLATE_DESKTOP", args.desktop)
             .replace("TEMPLATE_PASS", args.password)
             .replace("TEMPLATE_BOOT_MODE", args.boot_mode)
             .replace("TEMPLATE_UEFI_TYPE", args.uefi_type)
@@ -126,7 +121,6 @@ def finalize_install(host):
 def main():
     parser = argparse.ArgumentParser(description="NixOS One-Step Installer")
     parser.add_argument("host", help="Hostname")
-    parser.add_argument("desktop", help="Desktop Environment")
     parser.add_argument("user", help="Username")
     parser.add_argument("password", help="Password")
     parser.add_argument("--disk", help="Disk override")
