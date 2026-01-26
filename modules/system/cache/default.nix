@@ -24,6 +24,7 @@ in
   config = lib.mkIf cfg.enable {
     environment.systemPackages = with pkgs; [ attic-client ];
     nix.settings = {
+      trusted-users = [ "@wheel" ];
       substituters = [
         cfg.serverAddress
         "https://cache.nixos.org"
