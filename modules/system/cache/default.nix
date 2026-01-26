@@ -17,7 +17,7 @@ in
     };
     publicKey = lib.mkOption {
       type = lib.types.str;
-      default = "main:igHqnhKrSh3Enrl8IqgMfFKRli/eE5KOKS5OdOlvNlI=";
+      default = "main:CqlQUu3twINKw6rrCtizlAYkrPOKUicoxMyN6EvYnbk=";
     };
   };
 
