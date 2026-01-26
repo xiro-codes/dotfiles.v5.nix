@@ -21,7 +21,11 @@ in
         };
         bar.workspaces.shown = 3;
         bar.scrollAction.brightness = false;
-        osd.enableBrightness = true;
+        osd.enableBrightness = false;
+        paths = {
+          "mediaGif" = "";
+          "sessionGif" = "";
+        };
       };
     };
     local.variables.launcher = "caelestia shell drawers toggle launcher";
