@@ -143,6 +143,7 @@ in
                   home-manager.sharedModules = [
                     inputs.nixvim.homeModules.nixvim
                     inputs.stylix.homeModules.stylix
+                    inputs.caelestia-shell.homeManagerModules.default
                   ]
                   ++ builtins.attrValues discoveredHomeModules;
                   home-manager.users = builtins.listToAttrs (

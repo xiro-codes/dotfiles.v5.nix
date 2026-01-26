@@ -5,6 +5,10 @@
     flake-parts.url = "github:hercules-ci/flake-parts";
     stylix.url = "github:danth/stylix";
     # flake-parts-website.url = "github:hercules-ci/flake.parts-website";
+    caelestia-shell = {
+      url = "github:caelestia-dots/shell";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     nixvim = {
       url = "github:nix-community/nixvim";
       inputs.nixpkgs.follows = "nixpkgs";

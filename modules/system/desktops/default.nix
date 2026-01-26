@@ -57,7 +57,14 @@ in
     services.displayManager.ly = {
       enable = true;
       settings = {
-        animation = "matrix";
+        animation = "colormix";
+        colormix_col1 = "0x00fb4934";
+        colormix_col2 = "0x00fabd2f";
+        colormix_col3 = "0x008ec07c";
+        bg = "282828"; # Dark Gray (bg0)
+        fg = "fbf1c7"; # Light Cream (fg0)
+        border_fg = "d65d0e"; # Orange border
+        cursor_fg = "b8bb26"; # Green cursor
         restore = true;
         save = true;
       };

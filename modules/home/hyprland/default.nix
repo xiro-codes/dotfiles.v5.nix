@@ -16,9 +16,10 @@ in
     ];
 
     local = {
-      mako.enable = true;
-      waybar.enable = true;
-      hyprlauncher.enable = true;
+      mako.enable = false;
+      waybar.enable = false;
+      hyprlauncher.enable = false;
+      shell.enable = true;
     };
 
     wayland.windowManager.hyprland = {
