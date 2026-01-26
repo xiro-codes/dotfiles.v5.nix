@@ -1,6 +1,6 @@
-{ pkgs, ... }:
-{
+{ pkgs, inputs, ... }: {
   home.stateVersion = "25.11";
+
   home.packages = with pkgs; [
     unzip
     p7zip
@@ -14,6 +14,20 @@
     libnotify
     plex-desktop
   ];
+  local = {
+    cache = {
+      enable = true;
+      watch = true;
+    };
+    theming.enable = true;
+    hyprland.enable = true;
+    nixvim.enable = true;
+    variables.enable = true;
+    ranger.enable = true;
+    kitty.enable = true;
+    fonts.enable = true;
+    mpd.enable = true;
+  };
   programs = {
     home-manager.enable = true;
     direnv = {
@@ -30,19 +44,5 @@
         safe.directory = "*";
       };
     };
-  };
-  local = {
-    variables.enable = true;
-    cache = {
-      enable = true;
-      watch = true;
-    };
-    theming.enable = true;
-    hyprland.enable = true;
-    nixvim.enable = true;
-    ranger.enable = true;
-    kitty.enable = true;
-    fonts.enable = true;
-    mpd.enable = true;
   };
 }

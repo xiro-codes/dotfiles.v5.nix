@@ -17,7 +17,8 @@
     };
     desktops = {
       enable = true;
-      TEMPLATE_DESKTOP = true;
+      enableEnv = true;
+      hyprland = true;
     };
   };
   users.users.TEMPLATE_USER = {
