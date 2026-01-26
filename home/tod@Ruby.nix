@@ -19,7 +19,7 @@
       enable = true;
       watch = true;
     };
-    theming.enable = true;
+    theming.enable = false;
     hyprland.enable = true;
     nixvim.enable = true;
     variables.enable = true;
