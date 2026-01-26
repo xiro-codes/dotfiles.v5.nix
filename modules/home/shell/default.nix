@@ -10,11 +10,21 @@ in
 
   config = lib.mkIf cfg.enable {
     home.packages = with pkgs; [
+      pcmanfm
+      pavucontrol
+      mpv
     ];
     programs.caelestia = {
       enable = true;
+
       cli.enable = true;
       settings = {
+        general.apps = {
+          terminal = [ "kitty" ];
+          audio = [ "pavucontrol" ];
+          playback = [ "mpv" ];
+          explorer = [ "pcmanfm" ];
+        };
         bar.status = {
           showBattery = false;
           showAudio = true;
