@@ -20,7 +20,8 @@ in
           showWifi = false;
         };
         bar.workspaces.shown = 3;
-
+        bar.scrollAction.brightness = false;
+        osd.enableBrightness = true;
       };
     };
     local.variables.launcher = "caelestia shell drawers toggle launcher";
