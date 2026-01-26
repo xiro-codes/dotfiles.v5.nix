@@ -1,5 +1,6 @@
-{ pkgs, lib, ... }: {
+{ pkgs, inputs, ... }: {
   home.stateVersion = "25.11";
+
   home.packages = with pkgs; [
     unzip
     p7zip
@@ -14,29 +15,18 @@
     plex-desktop
   ];
   local = {
+    cache = {
+      enable = true;
+      watch = true;
+    };
     theming.enable = true;
-    mako.enable = true;
     hyprland.enable = true;
-    waybar.enable = true;
-    hyprlauncher.enable = true;
     nixvim.enable = true;
     variables.enable = true;
     ranger.enable = true;
     kitty.enable = true;
     fonts.enable = true;
     mpd.enable = true;
-  };
-  gtk = {
-    enable = true;
-    cursorTheme = {
-      package = pkgs.vanilla-dmz;
-      name = "Vanilla-DMZ";
-      size = 16;
-    };
-    iconTheme = {
-      package = pkgs.gruvbox-dark-icons-gtk;
-      name = "oomox-gruvbox-dark";
-    };
   };
   programs = {
     home-manager.enable = true;

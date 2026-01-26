@@ -18,20 +18,12 @@ jobs:
           nix_path: nixpkgs=channel:nixos-unstable
           extra_nix_config: |
             substituters = http://10.0.0.65:8080/main https://cache.nixos.org
-            trusted-public-keys = main:igHqnhKrSh3Enrl8IqgMfFKRli/eE5KOKS5OdOlvNlI= cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY=
-
+            trusted-public-keys = main:CqlQUu3twINKw6rrCtizlAYkrPOKUicoxMyN6EvYnbk= cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY=
       - name: Build ISO
         run: |
           # Build the ISO using your flake's installer-iso output
           nix build .#iso --print-out-paths > iso_path.txt
           echo "ISO_FILE=$(cat iso_path.txt)/iso/*.iso" >> $GITHUB_ENV
-
-      - name: Push to Attic
-        env:
-          ATTIC_TOKEN: ${{ secrets.ATTIC_TOKEN }}
-        run: |
-          nix run nixpkgs#attic-client -- login local http://10.0.0.65:8080 $ATTIC_TOKEN
-          nix run nixpkgs#attic-client -- push main $(cat iso_path.txt)
 
       - name: Create Release and Upload ISO
         uses: https://gitea.com/actions/gitea-release-action@v1

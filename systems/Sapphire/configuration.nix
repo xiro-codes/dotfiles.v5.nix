@@ -10,10 +10,7 @@
   ];
 
   local = {
-    cache = {
-      enable = true;
-      watch = true;
-    };
+    cache.enable = true;
 
     bootloader = {
       mode = "uefi";
@@ -53,7 +50,7 @@
     };
 
   };
-
+  services.sshd.enable = true;
   users.users.tod.shell = pkgs.fish;
   programs.firefox.enable = true;
   programs.git = {
