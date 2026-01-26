@@ -13,12 +13,14 @@ in
       enable = true;
       cli.enable = true;
       settings = {
-        workspaces.shown = 3;
         bar.status = {
           showBattery = false;
           showAudio = true;
           showBluetooth = false;
+          showWifi = false;
         };
+        bar.workspaces.shown = 3;
+
       };
     };
     local.variables.launcher = "caelestia shell drawers toggle launcher";
