@@ -54,9 +54,13 @@ in
       WARP_ENABLE_WAYLAND = "1";
     };
 
-    services.displayManager.sddm = {
+    services.displayManager.ly = {
       enable = true;
-      wayland.enable = true;
+      settings = {
+        animation = "matrix";
+        restore = true;
+        save = true;
+      };
     };
 
     # Desktop Selection logic using inputs from your flake

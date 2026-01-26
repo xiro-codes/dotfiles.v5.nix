@@ -1,5 +1,6 @@
 { pkgs, ... }: {
   home.stateVersion = "25.11";
+
   home.packages = with pkgs; [
     unzip
     p7zip
@@ -14,6 +15,7 @@
     plex-desktop
   ];
   local = {
+    cache.enable = true;
     theming.enable = true;
     mako.enable = true;
     hyprland.enable = true;
