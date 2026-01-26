@@ -12,6 +12,14 @@ in
     programs.caelestia = {
       enable = true;
       cli.enable = true;
+      settings = {
+        workspaces.shown = 3;
+        bar.status = {
+          showBattery = false;
+          showAudio = true;
+          showBluetooth = false;
+        };
+      };
     };
     local.variables.launcher = "caelestia shell drawers toggle launcher";
   };
