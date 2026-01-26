@@ -9,7 +9,7 @@
     ./hardware-configuration.nix
   ];
   nix.settings.trusted-users = [
-    "tod"
+    "@wheel"
     "root"
   ];
   local = {
