@@ -27,7 +27,8 @@ in
       };
       targets = {
         neovim.enable = false;
-        kitty.enable = true;
+        kitty.fonts.enable = true;
+        kitty.colors.enable = false;
         hyprland.enable = true;
         firefox.enable = true;
       };
