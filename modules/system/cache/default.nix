@@ -26,7 +26,7 @@ in
     nix.settings = {
       substituters = [
         cfg.serverAddress
-        "https://cache.nixos.org?priority=100"
+        #"https://cache.nixos.org?priority=100"
       ];
       trusted-public-keys = [
         cfg.publicKey
