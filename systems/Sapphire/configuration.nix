@@ -8,7 +8,10 @@
   imports = [
     ./hardware-configuration.nix
   ];
-
+  nix.settings.trusted-users = [
+    "tod"
+    "root"
+  ];
   local = {
     cache.enable = true;
 
