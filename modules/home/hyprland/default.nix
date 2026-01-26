@@ -11,9 +11,12 @@ in
   config = lib.mkIf cfg.enable {
     home.file.".wallpaper".source = ./gruvbox.png;
 
-    home.packages = with inputs.self.packages.x86_64-linux; [
+    home.packages = (with inputs.self.packages.x86_64-linux; [
       recording-toggle
-    ];
+    ]) ++ (with pkgs; [
+      wl-clipboard
+      cliphist
+    ]);
 
     local = {
       mako.enable = false;
@@ -48,6 +51,7 @@ in
         exec-once = [
           "steam -silent"
           "caelestia shell"
+          "wl-paste --type text --watch cliphist store"
           #"${pkgs.swaybg}/bin/swaybg -m fill -i ~/.wallpaper"
         ];
 

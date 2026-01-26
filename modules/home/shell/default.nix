@@ -9,6 +9,9 @@ in
   };
 
   config = lib.mkIf cfg.enable {
+    home.packages = with pkgs; [
+      gpu-screen-recorder
+    ];
     programs.caelestia = {
       enable = true;
       cli.enable = true;
@@ -26,6 +29,7 @@ in
           "mediaGif" = "";
           "sessionGif" = "";
         };
+        services.useFahrenheit = false;
       };
     };
     local.variables.launcher = "caelestia shell drawers toggle launcher";
