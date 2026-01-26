@@ -33,8 +33,8 @@ in
         termguicolors = true;
       };
       colorschemes.base16 = {
-        enable = true;
-        setUpDefault = true;
+        enable = false;
+        setUpDefault = false;
       };
       # opts.guifont = "Cascadia Code:h13";
 
