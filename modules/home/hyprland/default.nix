@@ -35,7 +35,10 @@ in
           "1, persistent:true"
           "2, persistent:true"
           "3, persistent:true"
-          "9, presistent:true"
+
+          "7, presistent:true" # Plex
+          "8, presistent: true" # Discord
+          "9, presistent:true" # Steam
         ];
         monitor = [
           ",preferred,auto,1"
@@ -61,13 +64,16 @@ in
         };
         exec-once = [
           "[workspace 9 silent] steam -silent"
+          "[workspace 8 silent] discord"
           "wl-paste --type text --watch cliphist store"
         ];
         windowrulesv2 = [
+          "workspace 7, title:^(Plex)$"
+          "workspace 8, class:^(discord)$"
           "workspace 9, initialClass:^(steam)$"
           "workspace 9, class:^(steam_app_.*)$"
+
           "focusonactivate, class:^(steam_app_.*)$"
-          "float, class:^(discord)$"
           "float, class:^(steam)$, title:^(Friends List)$"
           "float, class:^(steam)$, title:^(Steam - News)$"
           "float, class:^(steam)$, title:^([Ss]ettings)$"
