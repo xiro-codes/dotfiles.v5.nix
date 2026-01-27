@@ -54,7 +54,7 @@ in
         bar.scrollAction.brightness = false;
         osd.enableBrightness = false;
         paths = {
-          "mediaGif" = "";
+          "mediaGif" = "$HOME/music.gif";
           "sessionGif" = "";
         };
         services.useFahrenheit = false;
