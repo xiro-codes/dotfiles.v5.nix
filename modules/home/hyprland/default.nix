@@ -65,10 +65,11 @@ in
         exec-once = [
           "[workspace 9 silent] steam -silent"
           "[workspace 8 silent] discord"
+          "[workspace 7 silent] plex-desktop"
           "wl-paste --type text --watch cliphist store"
         ];
         windowrulesv2 = [
-          "workspace 7, title:^(Plex)$"
+          "workspace 7, initialClass:^(tv.plex.Plex)$"
           "workspace 8, class:^(discord)$"
           "workspace 9, initialClass:^(steam)$"
           "workspace 9, class:^(steam_app_.*)$"
