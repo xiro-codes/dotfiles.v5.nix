@@ -7,6 +7,13 @@
       uefiType = "TEMPLATE_UEFI_TYPE";
       device = "TEMPLATE_DISK";
     };
+    maintenance = {
+      enable = true;
+      autoUpgrade = true;
+    };
+    audio.enable = true;
+    bluetooth.enable = true;
+    gaming.enable = true;
     userManager.enable = true;
     repoManager.enable = true;
     gitSync.enable = true;
@@ -25,7 +32,10 @@
     shell = pkgs.fish;
     initialPassword = "TEMPLATE_PASS";
   };
+  services.sshd.enable = true;
+
   programs.firefox.enable = true;
+  programs.gpu-screen-recorder.enable = true;
   programs.git = {
     enable = true;
     config = {
