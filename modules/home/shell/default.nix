@@ -1,4 +1,4 @@
-{ config, lib, pkgs, ... }:
+{ config, lib, pkgs, inputs, ... }:
 
 let
   cfg = config.local.shell;
@@ -17,7 +17,13 @@ in
     ];
     programs.caelestia = {
       enable = true;
-
+      package = inputs.caelestia-shell.packages.x86_64-linux.default.override {
+        extraRuntimeDeps = with pkgs; [
+          dconf
+          kdePackages.qt5compat
+          kdePackages.networkmanager-qt
+        ];
+      };
       cli.enable = true;
       settings = {
         appearance.rounding.scale = 0.8;
