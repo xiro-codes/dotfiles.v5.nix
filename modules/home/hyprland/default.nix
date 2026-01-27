@@ -87,7 +87,11 @@ in
           "$mod, Return, exec, ${variables.terminal}"
           "$mod, Tab, exec, hyprctl dispatch workspace $(( ( $(hyprctl activeworkspace -j | jq '.id') % 3 ) + 1 ))"
           "$mod_SHIFT, Tab, exec, hyprctl dispatch workspace $(( ( $(hyprctl activeworkspace -j | jq '.id') - 2 + 3 ) % 3 + 1 ))"
-          "$mod, G, workspace, 9"
+
+          "$mod, G, workspace, 9" # Games
+          "$mod, C, workspace, 8" # Chat
+          "$mod, M, workspace, 7" # Media
+
           "$mod, E, exec, ${variables.guiFileManager}"
           "$mod_SHIFT, E, exec, ${variables.fileManager}"
 
