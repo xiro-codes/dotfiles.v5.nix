@@ -8,7 +8,7 @@ in
     path = lib.mkOption { type = lib.types.str; default = "/mnt/zima/Music"; };
   };
   config = lib.mkIf cfg.enable {
-    home.packages = [ pkgs.mpc ];
+    home.packages = [ pkgs.mpc pkgs.ymuse ];
     services.mpd-mpris.enable = true;
     services.mpd = {
       enable = true;

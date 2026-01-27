@@ -67,6 +67,7 @@ in
           "workspace 9, initialClass:^(steam)$"
           "workspace 9, class:^(steam_app_.*)$"
           "focusonactivate, class:^(steam_app_.*)$"
+          "float, class:^(discord)$"
           "float, class:^(steam)$, title:^(Friends List)$"
           "float, class:^(steam)$, title:^(Steam - News)$"
           "float, class:^(steam)$, title:^([Ss]ettings)$"
