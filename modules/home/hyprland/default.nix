@@ -16,6 +16,7 @@ in
     ]) ++ (with pkgs; [
       wl-clipboard
       cliphist
+      jq
     ]);
 
     local = {
@@ -29,6 +30,12 @@ in
       enable = true;
       xwayland.enable = true;
       settings = {
+        workspace = [
+          "1, persistent:true"
+          "2, persistent:true"
+          "3, persistent:true"
+          "9, presistent:true"
+        ];
         monitor = [
           ",preferred,auto,1"
         ];
@@ -53,13 +60,11 @@ in
         };
         exec-once = [
           "steam -silent"
-          #"caelestia shell"
           "wl-paste --type text --watch cliphist store"
-          #"${pkgs.swaybg}/bin/swaybg -m fill -i ~/.wallpaper"
         ];
         windowrulesv2 = [
-          "workspace name:games, class:^(steam)$"
-          "workspace name:games, class:^(steam_app_.*)$"
+          "workspace 9, class:^(steam)$"
+          "workspace 9, class:^(steam_app_.*)$"
           "focusonactivate, class:^(steam_app_.*)$"
           "float, class:^(steam)$, title:^(Friends List)$"
           "float, class:^(steam)$, title:^(Steam - News)$"
@@ -72,7 +77,9 @@ in
 
         bind = [
           "$mod, Return, exec, ${variables.terminal}"
-          "$mod, G, workspace, name:games"
+          "$mod, Tab, exec, hyprctl dispatch workspace $(( ( $(hyprctl activeworkspace -j | jq '.id') % 3 ) + 1 ))"
+          "$mod_SHIFT, Tab, exec, hyprctl dispatch workspace $(( ( $(hyprctl activeworkspace -j | jq '.id') - 2 + 3 ) % 3 + 1 ))"
+          "$mod, G, workspace, 9"
           "$mod, E, exec, ${variables.guiFileManager}"
           "$mod_SHIFT, E, exec, ${variables.fileManager}"
 
