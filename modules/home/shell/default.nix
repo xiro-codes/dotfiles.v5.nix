@@ -38,10 +38,12 @@ in
           playback = [ "mpv" ];
           explorer = [ "nautilus" ];
         };
-        background.enabled = true;
-        background.visualizer = {
+        background = {
           enabled = true;
-          autoHide = false;
+          visualiser = {
+            enabled = true;
+            autoHide = false;
+          };
         };
         launcher.hiddenApps = [ "Qt5 Settings" "Qt6 Settings" "Neovim wrapper" "ranger" "blueman-manager" "blueman-adapters" "mpv" "NixOS Manual" ];
         bar.status = {
@@ -52,6 +54,7 @@ in
         };
         bar.workspaces.shown = 3;
         bar.scrollAction.brightness = false;
+        bar.scrollAction.volume = false;
         osd.enableBrightness = false;
         paths = {
           "mediaGif" = "$HOME/music.gif";
