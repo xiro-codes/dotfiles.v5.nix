@@ -49,12 +49,13 @@ in
         bar.status = {
           showBattery = false;
           showAudio = true;
-          showBluetooth = true;
+          showBluetooth = false;
           showWifi = false;
         };
         bar.workspaces.shown = 3;
         bar.scrollAction.brightness = false;
         bar.scrollAction.volume = false;
+        bar.scrollAction.workspaces = false;
         osd.enableBrightness = false;
         paths = {
           "mediaGif" = "$HOME/music.gif";
