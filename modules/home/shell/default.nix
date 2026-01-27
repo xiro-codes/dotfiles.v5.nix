@@ -13,6 +13,7 @@ in
       nautilus
       pavucontrol
       mpv
+      kdePackages.networkmanager-qt
     ];
     programs.caelestia = {
       enable = true;
