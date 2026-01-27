@@ -53,7 +53,7 @@ in
         };
         exec-once = [
           "steam -silent"
-          "caelestia shell"
+          #"caelestia shell"
           "wl-paste --type text --watch cliphist store"
           #"${pkgs.swaybg}/bin/swaybg -m fill -i ~/.wallpaper"
         ];
