@@ -21,6 +21,7 @@ in
       enable = true;
       defaultEditor = true;
       globals.mapleader = ";";
+      colorscheme = null;
       opts = {
         number = true;
         relativenumber = true;

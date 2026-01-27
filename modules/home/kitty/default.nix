@@ -11,6 +11,9 @@ in
     local.variables.terminal = "kitty";
     programs.kitty = {
       enable = true;
+      extraConfig = ''
+        window_padding_width 5
+      '';
       # font = {
       # package = pkgs.cascadia-code;
       # name = "CascadiaCode";

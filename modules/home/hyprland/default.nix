@@ -40,26 +40,39 @@ in
         };
         general = {
           gaps_in = 5;
-          gaps_out = 2;
+          gaps_out = 8;
           border_size = 2;
           layout = "master";
+
         };
         decoration = {
-          rounding = 10;
+          rounding = 20;
         };
-
+        binds = {
+          workspace_back_and_forth = true;
+        };
         exec-once = [
           "steam -silent"
           "caelestia shell"
           "wl-paste --type text --watch cliphist store"
           #"${pkgs.swaybg}/bin/swaybg -m fill -i ~/.wallpaper"
         ];
-
+        windowrulesv2 = [
+          "workspace name:games, class:^(steam)$"
+          "workspace name:games, class:^(steam_app_.*)$"
+          "focusonactivate, class:^(steam_app_.*)$"
+          "float, class:^(steam)$, title:^(Friends List)$"
+          "float, class:^(steam)$, title:^(Steam - News)$"
+          "float, class:^(steam)$, title:^([Ss]ettings)$"
+          "float, class:^(steam)$, title:^(.* - Chat)$"
+          "float, class:^(steam)$, title:^(Contents)$"
+          "float, class:^(steam)$, title:^(Video Player)$"
+        ];
         "$mod" = "SUPER";
 
         bind = [
           "$mod, Return, exec, ${variables.terminal}"
-
+          "$mod, G, workspace, name:games"
           "$mod, E, exec, ${variables.guiFileManager}"
           "$mod_SHIFT, E, exec, ${variables.fileManager}"
 
@@ -68,7 +81,6 @@ in
 
           "$mod_SHIFT, Q, killactive"
 
-          "$mod, R, exec, recording-toggle"
           "$mod, F, fullscreen"
           "$mod_SHIFT, F, togglefloating"
 
@@ -93,13 +105,6 @@ in
           "$mod_SHIFT, I, movetoworkspace, 2"
           "$mod_SHIFT, O, movetoworkspace, 3"
 
-          "$mod, M, workspace, 4"
-          "$mod, comma, workspace, 5"
-          "$mod, period, workspace, 6"
-
-          "$mod_SHIFT, M, movetoworkspace, 4"
-          "$mod_SHIFT, comma,   movetoworkspace, 5"
-          "$mod_SHIFT, period, movetoworkspace, 6"
         ];
         bindm = [
           "$mod,mouse:272, movewindow"

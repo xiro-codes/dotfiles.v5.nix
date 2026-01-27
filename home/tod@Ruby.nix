@@ -1,6 +1,18 @@
-{ pkgs, inputs, ... }: {
+{ pkgs, inputs, lib, ... }: {
   home.stateVersion = "25.11";
+  gtk = {
+    enable = lib.mkForce true;
+    iconTheme = {
+      name = "Papirus-Dark";
+      package = pkgs.papirus-icon-theme;
+    };
+  };
 
+  qt = {
+    enable = lib.mkForce true;
+    style.name = lib.mkForce "adwaita-dark";
+    platformTheme.name = lib.mkForce "gtk3"; # This set the QT_QPA_PLATFORMTHEME
+  };
   home.packages = with pkgs; [
     unzip
     p7zip

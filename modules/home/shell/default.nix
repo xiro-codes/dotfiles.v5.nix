@@ -10,27 +10,37 @@ in
 
   config = lib.mkIf cfg.enable {
     home.packages = with pkgs; [
-      pcmanfm
+      nautilus
       pavucontrol
       mpv
-      ddcutil
-      brightnessctl
     ];
     programs.caelestia = {
       enable = true;
 
       cli.enable = true;
       settings = {
+        appearance.rounding.scale = 0.8;
+        appearance.transparency = {
+          enabled = true;
+          base = 0.95;
+          layers = 0.80;
+        };
         general.apps = {
           terminal = [ "kitty" ];
           audio = [ "pavucontrol" ];
           playback = [ "mpv" ];
-          explorer = [ "pcmanfm" ];
+          explorer = [ "nautilus" ];
         };
+        background.enabled = true;
+        background.visualizer = {
+          enabled = true;
+          autoHide = false;
+        };
+        launcher.hiddenApps = [ "Qt5 Settings" "Qt6 Settings" "Neovim wrapper" "ranger" "blueman-manager" "blueman-adapters" "mpv" "NixOS Manual" ];
         bar.status = {
           showBattery = false;
           showAudio = true;
-          showBluetooth = false;
+          showBluetooth = true;
           showWifi = false;
         };
         bar.workspaces.shown = 3;

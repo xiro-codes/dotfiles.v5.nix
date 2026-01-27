@@ -12,7 +12,7 @@ in
   config = lib.mkIf cfg.enable {
     stylix = {
       enable = true;
-      image = ./gruvbox.png;
+      #image = ./gruvbox.png;
       base16Scheme = "${pkgs.base16-schemes}/share/themes/gruvbox-dark-medium.yaml";
       cursor = {
         package = pkgs.bibata-cursors;
@@ -26,7 +26,8 @@ in
         popups = 0.95;
       };
       targets = {
-        neovim.enable = false;
+      	nixvim.colors.enable = false;
+        nixvim.fonts.enable = true;
         kitty.fonts.enable = true;
         kitty.colors.enable = false;
         hyprland.enable = true;
