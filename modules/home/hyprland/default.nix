@@ -63,7 +63,7 @@ in
           "wl-paste --type text --watch cliphist store"
         ];
         windowrulesv2 = [
-          "workspace 9, class:^(steam)$"
+          "workspace 9, initialClass:^(steam)$"
           "workspace 9, class:^(steam_app_.*)$"
           "focusonactivate, class:^(steam_app_.*)$"
           "float, class:^(steam)$, title:^(Friends List)$"
