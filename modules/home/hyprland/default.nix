@@ -17,6 +17,7 @@ in
       wl-clipboard
       cliphist
       jq
+      discord
     ]);
 
     local = {
@@ -101,8 +102,8 @@ in
           "$mod_SHIFT, K, movewindow, u"
           "$mod_SHIFT, L, movewindow, r"
 
-          "$mod, Tab, changegroupactive"
-          "$mod, G, togglegroup"
+          # "$mod, Tab, changegroupactive"
+          # "$mod, G, togglegroup"
 
           "$mod, U, workspace, 1"
           "$mod, I, workspace, 2"
