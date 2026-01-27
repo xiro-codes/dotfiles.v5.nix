@@ -59,7 +59,7 @@ in
           workspace_back_and_forth = true;
         };
         exec-once = [
-          "steam -silent"
+          "[workspace 9 silent] steam -silent"
           "wl-paste --type text --watch cliphist store"
         ];
         windowrulesv2 = [
