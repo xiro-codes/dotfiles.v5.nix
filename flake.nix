@@ -4,7 +4,7 @@
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
     flake-parts.url = "github:hercules-ci/flake-parts";
     stylix.url = "github:danth/stylix";
-    # flake-parts-website.url = "github:hercules-ci/flake.parts-website";
+    #flake-parts-website.url = "github:hercules-ci/flake.parts-website";
     caelestia-shell = {
       url = "github:caelestia-dots/shell";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -27,7 +27,7 @@
     flake-parts.lib.mkFlake { inherit inputs; } {
       systems = [ "x86_64-linux" ];
       imports = [
-        ./parts/discovery.nix
+        ./parts/discovery.v2.nix
       ];
 
       perSystem =

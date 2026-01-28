@@ -6,6 +6,7 @@ let
   homeDir = ../home;
   homeModulesDir = ../modules/home;
   packageDir = ../packages;
+  templateDir = ../templates;
 in
 {
   perSystem = { config, pkgs, system, ... }:
@@ -37,6 +38,8 @@ in
   flake =
     let
       inherit (inputs.nixpkgs.lib) attrNames filterAttrs nixosSystem;
+      discoverTemplates = { };
+
       discoverModules =
         path:
         if builtins.pathExists path then
