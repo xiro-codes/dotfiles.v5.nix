@@ -34,7 +34,7 @@ new-home-mod name:
 
 # Build the ISO and launch it immediately
 test:
-    nix build .#iso
+    nix build .#installer-iso
     nix run .#test-iso
 
 # Clear the test environment

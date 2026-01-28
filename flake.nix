@@ -36,7 +36,7 @@
           devShells = {
             default = pkgs.callPackage ./shells/default/default.nix { inherit pkgs; };
           };
-          packages.iso = inputs.nixos-generators.nixosGenerate {
+          packages.installer-iso = inputs.nixos-generators.nixosGenerate {
             system = "x86_64-linux";
             format = "install-iso";
             specialArgs = { inherit inputs; };
@@ -54,7 +54,7 @@
                 users.motd = ''
                   Custom NixOS Installer
 
-                  sudo install-system <hostname> <desktop> <user> <password> [disk]
+                  sudo install-system <hostname> <user> <password> [disk]
                 '';
 
                 environment.etc."dotfiles-src".source = builtins.path {
