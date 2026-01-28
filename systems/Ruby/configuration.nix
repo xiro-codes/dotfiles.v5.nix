@@ -5,7 +5,7 @@
     cache.enable = true;
     bootloader = {
       mode = "uefi";
-      uefiType = "systemd-boot";
+      uefiType = "limine";
       device = "/dev/nvme0n1";
     };
     backup-manager = {

@@ -28,19 +28,24 @@
       hyprland = true;
     };
   };
+
   users.users.TEMPLATE_USER = {
     shell = pkgs.fish;
     initialPassword = "TEMPLATE_PASS";
   };
-  services.sshd.enable = true;
 
-  programs.firefox.enable = true;
-  programs.gpu-screen-recorder.enable = true;
-  programs.git = {
-    enable = true;
-    config = {
-      safe.directory = "/etc/nixos";
+  services.sshd.enable = true;
+  programs = {
+    firefox.enable = true;
+    gpu-screen-recorder.enable = true;
+    git = {
+      enable = true;
+      config = {
+        safe.directory = "/etc/nixos";
+      };
     };
   };
+
+
   system.stateVersion = "25.11";
 }

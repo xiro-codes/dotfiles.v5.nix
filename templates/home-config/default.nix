@@ -1,7 +1,12 @@
-{pkgs, ...}: {
+{ pkgs
+, inputs
+, lib
+, ...
+}:
+{
+  imports = [ ];
+  home.packages = with pkgs; [ ];
   home.stateVersion = "25.11";
-  home.packages = with pkgs; [
-  ];
   programs = {
     home-manager.enable = true;
     direnv = {
