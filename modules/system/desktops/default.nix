@@ -55,14 +55,19 @@ in
     };
 
     services.displayManager.ly = {
-      enable = true;
+      enable = false;
       settings = {
         animation = "matrix";
         restore = true;
         save = true;
+        load_last_session = true;
       };
     };
+    services.displayManager.dms-greeter = {
+      enable = true;
+      compositor.name = "hyprland";
 
+    };
     # Desktop Selection logic using inputs from your flake
     programs.hyprland = mkIf cfg.hyprland {
       enable = true;
