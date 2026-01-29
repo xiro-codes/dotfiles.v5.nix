@@ -1,4 +1,8 @@
-{ writeShellScriptBin, callPackage, lib, ... }:
+{ writeShellScriptBin
+, callPackage
+, lib
+, ...
+}:
 let
   tgpt-auth = callPackage ../tgpt-auth/default.nix { };
 in

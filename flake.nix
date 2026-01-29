@@ -3,8 +3,11 @@
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
     flake-parts.url = "github:hercules-ci/flake-parts";
+    sops-nix = {
+      url = "github:Mic92/sops-nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     stylix.url = "github:danth/stylix";
-    #flake-parts-website.url = "github:hercules-ci/flake.parts-website";
     caelestia-shell = {
       url = "github:caelestia-dots/shell";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -31,8 +34,9 @@
       ];
 
       perSystem =
-        { config, pkgs, ... }:
+        { config, pkgs, system, ... }:
         {
+
           devShells = {
             default = pkgs.callPackage ./shells/default/default.nix { inherit pkgs; };
           };

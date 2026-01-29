@@ -41,3 +41,11 @@ test:
 clean-test:
     rm -f test_disk.qcow2
     rm -rf result/
+
+#Edit system secrets
+secrets:
+  sops secrets/secrets.yaml
+
+update-keys:
+  @echo "Update your .sops.yaml with the public keys from /etc/ssh/ssh_host_ed25519_key.pub"
+

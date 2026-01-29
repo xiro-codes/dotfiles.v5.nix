@@ -148,9 +148,12 @@ in
               };
               modules = [
                 (paths.systems + "/${name}/configuration.nix")
+                inputs.sops-nix.nixosModules.sops
                 inputs.home-manager.nixosModules.home-manager
                 ({
                   networking.hostName = name;
+                  local.secrets.enable = true;
+                  sops.defaultSopsFile = ../../secrets/secrets.yaml;
                   home-manager = {
                     useGlobalPkgs = true;
                     useUserPackages = true;

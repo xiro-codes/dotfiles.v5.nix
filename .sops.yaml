@@ -1,0 +1,10 @@
+keys:
+  - &ruby ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIN9KGvbb0D91h7nujN7mY9BcazAsbGoFctz4Y4pTszw3 root@Ruby
+  - &sapphire ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOG1Yez4rG0Mt3Ii9teVyzCpX1b43n/93/mQ946gWSh/ root@Sapphire
+creation_rules:
+  - path_regex: secrets/secrets.yaml
+    key_groups:
+      - pgp: []
+        age:
+          - *ruby
+          - *sapphire
