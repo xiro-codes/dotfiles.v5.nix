@@ -76,3 +76,23 @@ clear-undos:
         echo "🧹 Local .undo_dir files cleared for this repository."; \
     fi
 
+# Deploy specific host using deploy-rs (Deploys from local disk)
+deploy host:
+    deploy .#{{host}}
+
+# Deploy all nodes in the flake
+deploy-all:
+    deploy .
+
+# Safety check before deploying (Eval and dry-run)
+check:
+    nix flake check
+    deploy . --dry-activate
+
+# Check the current health/generation of all nodes
+status:
+    deploy . --version
+
+# Garbage collect the remote node to save space
+gc host:
+    ssh root@{{host}} 'nix-env --delete-generations old && nix-store --gc'

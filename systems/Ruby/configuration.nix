@@ -1,9 +1,14 @@
-{ pkgs, ... }:
+{ pkgs, config, ... }:
 {
   imports = [ ./hardware-configuration.nix ];
   local = {
     cache.enable = true;
-    secrets.keys = [ "gemini/api_key" "zima_creds" ];
+    secrets.keys = [
+      "gemini/api_key"
+      "zima_creds"
+      "ssh_pub_sapphire/master"
+      "ssh_pub_ruby/master"
+    ];
 
     bootloader = {
       mode = "uefi";
@@ -13,11 +18,11 @@
     backup-manager = {
       enable = true;
       paths = [
-        "/etc/nixos/" #dotfiles
+        "/etc/nixos/" # dotfiles
         "/etc/ssh/ssh_host_rsa_key" # Ruby system private key
         "/etc/ssh/ssh_host_rsa_key.pub" # Ruby system public key
         "/etc/ssh/ssh_host_ed25519_key" # Ruby system private key
-        "/etc/ssh/ssh_host_ed25519_key.pub" #Ruby system public key
+        "/etc/ssh/ssh_host_ed25519_key.pub" # Ruby system public key
       ];
       exclude = [
         "*/.cache"
@@ -52,10 +57,23 @@
     shareManager = {
       enable = true;
       mounts = [
-        { shareName = "Backups"; localPath = "/mnt/zima/Backups"; }
-        { shareName = "Music"; localPath = "/mnt/zima/Music"; }
-        { shareName = "Books"; localPath = "/mnt/zima/Books"; }
-        { shareName = "Porn"; localPath = "/mnt/zima/Porn"; noShow = true; }
+        {
+          shareName = "Backups";
+          localPath = "/mnt/zima/Backups";
+        }
+        {
+          shareName = "Music";
+          localPath = "/mnt/zima/Music";
+        }
+        {
+          shareName = "Books";
+          localPath = "/mnt/zima/Books";
+        }
+        {
+          shareName = "Porn";
+          localPath = "/mnt/zima/Porn";
+          noShow = true;
+        }
       ];
     };
   };
@@ -63,13 +81,15 @@
     root = {
       shell = pkgs.fish;
       openssh.authorizedKeys.keys = [
-        "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPKazzeuaE72jEDLh8BgusBDzsDmEC0V4R0PIY1/O8Mv tod@Sapphire"
+        config.sops.secrets."ssh_pub_sapphire/master".path
+        config.sops.secrets."ssh_pub_ruby/master".path
       ];
     };
     tod = {
       shell = pkgs.fish;
       openssh.authorizedKeys.keys = [
-        "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPKazzeuaE72jEDLh8BgusBDzsDmEC0V4R0PIY1/O8Mv tod@Sapphire"
+        config.sops.secrets."ssh_pub_sapphire/master".path
+        config.sops.secrets."ssh_pub_ruby/master".path
       ];
     };
   };

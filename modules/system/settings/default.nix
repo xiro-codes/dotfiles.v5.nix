@@ -5,7 +5,10 @@ in
 {
   options.local.settings.enable = lib.mkEnableOption "Enable basic settings";
   config = lib.mkIf cfg.enable {
-    nix.settings.experimental-features = [ "nix-command" "flakes" ];
+    nix.settings = {
+      accept-flake-config = true;
+      experimental-features = [ "nix-command" "flakes" ];
+    };
     nix.extraOptions = ''
       builders-use-substitutes = true
     '';

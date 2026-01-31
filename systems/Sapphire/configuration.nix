@@ -5,13 +5,16 @@
 
   local = {
     cache.enable = true;
-    secrets.keys = [ "gemini/api_key" "zima_creds" ];
-
+    secrets.keys = [
+      "gemini/api_key"
+    ];
+    security.enable = true;
     bootloader = {
       mode = "uefi";
       uefiType = "systemd-boot";
       device = "/dev/nvme0n1";
     };
+
     backup-manager = {
       enable = true;
       paths = [
@@ -63,28 +66,12 @@
     };
   };
   users.users = {
-    root = {
-      openssh.authorizedKeys.keys = [
-        "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAICKfhjzD1qn3TqTaBcY50mogz4cQGFI/0CMAMRw1hC7s tod@Ruby"
-      ];
-      shell = pkgs.fish;
-    };
-    tod = {
-      openssh.authorizedKeys.keys = [
-        "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAICKfhjzD1qn3TqTaBcY50mogz4cQGFI/0CMAMRw1hC7s tod@Ruby"
-      ];
-      shell = pkgs.fish;
-    };
+    root.shell = pkgs.fish;
+    tod.shell = pkgs.fish;
   };
-  services.openssh = {
-    enable = true;
-    settings = {
-      PasswordAuthentication = false;
-      KbdInteractiveAuthentication = false;
-      PermitRootLogin = "prohibit-password";
-    };
-  };
+
   environment.systemPackages = with pkgs; [ cliphist ];
+
   programs = {
     firefox.enable = true;
     gpu-screen-recorder.enable = true;
