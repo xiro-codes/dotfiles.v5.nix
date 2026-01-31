@@ -24,21 +24,41 @@
       url = "github:nix-community/nixos-generators";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    deploy-rs.url = "github:serokell/deploy-rs";
   };
   outputs =
-    inputs@{ flake-parts, ... }:
+    inputs@{ self, deploy-rs, flake-parts, ... }:
     flake-parts.lib.mkFlake { inherit inputs; } {
       systems = [ "x86_64-linux" ];
       imports = [
         ./parts/discovery.v2.nix
       ];
 
+      flake = {
+        deploy.nodes = {
+          Ruby = {
+            hostname = "10.0.0.66";
+            profiles.system = {
+              user = "root";
+              path = deploy-rs.lib.x86_64-linux.activate.nixos self.nixosConfigurations.Ruby;
+            };
+          };
+          Sapphire = {
+            hostname = "10.0.0.67";
+            profiles.system = {
+              user = "root";
+              path = deploy-rs.lib.x86_64-linux.activate.nixos self.nixosConfigurations.Sapphire;
+            };
+          };
+        };
+      };
+
       perSystem =
         { config, pkgs, system, ... }:
         {
 
           devShells = {
-            default = pkgs.callPackage ./shells/default/default.nix { inherit pkgs; };
+            default = pkgs.callPackage ./shells/default/default.nix { inherit pkgs inputs; };
           };
           packages.installer-iso = inputs.nixos-generators.nixosGenerate {
             system = "x86_64-linux";

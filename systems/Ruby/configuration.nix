@@ -59,11 +59,28 @@
       ];
     };
   };
-  users.users.tod = {
-    shell = pkgs.fish;
-    initialPassword = "rockman";
+  users.users = {
+    root = {
+      shell = pkgs.fish;
+      openssh.authorizedKeys.keys = [
+        "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPKazzeuaE72jEDLh8BgusBDzsDmEC0V4R0PIY1/O8Mv tod@Sapphire"
+      ];
+    };
+    tod = {
+      shell = pkgs.fish;
+      openssh.authorizedKeys.keys = [
+        "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPKazzeuaE72jEDLh8BgusBDzsDmEC0V4R0PIY1/O8Mv tod@Sapphire"
+      ];
+    };
   };
-  services.sshd.enable = true;
+  services.openssh = {
+    enable = true;
+    settings = {
+      PasswordAuthentication = false;
+      KbdInteractiveAuthentication = false;
+      PermitRootLogin = "prohibit-password";
+    };
+  };
   environment.systemPackages = with pkgs; [ cliphist ];
   programs = {
     firefox.enable = true;
