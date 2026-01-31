@@ -77,12 +77,14 @@
   };
   services.sshd.enable = true;
   environment.systemPackages = with pkgs; [ cliphist ];
-  programs.firefox.enable = true;
-  programs.gpu-screen-recorder.enable = true;
-  programs.git = {
-    enable = true;
-    config = {
-      safe.directory = "/etc/nixos";
+  programs = {
+    firefox.enable = true;
+    gpu-screen-recorder.enable = true;
+    git = {
+      enable = true;
+      config = {
+        safe.directory = "/etc/nixos";
+      };
     };
   };
   system.stateVersion = "25.11";
