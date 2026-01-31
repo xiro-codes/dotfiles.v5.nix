@@ -2,30 +2,30 @@
 default:
     @just --list
 
-# Rebuild the system (Your existing nxs logic)
+# Rebuild the system (Your existing nxs logic) (BROKEN)
 nxs:
     nh os switch .
 
-# Create a new Host system
+# Create a new Host system (BROKEN)
 new-host name:
     mkdir -p systems/{{name}}
     cp templates/system-config.nix systems/{{name}}/configuration.nix
     echo "Created new host: {{name}}. Don't forget to run 'nixos-generate-config' for hardware!"
 
-# Create a new Home user config for a host
+# Create a new Home user config for a host (BROKEN)
 new-home user host:
     cp templates/home-user.nix home/{{user}}@{{host}}.nix
     sed -i 's/TEMPLATE_USER/{{user}}/' home/{{user}}@{{host}}.nix
     echo "Created home config for {{user}} on {{host}}"
 
-# Create a new System Module
+# Create a new System Module (BROKEN)
 new-sys-mod name:
     mkdir -p modules/system/{{name}}
     cp templates/module.nix modules/system/{{name}}/default.nix
     sed -i 's/TEMPLATE_NAME/{{name}}/' modules/system/{{name}}/default.nix
     echo "Created system module: {{name}}"
 
-# Create a new Home Module
+# Create a new Home Module (BROKEN)
 new-home-mod name:
     mkdir -p modules/home/{{name}}
     cp templates/module.nix modules/home/{{name}}/default.nix
@@ -44,8 +44,21 @@ clean-test:
 
 #Edit system secrets
 secrets:
-  sops secrets/secrets.yaml
+  @user-sops secrets/secrets.yaml
 
+#Update system keys
 update-keys:
-  @echo "Update your .sops.yaml with the public keys from /etc/ssh/ssh_host_ed25519_key.pub"
+  @user-sops updatekeys secrets/secrets.yaml
 
+#init backups
+init-backup:
+  sudo borg-job-zima-local init -e none
+
+run-backup:
+  sudo systemctl start borgbackup-job-zima-local.service
+
+check-timer:
+  systemctl list-timers borgbackup-job-zima-local.timer
+
+list-backups:
+  sudo borg-job-zima-local list
