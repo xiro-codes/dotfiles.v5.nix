@@ -4,3 +4,4 @@ result
 test_disk.qcow2
 OVMF_VARS.fd
 attic_key
+.undo_dir/

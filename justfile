@@ -62,3 +62,16 @@ check-timer:
 
 list-backups:
   sudo borg-job-zima-local list
+
+init-undo:
+  @touch .undo
+  @echo ".undo_dir/" >> .gitignore
+  @echo "✅ Repo initialized. Nixvim will now track undos in .undo_dir/"
+
+# Clear the ephemeral undo directory for the CURRENT repo only
+clear-undos:
+    @if [ -d ".undo_dir" ]; then \
+        rm -rf .undo_dir/*; \
+        echo "🧹 Local .undo_dir files cleared for this repository."; \
+    fi
+

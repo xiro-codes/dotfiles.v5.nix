@@ -1,14 +1,34 @@
-{ pkgs, config, lib, ... }:
+{ pkgs
+, config
+, lib
+, ...
+}:
 let
   cfg = config.local.nixvim;
   inherit (lib) mkOption mkIf types;
 in
 {
   options.local.nixvim = {
-    enable = mkOption { type = types.bool; default = false; };
-    rust = mkOption { type = types.bool; default = false; };
-    python = mkOption { type = types.bool; default = false; };
-    javascript = mkOption { type = types.bool; default = false; };
+    enable = mkOption {
+      type = types.bool;
+      default = false;
+    };
+    rust = mkOption {
+      type = types.bool;
+      default = false;
+    };
+    python = mkOption {
+      type = types.bool;
+      default = false;
+    };
+    javascript = mkOption {
+      type = types.bool;
+      default = false;
+    };
+    smartUndo = mkOption {
+      type = types.bool;
+      default = true;
+    };
   };
   config = mkIf cfg.enable {
     home.packages = with pkgs; [
@@ -32,13 +52,64 @@ in
         cursorline = true;
         scrolloff = 8;
         termguicolors = true;
+        undofile = true;
+        undolevels = 10000;
       };
+      # Smart Per-Repo Ephemeral Undo logic + Permanent fallback
+      extraConfigLua = mkIf cfg.smartUndo ''
+        local function setup_smart_undo()
+          -- Try to find the root of the repo
+          local dot_git = vim.fn.finddir(".git", ".;")
+          
+          if dot_git ~= "" then
+            local repo_root = vim.fn.fnamemodify(dot_git, ":h")
+            local marker = repo_root .. "/.undo"
+            
+            -- IF marker exists: use ephemeral local dir
+            if vim.fn.filereadable(marker) == 1 or vim.fn.isdirectory(marker) == 1 then
+              local undo_path = repo_root .. "/.undo_dir"
+              if vim.fn.isdirectory(undo_path) == 0 then
+                vim.fn.mkdir(undo_path, "p")
+              end
+              vim.opt.undodir = undo_path
+              return
+            end
+          end
 
+          -- FALLBACK: For non-git files or repos without .undo marker
+          -- Use a permanent cache directory
+          local permanent_path = vim.fn.expand("~/.cache/nvim/undo")
+          if vim.fn.isdirectory(permanent_path) == 0 then
+            vim.fn.mkdir(permanent_path, "p")
+          end
+          vim.opt.undodir = permanent_path
+        end
+
+        setup_smart_undo()
+      '';
 
       keymaps = [
-        { mode = "n"; key = "gg=G"; action = "<cmd>lua vim.lsp.buf.format()<CR>"; options = { silent = true; desc = "format whole file"; }; }
-        { mode = "n"; key = "rp"; action = "<cmd>split | term cargo run<CR>i"; options.desc = "Cargo Run Project"; }
-        { mode = "n"; key = "rb"; action = "<cmd>split | term cargo build<CR>i"; options.desc = "Cargo Build Project"; }
+        {
+          mode = "n";
+          key = "gg=G";
+          action = "<cmd>lua vim.lsp.buf.format()<CR>";
+          options = {
+            silent = true;
+            desc = "format whole file";
+          };
+        }
+        {
+          mode = "n";
+          key = "rp";
+          action = "<cmd>split | term cargo run<CR>i";
+          options.desc = "Cargo Run Project";
+        }
+        {
+          mode = "n";
+          key = "rb";
+          action = "<cmd>split | term cargo build<CR>i";
+          options.desc = "Cargo Build Project";
+        }
       ];
       plugins = {
         toggleterm = {
@@ -114,7 +185,6 @@ in
         };
 
       };
-
 
       extraPackages = with pkgs; [
         ripgrep
