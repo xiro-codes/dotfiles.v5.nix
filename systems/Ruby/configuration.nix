@@ -5,11 +5,8 @@
     cache.enable = true;
     secrets.keys = [
       "gemini/api_key"
-      "zima_creds"
-      "ssh_pub_sapphire/master"
-      "ssh_pub_ruby/master"
     ];
-
+    security.enable = true;
     bootloader = {
       mode = "uefi";
       uefiType = "limine";

@@ -26,7 +26,6 @@ in
           mode = "0440";
           owner = "root";
           group = "wheel";
-          path = "/.secrets/${name}";
         });
     };
   };

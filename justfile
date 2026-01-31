@@ -1,36 +1,8 @@
+HOST := `hostname`
+
 # List available commands
 default:
     @just --list
-
-# Rebuild the system (Your existing nxs logic) (BROKEN)
-nxs:
-    nh os switch .
-
-# Create a new Host system (BROKEN)
-new-host name:
-    mkdir -p systems/{{name}}
-    cp templates/system-config.nix systems/{{name}}/configuration.nix
-    echo "Created new host: {{name}}. Don't forget to run 'nixos-generate-config' for hardware!"
-
-# Create a new Home user config for a host (BROKEN)
-new-home user host:
-    cp templates/home-user.nix home/{{user}}@{{host}}.nix
-    sed -i 's/TEMPLATE_USER/{{user}}/' home/{{user}}@{{host}}.nix
-    echo "Created home config for {{user}} on {{host}}"
-
-# Create a new System Module (BROKEN)
-new-sys-mod name:
-    mkdir -p modules/system/{{name}}
-    cp templates/module.nix modules/system/{{name}}/default.nix
-    sed -i 's/TEMPLATE_NAME/{{name}}/' modules/system/{{name}}/default.nix
-    echo "Created system module: {{name}}"
-
-# Create a new Home Module (BROKEN)
-new-home-mod name:
-    mkdir -p modules/home/{{name}}
-    cp templates/module.nix modules/home/{{name}}/default.nix
-    sed -i 's/TEMPLATE_NAME/{{name}}/' modules/home/{{name}}/default.nix
-    echo "Created home module: {{name}}"
 
 # Build the ISO and launch it immediately
 run-test:
@@ -55,15 +27,19 @@ update-keys:
 init-backup:
   sudo borg-job-zima-local init -e none
 
+# run borg backup
 run-backup:
   sudo systemctl start borgbackup-job-zima-local.service
 
+# check when next backup is run
 check-timer:
   systemctl list-timers borgbackup-job-zima-local.timer
 
+# show all current backups
 list-backups:
   sudo borg-job-zima-local list
 
+# start tracking undo history
 init-undo:
   @touch .undo
   @echo ".undo_dir/" >> .gitignore
@@ -77,22 +53,31 @@ clear-undos:
     fi
 
 # Deploy specific host using deploy-rs (Deploys from local disk)
-deploy host:
-    deploy .#{{host}}
+deploy host=HOST:
+    deploy .#{{host}} -- --impure
 
 # Deploy all nodes in the flake
 deploy-all:
-    deploy .
+    deploy . -- --impure
 
 # Safety check before deploying (Eval and dry-run)
 check:
-    nix flake check
-    deploy . --dry-activate
+    nix flake check --impure
+    deploy . --dry-activate --impure
 
 # Check the current health/generation of all nodes
 status:
     deploy . --version
 
 # Garbage collect the remote node to save space
-gc host:
+gc host=HOST:
     ssh root@{{host}} 'nix-env --delete-generations old && nix-store --gc'
+
+# Standard nixos-rebuild with impure flag
+rebuild host=HOST:
+    sudo nixos-rebuild switch --flake .#{{host}} --impure
+
+# nh wrapper for better UI, also passing through the impure flag
+switch host=HOST:
+    nh os switch . -- --impure
+
