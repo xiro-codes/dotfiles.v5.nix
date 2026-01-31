@@ -75,13 +75,13 @@
   };
   users.users = {
     root = {
-      openssh.authorizedKeys.key = [
+      openssh.authorizedKeys.keys = [
         "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAICKfhjzD1qn3TqTaBcY50mogz4cQGFI/0CMAMRw1hC7s tod@Ruby"
       ];
       shell = pkgs.fish;
     };
     tod = {
-      openssh.authorizedKeys.key = [
+      openssh.authorizedKeys.keys = [
         "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAICKfhjzD1qn3TqTaBcY50mogz4cQGFI/0CMAMRw1hC7s tod@Ruby"
       ];
       shell = pkgs.fish;
