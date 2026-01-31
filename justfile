@@ -40,7 +40,7 @@ run-test:
 # Clear the test environment
 clean-test:
     rm -f test_disk.qcow2
-    rm -rf result/
+    rm -rf result
     rm -f OVMF_VARS.fd
 
 #Edit system secrets
