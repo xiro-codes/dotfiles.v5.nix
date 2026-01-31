@@ -62,8 +62,8 @@ This flake includes a specialized installer ISO (\#installer-iso) designed for r
 ----
 - home/               \# User-specific Home Manager configurations
 - modules/
--- home/           \# Reusable Home Manager modules
--- system/         \# Reusable NixOS modules
+    - home/           \# Reusable Home Manager modules
+    - system/         \# Reusable NixOS modules
 - packages/           \# Custom Nix packages
 - parts/              \# Flake logic (Discovery engine)
 - secrets/            \# SOPS-encrypted secrets
