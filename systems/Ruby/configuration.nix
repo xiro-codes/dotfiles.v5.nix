@@ -3,6 +3,8 @@
   imports = [ ./hardware-configuration.nix ];
   local = {
     cache.enable = true;
+    secrets.keys = [ "gemini/api_key" ];
+
     bootloader = {
       mode = "uefi";
       uefiType = "limine";

@@ -153,15 +153,14 @@ in
                 ({
                   networking.hostName = name;
                   local.secrets.enable = true;
-                  sops.defaultSopsFile = ../../secrets/secrets.yaml;
                   home-manager = {
-                    useGlobalPkgs = true;
-                    useUserPackages = true;
                     extraSpecialArgs = { inherit inputs; };
                     sharedModules = (attrValues discoveredHomeModules) ++ [
+                      inputs.sops-nix.homeModules.sops
                       inputs.caelestia-shell.homeManagerModules.default
                       inputs.nixvim.homeModules.nixvim
                       inputs.stylix.homeModules.stylix
+
                     ];
                     users = listToAttrs (
                       map

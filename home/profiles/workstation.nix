@@ -1,5 +1,7 @@
 { pkgs, lib, ... }: {
+  nixpkgs.config.allowUnfree = true;
   local = {
+    secrets.enable = true;
     cache = {
       enable = true;
       watch = true;
@@ -42,11 +44,11 @@
     };
   };
 
-  qt = {
-    enable = lib.mkForce true;
-    style.name = lib.mkForce "adwaita-dark";
-    platformTheme.name = lib.mkForce "gtk3";
-  };
+  #qt = {
+  #  enable = lib.mkForce true;
+  #  style.name = lib.mkForce "adwaita-dark";
+  #  platformTheme.name = lib.mkForce "gtk3";
+  #};
 
   home.packages = with pkgs; [
     unzip

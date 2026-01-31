@@ -7,28 +7,27 @@ in
     enable = lib.mkEnableOption "sops-nix secret management";
     sopsFile = lib.mkOption {
       type = lib.types.path;
-      default = ./secrets.yaml;
+      default = ../../../secrets/secrets.yaml;
       description = "Path to the encrypted yaml file";
+    };
+    keys = lib.mkOption {
+      type = lib.types.listOf lib.types.str;
+      default = [ ];
+      description = "List of sops keys to automatically map to /.secrets/";
     };
   };
   config = lib.mkIf cfg.enable {
-    environment.systemPackages = [ pkgs.sops ];
     sops = {
       defaultSopsFile = cfg.sopsFile;
-      #defaultSopsFormat = "yaml";
+      defaultSopsFormat = "yaml";
       age.sshKeyPaths = [ "/etc/ssh/ssh_host_ed25519_key" ];
-      secrets = {
-        "gemini/api_key" = {
+      secrets = lib.genAttrs cfg.keys
+        (name: {
+          mode = "0440";
           owner = "root";
           group = "wheel";
-          mode = "0440";
-        };
-        "attic/api_key" = {
-          owner = "root";
-          group = "wheel";
-          mode = "0440";
-        };
-      };
+          path = "/.secrets/${name}";
+        });
     };
   };
 }
