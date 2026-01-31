@@ -1,6 +1,6 @@
 keys:
   - &ruby age1gnsqhrf20kx55jpxewp5g9h3u8hffh8tlvstwwett57rp5letu3sndsh9k
-  - &sapphire ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOG1Yez4rG0Mt3Ii9teVyzCpX1b43n/93/mQ946gWSh/ root@Sapphire
+  - &sapphire age15ml8l9utxuawp2sr55n0krrc5zvj7yp5agvpytfjeyllg3pm6vxsfjvcjn
   - &tod age168wrrgww4sag8mmy3c97ylr6uvls8chsseaktxtjxgwpyp95as5szlccwl #tod@Ruby
 creation_rules:
   - path_regex: secrets/secrets.yaml
