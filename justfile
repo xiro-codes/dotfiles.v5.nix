@@ -33,7 +33,7 @@ new-home-mod name:
     echo "Created home module: {{name}}"
 
 # Build the ISO and launch it immediately
-test:
+run-test:
     nix build .#installer-iso
     nix run .#test-iso
 
@@ -41,9 +41,10 @@ test:
 clean-test:
     rm -f test_disk.qcow2
     rm -rf result/
+    rm -f OVMF_VARS.fd
 
 #Edit system secrets
-secrets:
+edit-secrets:
   @user-sops secrets/secrets.yaml
 
 #Update system keys
