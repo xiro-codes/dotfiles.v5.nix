@@ -14,6 +14,8 @@ in
     };
   };
   config = {
+    security.sudo.wheelNeedsPassword = false;
+
     users.users = lib.genAttrs currentHostUsers (name: {
       isNormalUser = true;
       extraGroups = cfg.extraGroups;
