@@ -60,14 +60,13 @@ This flake includes a specialized installer ISO (\#installer-iso) designed for r
 
 ## **📁 Repository Structure**
 
-.
-├── home/               \# User-specific Home Manager configurations
-├── modules/
-│   ├── home/           \# Reusable Home Manager modules
-│   └── system/         \# Reusable NixOS modules
-├── packages/           \# Custom Nix packages
-├── parts/              \# Flake logic (Discovery engine)
-├── secrets/            \# SOPS-encrypted secrets
-├── shells/             \# Development shells
-├── systems/            \# Host-specific configurations (Ruby, Sapphire)
-└── templates/          \# Scaffolding for new modules and projects
+home/               \# User-specific Home Manager configurations
+modules/
+- home/           \# Reusable Home Manager modules
+- system/         \# Reusable NixOS modules
+packages/           \# Custom Nix packages
+parts/              \# Flake logic (Discovery engine)
+secrets/            \# SOPS-encrypted secrets
+shells/             \# Development shells
+systems/            \# Host-specific configurations (Ruby, Sapphire)
+templates/          \# Scaffolding for new modules and projects
