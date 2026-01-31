@@ -12,7 +12,7 @@ in
     home.packages = with pkgs; [
       nautilus
       pavucontrol
-      mpv
+      celluloid
       kdePackages.networkmanager-qt
     ];
     programs.caelestia = {
@@ -35,7 +35,7 @@ in
         general.apps = {
           terminal = [ "kitty" ];
           audio = [ "pavucontrol" ];
-          playback = [ "mpv" ];
+          playback = [ "celluloid" ];
           explorer = [ "nautilus" ];
         };
         background = {
@@ -45,11 +45,11 @@ in
             autoHide = false;
           };
         };
-        launcher.hiddenApps = [ "Qt5 Settings" "Qt6 Settings" "Neovim wrapper" "ranger" "blueman-manager" "blueman-adapters" "mpv" "NixOS Manual" ];
+        launcher.hiddenApps = [ "qt5ct" "qt6ct" "neovim" "ranger" "blueman-manager" "blueman-adapters" "mpv" "nixos-help" ];
         bar.status = {
           showBattery = false;
           showAudio = true;
-          showBluetooth = false;
+          showBluetooth = true;
           showWifi = false;
         };
         bar.workspaces.shown = 3;
@@ -58,7 +58,7 @@ in
         bar.scrollAction.workspaces = false;
         osd.enableBrightness = false;
         paths = {
-          "mediaGif" = "$HOME/music.gif";
+          "mediaGif" = "$HOME/.music.gif";
           "sessionGif" = "";
         };
         services.useFahrenheit = false;

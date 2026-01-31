@@ -10,7 +10,7 @@ let
     where = localPath;
     type = "cifs";
     # x-systemd options ensure it doesn't hang boot and only mounts on access
-    options = "credentials=${config.sops.secrets."${cfg.secretName}".path},noperm,x-systemd.automount,noauto,x-systemd.idle-timeout=60,uid=1000,gid=100,file_mode=0775,dir_mode=0775,soft";
+    options = "credentials=${config.sops.secrets."${cfg.secretName}".path},noperm,x-systemd.automount,noauto,x-systemd.idle-timeout=60,uid=1000,gid=100,file_mode=0775,dir_mode=0775,soft,x-gvfs-show";
   };
 in
 {
@@ -38,7 +38,9 @@ in
   config = mkIf cfg.enable {
     # Required for mounting SMB shares
     environment.systemPackages = [ pkgs.cifs-utils ];
-
+    services.gvfs.enable = true;
+    services.udisks2.enable = true;
+    services.devmon.enable = true;
     # Register the mounts with systemd
     systemd.mounts = map (mkSambaMount cfg.secretName) cfg.mounts;
 
