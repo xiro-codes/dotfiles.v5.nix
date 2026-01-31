@@ -15,6 +15,7 @@
     backup-manager = {
       enable = true;
       paths = [
+        "/root/.ssh"
         "/etc/nixos/" # dotfiles
         "/etc/ssh/ssh_host_rsa_key" # Ruby system private key
         "/etc/ssh/ssh_host_rsa_key.pub" # Ruby system public key

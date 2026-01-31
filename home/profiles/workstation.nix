@@ -2,6 +2,7 @@
   nixpkgs.config.allowUnfree = true;
   local = {
     secrets.enable = true;
+    ssh.enable = true;
     cache = {
       enable = true;
       watch = true;
