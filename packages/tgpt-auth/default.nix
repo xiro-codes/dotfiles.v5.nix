@@ -1,10 +1,10 @@
-{ writeShellScriptBin, tgpt, lib, ... }: writeShellScriptBin "tgpt-auth" ''
-  if [ -z "$GEMINI_API_KEY" ]; then
-    if [ -f "/run/secrets/gemini/api_key" ]; then
-      export GEMINI_API_KEY=$(cat /run/secrets/gemini/api_key)
-    elif [ -f "/etc/nixos/gemini-key" ]; then
-      export GEMINI_API_KEY=$(sudo cat /etc/nixos/gemini-key)
-    fi
+{ writeShellScriptBin, tgpt, lib, ... }:
+let
+  geminiKeyPath = "$HOME/.secrets/gemini/api_key";
+in
+writeShellScriptBin "tgpt-auth" ''
+  if [ -f "${geminiKeyPath}" ]; then
+    export GEMINI_API_KEY=$(cat ${geminiKeyPath})
   fi
   if [ -z "$GEMINI_API_KEY" ]; then
     echo "No Gemini API key found in /run/secrets/gemini/api_key or /etc/nixos/gemini-key"
