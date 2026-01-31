@@ -1,4 +1,4 @@
-{ pkgs, lib, ... }: {
+{ pkgs, lib, inputs, ... }: {
   nixpkgs.config.allowUnfree = true;
   local = {
     secrets.enable = true;
@@ -63,5 +63,5 @@
     libnotify
     firefox
     discord
-  ];
+  ] ++ (with inputs.self.packages.${pkgs.stdenv.hostPlatform.system}; [ ai-commit ]);
 }
