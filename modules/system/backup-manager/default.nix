@@ -23,7 +23,7 @@ in
   config = lib.mkIf cfg.enable {
     services.borgbackup.jobs."zima-local" = {
       inherit (cfg) paths exclude;
-      repo = cfg.backupLocation;
+      repo = cfg.backupLocation + "/${config.networking.hostName}";
       encryption.mode = "none";
       compression = "zstd,1";
       startAt = "daily";

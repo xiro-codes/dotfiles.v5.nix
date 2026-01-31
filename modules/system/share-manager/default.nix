@@ -5,16 +5,21 @@ let
   inherit (lib) mkOption mkIf types;
 
   # Helper to create SMB mount units
-  mkSambaMount = { shareName, localPath }: {
+  mkSambaMount = secretName: { shareName, localPath }: {
     what = "//${cfg.serverIp}/${shareName}";
     where = localPath;
     type = "cifs";
     # x-systemd options ensure it doesn't hang boot and only mounts on access
-    options = "guest,noperm,x-systemd.automount,noauto,x-systemd.idle-timeout=60,uid=1000,gid=100,file_mode=0775,dir_mode=0775,soft";
+    options = "credentials=${config.sops.secrets."${cfg.secretName}".path},noperm,x-systemd.automount,noauto,x-systemd.idle-timeout=60,uid=1000,gid=100,file_mode=0775,dir_mode=0775,soft";
   };
-in {
+in
+{
   options.local.shareManager = {
     enable = lib.mkEnableOption "Samba mounts from ZimaOS";
+    secretName = lib.mkOption {
+      type = lib.types.str;
+      default = "zima_creds";
+    };
     serverIp = mkOption {
       type = types.str;
       default = "192.168.1.100";
@@ -26,7 +31,7 @@ in {
           localPath = mkOption { type = types.str; description = "Local mount point"; };
         };
       });
-      default = [];
+      default = [ ];
     };
   };
 
@@ -35,12 +40,14 @@ in {
     environment.systemPackages = [ pkgs.cifs-utils ];
 
     # Register the mounts with systemd
-    systemd.mounts = map mkSambaMount cfg.mounts;
-    
+    systemd.mounts = map (mkSambaMount cfg.secretName) cfg.mounts;
+
     # Enable the automount logic
-    systemd.automounts = map (m: {
-      where = m.localPath;
-      wantedBy = [ "multi-user.target" ];
-    }) cfg.mounts;
+    systemd.automounts = map
+      (m: {
+        where = m.localPath;
+        wantedBy = [ "multi-user.target" ];
+      })
+      cfg.mounts;
   };
 }

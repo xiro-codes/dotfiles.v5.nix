@@ -3,7 +3,7 @@
   imports = [ ./hardware-configuration.nix ];
   local = {
     cache.enable = true;
-    secrets.keys = [ "gemini/api_key" ];
+    secrets.keys = [ "gemini/api_key" "zima_creds" ];
 
     bootloader = {
       mode = "uefi";
@@ -13,15 +13,34 @@
     backup-manager = {
       enable = true;
       paths = [
+        "/etc/nixos/" #dotfiles
+        "/etc/ssh/ssh_host_rsa_key" # Ruby system private key
+        "/etc/ssh/ssh_host_rsa_key.pub" # Ruby system public key
+        "/etc/ssh/ssh_host_ed25519_key" # Ruby system private key
+        "/etc/ssh/ssh_host_ed25519_key.pub" #Ruby system public key
+
+        # TODO have nix generate this list for all users 
+        "/home/tod/Projects/"
         "/home/tod/Documents/"
+        "/home/tod/Pictures/"
+        "/home/tod/Videos"
+
+        # TODO home manager actiovation script to generate these keys on first boot?
+        "/home/tod/.ssh/id_sops" #tod@Ruby sops private key
+        "/home/tod/.ssh/id_sops.pub" #tod@Ruby sops public key
+        "/home/tod/.ssh/github" #xiro-code github private key
+        "/home/tod/.ssh/github.pub" #xiro-code github public key
+
       ];
       exclude = [
         "*/.cache"
         "*/target"
         "*/node_modules"
         "*/.direnv"
+        "*/known_hosts"
+        "*/result"
       ];
-      backupLocation = "/mnt/zima/backups/ruby";
+      backupLocation = "/mnt/zima/Backups";
     };
     maintenance = {
       enable = true;
