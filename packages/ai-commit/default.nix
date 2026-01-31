@@ -16,14 +16,19 @@ writeShellScriptBin "ai-commit" ''
     echo "No changes to commit."
     exit 0
   fi
-  git add .
+    # Check for STAGED changes specifically
+  if [[ -z $(git diff --cached --name-only) ]]; then
+    echo "❌ No staged changes found. Please 'git add' files manually before running ai-commit."
+    exit 1
+  fi
+
   echo "--- Generating AI Commit Message ---"
   DIFF=$(git diff --cached)
   PROMPT="Summarize these changes into a single-line commit message using Conventional Commits format (e.g., feat:, fix:, chore:, etc). Be concise. Output ONLY the message text."
   MESSAGE=$(echo "$DIFF" | ${lib.getExe tgpt-auth} "$PROMPT")
   while true; do
     echo -e "\nProposed Message: \033[1;32m$MESSAGE\033[0m"
-    echo -n "Action: [a]ccept, [e]dit, [r]egenerate, [c]ancel?"
+    echo -n "Action: [a]ccept, [e]dit, [r]egenerate, [c]ancel? "
     read -r opt
     case $opt in
       a) break ;;
