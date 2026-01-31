@@ -51,10 +51,11 @@
     };
     shareManager = {
       enable = true;
-      serverIp = "10.0.0.65";
       mounts = [
         { shareName = "Backups"; localPath = "/mnt/zima/Backups"; }
         { shareName = "Music"; localPath = "/mnt/zima/Music"; }
+        { shareName = "Books"; localPath = "/mnt/zima/Books"; }
+        { shareName = "Porn"; localPath = "/mnt/zima/Porn"; noShow = true; }
       ];
     };
   };

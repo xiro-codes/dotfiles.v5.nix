@@ -1,17 +1,45 @@
-{ config, lib, pkgs, ... }:
+{ config
+, lib
+, pkgs
+, ...
+}:
 
 let
   cfg = config.local.shareManager;
   inherit (lib) mkOption mkIf types;
 
   # Helper to create SMB mount units
-  mkSambaMount = secretName: { shareName, localPath }: {
-    what = "//${cfg.serverIp}/${shareName}";
-    where = localPath;
-    type = "cifs";
-    # x-systemd options ensure it doesn't hang boot and only mounts on access
-    options = "credentials=${config.sops.secrets."${cfg.secretName}".path},noperm,x-systemd.automount,noauto,x-systemd.idle-timeout=60,uid=1000,gid=100,file_mode=0775,dir_mode=0775,soft,x-gvfs-show";
-  };
+  mkSambaMount =
+    secretName:
+    { shareName
+    , localPath
+    , noShow ? false
+    , options ? [ ]
+    ,
+    }:
+    {
+      what = "//${cfg.serverIp}/${shareName}";
+      where = localPath;
+      type = "cifs";
+      # x-systemd options ensure it doesn't hang boot and only mounts on access
+      options =
+        let
+          gvfsFlag = if noShow then "x-gvfs-hide" else "x-gvfs-show";
+          baseOptions = [
+            "credentials=${config.sops.secrets."${cfg.secretName}".path}"
+            "noperm"
+            "x-systemd.automount"
+            "noauto"
+            "x-systemd.idle-timeout=60"
+            "gid=100"
+            "file_mode=0775"
+            "dir_mode=0775"
+            "soft"
+            gvfsFlag
+          ];
+        in
+        lib.concatStringsSep "," (baseOptions ++ options);
+    };
 in
 {
   options.local.shareManager = {
@@ -22,15 +50,33 @@ in
     };
     serverIp = mkOption {
       type = types.str;
-      default = "192.168.1.100";
+      default = "10.0.0.65";
     };
     mounts = mkOption {
-      type = types.listOf (types.submodule {
-        options = {
-          shareName = mkOption { type = types.str; description = "Name of the share on ZimaOS"; };
-          localPath = mkOption { type = types.str; description = "Local mount point"; };
-        };
-      });
+      type = types.listOf (
+        types.submodule {
+          options = {
+            shareName = mkOption {
+              type = types.str;
+              description = "Name of the share on ZimaOS";
+            };
+            localPath = mkOption {
+              type = types.str;
+              description = "Local mount point";
+            };
+            noShow = mkOption {
+              type = types.bool;
+              description = "Hide from file manager";
+              default = false;
+            };
+            options = mkOption {
+              type = types.listOf types.str;
+              description = "Extra options to add to the defaults";
+              default = [ ];
+            };
+          };
+        }
+      );
       default = [ ];
     };
   };
