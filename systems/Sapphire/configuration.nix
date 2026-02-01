@@ -73,7 +73,7 @@
     root.shell = pkgs.fish;
     tod = {
       shell = pkgs.fish;
-      intialPassword = "rockman";
+      initialPassword = "rockman";
     };
   };
 
