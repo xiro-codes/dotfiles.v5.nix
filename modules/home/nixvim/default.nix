@@ -38,9 +38,8 @@ in
       {
         enable = true;
         defaultEditor = true;
-        colorscheme = lib.mkForce null;
+        #colorscheme = lib.mkForce null;
         inherit (baseOptions) globals opts extraConfigLua;
-        # Smart Per-Repo Ephemeral Undo logic + Permanent fallback
         inherit keymaps;
 
         plugins = plugins // {

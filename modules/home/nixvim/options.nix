@@ -13,7 +13,7 @@ in
     expandtab = true;
     undofile = true;
     undolevels = 10000;
-    termguicolors = false;
+    termguicolors = true;
   };
   extraConfigLua = lib.mkIf cfg.smartUndo ''
     local function setup_smart_undo()

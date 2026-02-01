@@ -26,12 +26,12 @@ in
         popups = 0.95;
       };
       targets = {
-      	nixvim.colors.enable = false;
+        nixvim.colors.enable = true;
         nixvim.fonts.enable = true;
         kitty.fonts.enable = true;
         kitty.colors.enable = false;
         hyprland.enable = true;
-        firefox.enable = true;
+        firefox.enable = false;
       };
       fonts = {
         monospace = {
