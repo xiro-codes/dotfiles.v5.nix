@@ -63,7 +63,7 @@ deploy-all:
 # Safety check before deploying (Eval and dry-run)
 check:
     nix flake check --impure
-    deploy . --dry-activate --impure
+    deploy . --dry-activate -- --impure
 
 # Check the current health/generation of all nodes
 status:
