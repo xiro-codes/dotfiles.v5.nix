@@ -2,7 +2,8 @@
 
 let
   cfg = config.local.network;
-in {
+in
+{
   options.local.network = {
     enable = lib.mkEnableOption "Standard system networking";
     useNetworkManager = lib.mkOption {
@@ -16,7 +17,7 @@ in {
     networking = {
       # Disable the old wpa_supplicant
       wireless.enable = false;
-      
+
       # Always enable iwd (it's faster and more modern)
       wireless.iwd = {
         enable = true;
@@ -40,7 +41,15 @@ in {
       # Basic Ethernet support (DHCP) for all interfaces starting with 'e'
       useDHCP = lib.mkDefault true;
     };
-
+    services.avahi = {
+      enable = true;
+      nssmdns4 = true;
+      publish = {
+        enable = true;
+        addresses = true;
+        workstation = true;
+      };
+    };
     # Optional: Enable systemd-resolved for better DNS handling
     services.resolved.enable = true;
   };
