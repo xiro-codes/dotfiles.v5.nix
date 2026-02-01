@@ -31,6 +31,15 @@ init-backup:
 run-backup:
   sudo systemctl start borgbackup-job-zima-local.service
 
+# mount backups
+mount-backup host=HOST:
+  sudo mkdir /.recovery
+  sudo borg-job-zima-local mount /mnt/zima/Backups/{{host}}/ /.recovery
+
+# unmount backups
+umount-backup:
+  sudo umount /.recovery
+
 # check when next backup is run
 check-timer:
   systemctl list-timers borgbackup-job-zima-local.timer
@@ -86,7 +95,7 @@ install host:
   nix run github:nix-community/disko -- --mode disko --flake .#{{host}}
   mkdir -p /mnt/etc/nixos
   git clone http://10.0.0.65:3002/xiro/dotfiles.nix /mnt/etc/nixos
-  nixos-install --flake .#{{host}}
+  nixos-install --flake .#{{host}} --impure
 
 # quick fix for a borked system ( assumes std labels )
 rescue:
