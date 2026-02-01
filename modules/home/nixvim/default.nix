@@ -112,6 +112,36 @@ in
         }
       ];
       plugins = {
+        blink-cmp = {
+          enable = true;
+          settings = {
+            appearance = {
+              use_nvim_cmp_as_default = true;
+              nerd_font_variant = "mono";
+            };
+            completion = {
+              ghost_text.enabled = true;
+              documentation.auto_show = true;
+              menu.draw.columns = [
+                [ "kind_icon" ]
+                [ "label" "label_description" ]
+                [ "source_name" ]
+              ];
+            };
+            sources = {
+              default = [ "lsp" "path" "snippets" "buffer" ];
+              providers = {
+                lsp.score_offset = 100;
+                buffer.score_offset = 5;
+              };
+            };
+            keymap = {
+              preset = "enter";
+              "<Tab>" = [ "select_next" "fallback" ];
+              "<S-Tab>" = [ "select_prev" "fallback" ];
+            };
+          };
+        };
         toggleterm = {
           enable = true;
           settings = {
@@ -159,11 +189,15 @@ in
         telescope.enable = true;
         which-key.enable = true;
         web-devicons.enable = true;
+        lsp-signature-help.enable = true;
+
         treesitter = {
           enable = true;
           nixGrammars = true;
           settings.highlight.enable = true;
         };
+        friendly-snippets.enable = true;
+        luasnip.enable = true;
         lsp = {
           enable = true;
           servers = {
