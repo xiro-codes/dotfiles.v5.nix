@@ -8,10 +8,11 @@
 
   local = {
     cache.enable = true;
+    secrets.enable = lib.mkForce false;
     secrets.keys = [
       "gemini/api_key"
     ];
-    security.enable = true;
+    security.enable = false;
     bootloader = {
       mode = "uefi";
       uefiType = "systemd-boot";
@@ -19,7 +20,7 @@
     };
 
     backup-manager = {
-      enable = true;
+      enable = false;
       paths = [
         "/root/.ssh"
         "/etc/nixos/" #dotfiles
@@ -60,7 +61,7 @@
       hyprland = true;
     };
     shareManager = {
-      enable = true;
+      enable = false;
       serverIp = "10.0.0.65";
       mounts = [
         { shareName = "Backups"; localPath = "/mnt/zima/Backups"; }
