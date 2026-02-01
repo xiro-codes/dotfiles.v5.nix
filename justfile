@@ -81,3 +81,12 @@ rebuild host=HOST:
 switch host=HOST:
     nh os switch . -- --impure
 
+# install a system from scratch using disko
+install host:
+  nix run github:nix-community/disko -- --mode disko --flake .#{{host}}
+  nixos-install --flake .#{{host}}
+# quick fix for a borked system ( assumes std labels )
+rescue: 
+  mount /dev/disk/by-label/nixos /mnt
+  mount /dev/disk/by-label/boot /mnt/boot
+  nixos-enter
