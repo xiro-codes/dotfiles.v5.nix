@@ -58,6 +58,8 @@
         {
           shareName = "Backups";
           localPath = "/mnt/zima/Backups";
+          noAuth = true;
+          noShow = true;
         }
         {
           shareName = "Music";

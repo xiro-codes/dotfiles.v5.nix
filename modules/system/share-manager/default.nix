@@ -10,10 +10,10 @@ let
 
   # Helper to create SMB mount units
   mkSambaMount =
-    secretName:
     { shareName
     , localPath
     , noShow ? false
+    , noAuth ? false
     , options ? [ ]
     ,
     }:
@@ -25,8 +25,8 @@ let
       options =
         let
           gvfsFlag = if noShow then "x-gvfs-hide" else "x-gvfs-show";
+          authFlag = if noAuth then "guest" else "credentials=${config.sops.secrets."${cfg.secretName}".path}";
           baseOptions = [
-            "credentials=${config.sops.secrets."${cfg.secretName}".path}"
             "noperm"
             "x-systemd.automount"
             "noauto"
@@ -36,6 +36,7 @@ let
             "dir_mode=0775"
             "soft"
             gvfsFlag
+            authFlag
           ];
         in
         lib.concatStringsSep "," (baseOptions ++ options);
@@ -44,6 +45,10 @@ in
 {
   options.local.shareManager = {
     enable = lib.mkEnableOption "Samba mounts from ZimaOS";
+    noAuth = lib.mkOption {
+      type = lib.types.bool;
+      default = false;
+    };
     secretName = lib.mkOption {
       type = lib.types.str;
       default = "zima_creds";
@@ -69,6 +74,11 @@ in
               description = "Hide from file manager";
               default = false;
             };
+            noAuth = mkOption {
+              type = types.bool;
+              description = "disable auth";
+              default = false;
+            };
             options = mkOption {
               type = types.listOf types.str;
               description = "Extra options to add to the defaults";
@@ -88,7 +98,7 @@ in
     services.udisks2.enable = true;
     services.devmon.enable = true;
     # Register the mounts with systemd
-    systemd.mounts = map (mkSambaMount cfg.secretName) cfg.mounts;
+    systemd.mounts = map mkSambaMount cfg.mounts;
 
     # Enable the automount logic
     systemd.automounts = map
