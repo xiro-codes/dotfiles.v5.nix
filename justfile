@@ -102,3 +102,10 @@ rescue:
   mount /dev/disk/by-label/nixos /mnt
   mount /dev/disk/by-label/boot /mnt/boot
   nixos-enter
+
+bake-recovery:
+  @echo "Building recovery ISO ..."
+  nix build .#installer-iso
+  @echo "Burning ISO to recovery partition ..."
+  sudo caligula burn $(find result/iso/ -name "*.iso" | head -n 1) --device $(readlink -f /dev/disk/by-label/recovery)
+  @echo "Failsafe ISO updated successfully."
