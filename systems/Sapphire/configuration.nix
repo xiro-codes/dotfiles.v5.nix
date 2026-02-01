@@ -71,7 +71,10 @@
   };
   users.users = {
     root.shell = pkgs.fish;
-    tod.shell = pkgs.fish;
+    tod = {
+      shell = pkgs.fish;
+      intialPassword = "rockman";
+    };
   };
 
   environment.systemPackages = with pkgs; [ cliphist ];
