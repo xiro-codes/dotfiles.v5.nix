@@ -148,6 +148,7 @@ in
               };
               modules = [
                 (paths.systems + "/${name}/configuration.nix")
+                inputs.disko.nixosModules.disko
                 inputs.sops-nix.nixosModules.sops
                 inputs.home-manager.nixosModules.home-manager
                 ({
