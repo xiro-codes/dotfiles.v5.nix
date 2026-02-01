@@ -1,7 +1,10 @@
 { config, pkgs, ... }:
 
 {
-  imports = [ ./hardware-configuration.nix ];
+  imports = [
+    ./disko.nix
+    ./hardware-configuration.nix
+  ];
 
   local = {
     cache.enable = true;

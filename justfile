@@ -85,8 +85,9 @@ switch host=HOST:
 install host:
   nix run github:nix-community/disko -- --mode disko --flake .#{{host}}
   nixos-install --flake .#{{host}}
+
 # quick fix for a borked system ( assumes std labels )
-rescue: 
+rescue:
   mount /dev/disk/by-label/nixos /mnt
   mount /dev/disk/by-label/boot /mnt/boot
   nixos-enter
