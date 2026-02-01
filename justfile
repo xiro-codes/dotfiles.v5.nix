@@ -84,6 +84,8 @@ switch host=HOST:
 # install a system from scratch using disko
 install host:
   nix run github:nix-community/disko -- --mode disko --flake .#{{host}}
+  mkdir -p /mnt/etc/nixos
+  git clone http://10.0.0.65:3002/xiro/dotfiles.nix /mnt/etc/nixos
   nixos-install --flake .#{{host}}
 
 # quick fix for a borked system ( assumes std labels )
