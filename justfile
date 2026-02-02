@@ -108,5 +108,5 @@ bake-recovery:
   @echo "Building recovery ISO ..."
   nix build .#installer-iso
   @echo "Burning ISO to recovery partition ..."
-  sudo caligula burn $(find result/iso/ -name "*.iso" | head -n 1) --device $(readlink -f /dev/disk/by-label/recovery)
+  sudo caligula burn $(find result/iso/ -name "*.iso" | head -n 1) -o $(readlink -f /dev/disk/by-partlabel/disk-main-recovery) --interactive never --compression none -f --hash skip
   @echo "Failsafe ISO updated successfully."
