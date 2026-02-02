@@ -5,6 +5,9 @@
     cache.enable = true;
     secrets.keys = [
       "gemini/api_key"
+      "ssh_pub_ruby/master"
+      "ssh_pub_sapphire/master"
+      "zima_creds"
     ];
     security.enable = true;
     bootloader = {

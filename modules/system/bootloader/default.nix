@@ -17,7 +17,14 @@ in
       type = lib.types.str;
       default = "";
     };
-
+    addRecoveryOption = lib.mkOption {
+      type = lib.types.bool;
+      default = false;
+    };
+    recoveryUUID = lib.mkOption {
+      type = lib.types.str;
+      default = "0d9dddd8-9511-4101-9177-0a80cfbeb047";
+    };
   };
 
   config = {
@@ -26,6 +33,13 @@ in
         systemd-boot.enable = cfg.uefiType == "systemd-boot";
         limine = lib.mkIf (cfg.uefiType == "limine") {
           enable = true;
+          extraEntries = lib.mkIf cfg.addRecoveryOption ''
+            :Recovery
+              PROTOCOL=linux
+              KERNEL_PATH=guid(${cfg.recoveryUUID}):/boot/vmlinuz-linux
+              MODULE_PATH=guid(${cfg.recoveryUUID}):/boot/initramfs-linux.img
+              CMDLINE=root=live:UUID=${cfg.recoveryUUID} rd.live.image rw
+          '';
         };
         grub = lib.mkIf (cfg.uefiType == "grub") {
           enable = true;
