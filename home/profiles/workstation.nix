@@ -1,7 +1,10 @@
 { pkgs, lib, inputs, ... }: {
   nixpkgs.config.allowUnfree = true;
   local = {
-    secrets.enable = true;
+    secrets = {
+      enable = true;
+      keys = [ "gemini/api_key" ];
+    };
     ssh.enable = true;
     cache = {
       enable = true;
@@ -52,6 +55,7 @@
   #};
 
   home.packages = with pkgs; [
+    caligula
     unzip
     p7zip
     sysstat

@@ -14,11 +14,7 @@ in
   };
 
   config = lib.mkIf cfg.enable {
-    local.secrets.keys = [
-      "ssh_pub_sapphire/master"
-      "ssh_pub_ruby/master"
-      "zima_creds"
-    ];
+
     # doas setup (Modern, lightweight alternative to sudo)
     security.doas = {
       enable = true;

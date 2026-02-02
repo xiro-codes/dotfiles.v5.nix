@@ -8,11 +8,13 @@
 
   local = {
     cache.enable = true;
-    secrets.enable = lib.mkForce false;
     secrets.keys = [
       "gemini/api_key"
+      "ssh_pub_sapphire/master"
+      "ssh_pub_ruby/master"
+      "zima_creds"
     ];
-    security.enable = false;
+    security.enable = true;
     bootloader = {
       mode = "uefi";
       uefiType = "systemd-boot";
@@ -20,7 +22,7 @@
     };
 
     backup-manager = {
-      enable = false;
+      enable = true;
       paths = [
         "/root/.ssh"
         "/etc/nixos/" #dotfiles
@@ -61,10 +63,10 @@
       hyprland = true;
     };
     shareManager = {
-      enable = false;
+      enable = true;
       serverIp = "10.0.0.65";
       mounts = [
-        { shareName = "Backups"; localPath = "/mnt/zima/Backups"; }
+        { shareName = "Backups"; localPath = "/mnt/zima/Backups"; noAuth = true; }
         { shareName = "Music"; localPath = "/mnt/zima/Music"; }
         { shareName = "Books"; localPath = "/mnt/zima/Books"; }
       ];
