@@ -33,7 +33,7 @@ run-backup:
 
 # mount backups
 mount-backup host=HOST:
-  sudo mkdir /.recovery
+  sudo mkdir -p /.recovery
   sudo borg-job-zima-local mount /mnt/zima/Backups/{{host}}/ /.recovery
 
 # unmount backups
@@ -103,6 +103,7 @@ rescue:
   mount /dev/disk/by-label/boot /mnt/boot
   nixos-enter
 
+# burn a new iso to the recovery partition
 bake-recovery:
   @echo "Building recovery ISO ..."
   nix build .#installer-iso
