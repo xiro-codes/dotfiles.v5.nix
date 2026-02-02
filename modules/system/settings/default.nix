@@ -30,5 +30,8 @@ in
     environment.systemPackages = with pkgs; [
       neovim
     ];
+    services.udev.extraRules = ''
+      ENV{ID_FS_UUID}=="1980-01-01-00-00-00-00", ENV{UDISKS_IGNORE}="1"
+    '';
   };
 }
