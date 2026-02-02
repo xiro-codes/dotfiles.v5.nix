@@ -17,6 +17,8 @@
       mode = "uefi";
       uefiType = "limine";
       device = "/dev/nvme0n1";
+      addRecoveryOption = true;
+      recoveryUUID = "b0cd9860-736a-45c5-a6d2-e69cdb319f24";
     };
     backup-manager = {
       enable = true;
