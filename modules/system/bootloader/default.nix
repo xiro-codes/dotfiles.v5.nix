@@ -34,11 +34,9 @@ in
         limine = lib.mkIf (cfg.uefiType == "limine") {
           enable = true;
           extraEntries = lib.mkIf cfg.addRecoveryOption ''
-            :Recovery
-              PROTOCOL=linux
-              KERNEL_PATH=guid(${cfg.recoveryUUID}):/boot/vmlinuz-linux
-              MODULE_PATH=guid(${cfg.recoveryUUID}):/boot/initramfs-linux.img
-              CMDLINE=root=live:UUID=${cfg.recoveryUUID} rd.live.image rw
+            /Recovery
+              protocol:uefi 
+              path:guid(${cfg.recoveryUUID}):/EFI/BOOT/BOOTX64.EFI
           '';
         };
         grub = lib.mkIf (cfg.uefiType == "grub") {
