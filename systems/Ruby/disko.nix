@@ -1,21 +1,30 @@
-{ device ? "/dev/nvme0n1", ... }: {
+{
   disko.devices = {
     disk = {
       main = {
-        inherit device;
-
+        device = "/dev/nvme0n1";
         type = "disk";
         content = {
           type = "gpt";
           partitions = {
             ESP = {
-              size = "512M"; # 1GB is better for modern NixOS (lots of kernels)
+              size = "1G";
               type = "EF00";
               content = {
                 type = "filesystem";
                 format = "vfat";
                 mountpoint = "/boot";
                 mountOptions = [ "umask=0077" ];
+                extraArgs = [ "-n" "boot" ];
+              };
+            };
+            # Failsafe ISO partition
+            recovery = {
+              size = "8G";
+              content = {
+                type = "filesystem";
+                format = "ext4"; # We use ext4 here just to reserve the space
+                extraArgs = [ "-L" "recovery" ];
               };
             };
             root = {
@@ -24,6 +33,7 @@
                 type = "filesystem";
                 format = "ext4";
                 mountpoint = "/";
+                extraArgs = [ "-L" "nixos" ];
               };
             };
           };

@@ -3,11 +3,14 @@
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
     flake-parts.url = "github:hercules-ci/flake-parts";
+
     sops-nix = {
       url = "github:Mic92/sops-nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
     stylix.url = "github:danth/stylix";
+
     caelestia-shell = {
       url = "github:caelestia-dots/shell";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -81,8 +84,10 @@
                 ];
                 users.motd = ''
                   Custom NixOS Installer
-
-                  sudo install-system <hostname> <user> <password> [disk]
+                  1. git clone http://10.0.0.65:3002/xiro/dotfiles.nix.git
+                  2. cd dotfiles.nix
+                  3. nix develop
+                  4. just install HOSTNAME
                 '';
 
                 environment.etc."dotfiles-src".source = builtins.path {

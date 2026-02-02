@@ -1,15 +1,19 @@
-{ pkgs, config, ... }:
+{ pkgs, config, lib, ... }:
 {
-  imports = [ ./hardware-configuration.nix ];
+  imports = [
+    ./disko.nix
+    ./hardware-configuration.nix
+  ];
   local = {
     cache.enable = true;
+    secrets.enable = lib.mkForce false;
     secrets.keys = [
       "gemini/api_key"
       "ssh_pub_ruby/master"
       "ssh_pub_sapphire/master"
       "zima_creds"
     ];
-    security.enable = true;
+    security.enable = false;
     bootloader = {
       mode = "uefi";
       uefiType = "limine";
@@ -19,7 +23,7 @@
       enable = true;
       paths = [
         "/root/.ssh"
-        "/etc/nixos/" # dotfiles
+        #"/etc/nixos/" # dotfiles
         "/etc/ssh/ssh_host_rsa_key" # Ruby system private key
         "/etc/ssh/ssh_host_rsa_key.pub" # Ruby system public key
         "/etc/ssh/ssh_host_ed25519_key" # Ruby system private key
@@ -31,6 +35,7 @@
         "*/node_modules"
         "*/.direnv"
         "*/known_hosts"
+        "*/config"
         "*/result"
       ];
       backupLocation = "/mnt/zima/Backups";
@@ -47,9 +52,9 @@
       enable = true;
       useNetworkManager = true;
     };
-    audio.enable = true;
-    bluetooth.enable = true;
-    gaming.enable = true;
+    audio.enable = false;
+    bluetooth.enable = false;
+    gaming.enable = false;
     desktops = {
       enable = true;
       enableEnv = true;
@@ -57,6 +62,7 @@
     };
     shareManager = {
       enable = true;
+      serverIp = "10.0.0.65";
       mounts = [
         {
           shareName = "Backups";
@@ -64,47 +70,22 @@
           noAuth = true;
           noShow = true;
         }
-        {
-          shareName = "Music";
-          localPath = "/mnt/zima/Music";
-        }
-        {
-          shareName = "Books";
-          localPath = "/mnt/zima/Books";
-        }
-        {
-          shareName = "Porn";
-          localPath = "/mnt/zima/Porn";
-          noShow = true;
-        }
+        # { shareName = "Music"; localPath = "/mnt/zima/Music"; }
+        # { shareName = "Books"; localPath = "/mnt/zima/Books"; }
+        # { shareName = "Porn"; localPath = "/mnt/zima/Porn"; noShow = true; }
       ];
     };
   };
   users.users = {
-    root = {
-      shell = pkgs.fish;
-      openssh.authorizedKeys.keys = [
-        config.sops.secrets."ssh_pub_sapphire/master".path
-        config.sops.secrets."ssh_pub_ruby/master".path
-      ];
-    };
+    root.shell = pkgs.fish;
     tod = {
       shell = pkgs.fish;
-      openssh.authorizedKeys.keys = [
-        config.sops.secrets."ssh_pub_sapphire/master".path
-        config.sops.secrets."ssh_pub_ruby/master".path
-      ];
+      initialPassword = "rockman";
     };
   };
-  services.openssh = {
-    enable = true;
-    settings = {
-      PasswordAuthentication = false;
-      KbdInteractiveAuthentication = false;
-      PermitRootLogin = "prohibit-password";
-    };
-  };
+
   environment.systemPackages = with pkgs; [ cliphist ];
+
   programs = {
     firefox.enable = true;
     gpu-screen-recorder.enable = true;
