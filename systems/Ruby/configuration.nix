@@ -6,14 +6,13 @@
   ];
   local = {
     cache.enable = true;
-    secrets.enable = lib.mkForce false;
     secrets.keys = [
       "gemini/api_key"
       "ssh_pub_ruby/master"
       "ssh_pub_sapphire/master"
       "zima_creds"
     ];
-    security.enable = false;
+    security.enable = true;
     bootloader = {
       mode = "uefi";
       uefiType = "limine";
@@ -52,9 +51,9 @@
       enable = true;
       useNetworkManager = true;
     };
-    audio.enable = false;
-    bluetooth.enable = false;
-    gaming.enable = false;
+    audio.enable = true;
+    bluetooth.enable = true;
+    gaming.enable = true;
     desktops = {
       enable = true;
       enableEnv = true;
@@ -70,9 +69,9 @@
           noAuth = true;
           noShow = true;
         }
-        # { shareName = "Music"; localPath = "/mnt/zima/Music"; }
-        # { shareName = "Books"; localPath = "/mnt/zima/Books"; }
-        # { shareName = "Porn"; localPath = "/mnt/zima/Porn"; noShow = true; }
+        { shareName = "Music"; localPath = "/mnt/zima/Music"; }
+        { shareName = "Books"; localPath = "/mnt/zima/Books"; }
+        { shareName = "Porn"; localPath = "/mnt/zima/Porn"; noShow = true; }
       ];
     };
   };
