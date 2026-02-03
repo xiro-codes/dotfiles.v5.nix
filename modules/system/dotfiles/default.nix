@@ -48,7 +48,7 @@ in
       };
       upgradeFlake = lib.mkOption {
         type = lib.types.str;
-        default = "git+http://10.0.0.65:3002/xiro/dotfiles.nix.git";
+        default = "git+http://${config.local.hosts.zimaos}:3002/xiro/dotfiles.nix.git";
         example = "github:user/dotfiles";
         description = "Flake URL for system auto-upgrade";
       };
@@ -76,7 +76,7 @@ in
           IdentityFile /root/.ssh/github
 
         Host gitea
-          HostName 10.0.0.65
+          HostName ${config.local.hosts.zimaos}
           User git
           Port 222
           IdentityFile /root/.ssh/github

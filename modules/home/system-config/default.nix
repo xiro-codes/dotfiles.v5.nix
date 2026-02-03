@@ -12,9 +12,9 @@ in
       watch = lib.mkEnableOption "enable systemd service to watch cache";
       serverAddress = lib.mkOption {
         type = lib.types.str;
-        default = "http://10.0.0.65:8080/main";
+        default = "http://${config.osConfig.local.hosts.zimaos or "zimaos.local"}:8080/main";
         example = "http://cache.example.com:8080/nixos";
-        description = "Attic binary cache server URL";
+        description = "Attic binary cache server URL (automatically uses host from local.hosts module)";
       };
       publicKey = lib.mkOption {
         type = lib.types.str;
@@ -35,9 +35,12 @@ in
       };
       hosts = lib.mkOption {
         type = lib.types.attrsOf lib.types.str;
-        default = { };
-        example = { Sapphire = "10.0.0.67"; Ruby = "10.0.0.66"; };
-        description = "Mapping of SSH host aliases to hostnames or IP addresses";
+        default = {
+          Sapphire = config.osConfig.local.hosts.sapphire or "sapphire.local";
+          Ruby = config.osConfig.local.hosts.ruby or "ruby.local";
+        };
+        example = { Sapphire = "sapphire.local"; Ruby = "ruby.local"; };
+        description = "Mapping of SSH host aliases to hostnames or IP addresses (automatically uses hosts from local.hosts module)";
       };
     };
 
@@ -162,7 +165,7 @@ in
             identityFile = "~/.ssh/github";
           };
           "gitea" = {
-            hostname = "10.0.0.65";
+            hostname = config.osConfig.local.hosts.zimaos or "zimaos.local";
             port = 222;
             user = "git";
             identityFile = "~/.ssh/github";

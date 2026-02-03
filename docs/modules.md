@@ -64,7 +64,7 @@ true
 
 
 
-Base path for borg backup repository
+Base path for borg backup repository (must be a mounted filesystem)
 
 
 
@@ -81,11 +81,19 @@ string
 
 
 
+*Example:*
+
+```nix
+"/mnt/backups"
+```
+
+
+
 ## local\.backup-manager\.exclude
 
 
 
-Patterns to exclude from backups (e\.g\., node_modules, target)
+Glob patterns to exclude from backups
 
 
 
@@ -102,11 +110,24 @@ list of string
 
 
 
+*Example:*
+
+```nix
+[
+  "*/node_modules"
+  "*/target"
+  "*/.cache"
+  "*.tmp"
+]
+```
+
+
+
 ## local\.backup-manager\.paths
 
 
 
-Additional paths to backup beyond auto-discovered user folders
+Additional paths to backup beyond auto-discovered user folders (Projects, Documents, Pictures, Videos, \.ssh)
 
 
 
@@ -119,6 +140,17 @@ list of string
 
 ```nix
 [ ]
+```
+
+
+
+*Example:*
+
+```nix
+[
+  "/etc/nixos"
+  "/var/lib/important"
+]
 ```
 
 
@@ -177,7 +209,7 @@ false
 
 
 
-Device for BIOS bootloader installation (e\.g\., /dev/sda)
+Device for BIOS bootloader installation (required for BIOS mode)
 
 
 
@@ -190,6 +222,14 @@ string
 
 ```nix
 ""
+```
+
+
+
+*Example:*
+
+```nix
+"/dev/sda"
 ```
 
 
@@ -219,7 +259,7 @@ one of “uefi”, “bios”
 
 
 
-UUID of recovery partition for boot menu entry
+UUID of recovery partition for boot menu entry (use blkid to find partition UUID)
 
 
 
@@ -232,6 +272,14 @@ string
 
 ```nix
 "0d9dddd8-9511-4101-9177-0a80cfbeb047"
+```
+
+
+
+*Example:*
+
+```nix
+"12345678-1234-1234-1234-123456789abc"
 ```
 
 
@@ -307,11 +355,19 @@ string
 
 
 
+*Example:*
+
+```nix
+"cache:AbCdEf1234567890+GhIjKlMnOpQrStUvWxYz=="
+```
+
+
+
 ## local\.cache\.serverAddress
 
 
 
-Attic binary cache server URL
+Attic binary cache server URL with optional priority parameter
 
 
 
@@ -324,6 +380,14 @@ string
 
 ```nix
 "http://10.0.0.65:8080/main?priority=1"
+```
+
+
+
+*Example:*
+
+```nix
+"http://cache.example.com:8080/nixos?priority=10"
 ```
 
 
@@ -516,7 +580,7 @@ false
 
 
 
-Flake URL for auto-upgrade
+Flake URL for system auto-upgrade
 
 
 
@@ -529,6 +593,14 @@ string
 
 ```nix
 "git+http://10.0.0.65:3002/xiro/dotfiles.nix.git"
+```
+
+
+
+*Example:*
+
+```nix
+"github:user/dotfiles"
 ```
 
 
@@ -566,7 +638,7 @@ true
 
 
 
-Group that has write access to the /etc/nixos repo
+Group that has write access to the /etc/nixos repository
 
 
 
@@ -579,6 +651,14 @@ string
 
 ```nix
 "wheel"
+```
+
+
+
+*Example:*
+
+```nix
+"users"
 ```
 
 
@@ -616,7 +696,7 @@ true
 
 
 
-How often to pull changes from git
+How often to pull changes from git (systemd time span format: 30m, 1h, 2h, etc\.)
 
 
 
@@ -629,6 +709,14 @@ string
 
 ```nix
 "30m"
+```
+
+
+
+*Example:*
+
+```nix
+"1h"
 ```
 
 
@@ -658,6 +746,90 @@ false
 
 ```nix
 true
+```
+
+
+
+## local\.hosts\.ruby
+
+
+
+Address for Ruby host
+
+
+
+*Type:*
+string *(read only)*
+
+
+
+*Default:*
+
+```nix
+"10.0.0.66"
+```
+
+
+
+## local\.hosts\.sapphire
+
+
+
+Address for Sapphire host
+
+
+
+*Type:*
+string *(read only)*
+
+
+
+*Default:*
+
+```nix
+"10.0.0.67"
+```
+
+
+
+## local\.hosts\.useAvahi
+
+
+
+Whether to use Avahi/mDNS hostnames (\.local) instead of raw IP addresses for local network hosts
+
+
+
+*Type:*
+boolean
+
+
+
+*Default:*
+
+```nix
+false
+```
+
+
+
+## local\.hosts\.zimaos
+
+
+
+Address for ZimaOS server
+
+
+
+*Type:*
+string *(read only)*
+
+
+
+*Default:*
+
+```nix
+"10.0.0.65"
 ```
 
 
@@ -695,7 +867,7 @@ true
 
 
 
-Default system locale
+Default system locale for language, formatting, and character encoding
 
 
 
@@ -712,11 +884,19 @@ string
 
 
 
+*Example:*
+
+```nix
+"en_GB.UTF-8"
+```
+
+
+
 ## local\.localization\.timeZone
 
 
 
-System timezone
+System timezone (use ` timedatectl list-timezones ` to see available options)
 
 
 
@@ -729,6 +909,14 @@ string
 
 ```nix
 "America/Chicago"
+```
+
+
+
+*Example:*
+
+```nix
+"Europe/London"
 ```
 
 
@@ -845,7 +1033,7 @@ true
 
 
 
-List of sops keys to automatically map to /\.secrets/
+List of sops keys to automatically map to /run/secrets/ for system-wide access
 
 
 
@@ -862,11 +1050,23 @@ list of string
 
 
 
+*Example:*
+
+```nix
+[
+  "zima_creds"
+  "ssh_pub_ruby/master"
+  "ssh_pub_sapphire/master"
+]
+```
+
+
+
 ## local\.secrets\.sopsFile
 
 
 
-Path to the encrypted yaml file
+Path to the encrypted YAML file containing system secrets
 
 
 
@@ -878,7 +1078,15 @@ absolute path
 *Default:*
 
 ```nix
-/nix/store/a27913vs2ir3y3lx6bajk87livakhlqr-source/secrets/secrets.yaml
+/nix/store/rkk7w4v45qgdfb0hhfads74wl0jyz8zq-source/secrets/secrets.yaml
+```
+
+
+
+*Example:*
+
+```nix
+../secrets/system-secrets.yaml
 ```
 
 
@@ -916,7 +1124,7 @@ true
 
 
 
-The main admin user to grant passwordless access to\.
+The main admin user to grant passwordless sudo/doas access and SSH key authorization
 
 
 
@@ -929,6 +1137,14 @@ string
 
 ```nix
 "tod"
+```
+
+
+
+*Example:*
+
+```nix
+"admin"
 ```
 
 
@@ -995,7 +1211,7 @@ true
 
 
 
-List of SMB/CIFS shares to mount automatically
+List of SMB/CIFS shares to mount automatically with systemd automount
 
 
 
@@ -1012,11 +1228,22 @@ list of (submodule)
 
 
 
+*Example:*
+
+```nix
+[
+        { shareName = "Media"; localPath = "/mnt/media"; }
+        { shareName = "Backups"; localPath = "/mnt/backups"; noShow = true; }
+      ]
+```
+
+
+
 ## local\.shareManager\.mounts\.\*\.localPath
 
 
 
-Local mount point
+Local mount point path
 
 
 
@@ -1025,11 +1252,19 @@ string
 
 
 
+*Example:*
+
+```nix
+"/mnt/media"
+```
+
+
+
 ## local\.shareManager\.mounts\.\*\.noAuth
 
 
 
-disable auth
+Whether to mount as guest without authentication
 
 
 
@@ -1050,7 +1285,7 @@ false
 
 
 
-Hide from file manager
+Whether to hide this mount from file manager
 
 
 
@@ -1071,7 +1306,7 @@ false
 
 
 
-Extra options to add to the defaults
+Additional mount options to append to defaults
 
 
 
@@ -1088,16 +1323,35 @@ list of string
 
 
 
+*Example:*
+
+```nix
+[
+  "ro"
+  "vers=3.0"
+]
+```
+
+
+
 ## local\.shareManager\.mounts\.\*\.shareName
 
 
 
-Name of the share on ZimaOS
+Name of the share on the SMB server
 
 
 
 *Type:*
 string
+
+
+
+*Example:*
+
+```nix
+"Media"
+```
 
 
 
@@ -1126,7 +1380,7 @@ false
 
 
 
-Name of sops secret containing SMB credentials
+Name of sops secret containing SMB credentials (username=xxx and password=xxx format)
 
 
 
@@ -1143,11 +1397,19 @@ string
 
 
 
+*Example:*
+
+```nix
+"smb_credentials"
+```
+
+
+
 ## local\.shareManager\.serverIp
 
 
 
-IP address of SMB/CIFS server
+IP address or hostname of SMB/CIFS server
 
 
 
@@ -1160,6 +1422,14 @@ string
 
 ```nix
 "10.0.0.65"
+```
+
+
+
+*Example:*
+
+```nix
+"192.168.1.100"
 ```
 
 
@@ -1197,7 +1467,7 @@ true
 
 
 
-Groups to assign to all auto-discovered users on this host\.
+Groups to assign to all auto-discovered users on this host
 
 
 
@@ -1213,6 +1483,21 @@ list of string
   "wheel"
   "networkmanager"
   "input"
+]
+```
+
+
+
+*Example:*
+
+```nix
+[
+  "wheel"
+  "networkmanager"
+  "input"
+  "video"
+  "audio"
+  "docker"
 ]
 ```
 
@@ -1268,11 +1553,19 @@ string
 
 
 
+*Example:*
+
+```nix
+"cache:AbCdEf1234567890+GhIjKlMnOpQrStUvWxYz=="
+```
+
+
+
 ## local\.cache\.serverAddress
 
 
 
-Attic binary cache server URL
+Attic binary cache server URL (automatically uses host from local\.hosts module)
 
 
 
@@ -1284,7 +1577,15 @@ string
 *Default:*
 
 ```nix
-"http://10.0.0.65:8080/main"
+"http://zimaos.local:8080/main"
+```
+
+
+
+*Example:*
+
+```nix
+"http://cache.example.com:8080/nixos"
 ```
 
 
@@ -1364,6 +1665,14 @@ null or string
 
 ```nix
 null
+```
+
+
+
+*Example:*
+
+```nix
+"gruvbox"
 ```
 
 
@@ -1526,6 +1835,14 @@ list of absolute path
 
 
 
+*Example:*
+
+```nix
+[ ./wallpapers/gruvbox.png ./wallpapers/catppuccin.jpg ]
+```
+
+
+
 ## local\.kitty\.enable
 
 
@@ -1630,6 +1947,14 @@ string
 
 ```nix
 "/mnt/zima/Music"
+```
+
+
+
+*Example:*
+
+```nix
+"/home/user/Music"
 ```
 
 
@@ -1776,6 +2101,18 @@ list of string
 
 
 
+*Example:*
+
+```nix
+[
+  "github/token"
+  "api/openai"
+  "passwords/vpn"
+]
+```
+
+
+
 ## local\.secrets\.sopsFile
 
 
@@ -1792,7 +2129,15 @@ absolute path
 *Default:*
 
 ```nix
-/nix/store/a27913vs2ir3y3lx6bajk87livakhlqr-source/secrets/secrets.yaml
+/nix/store/rkk7w4v45qgdfb0hhfads74wl0jyz8zq-source/secrets/secrets.yaml
+```
+
+
+
+*Example:*
+
+```nix
+../secrets/user-secrets.yaml
 ```
 
 
@@ -1830,7 +2175,7 @@ true
 
 
 
-Mapping of SSH host aliases to hostnames or IP addresses
+Mapping of SSH host aliases to hostnames or IP addresses (automatically uses hosts from local\.hosts module)
 
 
 
@@ -1842,7 +2187,10 @@ attribute set of string
 *Default:*
 
 ```nix
-{ }
+{
+  Ruby = "ruby.local";
+  Sapphire = "sapphire.local";
+}
 ```
 
 
@@ -1851,8 +2199,8 @@ attribute set of string
 
 ```nix
 {
-  Ruby = "10.0.0.66";
-  Sapphire = "10.0.0.67";
+  Ruby = "ruby.local";
+  Sapphire = "sapphire.local";
 }
 ```
 
@@ -1875,6 +2223,14 @@ string
 
 ```nix
 "~/.ssh/id_ed25519"
+```
+
+
+
+*Example:*
+
+```nix
+"~/.ssh/id_rsa"
 ```
 
 
@@ -1912,7 +2268,7 @@ true
 
 
 
-Whether to enable System variables\.
+Enable system environment variables for common tools and applications
 
 
 
@@ -1922,14 +2278,6 @@ boolean
 
 
 *Default:*
-
-```nix
-false
-```
-
-
-
-*Example:*
 
 ```nix
 true
@@ -1958,6 +2306,14 @@ string
 
 
 
+*Example:*
+
+```nix
+"chromium"
+```
+
+
+
 ## local\.variables\.editor
 
 
@@ -1975,6 +2331,14 @@ string
 
 ```nix
 "nvim"
+```
+
+
+
+*Example:*
+
+```nix
+"vim"
 ```
 
 
@@ -2000,6 +2364,14 @@ string
 
 
 
+*Example:*
+
+```nix
+"lf"
+```
+
+
+
 ## local\.variables\.guiEditor
 
 
@@ -2017,6 +2389,14 @@ string
 
 ```nix
 "neovide"
+```
+
+
+
+*Example:*
+
+```nix
+"code"
 ```
 
 
@@ -2042,6 +2422,14 @@ string
 
 
 
+*Example:*
+
+```nix
+"nautilus"
+```
+
+
+
 ## local\.variables\.launcher
 
 
@@ -2059,6 +2447,14 @@ string
 
 ```nix
 "rofi -show drun"
+```
+
+
+
+*Example:*
+
+```nix
+"wofi --show drun"
 ```
 
 
@@ -2084,6 +2480,14 @@ string
 
 
 
+*Example:*
+
+```nix
+"waybar"
+```
+
+
+
 ## local\.variables\.terminal
 
 
@@ -2105,6 +2509,14 @@ string
 
 
 
+*Example:*
+
+```nix
+"alacritty"
+```
+
+
+
 ## local\.variables\.wallpaper
 
 
@@ -2122,6 +2534,14 @@ string
 
 ```nix
 "hyprpaper"
+```
+
+
+
+*Example:*
+
+```nix
+"swaybg"
 ```
 
 

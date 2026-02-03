@@ -58,7 +58,7 @@ in
     };
     serverIp = mkOption {
       type = types.str;
-      default = "10.0.0.65";
+      default = config.local.hosts.zimaos;
       example = "192.168.1.100";
       description = "IP address or hostname of SMB/CIFS server";
     };

@@ -46,11 +46,19 @@ string
 
 
 
+*Example:*
+
+```nix
+"cache:AbCdEf1234567890+GhIjKlMnOpQrStUvWxYz=="
+```
+
+
+
 ## local\.cache\.serverAddress
 
 
 
-Attic binary cache server URL
+Attic binary cache server URL (automatically uses host from local\.hosts module)
 
 
 
@@ -62,7 +70,15 @@ string
 *Default:*
 
 ```nix
-"http://10.0.0.65:8080/main"
+"http://zimaos.local:8080/main"
+```
+
+
+
+*Example:*
+
+```nix
+"http://cache.example.com:8080/nixos"
 ```
 
 
@@ -142,6 +158,14 @@ null or string
 
 ```nix
 null
+```
+
+
+
+*Example:*
+
+```nix
+"gruvbox"
 ```
 
 
@@ -304,6 +328,14 @@ list of absolute path
 
 
 
+*Example:*
+
+```nix
+[ ./wallpapers/gruvbox.png ./wallpapers/catppuccin.jpg ]
+```
+
+
+
 ## local\.kitty\.enable
 
 
@@ -408,6 +440,14 @@ string
 
 ```nix
 "/mnt/zima/Music"
+```
+
+
+
+*Example:*
+
+```nix
+"/home/user/Music"
 ```
 
 
@@ -554,6 +594,18 @@ list of string
 
 
 
+*Example:*
+
+```nix
+[
+  "github/token"
+  "api/openai"
+  "passwords/vpn"
+]
+```
+
+
+
 ## local\.secrets\.sopsFile
 
 
@@ -570,7 +622,15 @@ absolute path
 *Default:*
 
 ```nix
-/nix/store/a27913vs2ir3y3lx6bajk87livakhlqr-source/secrets/secrets.yaml
+/nix/store/rkk7w4v45qgdfb0hhfads74wl0jyz8zq-source/secrets/secrets.yaml
+```
+
+
+
+*Example:*
+
+```nix
+../secrets/user-secrets.yaml
 ```
 
 
@@ -608,7 +668,7 @@ true
 
 
 
-Mapping of SSH host aliases to hostnames or IP addresses
+Mapping of SSH host aliases to hostnames or IP addresses (automatically uses hosts from local\.hosts module)
 
 
 
@@ -620,7 +680,10 @@ attribute set of string
 *Default:*
 
 ```nix
-{ }
+{
+  Ruby = "ruby.local";
+  Sapphire = "sapphire.local";
+}
 ```
 
 
@@ -629,8 +692,8 @@ attribute set of string
 
 ```nix
 {
-  Ruby = "10.0.0.66";
-  Sapphire = "10.0.0.67";
+  Ruby = "ruby.local";
+  Sapphire = "sapphire.local";
 }
 ```
 
@@ -653,6 +716,14 @@ string
 
 ```nix
 "~/.ssh/id_ed25519"
+```
+
+
+
+*Example:*
+
+```nix
+"~/.ssh/id_rsa"
 ```
 
 
@@ -690,7 +761,7 @@ true
 
 
 
-Whether to enable System variables\.
+Enable system environment variables for common tools and applications
 
 
 
@@ -700,14 +771,6 @@ boolean
 
 
 *Default:*
-
-```nix
-false
-```
-
-
-
-*Example:*
 
 ```nix
 true
@@ -736,6 +799,14 @@ string
 
 
 
+*Example:*
+
+```nix
+"chromium"
+```
+
+
+
 ## local\.variables\.editor
 
 
@@ -753,6 +824,14 @@ string
 
 ```nix
 "nvim"
+```
+
+
+
+*Example:*
+
+```nix
+"vim"
 ```
 
 
@@ -778,6 +857,14 @@ string
 
 
 
+*Example:*
+
+```nix
+"lf"
+```
+
+
+
 ## local\.variables\.guiEditor
 
 
@@ -795,6 +882,14 @@ string
 
 ```nix
 "neovide"
+```
+
+
+
+*Example:*
+
+```nix
+"code"
 ```
 
 
@@ -820,6 +915,14 @@ string
 
 
 
+*Example:*
+
+```nix
+"nautilus"
+```
+
+
+
 ## local\.variables\.launcher
 
 
@@ -837,6 +940,14 @@ string
 
 ```nix
 "rofi -show drun"
+```
+
+
+
+*Example:*
+
+```nix
+"wofi --show drun"
 ```
 
 
@@ -862,6 +973,14 @@ string
 
 
 
+*Example:*
+
+```nix
+"waybar"
+```
+
+
+
 ## local\.variables\.terminal
 
 
@@ -883,6 +1002,14 @@ string
 
 
 
+*Example:*
+
+```nix
+"alacritty"
+```
+
+
+
 ## local\.variables\.wallpaper
 
 
@@ -900,6 +1027,14 @@ string
 
 ```nix
 "hyprpaper"
+```
+
+
+
+*Example:*
+
+```nix
+"swaybg"
 ```
 
 
