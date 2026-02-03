@@ -35,6 +35,7 @@
       systems = [ "x86_64-linux" ];
       imports = [
         ./parts/discovery
+        ./parts/docs.nix
       ];
 
       perSystem =

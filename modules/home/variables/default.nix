@@ -4,15 +4,51 @@
 in {
   options.local.variables = {
     enable = lib.mkEnableOption "System variables";
-    editor = mkStrOpt "nvim";
-    guiEditor = mkStrOpt "neovide";
-    fileManager = mkStrOpt "ranger";
-    guiFileManager = mkStrOpt "pcmanfm";
-    terminal = mkStrOpt "kitty";
-    launcher = mkStrOpt "rofi -show drun";
-    wallpaper = mkStrOpt "hyprpaper";
-    browser = mkStrOpt "firefox";
-    statusBar = mkStrOpt "hyprpanel";
+    editor = lib.mkOption {
+      type = lib.types.str;
+      default = "nvim";
+      description = "Default terminal text editor";
+    };
+    guiEditor = lib.mkOption {
+      type = lib.types.str;
+      default = "neovide";
+      description = "Default GUI text editor";
+    };
+    fileManager = lib.mkOption {
+      type = lib.types.str;
+      default = "ranger";
+      description = "Default terminal file manager";
+    };
+    guiFileManager = lib.mkOption {
+      type = lib.types.str;
+      default = "pcmanfm";
+      description = "Default GUI file manager";
+    };
+    terminal = lib.mkOption {
+      type = lib.types.str;
+      default = "kitty";
+      description = "Default terminal emulator";
+    };
+    launcher = lib.mkOption {
+      type = lib.types.str;
+      default = "rofi -show drun";
+      description = "Default application launcher command";
+    };
+    wallpaper = lib.mkOption {
+      type = lib.types.str;
+      default = "hyprpaper";
+      description = "Default wallpaper daemon";
+    };
+    browser = lib.mkOption {
+      type = lib.types.str;
+      default = "firefox";
+      description = "Default web browser";
+    };
+    statusBar = lib.mkOption {
+      type = lib.types.str;
+      default = "hyprpanel";
+      description = "Default status bar/panel";
+    };
   };
   config = lib.mkIf cfg.enable {
     home.sessionVariables = {

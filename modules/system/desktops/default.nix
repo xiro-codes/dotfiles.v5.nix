@@ -10,22 +10,27 @@ in
     enable = mkOption {
       type = bool;
       default = false;
+      description = "Enable desktop environment support";
     };
     enableEnv = mkOption {
       type = bool;
       default = true;
+      description = "Enable Wayland environment variables";
     };
     hyprland = mkOption {
       type = bool;
       default = false;
+      description = "Enable Hyprland compositor";
     };
     niri = mkOption {
       type = bool;
       default = false;
+      description = "Enable Niri compositor";
     };
     plasma6 = mkOption {
       type = bool;
       default = false;
+      description = "Enable KDE Plasma 6 desktop environment";
     };
   };
 

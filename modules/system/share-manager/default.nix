@@ -48,14 +48,17 @@ in
     noAuth = lib.mkOption {
       type = lib.types.bool;
       default = false;
+      description = "Mount shares as guest without credentials";
     };
     secretName = lib.mkOption {
       type = lib.types.str;
       default = "zima_creds";
+      description = "Name of sops secret containing SMB credentials";
     };
     serverIp = mkOption {
       type = types.str;
       default = "10.0.0.65";
+      description = "IP address of SMB/CIFS server";
     };
     mounts = mkOption {
       type = types.listOf (
@@ -88,6 +91,7 @@ in
         }
       );
       default = [ ];
+      description = "List of SMB/CIFS shares to mount automatically";
     };
   };
 

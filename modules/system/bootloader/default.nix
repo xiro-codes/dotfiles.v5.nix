@@ -8,22 +8,27 @@ in
     mode = lib.mkOption {
       type = lib.types.enum [ "uefi" "bios" ];
       default = "uefi";
+      description = "Boot mode: UEFI or legacy BIOS";
     };
     uefiType = lib.mkOption {
       type = lib.types.enum [ "systemd-boot" "grub" "limine" ];
       default = "systemd-boot";
+      description = "UEFI bootloader to use";
     };
     device = lib.mkOption {
       type = lib.types.str;
       default = "";
+      description = "Device for BIOS bootloader installation (e.g., /dev/sda)";
     };
     addRecoveryOption = lib.mkOption {
       type = lib.types.bool;
       default = false;
+      description = "Add recovery partition boot option to bootloader menu";
     };
     recoveryUUID = lib.mkOption {
       type = lib.types.str;
       default = "0d9dddd8-9511-4101-9177-0a80cfbeb047";
+      description = "UUID of recovery partition for boot menu entry";
     };
   };
 

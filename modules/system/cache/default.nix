@@ -13,10 +13,12 @@ in
     serverAddress = lib.mkOption {
       type = lib.types.str;
       default = "http://10.0.0.65:8080/main?priority=1";
+      description = "Attic binary cache server URL";
     };
     publicKey = lib.mkOption {
       type = lib.types.str;
       default = "main:CqlQUu3twINKw6rrCtizlAYkrPOKUicoxMyN6EvYnbk=";
+      description = "Public key for cache verification";
     };
   };
 

@@ -29,14 +29,17 @@ in
     backupLocation = lib.mkOption {
       type = lib.types.str;
       default = "";
+      description = "Base path for borg backup repository";
     };
     paths = lib.mkOption {
       type = lib.types.listOf lib.types.str;
       default = [ ];
+      description = "Additional paths to backup beyond auto-discovered user folders";
     };
     exclude = lib.mkOption {
       type = lib.types.listOf lib.types.str;
       default = [ ];
+      description = "Patterns to exclude from backups (e.g., node_modules, target)";
     };
   };
 

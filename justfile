@@ -32,6 +32,17 @@ clear-undos:
         echo "🧹 Local .undo_dir files cleared for this repository."; \
     fi
 
+# Generate module documentation
+[group('dev')]
+gen-docs:
+    @echo "📚 Generating module documentation..."
+    nix build .#docs
+    mkdir -p docs
+    cp -f result/README.md docs/modules.md
+    cp -f result/system-modules.md docs/system-modules.md
+    cp -f result/home-modules.md docs/home-modules.md
+    @echo "✅ Documentation generated in docs/"
+
 # Edit system secrets
 [group('secrets')]
 edit-secrets:

@@ -5,7 +5,11 @@ in
 {
   options.local.mpd = {
     enable = lib.mkEnableOption "Enable mpd";
-    path = lib.mkOption { type = lib.types.str; default = "/mnt/zima/Music"; };
+    path = lib.mkOption {
+      type = lib.types.str;
+      default = "/mnt/zima/Music";
+      description = "Path to music directory for MPD";
+    };
   };
   config = lib.mkIf cfg.enable {
     home.packages = [ pkgs.mpc pkgs.ymuse ];

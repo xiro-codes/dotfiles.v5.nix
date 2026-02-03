@@ -97,6 +97,17 @@ The justfile provides several helpers for system administration:
 | just clean-test | Clear the test environment |
 | just init-undo | Initialize local .undo\_dir for Nixvim persistent undo |
 | just clear-undos | Clear ephemeral undo directory for current repo |
+| just gen-docs | Generate module documentation to docs/ |
+
+## **📚 Module Documentation**
+
+All custom modules are documented with auto-generated option references:
+
+* [**Module Reference**](./docs/modules.md) - Complete documentation of all custom options
+* [**System Modules**](./docs/system-modules.md) - NixOS system module options
+* [**Home Modules**](./docs/home-modules.md) - Home Manager module options
+
+To regenerate documentation: `just gen-docs`
 
 ## **💿 Custom Installer**
 

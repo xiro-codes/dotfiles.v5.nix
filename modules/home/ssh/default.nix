@@ -8,7 +8,7 @@ in
     enable = lib.mkEnableOption "configure ssh for user";
     masterKeyPath = lib.mkOption {
       type = lib.types.str;
-      default = "${config.home.homeDirectory}/.ssh/id_ed25519";
+      default = "~/.ssh/id_ed25519";
       description = "Fixed path to the private master key.";
     };
 

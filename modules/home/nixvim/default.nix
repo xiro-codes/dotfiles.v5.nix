@@ -12,14 +12,17 @@ in
     enable = mkOption {
       type = types.bool;
       default = false;
+      description = "Enable nixvim configuration";
     };
     rust = mkOption {
       type = types.bool;
       default = false;
+      description = "Enable Rust language support";
     };
     smartUndo = mkOption {
       type = types.bool;
       default = true;
+      description = "Enable persistent undo with smart directory management";
     };
   };
   config = mkIf cfg.enable {
