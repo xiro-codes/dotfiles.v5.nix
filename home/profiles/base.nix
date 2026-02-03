@@ -49,6 +49,5 @@
     procs
     tealdeer
     gping
-    #dogdns
   ];
 }
