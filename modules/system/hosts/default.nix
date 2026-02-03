@@ -24,6 +24,14 @@ let
     if cfg.useAvahi 
     then hostDefs.${name}.avahi 
     else hostDefs.${name}.ip;
+  
+  # Helper to get address for current or any host
+  getHostAddress = hostname:
+    if builtins.hasAttr hostname hostDefs
+    then getHost hostname
+    else if cfg.useAvahi
+         then "${hostname}.local"
+         else hostname;  # fallback to hostname as-is
 in
 {
   options.local.hosts = {
