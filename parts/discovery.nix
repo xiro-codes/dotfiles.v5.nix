@@ -1,201 +1,187 @@
 { inputs, lib, ... }:
 let
+  inherit (builtins)
+    pathExists
+    readDir
+    filter
+    attrNames
+    listToAttrs
+    foldl'
+    attrValues
+    ;
+  inherit (lib) filterAttrs splitString;
+  paths = {
+    systems = ../systems;
+    systemModules = ../modules/system;
+    home = ../home;
+    homeModules = ../modules/home;
+    packages = ../packages;
+    templates = ../templates;
+  };
+  getDirs =
+    path:
+    if pathExists path then
+      let
+        contents = readDir path;
+      in
+      filter (name: contents.${name} == "directory") (attrNames contents)
+    else
+      [ ];
 
-  systemDir = ../systems;
-  systemModulesDir = ../modules/system;
-  homeDir = ../home;
-  homeModulesDir = ../modules/home;
-  packageDir = ../packages;
-  templateDir = ../templates;
-in
-{
-  perSystem = { config, pkgs, system, ... }:
+  getValidSubdirs =
+    path:
+    if pathExists path then
+      let
+        contents = readDir path;
+      in
+      filter (name: contents.${name} == "directory" && pathExists (path + "/${name}/default.nix")) (
+        attrNames contents
+      )
+    else
+      [ ];
+  mkPackages =
+    path: system:
     let
-      discoverPackages =
-        path:
-        let
-          contents = builtins.readDir path;
-          packageDirs = builtins.filter
-            (
-              name: contents.${name} == "directory" && builtins.pathExists (path + "/${name}/default.nix")
-            )
-            (builtins.attrNames contents);
-        in
-        builtins.listToAttrs (
-          map
-            (name: {
-              inherit name;
-              value = inputs.nixpkgs.legacyPackages.x86_64-linux.callPackage (path + "/${name}/default.nix") {
-                inherit inputs;
-              };
-            })
-            packageDirs
-        );
+      names = getValidSubdirs path;
     in
-    {
-      packages = discoverPackages packageDir;
-    };
-  flake =
+    listToAttrs (
+      map
+        (name: {
+          inherit name;
+          value = inputs.nixpkgs.legacyPackages.${system}.callPackage (path + "/${name}/default.nix") {
+            inherit inputs;
+          };
+
+        })
+        names
+    );
+  mkModules =
+    path:
     let
-      inherit (inputs.nixpkgs.lib) attrNames filterAttrs nixosSystem;
-      discoverTemplates = { };
+      names = getValidSubdirs path;
+    in
+    listToAttrs (
+      map
+        (name: {
+          inherit name;
+          value = import (path + "/${name}/default.nix");
+        })
+        names
+    );
+  mkTemplates =
+    path:
+    let
+      names = getDirs path;
+    in
+    listToAttrs (
+      map
+        (name: {
+          inherit name;
+          value = {
+            path = path + "/${name}";
+            description = "System templates";
+          };
+        })
+        names
+    );
 
-      discoverModules =
-        path:
-        if builtins.pathExists path then
-          let
-            dirs = attrNames (filterAttrs (_: type: type == "directory") (builtins.readDir path));
-            validDirs = builtins.filter (name: builtins.pathExists (path + "/${name}/default.nix")) dirs;
-          in
-          builtins.listToAttrs (
-            map
-              (name: {
-                name = name;
-                value = import (path + "/${name}/default.nix");
-              })
-              validDirs
+  getUserHostMap =
+    path:
+    if !(pathExists path) then
+      { }
+    else
+      let
+        files = attrNames (
+          filterAttrs (n: type: type == "regular" && (builtins.match ".*@.*\\.nix" n != null)) (
+            builtins.readDir path
           )
-        else
-          { };
-
-      mkOverlayFromDir =
-        path: final: prev:
-        let
-          contents = builtins.readDir path;
-          packageDirs = builtins.filter
-            (
-              name: contents.${name} == "directory" && builtins.pathExists (path + "/${name}/default.nix")
-            )
-            (builtins.attrNames contents);
-        in
-        builtins.listToAttrs (
-          map
-            (name: {
-              inherit name;
-              value = final.callPackage (path + "/${name}/default.nix") { inherit inputs; };
-            })
-            packageDirs
         );
-
-
-      getHosts =
-        path:
-        if builtins.pathExists path then
-          attrNames (filterAttrs (_: type: type == "directory") (builtins.readDir path))
-        else
-          [ ];
-
-
-      discoveredSystemModules = discoverModules systemModulesDir;
-      discoveredHomeModules = discoverModules homeModulesDir;
-
-      hostNames = getHosts systemDir;
-
-      homeFiles =
-        if builtins.pathExists homeDir then
-          attrNames
-            (
-              filterAttrs (n: type: type == "regular" && builtins.match ".*@.*\\.nix" n != null) (
-                builtins.readDir homeDir
-              )
-            )
-        else
-          [ ];
-      hostToUsersMap = builtins.foldl'
+      in
+      foldl'
         (
           acc: filename:
-            let
-              namePart = lib.removeSuffix ".nix" filename;
-              parts = lib.splitString "@" namePart;
-              user = builtins.elemAt parts 0;
-              host = builtins.elemAt parts 1;
-            in
-            acc // { "${host}" = (acc."${host}" or [ ]) ++ [ user ]; }
+          let
+            parts = splitString "@" (lib.removeSuffix ".nix" filename);
+            user = builtins.elemAt parts 0;
+            host = builtins.elemAt parts 1;
+          in
+          acc
+          // {
+            "${host}" = (acc.${host} or [ ]) ++ [{ inherit user filename; }];
+          }
         )
         { }
-        homeFiles;
+        files;
 
-    in
+  hostToUsersMap = getUserHostMap paths.home;
+  discoveredSystemModules = mkModules paths.systemModules;
+  discoveredHomeModules = mkModules paths.homeModules;
+  discoveredTemplates = mkTemplates paths.templates;
+
+in
+{
+  perSystem =
+    { pkgs, system, ... }:
     {
-      nixosModules = discoveredSystemModules;
-      homeModules = discoveredHomeModules;
-
-      nixosConfigurations = builtins.listToAttrs (
+      packages = mkPackages paths.packages system;
+    };
+  flake = {
+    nixosModules = discoveredSystemModules;
+    homeModules = discoveredHomeModules;
+    nixosConfigurations =
+      let
+        hosts =
+          if pathExists paths.systems then
+            attrNames (filterAttrs (_: type: type == "directory") (readDir paths.systems))
+          else
+            [ ];
+      in
+      listToAttrs (
         map
           (name: {
-            name = name;
-            value = nixosSystem {
+            inherit name;
+            value = inputs.nixpkgs.lib.nixosSystem {
               specialArgs = {
                 inherit inputs;
                 currentHostName = name;
-                currentHostUsers = hostToUsersMap."${name}" or [ ];
+                currentHostUsers = map (u: u.user) (hostToUsersMap.${name} or [ ]);
               };
               modules = [
-                (systemDir + "/${name}/configuration.nix")
+                (paths.systems + "/${name}/configuration.nix")
+                inputs.disko.nixosModules.disko
+                inputs.sops-nix.nixosModules.sops
                 inputs.home-manager.nixosModules.home-manager
-
-                {
+                ({
                   networking.hostName = name;
-                  programs.nh = {
-                    enable = true;
-                    flake = "/etc/nixos";
+                  local.secrets.enable = true;
+                  home-manager = {
+                    extraSpecialArgs = { inherit inputs; };
+                    sharedModules = (attrValues discoveredHomeModules) ++ [
+                      inputs.sops-nix.homeModules.sops
+                      inputs.caelestia-shell.homeManagerModules.default
+                      inputs.nixvim.homeModules.nixvim
+                      inputs.stylix.homeModules.stylix
+
+                    ];
+                    users = listToAttrs (
+                      map
+                        (u: {
+                          name = u.user;
+                          value = import (paths.home + "/${u.filename}");
+                        })
+                        (hostToUsersMap.${name} or [ ])
+                    );
+
                   };
-                  home-manager.useGlobalPkgs = true;
-                  home-manager.useUserPackages = true;
-                  home-manager.extraSpecialArgs = { inherit inputs; };
-                  home-manager.overwriteBackup = true;
-                  home-manager.backupFileExtension = ".bk";
-                  home-manager.sharedModules = [
-                    inputs.nixvim.homeModules.nixvim
-                    inputs.stylix.homeModules.stylix
-                    inputs.caelestia-shell.homeManagerModules.default
-                  ]
-                  ++ builtins.attrValues discoveredHomeModules;
-                  home-manager.users = builtins.listToAttrs (
-                    map
-                      (username: {
-                        name = username;
-                        value = import (homeDir + "/${username}@${name}.nix");
-                      })
-                      (hostToUsersMap."${name}" or [ ])
-                  );
-                }
+                })
               ]
-              ++ (builtins.attrValues discoveredSystemModules);
+              ++ (attrValues discoveredSystemModules);
+
             };
           })
-          hostNames
+          hosts
       );
-
-      overlays.default = mkOverlayFromDir packageDir;
-
-      homeConfigurations = builtins.listToAttrs (
-        map
-          (
-            filename:
-            let
-              namePart = lib.removeSuffix ".nix" filename;
-              parts = lib.splitString "@" namePart;
-              user = builtins.elemAt parts 0;
-
-            in
-            {
-              name = namePart;
-              value = inputs.home-manager.lib.homeManagerConfiguration {
-                pkgs = inputs.nixpkgs.legacyPackages."x86_64-linux";
-                extraSpecialArgs = { inherit inputs; };
-                modules = [
-                  (homeDir + "/${filename}")
-                  {
-                    home.username = user;
-                    home.homeDirectory = "/home/${user}";
-                  }
-                ]
-                ++ (builtins.attrValues discoveredHomeModules);
-              };
-            }
-          )
-          homeFiles
-      );
-    };
+    templates = discoveredTemplates;
+    overlays.default = final: prev: mkPackages paths.packages final.system;
+  };
 }
