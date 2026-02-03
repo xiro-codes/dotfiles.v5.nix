@@ -1,6 +1,6 @@
 # **NixOS Dotfiles (v5)**
 
-A declarative, multi-host NixOS configuration built with [Nix Flakes](https://www.google.com/search?q=https://nixos.wiki/wiki/Flakes), [flake-parts](https://www.google.com/search?q=https://flake.parts/), and [Home Manager](https://www.google.com/search?q=https://nixos.community/home-manager/). This setup features an automated discovery system that dynamically generates host configurations and modules.
+A declarative, multi-host NixOS configuration built with [Nix Flakes](https://nixos.wiki/wiki/Flakes), [flake-parts](https://flake.parts/), and [Home Manager](https://nixos.community/home-manager/). This setup features an automated discovery system that dynamically generates host configurations and modules.
 
 ## **🚀 Architecture: Automated Discovery**
 
@@ -16,14 +16,14 @@ This repository utilizes a modular discovery engine (parts/discovery/) that scan
 
 ## **💻 Managed Systems**
 
-### [**Ruby**](https://www.google.com/search?q=./systems/Ruby/configuration.nix)
+### [**Ruby**](./systems/Ruby/configuration.nix)
 
 * **Role**: Primary Workstation
 * **IP**: 10.0.0.66
 * **Bootloader**: UEFI with **Limine**
 * **Key Features**: High-performance workstation, local backup management, and comprehensive network share mounts (Music, Books, Backups).
 
-### [**Sapphire**](https://www.google.com/search?q=./systems/Sapphire/configuration.nix)
+### [**Sapphire**](./systems/Sapphire/configuration.nix)
 
 * **Role**: Secondary Workstation
 * **IP**: 10.0.0.67
@@ -47,21 +47,33 @@ The justfile provides several helpers for system administration:
 | just | List all available commands |
 
 ### **Life (Local System Management)**
+
+| Command | Action |
+| :---- | :---- |
 | just switch | Switch local system configuration using nh |
 | just boot | Set next boot generation using nh |
 | just rebuild | Standard nixos-rebuild switch (impure) |
 
 ### **Deploy (Remote Management)**
+
+| Command | Action |
+| :---- | :---- |
 | just deploy \<host\> | Deploy to a remote node using deploy-rs |
 | just deploy-all | Deploy all nodes in the flake |
 | just check | Safety check before deploying (eval and dry-run) |
 | just gc \<host\> | Garbage collect a remote node to free space |
 
 ### **Secrets**
+
+| Command | Action |
+| :---- | :---- |
 | just edit-secrets | Edit encrypted SOPS secrets |
 | just update-keys | Update system keys |
 
 ### **Backups**
+
+| Command | Action |
+| :---- | :---- |
 | just init-backup | Initialize borg backup repository |
 | just run-backup | Run borg backup manually |
 | just mount-backup \<host\> | Mount backup archive to /.recovery |
@@ -70,11 +82,17 @@ The justfile provides several helpers for system administration:
 | just list-backups | Show all current backups |
 
 ### **Install**
+
+| Command | Action |
+| :---- | :---- |
 | just install \<host\> | Install a system from scratch using disko |
 | just rescue | Quick fix for a borked system (assumes std labels) |
 | just bake-recovery | Burn a new ISO to the recovery partition |
 
 ### **Dev**
+
+| Command | Action |
+| :---- | :---- |
 | just run-test | Build and launch the custom Installer ISO in QEMU |
 | just clean-test | Clear the test environment |
 | just init-undo | Initialize local .undo\_dir for Nixvim persistent undo |
@@ -82,20 +100,22 @@ The justfile provides several helpers for system administration:
 
 ## **💿 Custom Installer**
 
-This flake includes a specialized installer ISO (\#installer-iso) designed for rapid deployment of new nodes.
+This flake includes a specialized installer ISO (\#installer-iso) for deploying new nodes.
 
-* **How to use**: Boot the ISO and run sudo install-system \<hostname\> \<user\> \<password\> \[disk\].
-* **Features**: Includes a Python-based installation script that automates partitioning and initial flake deployment.
+* **How to use**: Boot the ISO and manually partition the target disk, then use `just install <host>` to deploy the configuration.
+* **Features**: Includes necessary tools for manual system installation and disko-based automated partitioning.
 
 ## **📁 Repository Structure**
-----
-- home/               \# User-specific Home Manager configurations
-- modules/
-    - home/           \# Reusable Home Manager modules
-    - system/         \# Reusable NixOS modules
-- packages/           \# Custom Nix packages
-- parts/              \# Flake logic (Discovery engine)
-- secrets/            \# SOPS-encrypted secrets
-- shells/             \# Development shells
-- systems/            \# Host-specific configurations (Ruby, Sapphire)
-- templates/          \# Scaffolding for new modules and projects
+
+```
+home/               # User-specific Home Manager configurations
+modules/
+    home/           # Reusable Home Manager modules
+    system/         # Reusable NixOS modules
+packages/           # Custom Nix packages
+parts/              # Flake logic (Discovery engine)
+secrets/            # SOPS-encrypted secrets
+shells/             # Development shells
+systems/            # Host-specific configurations (Ruby, Sapphire)
+templates/          # Scaffolding for new modules and projects
+```
