@@ -606,6 +606,35 @@ true
 
 
 
+## local\.registry\.enable
+
+
+
+Whether to enable Flake registry for dotfiles\.
+
+
+
+*Type:*
+boolean
+
+
+
+*Default:*
+
+```nix
+false
+```
+
+
+
+*Example:*
+
+```nix
+true
+```
+
+
+
 ## local\.repoManager\.enable
 
 
@@ -722,7 +751,7 @@ absolute path
 *Default:*
 
 ```nix
-/nix/store/rpfwsmwsvhsz1mjsghl3lh5mlh3h7lv0-source/secrets/secrets.yaml
+/nix/store/hzj7ils0afd03ymld21n5zb72v6yh1yr-source/secrets/secrets.yaml
 ```
 
 
