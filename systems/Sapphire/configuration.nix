@@ -4,10 +4,10 @@
   imports = [
     ./disko.nix
     ./hardware-configuration.nix
-    ../../profiles/base.nix
-    ../../profiles/workstation.nix
-    ../../profiles/zima-client.nix
-    ../../profiles/limine-uefi.nix
+    ../profiles/base.nix
+    ../profiles/workstation.nix
+    ../profiles/zima-client.nix
+    ../profiles/limine-uefi.nix
   ];
 
   # Sapphire-specific configuration
@@ -19,19 +19,19 @@
       "ssh_pub_ruby/master"
       "zima_creds"
     ];
-    
+
     # Sapphire-specific bootloader UUID
     bootloader.recoveryUUID = "0d9dddd8-9511-4101-9177-0a80cfbeb047";
-    
+
     # Enable auto-upgrade for Sapphire
     dotfiles.maintenance.autoUpgrade = true;
-    
+
     # Backup dotfiles on Sapphire
     backup-manager.paths = lib.mkAfter [
       "/etc/nixos/"
     ];
   };
-  
+
   # Sapphire-specific user
   users.users.tod = {
     shell = pkgs.fish;

@@ -23,7 +23,13 @@ in
     let
       hosts =
         if pathExists paths.systems then
-          attrNames (filterAttrs (_: type: type == "directory") (readDir paths.systems))
+          attrNames (filterAttrs
+            (name: type:
+              type == "directory"
+              && pathExists (paths.systems + "/${name}/configuration.nix")
+              && pathExists (paths.systems + "/${name}/hardware-configuration.nix")
+            )
+            (readDir paths.systems))
         else
           [ ];
     in
