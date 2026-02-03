@@ -2,7 +2,7 @@
 let
   cfg = config.local.hyprland;
   variables = config.local.variables;
-
+  hyprWorkspaceTools = inputs.self.packages.${pkgs.stdenv.hostPlatform.system}.hyprland-workspace-tools;
 in
 {
   options.local.hyprland = {
@@ -14,6 +14,7 @@ in
       cliphist
       jq
       discord
+      hyprWorkspaceTools
     ];
 
 
@@ -25,10 +26,12 @@ in
           "1, persistent:true"
           "2, persistent:true"
           "3, persistent:true"
-
-          "7, presistent:true" # Plex
-          "8, presistent: true" # Discord
-          "9, presistent:true" # Steam
+          "4, persistent:true"
+          "5, persistent:true"
+          "6, persistent:true"
+          "7, persistent:true"
+          "8, persistent:true"
+          "9, persistent:true"
         ];
         monitor = [
           ",preferred,auto,1"
@@ -53,19 +56,11 @@ in
           workspace_back_and_forth = true;
         };
         exec-once = [
-          "[workspace 9 silent] steam -silent"
-          "[workspace 8 silent] discord"
-          "[workspace 7 silent] plex-desktop"
           "wl-paste --type text --watch cliphist store"
         ] ++ lib.optionals config.local.caelestia.enable [
           "caelestia wallpaper set $HOME/.wallpaper"
         ];
         windowrulesv2 = [
-          "workspace 7, initialClass:^(tv.plex.Plex)$"
-          "workspace 8, class:^(discord)$"
-          "workspace 9, initialClass:^(steam)$"
-          "workspace 9, class:^(steam_app_.*)$"
-
           "focusonactivate, class:^(steam_app_.*)$"
           "float, class:^(steam)$, title:^(Friends List)$"
           "float, class:^(steam)$, title:^(Steam - News)$"
@@ -78,45 +73,43 @@ in
 
         bind = [
           "$mod, Return, exec, ${variables.terminal}"
-          "$mod, Tab, exec, hyprctl dispatch workspace $(( ( $(hyprctl activeworkspace -j | jq '.id') % 3 ) + 1 ))"
-          "$mod_SHIFT, Tab, exec, hyprctl dispatch workspace $(( ( $(hyprctl activeworkspace -j | jq '.id') - 2 + 3 ) % 3 + 1 ))"
+          
+          # Workspace set switching
+          "$mod, Tab, exec, hypr-switch-set next"
+          "$mod_SHIFT, Tab, exec, hypr-switch-set prev"
 
-          "$mod, G, workspace, 9" # Games
-          "$mod, C, workspace, 8" # Chat
-          "$mod, M, workspace, 7" # Media
+          # Dynamic workspace navigation (U/I/O adapts to current set)
+          "$mod, U, exec, hypr-workspace-set u"
+          "$mod, I, exec, hypr-workspace-set i"
+          "$mod, O, exec, hypr-workspace-set o"
 
+          # Move windows to workspaces in current set
+          "$mod_SHIFT, U, exec, hypr-move-to-set u"
+          "$mod_SHIFT, I, exec, hypr-move-to-set i"
+          "$mod_SHIFT, O, exec, hypr-move-to-set o"
+
+          # Application launchers
           "$mod, E, exec, ${variables.guiFileManager}"
           "$mod_SHIFT, E, exec, ${variables.fileManager}"
-
           "$mod, P, exec, ${variables.launcher} "
+          
+          # Window management
           "$mod, Space, layoutmsg, swapwithmaster master"
-
           "$mod_SHIFT, Q, killactive"
-
           "$mod, F, fullscreen"
           "$mod_SHIFT, F, togglefloating"
 
+          # Focus movement
           "$mod, H, movefocus, l"
           "$mod, J, movefocus, d"
           "$mod, K, movefocus, u"
           "$mod, L, movefocus, r"
 
+          # Window movement
           "$mod_SHIFT, H, movewindow, l"
           "$mod_SHIFT, J, movewindow, d"
           "$mod_SHIFT, K, movewindow, u"
           "$mod_SHIFT, L, movewindow, r"
-
-          # "$mod, Tab, changegroupactive"
-          # "$mod, G, togglegroup"
-
-          "$mod, U, workspace, 1"
-          "$mod, I, workspace, 2"
-          "$mod, O, workspace, 3"
-
-          "$mod_SHIFT, U, movetoworkspace, 1"
-          "$mod_SHIFT, I, movetoworkspace, 2"
-          "$mod_SHIFT, O, movetoworkspace, 3"
-
         ];
         bindm = [
           "$mod,mouse:272, movewindow"
