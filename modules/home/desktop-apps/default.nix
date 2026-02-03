@@ -17,46 +17,46 @@ in
 
     # Kitty terminal
     kitty = {
-      enable = lib.mkEnableOption "Enable kitty";
+      enable = lib.mkEnableOption "Kitty terminal emulator with custom configuration";
     };
 
     # Waybar status bar
     waybar = {
-      enable = lib.mkEnableOption "Enable waybar";
+      enable = lib.mkEnableOption "Waybar status bar for Wayland compositors";
     };
 
     # Hyprlauncher
     hyprlauncher = {
-      enable = lib.mkEnableOption "Enable native hyprland launcher";
+      enable = lib.mkEnableOption "Hyprlauncher, the native Hyprland application launcher";
     };
 
     # Hyprpaper
     hyprpaper = {
-      enable = lib.mkEnableOption "Native Hyprland wallpaper daemon";
+      enable = lib.mkEnableOption "Hyprpaper, the native Hyprland wallpaper daemon";
       wallpapers = lib.mkOption {
         type = lib.types.listOf lib.types.path;
         default = [ ];
-        description = "List of wallpapers to preload";
+        description = "List of wallpaper paths to preload for Hyprpaper";
       };
     };
 
     # Mako notification daemon
     mako = {
-      enable = lib.mkEnableOption "mako module";
+      enable = lib.mkEnableOption "Mako notification daemon for Wayland";
     };
 
     # Ranger file manager
     ranger = {
-      enable = lib.mkEnableOption "enable ranger";
+      enable = lib.mkEnableOption "Ranger terminal-based file manager with devicons support";
     };
 
     # MPD music player daemon
     mpd = {
-      enable = lib.mkEnableOption "Enable mpd";
+      enable = lib.mkEnableOption "MPD (Music Player Daemon) with ncmpcpp client";
       path = lib.mkOption {
         type = lib.types.str;
         default = "/mnt/zima/Music";
-        description = "Path to music directory for MPD";
+        description = "Path to the music directory for MPD to serve";
       };
     };
 
@@ -80,7 +80,7 @@ in
         interactiveShellInit = ''
           set -g fish_greeting ""
           zoxide init fish | source
-          cat $HOME/.local/state/caelestia/sequences.txt 2>/dev/null 
+          #cat $HOME/.local/state/caelestia/sequences.txt 2>/dev/null 
         '';
         shellAbbrs = {
           ls = "eza --icons always";
@@ -113,7 +113,7 @@ in
           enable = true;
           target = "hyprland-session.target";
         };
-        settings = pkgs.callPackage ./waybar/settings.nix { inherit pkgs cfg; };
+        settings = pkgs.callPackage ../waybar/settings.nix { inherit pkgs cfg; };
       };
     })
 
@@ -151,9 +151,9 @@ in
       home.packages = with pkgs; [ ranger p7zip unzip ];
       local.variables.fileManager = "ranger";
       xdg.configFile = {
-        "ranger/rifle.conf".source = ./ranger/rifle.conf;
-        "ranger/rc.conf".source = ./ranger/rc.conf;
-        "ranger/plugins/ranger_devicons".source = ./ranger/ranger_devicons;
+        "ranger/rifle.conf".source = ../ranger/rifle.conf;
+        "ranger/rc.conf".source = ../ranger/rc.conf;
+        "ranger/plugins/ranger_devicons".source = ../ranger/ranger_devicons;
       };
     })
 

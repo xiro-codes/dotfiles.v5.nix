@@ -872,7 +872,7 @@ absolute path
 *Default:*
 
 ```nix
-/nix/store/dcxmrmv8zfm46ifbpa1937r3qw16x0xm-source/secrets/secrets.yaml
+/nix/store/a27913vs2ir3y3lx6bajk87livakhlqr-source/secrets/secrets.yaml
 ```
 
 

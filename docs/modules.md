@@ -878,7 +878,7 @@ absolute path
 *Default:*
 
 ```nix
-/nix/store/dcxmrmv8zfm46ifbpa1937r3qw16x0xm-source/secrets/secrets.yaml
+/nix/store/a27913vs2ir3y3lx6bajk87livakhlqr-source/secrets/secrets.yaml
 ```
 
 
@@ -1263,7 +1263,7 @@ string
 *Default:*
 
 ```nix
-"main:CqlQUu3twINKw6rrCtizlAYkrPOKUicoxMyN6EvYnbk="
+"main:CqlQUu3twINKw6EvYnbk="
 ```
 
 
@@ -1347,6 +1347,27 @@ true
 
 
 
+## local\.caelestia\.colorScheme
+
+
+
+Color scheme name for Caelestia (e\.g\., ‘gruvbox’, ‘catppuccin’)\. If null, uses dynamic wallpaper colors\.
+
+
+
+*Type:*
+null or string
+
+
+
+*Default:*
+
+```nix
+null
+```
+
+
+
 ## local\.fish\.enable
 
 
@@ -1372,7 +1393,7 @@ false
 
 
 
-Whether to enable Enable nerdfonts\.
+Whether to enable Nerd Fonts collection including Fira Code, Noto fonts, and emoji support\.
 
 
 
@@ -1430,7 +1451,7 @@ true
 
 
 
-Whether to enable Enable native hyprland launcher\.
+Whether to enable Hyprlauncher, the native Hyprland application launcher\.
 
 
 
@@ -1459,7 +1480,7 @@ true
 
 
 
-Whether to enable Native Hyprland wallpaper daemon\.
+Whether to enable Hyprpaper, the native Hyprland wallpaper daemon\.
 
 
 
@@ -1488,7 +1509,7 @@ true
 
 
 
-List of wallpapers to preload
+List of wallpaper paths to preload for Hyprpaper
 
 
 
@@ -1509,7 +1530,7 @@ list of absolute path
 
 
 
-Whether to enable Enable kitty\.
+Whether to enable Kitty terminal emulator with custom configuration\.
 
 
 
@@ -1538,7 +1559,7 @@ true
 
 
 
-Whether to enable mako module\.
+Whether to enable Mako notification daemon for Wayland\.
 
 
 
@@ -1567,7 +1588,7 @@ true
 
 
 
-Whether to enable Enable mpd\.
+Whether to enable MPD (Music Player Daemon) with ncmpcpp client\.
 
 
 
@@ -1596,7 +1617,7 @@ true
 
 
 
-Path to music directory for MPD
+Path to the music directory for MPD to serve
 
 
 
@@ -1680,7 +1701,7 @@ true
 
 
 
-Whether to enable enable ranger\.
+Whether to enable Ranger terminal-based file manager with devicons support\.
 
 
 
@@ -1771,7 +1792,7 @@ absolute path
 *Default:*
 
 ```nix
-/nix/store/dcxmrmv8zfm46ifbpa1937r3qw16x0xm-source/secrets/secrets.yaml
+/nix/store/a27913vs2ir3y3lx6bajk87livakhlqr-source/secrets/secrets.yaml
 ```
 
 
@@ -1809,7 +1830,7 @@ true
 
 
 
-Mapping of aliases to hostnames/IPs\.
+Mapping of SSH host aliases to hostnames or IP addresses
 
 
 
@@ -1841,7 +1862,7 @@ attribute set of string
 
 
 
-Fixed path to the private master key\.
+Path to the SSH master private key file
 
 
 
@@ -1862,7 +1883,7 @@ string
 
 
 
-Whether to enable Stylix theming system\.
+Whether to enable Stylix automatic theming system based on wallpaper colors\.
 
 
 
@@ -2046,7 +2067,7 @@ string
 
 
 
-Default status bar/panel
+Default status bar or panel application
 
 
 
@@ -2088,7 +2109,7 @@ string
 
 
 
-Default wallpaper daemon
+Default wallpaper daemon or manager
 
 
 
@@ -2109,7 +2130,7 @@ string
 
 
 
-Whether to enable Enable waybar\.
+Whether to enable Waybar status bar for Wayland compositors\.
 
 
 

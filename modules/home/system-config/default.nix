@@ -10,19 +10,31 @@ in
     cache = {
       enable = lib.mkEnableOption "cache module";
       watch = lib.mkEnableOption "enable systemd service to watch cache";
-      serverAddress = mkStrOpt "http://10.0.0.65:8080/main";
-      publicKey = mkStrOpt "main:CqlQUu3twINKw6EvYnbk=";
+      serverAddress = lib.mkOption {
+        type = lib.types.str;
+        default = "http://10.0.0.65:8080/main";
+        description = "Attic binary cache server URL";
+      };
+      publicKey = lib.mkOption {
+        type = lib.types.str;
+        default = "main:CqlQUu3twINKw6EvYnbk=";
+        description = "Public key for cache verification";
+      };
     };
 
     # SSH configuration
     ssh = {
       enable = lib.mkEnableOption "configure ssh for user";
-      masterKeyPath = mkStrOpt "~/.ssh/id_ed25519";
+      masterKeyPath = lib.mkOption {
+        type = lib.types.str;
+        default = "~/.ssh/id_ed25519";
+        description = "Path to the SSH master private key file";
+      };
       hosts = lib.mkOption {
         type = lib.types.attrsOf lib.types.str;
         default = { };
         example = { Sapphire = "10.0.0.67"; Ruby = "10.0.0.66"; };
-        description = "Mapping of aliases to hostnames/IPs.";
+        description = "Mapping of SSH host aliases to hostnames or IP addresses";
       };
     };
 
@@ -31,7 +43,7 @@ in
       enable = lib.mkEnableOption "Use secrets";
       sopsFile = lib.mkOption {
         type = lib.types.path;
-        default = ../../secrets/secrets.yaml;
+        default = ../../../secrets/secrets.yaml;
         description = "Path to the encrypted yaml file";
       };
       keys = lib.mkOption {
@@ -44,15 +56,51 @@ in
     # System variables
     variables = {
       enable = lib.mkEnableOption "System variables";
-      editor = mkStrOpt "nvim";
-      guiEditor = mkStrOpt "neovide";
-      fileManager = mkStrOpt "ranger";
-      guiFileManager = mkStrOpt "pcmanfm";
-      terminal = mkStrOpt "kitty";
-      launcher = mkStrOpt "rofi -show drun";
-      wallpaper = mkStrOpt "hyprpaper";
-      browser = mkStrOpt "firefox";
-      statusBar = mkStrOpt "hyprpanel";
+      editor = lib.mkOption {
+        type = lib.types.str;
+        default = "nvim";
+        description = "Default terminal text editor";
+      };
+      guiEditor = lib.mkOption {
+        type = lib.types.str;
+        default = "neovide";
+        description = "Default GUI text editor";
+      };
+      fileManager = lib.mkOption {
+        type = lib.types.str;
+        default = "ranger";
+        description = "Default terminal file manager";
+      };
+      guiFileManager = lib.mkOption {
+        type = lib.types.str;
+        default = "pcmanfm";
+        description = "Default GUI file manager";
+      };
+      terminal = lib.mkOption {
+        type = lib.types.str;
+        default = "kitty";
+        description = "Default terminal emulator";
+      };
+      launcher = lib.mkOption {
+        type = lib.types.str;
+        default = "rofi -show drun";
+        description = "Default application launcher command";
+      };
+      wallpaper = lib.mkOption {
+        type = lib.types.str;
+        default = "hyprpaper";
+        description = "Default wallpaper daemon or manager";
+      };
+      browser = lib.mkOption {
+        type = lib.types.str;
+        default = "firefox";
+        description = "Default web browser";
+      };
+      statusBar = lib.mkOption {
+        type = lib.types.str;
+        default = "hyprpanel";
+        description = "Default status bar or panel application";
+      };
     };
   };
 

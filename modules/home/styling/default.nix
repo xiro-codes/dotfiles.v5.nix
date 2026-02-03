@@ -7,12 +7,12 @@ in
   options.local = {
     # Fonts
     fonts = {
-      enable = lib.mkEnableOption "Enable nerdfonts";
+      enable = lib.mkEnableOption "Nerd Fonts collection including Fira Code, Noto fonts, and emoji support";
     };
 
     # Stylix theming
     stylix = {
-      enable = lib.mkEnableOption "Stylix theming system";
+      enable = lib.mkEnableOption "Stylix automatic theming system based on wallpaper colors";
     };
   };
 
