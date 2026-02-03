@@ -34,6 +34,13 @@ in
       default = false;
       description = "Open firewall port for dashboard";
     };
+
+    subPath = lib.mkOption {
+      type = lib.types.str;
+      default = "";
+      example = "/dashboard";
+      description = "Subpath for reverse proxy (e.g., /dashboard)";
+    };
   };
 
   config = lib.mkIf cfg.enable {

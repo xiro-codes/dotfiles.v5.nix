@@ -61,6 +61,13 @@ in
       default = false;
       description = "Open firewall ports for Gitea";
     };
+
+    subPath = lib.mkOption {
+      type = lib.types.str;
+      default = "";
+      example = "/gitea";
+      description = "Subpath for reverse proxy (e.g., /gitea for https://host/gitea)";
+    };
   };
 
   config = lib.mkIf cfg.enable {
@@ -76,7 +83,7 @@ in
       settings = {
         server = {
           DOMAIN = cfg.domain;
-          ROOT_URL = cfg.rootUrl;
+          ROOT_URL = if cfg.subPath != "" then cfg.rootUrl + lib.removePrefix "/" cfg.subPath + "/" else cfg.rootUrl;
           HTTP_PORT = cfg.port;
           SSH_PORT = cfg.sshPort;
         };

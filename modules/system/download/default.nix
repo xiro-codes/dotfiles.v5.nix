@@ -65,6 +65,13 @@ in
         default = false;
         description = "Open firewall ports for Transmission";
       };
+
+      subPath = lib.mkOption {
+        type = lib.types.str;
+        default = "";
+        example = "/transmission";
+        description = "Subpath for reverse proxy (e.g., /transmission)";
+      };
     };
 
     pinchflat = {
@@ -93,6 +100,13 @@ in
         default = false;
         description = "Open firewall port for Pinchflat";
       };
+
+      subPath = lib.mkOption {
+        type = lib.types.str;
+        default = "";
+        example = "/pinchflat";
+        description = "Subpath for reverse proxy (e.g., /pinchflat)";
+      };
     };
   };
 
@@ -120,6 +134,7 @@ in
         rpc-whitelist = cfg.transmission.rpcWhitelist;
         rpc-whitelist-enabled = true;
         rpc-authentication-required = false;
+        rpc-url = if cfg.transmission.subPath != "" then cfg.transmission.subPath + "/" else "/transmission/";
         
         peer-port = cfg.transmission.peerPort;
         

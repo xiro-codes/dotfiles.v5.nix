@@ -53,6 +53,13 @@ in
         default = false;
         description = "Open firewall port for Jellyfin";
       };
+
+      subPath = lib.mkOption {
+        type = lib.types.str;
+        default = "";
+        example = "/jellyfin";
+        description = "Subpath for reverse proxy (e.g., /jellyfin)";
+      };
     };
 
     plex = {
@@ -81,6 +88,13 @@ in
         default = false;
         description = "Open firewall port for Plex";
       };
+
+      subPath = lib.mkOption {
+        type = lib.types.str;
+        default = "";
+        example = "/plex";
+        description = "Subpath for reverse proxy (e.g., /plex). Note: Plex has limited subpath support.";
+      };
     };
 
     ersatztv = {
@@ -108,6 +122,13 @@ in
         type = lib.types.bool;
         default = false;
         description = "Open firewall port for ErsatzTV";
+      };
+
+      subPath = lib.mkOption {
+        type = lib.types.str;
+        default = "";
+        example = "/ersatztv";
+        description = "Subpath for reverse proxy (e.g., /ersatztv)";
       };
     };
   };
