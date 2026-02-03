@@ -43,5 +43,12 @@
     dust
     cascadia-code
     libnotify
+    bat
+    ripgrep
+    fd
+    procs
+    tealdeer
+    gping
+    dogdns
   ];
 }

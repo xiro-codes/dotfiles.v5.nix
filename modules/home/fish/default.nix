@@ -29,6 +29,15 @@ in
         lsl = "eza --icons always -al";
         du = "dust";
         df = "duf";
+        sudo = "doas";
+        cat = "bat";
+        grep = "rg";
+        find = "fd";
+        top = "btm";
+        ps = "procs";
+        man = "tldr";
+        ping = "gping";
+        dig = "dog";
 
       };
     };
