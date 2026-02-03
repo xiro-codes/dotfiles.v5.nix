@@ -37,25 +37,6 @@
         ./parts/discovery
       ];
 
-      flake = {
-        deploy.nodes = {
-          Ruby = {
-            hostname = "10.0.0.66";
-            profiles.system = {
-              user = "root";
-              path = deploy-rs.lib.x86_64-linux.activate.nixos self.nixosConfigurations.Ruby;
-            };
-          };
-          Sapphire = {
-            hostname = "10.0.0.67";
-            profiles.system = {
-              user = "root";
-              path = deploy-rs.lib.x86_64-linux.activate.nixos self.nixosConfigurations.Sapphire;
-            };
-          };
-        };
-      };
-
       perSystem =
         { config, pkgs, system, ... }:
         {

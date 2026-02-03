@@ -39,6 +39,11 @@ let
       ;
   };
 
+  # Import deploy-rs configuration generator
+  deployLib = import ./deploy.nix {
+    inherit inputs paths;
+  };
+
 in
 {
   perSystem =
@@ -54,5 +59,6 @@ in
     homeConfigurations = homeLib.mkHomeConfigurations;
     templates = discoveredTemplates;
     overlays.default = final: prev: packagesLib.mkPackages paths.packages final.system;
+    deploy.nodes = deployLib.mkDeployNodes;
   };
 }
