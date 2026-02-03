@@ -55,6 +55,8 @@ in
           kitty.colors.enable = false;  # Let caelestia handle colors
           hyprland.enable = false;  # Let caelestia handle hyprland colors
           firefox.enable = false;
+          gtk.enable = false;  # Disable GTK theming
+          qt.enable = false;  # Disable Qt theming
         };
         fonts = {
           monospace = {
