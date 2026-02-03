@@ -1,12 +1,11 @@
 { config, lib, pkgs, ... }:
 
 let
-  cfg = config.local.theming;
+  cfg = config.local.stylix;
 in
 {
-  options.local.theming = {
-    enable = lib.mkEnableOption "theming module";
-
+  options.local.stylix = {
+    enable = lib.mkEnableOption "Stylix theming system";
   };
 
   config = lib.mkIf cfg.enable {

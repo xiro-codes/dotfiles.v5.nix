@@ -1,11 +1,11 @@
 { config, lib, pkgs, inputs, ... }:
 
 let
-  cfg = config.local.shell;
+  cfg = config.local.caelestia;
 in
 {
-  options.local.shell = {
-    enable = lib.mkEnableOption "shell module";
+  options.local.caelestia = {
+    enable = lib.mkEnableOption "Caelestia shell application";
   };
 
   config = lib.mkIf cfg.enable {

@@ -456,106 +456,6 @@ true
 
 
 
-## local\.gitSync\.enable
-
-
-
-Whether to enable Automated git sync \.
-
-
-
-*Type:*
-boolean
-
-
-
-*Default:*
-
-```nix
-false
-```
-
-
-
-*Example:*
-
-```nix
-true
-```
-
-
-
-## local\.gitSync\.interval
-
-
-
-How often to pull changes
-
-
-
-*Type:*
-string
-
-
-
-*Default:*
-
-```nix
-"30m"
-```
-
-
-
-## local\.maintenance\.enable
-
-
-
-Whether to enable maintenance module\.
-
-
-
-*Type:*
-boolean
-
-
-
-*Default:*
-
-```nix
-false
-```
-
-
-
-*Example:*
-
-```nix
-true
-```
-
-
-
-## local\.maintenance\.autoUpgrade
-
-
-
-Whether to automatically pull from git and upgrade\.
-
-
-
-*Type:*
-boolean
-
-
-
-*Default:*
-
-```nix
-false
-```
-
-
-
 ## local\.network\.enable
 
 
@@ -635,56 +535,6 @@ true
 
 
 
-## local\.repoManager\.enable
-
-
-
-Whether to enable Manage /etc/nixos\.
-
-
-
-*Type:*
-boolean
-
-
-
-*Default:*
-
-```nix
-false
-```
-
-
-
-*Example:*
-
-```nix
-true
-```
-
-
-
-## local\.repoManager\.editorGroup
-
-
-
-Group that has write access to the /etc/nixos repo
-
-
-
-*Type:*
-string
-
-
-
-*Default:*
-
-```nix
-"wheel"
-```
-
-
-
 ## local\.secrets\.enable
 
 
@@ -751,7 +601,7 @@ absolute path
 *Default:*
 
 ```nix
-/nix/store/hzj7ils0afd03ymld21n5zb72v6yh1yr-source/secrets/secrets.yaml
+/nix/store/kvabd5grhcyj54wh3i7kqa8lzb3sykb8-source/secrets/secrets.yaml
 ```
 
 
@@ -810,7 +660,7 @@ string
 
 
 
-Whether to enable Enable basic settings\.
+Whether to enable Basic system and Nix settings\.
 
 
 

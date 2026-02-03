@@ -28,7 +28,7 @@ in
       '')
     ];
     sops = {
-      age.sshKeyPaths = [ "/home/tod/.ssh/id_sops" ];
+      age.sshKeyPaths = [ "${config.home.homeDirectory}/.ssh/id_sops" ];
       defaultSopsFile = cfg.sopsFile;
       secrets = lib.genAttrs cfg.keys
         (name: {

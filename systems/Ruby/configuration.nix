@@ -41,14 +41,18 @@
       ];
       backupLocation = "/mnt/zima/Backups";
     };
-    maintenance = {
+    dotfiles = {
       enable = true;
-      autoUpgrade = true;
+      maintenance = {
+        enable = true;
+        autoUpgrade = true;
+      };
+      repo.enable = true;
+      sync.enable = true;
     };
     userManager.enable = true;
-    repoManager.enable = true;
-    gitSync.enable = true;
     settings.enable = true;
+    localization.enable = true;
     network = {
       enable = true;
       useNetworkManager = true;

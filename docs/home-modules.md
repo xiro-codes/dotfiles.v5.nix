@@ -520,36 +520,7 @@ absolute path
 *Default:*
 
 ```nix
-/nix/store/hzj7ils0afd03ymld21n5zb72v6yh1yr-source/secrets/secrets.yaml
-```
-
-
-
-## local\.shell\.enable
-
-
-
-Whether to enable shell module\.
-
-
-
-*Type:*
-boolean
-
-
-
-*Default:*
-
-```nix
-false
-```
-
-
-
-*Example:*
-
-```nix
-true
+/nix/store/kvabd5grhcyj54wh3i7kqa8lzb3sykb8-source/secrets/secrets.yaml
 ```
 
 
@@ -632,35 +603,6 @@ string
 
 ```nix
 "~/.ssh/id_ed25519"
-```
-
-
-
-## local\.theming\.enable
-
-
-
-Whether to enable theming module\.
-
-
-
-*Type:*
-boolean
-
-
-
-*Default:*
-
-```nix
-false
-```
-
-
-
-*Example:*
-
-```nix
-true
 ```
 
 

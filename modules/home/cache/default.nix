@@ -44,16 +44,8 @@ in
         WantedBy = [ "graphical-session.target" ];
       };
     };
-    nix.settings = {
-      trusted-users = [ "@wheel" ];
-      substituters = [
-        cfg.serverAddress
-        "https://cache.nixos.org"
-      ];
-      trusted-public-keys = [
-        cfg.publicKey
-        "cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY="
-      ];
-    };
+    
+    # Note: Cache substituters should be configured at the system level
+    # See modules/system/cache for Nix cache configuration
   };
 }

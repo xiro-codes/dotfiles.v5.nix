@@ -3,8 +3,12 @@ let
   cfg = config.local.settings;
 in
 {
-  options.local.settings.enable = lib.mkEnableOption "Enable basic settings";
+  options.local.settings = {
+    enable = lib.mkEnableOption "Basic system and Nix settings";
+  };
+  
   config = lib.mkIf cfg.enable {
+    # Nix configuration
     nix.settings = {
       accept-flake-config = true;
       experimental-features = [ "nix-command" "flakes" ];
@@ -12,24 +16,16 @@ in
     nix.extraOptions = ''
       builders-use-substitutes = true
     '';
+    
+    # Allow unfree packages
     nixpkgs.config.allowUnfree = true;
-    time.timeZone = "America/Chicago";
-
-    i18n.defaultLocale = "en_US.UTF-8";
-    i18n.extraLocaleSettings = {
-      LC_ADDRESS = "en_US.UTF-8";
-      LC_IDENTIFICATION = "en_US.UTF-8";
-      LC_MEASUREMENT = "en_US.UTF-8";
-      LC_MONETARY = "en_US.UTF-8";
-      LC_NAME = "en_US.UTF-8";
-      LC_NUMERIC = "en_US.UTF-8";
-      LC_PAPER = "en_US.UTF-8";
-      LC_TELEPHONE = "en_US.UTF-8";
-      LC_TIME = "en_US.UTF-8";
-    };
+    
+    # Basic system packages
     environment.systemPackages = with pkgs; [
       neovim
     ];
+    
+    # Ignore ISO 9660 recovery partitions from automount
     services.udev.extraRules = ''
       ENV{ID_FS_UUID}=="1980-01-01-00-00-00-00", ENV{UDISKS_IGNORE}="1"
     '';
