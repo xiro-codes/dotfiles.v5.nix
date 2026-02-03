@@ -9,6 +9,7 @@ let
   modulesLib = import ./modules.nix { inherit fs; };
   templatesLib = import ./templates.nix { inherit fs; };
   usersLib = import ./users.nix { inherit lib; };
+  shellsLib = import ./shells.nix { inherit lib fs paths; };
 
   # Discover all components
   hostToUsersMap = usersLib.getUserHostMap paths.home;
@@ -50,6 +51,7 @@ in
     { pkgs, system, ... }:
     {
       packages = packagesLib.mkPackages paths.packages system;
+      devShells = shellsLib.mkShells { inherit pkgs inputs; };
     };
 
   flake = {
