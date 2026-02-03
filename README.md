@@ -11,6 +11,7 @@ This repository utilizes a modular discovery engine (parts/discovery/) that scan
 * **Home Modules**: Found in /modules/home. These are automatically exported for use within Home Manager.
 * **Home Configurations**: Standalone Home Manager configurations are generated from user@hostname.nix files in /home.
 * **Packages**: Custom packages in /packages are automatically built for the current system.
+* **Dev Shells**: Every directory in /shells is automatically exported as a devShell (accessible via `nix develop .#<name>`).
 * **Deploy Nodes**: Systems with a deploy.nix file are automatically added to deploy-rs configuration.
 * **Templates**: Project templates in /templates are automatically exported.
 
@@ -124,9 +125,9 @@ modules/
     home/           # Reusable Home Manager modules
     system/         # Reusable NixOS modules
 packages/           # Custom Nix packages
-parts/              # Flake logic (Discovery engine)
+parts/              # Flake logic (Discovery engine, docs, shells)
 secrets/            # SOPS-encrypted secrets
-shells/             # Development shells
+shells/             # Development shells (auto-discovered)
 systems/            # Host-specific configurations (Ruby, Sapphire)
 templates/          # Scaffolding for new modules and projects
 ```

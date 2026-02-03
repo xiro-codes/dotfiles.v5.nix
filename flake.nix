@@ -36,14 +36,7 @@
       imports = [
         ./parts/discovery
         ./parts/docs.nix
+        ./parts/shells.nix
       ];
-
-      perSystem =
-        { config, pkgs, system, ... }:
-        {
-          devShells = {
-            default = pkgs.callPackage ./shells/default/default.nix { inherit pkgs inputs; };
-          };
-        };
     };
 }

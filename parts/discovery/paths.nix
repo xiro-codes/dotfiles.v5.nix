@@ -5,4 +5,5 @@
   homeModules = ../../modules/home;
   packages = ../../packages;
   templates = ../../templates;
+  shells = ../../shells;
 }
