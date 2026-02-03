@@ -18,12 +18,6 @@ in
       discord
     ];
 
-    local = {
-      mako.enable = false;
-      waybar.enable = false;
-      hyprlauncher.enable = false;
-      shell.enable = true;
-    };
 
     wayland.windowManager.hyprland = {
       enable = true;

@@ -1,10 +1,10 @@
-{
-  inputs,
-  lib,
-  paths,
-  hostToUsersMap,
-  discoveredSystemModules,
-  discoveredHomeModules,
+{ inputs
+, lib
+, paths
+, hostToUsersMap
+, discoveredSystemModules
+, discoveredHomeModules
+,
 }:
 let
   inherit (builtins)
@@ -52,7 +52,6 @@ in
                     inputs.caelestia-shell.homeManagerModules.default
                     inputs.nixvim.homeModules.nixvim
                     inputs.stylix.homeModules.stylix
-
                   ];
                   users = listToAttrs (
                     map

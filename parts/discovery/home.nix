@@ -1,9 +1,9 @@
-{
-  inputs,
-  lib,
-  paths,
-  hostToUsersMap,
-  discoveredHomeModules,
+{ inputs
+, lib
+, paths
+, hostToUsersMap
+, discoveredHomeModules
+,
 }:
 let
   inherit (builtins)
