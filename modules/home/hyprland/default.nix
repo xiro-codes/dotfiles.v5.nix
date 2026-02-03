@@ -11,14 +11,12 @@ in
   config = lib.mkIf cfg.enable {
     home.file.".wallpaper".source = ./gruvbox.png;
 
-    home.packages = (with inputs.self.packages.x86_64-linux; [
-      recording-toggle
-    ]) ++ (with pkgs; [
+    home.packages = with pkgs; [
       wl-clipboard
       cliphist
       jq
       discord
-    ]);
+    ];
 
     local = {
       mako.enable = false;

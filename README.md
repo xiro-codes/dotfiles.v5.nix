@@ -4,13 +4,15 @@ A declarative, multi-host NixOS configuration built with [Nix Flakes](https://ww
 
 ## **🚀 Architecture: Automated Discovery**
 
-This repository utilizes a custom discovery engine (parts/discovery.v2.nix) that scans the file system to build the flake. This eliminates the need to manually register new files in flake.nix.
+This repository utilizes a modular discovery engine (parts/discovery/) that scans the file system to build the flake. This eliminates the need to manually register new files in flake.nix.
 
 * **Systems**: Every directory in /systems is automatically converted into a nixosConfiguration.
 * **System Modules**: Found in /modules/system. Any directory with a default.nix is automatically exported as a NixOS module.
 * **Home Modules**: Found in /modules/home. These are automatically exported for use within Home Manager.
+* **Home Configurations**: Standalone Home Manager configurations are generated from user@hostname.nix files in /home.
 * **Packages**: Custom packages in /packages are automatically built for the current system.
-* **User Mapping**: Home Manager is applied to users based on the naming convention user@hostname.nix inside the /home directory.
+* **Deploy Nodes**: Systems with a deploy.nix file are automatically added to deploy-rs configuration.
+* **Templates**: Project templates in /templates are automatically exported.
 
 ## **💻 Managed Systems**
 
@@ -25,7 +27,7 @@ This repository utilizes a custom discovery engine (parts/discovery.v2.nix) that
 
 * **Role**: Secondary Workstation
 * **IP**: 10.0.0.67
-* **Bootloader**: UEFI with **systemd-boot**
+* **Bootloader**: UEFI with **Limine**
 * **Key Features**: Remote mount configuration connecting to a central server (10.0.0.65).
 
 ## **🛠️ Key Modules & Features**
@@ -45,15 +47,14 @@ The justfile provides several helpers for system administration:
 | just | List all available commands |
 
 ### **Life (Local System Management)**
-| just switch \<host\> | Switch local system configuration using nh |
-| just boot \<host\> | Set next boot generation using nh |
-| just rebuild \<host\> | Standard nixos-rebuild switch (impure) |
+| just switch | Switch local system configuration using nh |
+| just boot | Set next boot generation using nh |
+| just rebuild | Standard nixos-rebuild switch (impure) |
 
 ### **Deploy (Remote Management)**
 | just deploy \<host\> | Deploy to a remote node using deploy-rs |
 | just deploy-all | Deploy all nodes in the flake |
 | just check | Safety check before deploying (eval and dry-run) |
-| just status | Check current health/generation of all nodes |
 | just gc \<host\> | Garbage collect a remote node to free space |
 
 ### **Secrets**

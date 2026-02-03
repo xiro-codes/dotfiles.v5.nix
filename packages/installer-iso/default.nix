@@ -14,11 +14,35 @@
         "${inputs.nixpkgs}/nixos/modules/installer/cd-dvd/installation-cd-minimal.nix"
       ];
       users.motd = ''
-        Custom NixOS Installer
-        1. git clone http://10.0.0.65:3002/xiro/dotfiles.nix.git
-        2. cd dotfiles.nix
-        3. nix develop
-        4. just install HOSTNAME
+        
+        ╔═══════════════════════════════════════════════════════════════╗
+        ║                                                               ║
+        ║           🚀 NixOS Custom Installer Environment 🚀            ║
+        ║                                                               ║
+        ╚═══════════════════════════════════════════════════════════════╝
+        
+        📦 Installation Steps:
+        ────────────────────────────────────────────────────────────────
+        
+        1️⃣  Clone the dotfiles repository:
+            git clone http://10.0.0.65:3002/xiro/dotfiles.nix.git
+        
+        2️⃣  Enter the repository:
+            cd dotfiles.nix
+        
+        3️⃣  Enter development shell:
+            nix develop
+        
+        4️⃣  Install system:
+            just install <HOSTNAME>
+        
+        ────────────────────────────────────────────────────────────────
+        💡 Tips:
+           • Run 'fastfetch' or 'neofetch' to see system info
+           • Available hosts: Ruby, Sapphire
+           • Use 'just rescue' for emergency system recovery
+        ────────────────────────────────────────────────────────────────
+        
       '';
 
       environment.etc."dotfiles-src".source = builtins.path {
@@ -32,8 +56,18 @@
           inputs.nixpkgs.legacyPackages.x86_64-linux.git
           inputs.nixpkgs.legacyPackages.x86_64-linux.parted
           inputs.nixpkgs.legacyPackages.x86_64-linux.util-linux
-          inputs.self.packages.x86_64-linux.install-system
+          inputs.nixpkgs.legacyPackages.x86_64-linux.fastfetch
+          inputs.nixpkgs.legacyPackages.x86_64-linux.neofetch
         ];
+
+      fonts = {
+        enableDefaultPackages = true;
+        packages = with inputs.nixpkgs.legacyPackages.x86_64-linux; [
+          noto-fonts
+          noto-fonts-emoji
+          noto-fonts-cjk-sans
+        ];
+      };
       nixpkgs.config.allowUnfree = true;
 
       networking.hostName = "installer";
