@@ -7,17 +7,6 @@
 let
   cfg = config.local.cache-server;
   hostsCfg = config.local.hosts;
-  
-  # Helper to get current host address
-  currentAddress = 
-    if hostsCfg.useAvahi
-    then "${config.networking.hostName}.local"
-    else if builtins.hasAttr config.networking.hostName hostsCfg
-         then hostsCfg.${config.networking.hostName}
-         else config.networking.hostName;
-  
-  # Construct default server URL
-  defaultServerUrl = "http://${currentAddress}:${toString cfg.port}";
 in
 {
   options.local.cache-server = {
@@ -31,7 +20,7 @@ in
 
     serverUrl = lib.mkOption {
       type = lib.types.str;
-      default = defaultServerUrl;
+      default = "http://localhost:${toString cfg.port}";
       description = "Server URL for cache server (auto-configured based on Avahi settings)";
     };
 

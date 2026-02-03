@@ -7,18 +7,6 @@
 let
   cfg = config.local.gitea;
   hostsCfg = config.local.hosts;
-  
-  # Helper to get current host address
-  currentAddress = 
-    if hostsCfg.useAvahi
-    then "${config.networking.hostName}.local"
-    else if builtins.hasAttr config.networking.hostName hostsCfg
-         then hostsCfg.${config.networking.hostName}
-         else config.networking.hostName;
-  
-  # Construct default values
-  defaultDomain = currentAddress;
-  defaultRootUrl = "http://${currentAddress}:${toString cfg.port}/";
 in
 {
   options.local.gitea = {
@@ -38,14 +26,14 @@ in
 
     domain = lib.mkOption {
       type = lib.types.str;
-      default = defaultDomain;
+      default = "localhost";
       example = "git.example.com";
       description = "Domain name for Gitea instance";
     };
 
     rootUrl = lib.mkOption {
       type = lib.types.str;
-      default = defaultRootUrl;
+      default = "http://localhost:${toString cfg.port}/";
       example = "https://git.example.com/";
       description = "Root URL for Gitea";
     };

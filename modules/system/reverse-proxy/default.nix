@@ -6,15 +6,6 @@
 
 let
   cfg = config.local.reverse-proxy;
-  hostsCfg = config.local.hosts;
-  
-  # Helper to get current host address
-  currentAddress = 
-    if hostsCfg.useAvahi
-    then "${config.networking.hostName}.local"
-    else if builtins.hasAttr config.networking.hostName hostsCfg
-         then hostsCfg.${config.networking.hostName}
-         else config.networking.hostName;
 in
 {
   options.local.reverse-proxy = {
@@ -35,7 +26,7 @@ in
 
     domain = lib.mkOption {
       type = lib.types.str;
-      default = currentAddress;
+      default = "localhost";
       example = "server.example.com";
       description = "Primary domain name for the reverse proxy";
     };
@@ -103,7 +94,7 @@ in
             mkdir -p $out
             openssl req -x509 -newkey rsa:4096 -sha256 -days 3650 \
               -nodes -keyout $out/key.pem -out $out/cert.pem -subj "/CN=${cfg.domain}" \
-              -addext "subjectAltName=DNS:${cfg.domain},DNS:*.${cfg.domain},IP:${currentAddress}"
+              -addext "subjectAltName=DNS:${cfg.domain},DNS:*.${cfg.domain}"
           '' + "/cert.pem");
         
         sslCertificateKey = lib.mkIf (!cfg.useACME || cfg.acmeEmail == "")
@@ -113,7 +104,7 @@ in
             mkdir -p $out
             openssl req -x509 -newkey rsa:4096 -sha256 -days 3650 \
               -nodes -keyout $out/key.pem -out $out/cert.pem -subj "/CN=${cfg.domain}" \
-              -addext "subjectAltName=DNS:${cfg.domain},DNS:*.${cfg.domain},IP:${currentAddress}"
+              -addext "subjectAltName=DNS:${cfg.domain},DNS:*.${cfg.domain}"
           '' + "/key.pem");
 
         locations = {

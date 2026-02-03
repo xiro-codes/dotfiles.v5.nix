@@ -6,15 +6,6 @@
 
 let
   cfg = config.local.shares;
-  hostsCfg = config.local.hosts;
-  
-  # Helper to get current host address
-  currentAddress = 
-    if hostsCfg.useAvahi
-    then "${config.networking.hostName}.local"
-    else if builtins.hasAttr config.networking.hostName hostsCfg
-         then hostsCfg.${config.networking.hostName}
-         else config.networking.hostName;
   
   # Convert structured definitions to Samba share format
   structuredSambaShares = lib.mapAttrs (name: share: {

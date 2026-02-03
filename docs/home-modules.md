@@ -622,7 +622,7 @@ absolute path
 *Default:*
 
 ```nix
-/nix/store/ik3c7pk4n6xcs5yj95gjrfivchx88b4l-source/secrets/secrets.yaml
+/nix/store/kl5326f1647cay85hgdyy3kk0wykhw1p-source/secrets/secrets.yaml
 ```
 
 

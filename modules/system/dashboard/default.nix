@@ -6,18 +6,7 @@
 
 let
   cfg = config.local.dashboard;
-  hostsCfg = config.local.hosts;
-  
-  # Helper to get current host address
-  currentAddress = 
-    if hostsCfg.useAvahi
-    then "${config.networking.hostName}.local"
-    else if builtins.hasAttr config.networking.hostName hostsCfg
-         then hostsCfg.${config.networking.hostName}
-         else config.networking.hostName;
-  
-  # Current host base URL
-  baseUrl = "http://${currentAddress}";
+  baseUrl = "http://localhost";
 in
 {
   options.local.dashboard = {

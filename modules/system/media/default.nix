@@ -6,15 +6,6 @@
 
 let
   cfg = config.local.media;
-  hostsCfg = config.local.hosts;
-  
-  # Helper to get current host address
-  currentAddress = 
-    if hostsCfg.useAvahi
-    then "${config.networking.hostName}.local"
-    else if builtins.hasAttr config.networking.hostName hostsCfg
-         then hostsCfg.${config.networking.hostName}
-         else config.networking.hostName;
 in
 {
   options.local.media = {
@@ -38,7 +29,7 @@ in
 
       baseUrl = lib.mkOption {
         type = lib.types.str;
-        default = "http://${currentAddress}:${toString config.local.media.jellyfin.port}";
+        default = "http://localhost:${toString config.local.media.jellyfin.port}";
         description = "Base URL for Jellyfin (auto-configured based on Avahi settings)";
       };
 
@@ -73,7 +64,7 @@ in
 
       baseUrl = lib.mkOption {
         type = lib.types.str;
-        default = "http://${currentAddress}:${toString config.local.media.plex.port}";
+        default = "http://localhost:${toString config.local.media.plex.port}";
         description = "Base URL for Plex (auto-configured based on Avahi settings)";
       };
 
@@ -108,7 +99,7 @@ in
 
       baseUrl = lib.mkOption {
         type = lib.types.str;
-        default = "http://${currentAddress}:${toString config.local.media.ersatztv.port}";
+        default = "http://localhost:${toString config.local.media.ersatztv.port}";
         description = "Base URL for ErsatzTV (auto-configured based on Avahi settings)";
       };
 

@@ -6,15 +6,6 @@
 
 let
   cfg = config.local.download;
-  hostsCfg = config.local.hosts;
-  
-  # Helper to get current host address
-  currentAddress = 
-    if hostsCfg.useAvahi
-    then "${config.networking.hostName}.local"
-    else if builtins.hasAttr config.networking.hostName hostsCfg
-         then hostsCfg.${config.networking.hostName}
-         else config.networking.hostName;
 in
 {
   options.local.download = {
@@ -38,7 +29,7 @@ in
 
       baseUrl = lib.mkOption {
         type = lib.types.str;
-        default = "http://${currentAddress}:${toString config.local.download.transmission.port}";
+        default = "http://localhost:${toString config.local.download.transmission.port}";
         description = "Base URL for Transmission (auto-configured based on Avahi settings)";
       };
 
@@ -85,7 +76,7 @@ in
 
       baseUrl = lib.mkOption {
         type = lib.types.str;
-        default = "http://${currentAddress}:${toString config.local.download.pinchflat.port}";
+        default = "http://localhost:${toString config.local.download.pinchflat.port}";
         description = "Base URL for Pinchflat (auto-configured based on Avahi settings)";
       };
 
