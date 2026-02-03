@@ -36,6 +36,7 @@ in
       wallpapers = lib.mkOption {
         type = lib.types.listOf lib.types.path;
         default = [ ];
+        example = lib.literalExpression ''[ ./wallpapers/gruvbox.png ./wallpapers/catppuccin.jpg ]'';
         description = "List of wallpaper paths to preload for Hyprpaper";
       };
     };
@@ -56,6 +57,7 @@ in
       path = lib.mkOption {
         type = lib.types.str;
         default = "/mnt/zima/Music";
+        example = "/home/user/Music";
         description = "Path to the music directory for MPD to serve";
       };
     };
@@ -65,6 +67,7 @@ in
       colorScheme = lib.mkOption {
         type = lib.types.nullOr lib.types.str;
         default = null;
+        example = "gruvbox";
         description = "Color scheme name for Caelestia (e.g., 'gruvbox', 'catppuccin'). If null, uses dynamic wallpaper colors.";
       };
     };

@@ -10,13 +10,15 @@ in
     timeZone = lib.mkOption {
       type = lib.types.str;
       default = "America/Chicago";
-      description = "System timezone";
+      example = "Europe/London";
+      description = "System timezone (use `timedatectl list-timezones` to see available options)";
     };
     
     locale = lib.mkOption {
       type = lib.types.str;
       default = "en_US.UTF-8";
-      description = "Default system locale";
+      example = "en_GB.UTF-8";
+      description = "Default system locale for language, formatting, and character encoding";
     };
   };
 

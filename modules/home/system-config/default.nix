@@ -13,11 +13,13 @@ in
       serverAddress = lib.mkOption {
         type = lib.types.str;
         default = "http://10.0.0.65:8080/main";
+        example = "http://cache.example.com:8080/nixos";
         description = "Attic binary cache server URL";
       };
       publicKey = lib.mkOption {
         type = lib.types.str;
         default = "main:CqlQUu3twINKw6EvYnbk=";
+        example = "cache:AbCdEf1234567890+GhIjKlMnOpQrStUvWxYz==";
         description = "Public key for cache verification";
       };
     };
@@ -28,6 +30,7 @@ in
       masterKeyPath = lib.mkOption {
         type = lib.types.str;
         default = "~/.ssh/id_ed25519";
+        example = "~/.ssh/id_rsa";
         description = "Path to the SSH master private key file";
       };
       hosts = lib.mkOption {
@@ -44,61 +47,76 @@ in
       sopsFile = lib.mkOption {
         type = lib.types.path;
         default = ../../../secrets/secrets.yaml;
+        example = lib.literalExpression "../secrets/user-secrets.yaml";
         description = "Path to the encrypted yaml file";
       };
       keys = lib.mkOption {
         type = lib.types.listOf lib.types.str;
         default = [ ];
+        example = [ "github/token" "api/openai" "passwords/vpn" ];
         description = "List sops keys to automatically map to $HOME/.secrets/";
       };
     };
 
     # System variables
     variables = {
-      enable = lib.mkEnableOption "System variables";
+      enable = lib.mkOption {
+        type = lib.types.bool;
+        default = true;
+        description = "Enable system environment variables for common tools and applications";
+      };
       editor = lib.mkOption {
         type = lib.types.str;
         default = "nvim";
+        example = "vim";
         description = "Default terminal text editor";
       };
       guiEditor = lib.mkOption {
         type = lib.types.str;
         default = "neovide";
+        example = "code";
         description = "Default GUI text editor";
       };
       fileManager = lib.mkOption {
         type = lib.types.str;
         default = "ranger";
+        example = "lf";
         description = "Default terminal file manager";
       };
       guiFileManager = lib.mkOption {
         type = lib.types.str;
         default = "pcmanfm";
+        example = "nautilus";
         description = "Default GUI file manager";
       };
       terminal = lib.mkOption {
         type = lib.types.str;
         default = "kitty";
+        example = "alacritty";
         description = "Default terminal emulator";
       };
       launcher = lib.mkOption {
         type = lib.types.str;
         default = "rofi -show drun";
+        example = "wofi --show drun";
         description = "Default application launcher command";
       };
       wallpaper = lib.mkOption {
         type = lib.types.str;
         default = "hyprpaper";
+        example = "swaybg";
         description = "Default wallpaper daemon or manager";
       };
       browser = lib.mkOption {
         type = lib.types.str;
         default = "firefox";
+        example = "chromium";
         description = "Default web browser";
       };
       statusBar = lib.mkOption {
         type = lib.types.str;
         default = "hyprpanel";
+        example = "waybar";
         description = "Default status bar or panel application";
       };
     };

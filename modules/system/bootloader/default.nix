@@ -18,7 +18,8 @@ in
     device = lib.mkOption {
       type = lib.types.str;
       default = "";
-      description = "Device for BIOS bootloader installation (e.g., /dev/sda)";
+      example = "/dev/sda";
+      description = "Device for BIOS bootloader installation (required for BIOS mode)";
     };
     addRecoveryOption = lib.mkOption {
       type = lib.types.bool;
@@ -28,7 +29,8 @@ in
     recoveryUUID = lib.mkOption {
       type = lib.types.str;
       default = "0d9dddd8-9511-4101-9177-0a80cfbeb047";
-      description = "UUID of recovery partition for boot menu entry";
+      example = "12345678-1234-1234-1234-123456789abc";
+      description = "UUID of recovery partition for boot menu entry (use blkid to find partition UUID)";
     };
   };
 

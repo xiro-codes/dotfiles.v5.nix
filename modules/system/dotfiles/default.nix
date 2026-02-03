@@ -33,7 +33,8 @@ in
       interval = lib.mkOption {
         type = lib.types.str;
         default = "30m";
-        description = "How often to pull changes from git";
+        example = "1h";
+        description = "How often to pull changes from git (systemd time span format: 30m, 1h, 2h, etc.)";
       };
     };
     
@@ -48,7 +49,8 @@ in
       upgradeFlake = lib.mkOption {
         type = lib.types.str;
         default = "git+http://10.0.0.65:3002/xiro/dotfiles.nix.git";
-        description = "Flake URL for auto-upgrade";
+        example = "github:user/dotfiles";
+        description = "Flake URL for system auto-upgrade";
       };
     };
     
@@ -58,7 +60,8 @@ in
       editorGroup = lib.mkOption {
         type = lib.types.str;
         default = "wheel";
-        description = "Group that has write access to the /etc/nixos repo";
+        example = "users";
+        description = "Group that has write access to the /etc/nixos repository";
       };
     };
   };

@@ -8,12 +8,14 @@ in
     sopsFile = lib.mkOption {
       type = lib.types.path;
       default = ../../../secrets/secrets.yaml;
-      description = "Path to the encrypted yaml file";
+      example = lib.literalExpression "../secrets/system-secrets.yaml";
+      description = "Path to the encrypted YAML file containing system secrets";
     };
     keys = lib.mkOption {
       type = lib.types.listOf lib.types.str;
       default = [ ];
-      description = "List of sops keys to automatically map to /.secrets/";
+      example = [ "zima_creds" "ssh_pub_ruby/master" "ssh_pub_sapphire/master" ];
+      description = "List of sops keys to automatically map to /run/secrets/ for system-wide access";
     };
   };
   config = lib.mkIf cfg.enable {

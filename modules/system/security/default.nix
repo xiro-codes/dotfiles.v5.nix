@@ -9,7 +9,8 @@ in
     adminUser = lib.mkOption {
       type = lib.types.str;
       default = "tod";
-      description = "The main admin user to grant passwordless access to.";
+      example = "admin";
+      description = "The main admin user to grant passwordless sudo/doas access and SSH key authorization";
     };
   };
 

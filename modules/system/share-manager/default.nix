@@ -53,12 +53,14 @@ in
     secretName = lib.mkOption {
       type = lib.types.str;
       default = "zima_creds";
-      description = "Name of sops secret containing SMB credentials";
+      example = "smb_credentials";
+      description = "Name of sops secret containing SMB credentials (username=xxx and password=xxx format)";
     };
     serverIp = mkOption {
       type = types.str;
       default = "10.0.0.65";
-      description = "IP address of SMB/CIFS server";
+      example = "192.168.1.100";
+      description = "IP address or hostname of SMB/CIFS server";
     };
     mounts = mkOption {
       type = types.listOf (
@@ -66,32 +68,39 @@ in
           options = {
             shareName = mkOption {
               type = types.str;
-              description = "Name of the share on ZimaOS";
+              example = "Media";
+              description = "Name of the share on the SMB server";
             };
             localPath = mkOption {
               type = types.str;
-              description = "Local mount point";
+              example = "/mnt/media";
+              description = "Local mount point path";
             };
             noShow = mkOption {
               type = types.bool;
-              description = "Hide from file manager";
               default = false;
+              description = "Whether to hide this mount from file manager";
             };
             noAuth = mkOption {
               type = types.bool;
-              description = "disable auth";
               default = false;
+              description = "Whether to mount as guest without authentication";
             };
             options = mkOption {
               type = types.listOf types.str;
-              description = "Extra options to add to the defaults";
               default = [ ];
+              example = [ "ro" "vers=3.0" ];
+              description = "Additional mount options to append to defaults";
             };
           };
         }
       );
       default = [ ];
-      description = "List of SMB/CIFS shares to mount automatically";
+      example = lib.literalExpression ''[
+        { shareName = "Media"; localPath = "/mnt/media"; }
+        { shareName = "Backups"; localPath = "/mnt/backups"; noShow = true; }
+      ]'';
+      description = "List of SMB/CIFS shares to mount automatically with systemd automount";
     };
   };
 

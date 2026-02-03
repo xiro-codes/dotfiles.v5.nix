@@ -29,17 +29,20 @@ in
     backupLocation = lib.mkOption {
       type = lib.types.str;
       default = "";
-      description = "Base path for borg backup repository";
+      example = "/mnt/backups";
+      description = "Base path for borg backup repository (must be a mounted filesystem)";
     };
     paths = lib.mkOption {
       type = lib.types.listOf lib.types.str;
       default = [ ];
-      description = "Additional paths to backup beyond auto-discovered user folders";
+      example = [ "/etc/nixos" "/var/lib/important" ];
+      description = "Additional paths to backup beyond auto-discovered user folders (Projects, Documents, Pictures, Videos, .ssh)";
     };
     exclude = lib.mkOption {
       type = lib.types.listOf lib.types.str;
       default = [ ];
-      description = "Patterns to exclude from backups (e.g., node_modules, target)";
+      example = [ "*/node_modules" "*/target" "*/.cache" "*.tmp" ];
+      description = "Glob patterns to exclude from backups";
     };
   };
 

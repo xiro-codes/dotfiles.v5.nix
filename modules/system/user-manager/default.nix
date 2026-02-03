@@ -10,7 +10,8 @@ in
     extraGroups = lib.mkOption {
       type = lib.types.listOf lib.types.str;
       default = [ "wheel" "networkmanager" "input" ];
-      description = "Groups to assign to all auto-discovered users on this host.";
+      example = [ "wheel" "networkmanager" "input" "video" "audio" "docker" ];
+      description = "Groups to assign to all auto-discovered users on this host";
     };
   };
   config = {
