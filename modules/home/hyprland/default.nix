@@ -9,8 +9,6 @@ in
     enable = lib.mkEnableOption "Functional Hyprland setup.";
   };
   config = lib.mkIf cfg.enable {
-    home.file.".wallpaper".source = ./gruvbox.png;
-
     home.packages = with pkgs; [
       wl-clipboard
       cliphist
@@ -59,6 +57,8 @@ in
           "[workspace 8 silent] discord"
           "[workspace 7 silent] plex-desktop"
           "wl-paste --type text --watch cliphist store"
+        ] ++ lib.optionals config.local.caelestia.enable [
+          "caelestia wallpaper set $HOME/.wallpaper"
         ];
         windowrulesv2 = [
           "workspace 7, initialClass:^(tv.plex.Plex)$"
