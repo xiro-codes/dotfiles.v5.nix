@@ -1,4 +1,4 @@
-{ pkgs, lib, repoPath ? "/etc/nixos" }:
+{ pkgs, lib, repoPath ? "/etc/nixos", ... }:
 
 pkgs.writeShellScriptBin "git-pull-sync" ''
   cd ${repoPath}
