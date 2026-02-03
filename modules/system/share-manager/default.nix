@@ -73,8 +73,8 @@ in
             };
             localPath = mkOption {
               type = types.str;
-              example = "/mnt/media";
-              description = "Local mount point path";
+              example = "/media/Media";
+              description = "Local mount point path (common locations: /media/, /mnt/, or /run/media/)";
             };
             noShow = mkOption {
               type = types.bool;
@@ -97,8 +97,8 @@ in
       );
       default = [ ];
       example = lib.literalExpression ''[
-        { shareName = "Media"; localPath = "/mnt/media"; }
-        { shareName = "Backups"; localPath = "/mnt/backups"; noShow = true; }
+        { shareName = "Media"; localPath = "/media/Media"; }
+        { shareName = "Backups"; localPath = "/media/Backups"; noShow = true; }
       ]'';
       description = "List of SMB/CIFS shares to mount automatically with systemd automount";
     };
