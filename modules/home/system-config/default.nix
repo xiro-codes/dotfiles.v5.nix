@@ -1,8 +1,9 @@
-{ config, lib, pkgs, ... }:
+{ config, lib, pkgs, inputs, ... }:
 
 let
   cfg = config.local;
   mkStrOpt = default: lib.mkOption { type = lib.types.str; inherit default; };
+  userSops = inputs.self.packages.${pkgs.stdenv.hostPlatform.system}.user-sops;
 in
 {
   options.local = {
@@ -136,7 +137,7 @@ in
           PartOf = [ "graphical-session.target" ];
         };
         Service = {
-          ExecStart = "${pkgs.attic-client}/bin/attic watch-store main";
+          ExecStart = "${lib.getExe' pkgs.attic-client "attic"} watch-store main";
           Restart = "always";
           RestartSec = 5;
         };
@@ -183,15 +184,8 @@ in
 
     # Secrets
     (lib.mkIf cfg.secrets.enable {
-      home.packages = with pkgs; [
-        (writeShellScriptBin "user-sops" ''
-          export SOPS_AGE_KEY=$(${lib.getExe ssh-to-age} -private-key -i $HOME/.ssh/id_sops)
-          if [ -z "$SOPS_AGE_KEY" ]; then
-            echo "Error: Could not derive Age key from $HOME/.ssh/id_sops"
-            exit 1
-          fi
-          exec ${lib.getExe sops} "$@"
-        '')
+      home.packages = [
+        userSops
       ];
       sops = {
         age.sshKeyPaths = [ "${config.home.homeDirectory}/.ssh/id_sops" ];

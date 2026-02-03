@@ -1,27 +1,9 @@
-{ config, lib, pkgs, currentHostUsers, ... }:
+{ config, lib, pkgs, inputs, currentHostUsers, ... }:
 
 let
   cfg = config.local.dotfiles;
   repoPath = "/etc/nixos";
-  
-  syncScript = pkgs.writeShellScriptBin "git-pull-sync" ''
-    cd ${repoPath}
-    
-    # Check if the directory is a git repo
-    if [ ! -d .git ]; then
-      echo "Not a git repository: ${repoPath}"
-      exit 0
-    fi
-
-    # Check for uncommitted changes
-    if ! ${pkgs.git}/bin/git diff-index --quiet HEAD --; then
-      echo "Local changes detected in ${repoPath}. Skipping auto-pull to avoid conflicts."
-      exit 0
-    fi
-
-    echo "No local changes. Attempting to pull from remote origin..."
-    ${pkgs.git}/bin/git pull origin main || ${pkgs.git}/bin/git pull origin master
-  '';
+  gitPullSync = inputs.self.packages.${pkgs.stdenv.hostPlatform.system}.git-pull-sync;
 in
 {
   options.local.dotfiles = {
@@ -88,7 +70,7 @@ in
       serviceConfig = {
         Type = "oneshot";
         User = "root";
-        ExecStart = "${lib.getExe syncScript}";
+        ExecStart = "${lib.getExe gitPullSync}";
       };
     };
     
@@ -127,7 +109,7 @@ in
       description = "Notify user of system upgrade";
       serviceConfig.Type = "oneshot";
       script = ''
-        ${pkgs.libnotify}/bin/notify-send "NixOS" "System was successfully upgraded and optimized."
+        ${lib.getExe' pkgs.libnotify "notify-send"} "NixOS" "System was successfully upgraded and optimized."
       '';
     };
     
