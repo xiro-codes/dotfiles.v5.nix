@@ -68,5 +68,6 @@
     libnotify
     firefox
     discord
+    warp-terminal
   ] ++ (with inputs.self.packages.${pkgs.stdenv.hostPlatform.system}; [ ai-commit ]);
 }

@@ -43,13 +43,41 @@ The justfile provides several helpers for system administration:
 | Command | Action |
 | :---- | :---- |
 | just | List all available commands |
+
+### **Life (Local System Management)**
 | just switch \<host\> | Switch local system configuration using nh |
-| just deploy \<host\> | Deploy to a remote node using deploy-rs |
+| just boot \<host\> | Set next boot generation using nh |
 | just rebuild \<host\> | Standard nixos-rebuild switch (impure) |
-| just edit-secrets | Edit encrypted SOPS secrets |
-| just run-test | Build and launch the custom Installer ISO in QEMU |
-| just init-undo | Initialize local .undo\_dir for Nixvim persistent undo |
+
+### **Deploy (Remote Management)**
+| just deploy \<host\> | Deploy to a remote node using deploy-rs |
+| just deploy-all | Deploy all nodes in the flake |
+| just check | Safety check before deploying (eval and dry-run) |
+| just status | Check current health/generation of all nodes |
 | just gc \<host\> | Garbage collect a remote node to free space |
+
+### **Secrets**
+| just edit-secrets | Edit encrypted SOPS secrets |
+| just update-keys | Update system keys |
+
+### **Backups**
+| just init-backup | Initialize borg backup repository |
+| just run-backup | Run borg backup manually |
+| just mount-backup \<host\> | Mount backup archive to /.recovery |
+| just umount-backup | Unmount backup archive |
+| just check-timer | Check when next backup is scheduled |
+| just list-backups | Show all current backups |
+
+### **Install**
+| just install \<host\> | Install a system from scratch using disko |
+| just rescue | Quick fix for a borked system (assumes std labels) |
+| just bake-recovery | Burn a new ISO to the recovery partition |
+
+### **Dev**
+| just run-test | Build and launch the custom Installer ISO in QEMU |
+| just clean-test | Clear the test environment |
+| just init-undo | Initialize local .undo\_dir for Nixvim persistent undo |
+| just clear-undos | Clear ephemeral undo directory for current repo |
 
 ## **💿 Custom Installer**
 
