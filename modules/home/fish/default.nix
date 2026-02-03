@@ -37,7 +37,7 @@ in
         ps = "procs";
         man = "tldr";
         ping = "gping";
-        dig = "dog";
+        #dig = "dog";
 
       };
     };

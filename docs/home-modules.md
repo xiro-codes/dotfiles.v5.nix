@@ -96,6 +96,35 @@ true
 
 
 
+## local\.caelestia\.enable
+
+
+
+Whether to enable Caelestia shell application\.
+
+
+
+*Type:*
+boolean
+
+
+
+*Default:*
+
+```nix
+false
+```
+
+
+
+*Example:*
+
+```nix
+true
+```
+
+
+
 ## local\.fish\.enable
 
 
@@ -520,7 +549,7 @@ absolute path
 *Default:*
 
 ```nix
-/nix/store/kvabd5grhcyj54wh3i7kqa8lzb3sykb8-source/secrets/secrets.yaml
+/nix/store/dcxmrmv8zfm46ifbpa1937r3qw16x0xm-source/secrets/secrets.yaml
 ```
 
 
@@ -603,6 +632,35 @@ string
 
 ```nix
 "~/.ssh/id_ed25519"
+```
+
+
+
+## local\.stylix\.enable
+
+
+
+Whether to enable Stylix theming system\.
+
+
+
+*Type:*
+boolean
+
+
+
+*Default:*
+
+```nix
+false
+```
+
+
+
+*Example:*
+
+```nix
+true
 ```
 
 

@@ -433,6 +433,206 @@ false
 
 
 
+## local\.dotfiles\.enable
+
+
+
+Whether to enable Dotfiles management\.
+
+
+
+*Type:*
+boolean
+
+
+
+*Default:*
+
+```nix
+false
+```
+
+
+
+*Example:*
+
+```nix
+true
+```
+
+
+
+## local\.dotfiles\.maintenance\.enable
+
+
+
+Whether to enable System maintenance (GC and optimization)\.
+
+
+
+*Type:*
+boolean
+
+
+
+*Default:*
+
+```nix
+false
+```
+
+
+
+*Example:*
+
+```nix
+true
+```
+
+
+
+## local\.dotfiles\.maintenance\.autoUpgrade
+
+
+
+Whether to automatically pull from git and upgrade
+
+
+
+*Type:*
+boolean
+
+
+
+*Default:*
+
+```nix
+false
+```
+
+
+
+## local\.dotfiles\.maintenance\.upgradeFlake
+
+
+
+Flake URL for auto-upgrade
+
+
+
+*Type:*
+string
+
+
+
+*Default:*
+
+```nix
+"git+http://10.0.0.65:3002/xiro/dotfiles.nix.git"
+```
+
+
+
+## local\.dotfiles\.repo\.enable
+
+
+
+Whether to enable Manage /etc/nixos permissions and symlinks\.
+
+
+
+*Type:*
+boolean
+
+
+
+*Default:*
+
+```nix
+false
+```
+
+
+
+*Example:*
+
+```nix
+true
+```
+
+
+
+## local\.dotfiles\.repo\.editorGroup
+
+
+
+Group that has write access to the /etc/nixos repo
+
+
+
+*Type:*
+string
+
+
+
+*Default:*
+
+```nix
+"wheel"
+```
+
+
+
+## local\.dotfiles\.sync\.enable
+
+
+
+Whether to enable Automated git sync\.
+
+
+
+*Type:*
+boolean
+
+
+
+*Default:*
+
+```nix
+false
+```
+
+
+
+*Example:*
+
+```nix
+true
+```
+
+
+
+## local\.dotfiles\.sync\.interval
+
+
+
+How often to pull changes from git
+
+
+
+*Type:*
+string
+
+
+
+*Default:*
+
+```nix
+"30m"
+```
+
+
+
 ## local\.gaming\.enable
 
 
@@ -458,6 +658,77 @@ false
 
 ```nix
 true
+```
+
+
+
+## local\.localization\.enable
+
+
+
+Whether to enable Localization settings (timezone and locale)\.
+
+
+
+*Type:*
+boolean
+
+
+
+*Default:*
+
+```nix
+false
+```
+
+
+
+*Example:*
+
+```nix
+true
+```
+
+
+
+## local\.localization\.locale
+
+
+
+Default system locale
+
+
+
+*Type:*
+string
+
+
+
+*Default:*
+
+```nix
+"en_US.UTF-8"
+```
+
+
+
+## local\.localization\.timeZone
+
+
+
+System timezone
+
+
+
+*Type:*
+string
+
+
+
+*Default:*
+
+```nix
+"America/Chicago"
 ```
 
 
@@ -607,7 +878,7 @@ absolute path
 *Default:*
 
 ```nix
-/nix/store/kvabd5grhcyj54wh3i7kqa8lzb3sykb8-source/secrets/secrets.yaml
+/nix/store/dcxmrmv8zfm46ifbpa1937r3qw16x0xm-source/secrets/secrets.yaml
 ```
 
 
@@ -1023,6 +1294,35 @@ string
 
 
 Whether to enable enable systemd service to watch cache\.
+
+
+
+*Type:*
+boolean
+
+
+
+*Default:*
+
+```nix
+false
+```
+
+
+
+*Example:*
+
+```nix
+true
+```
+
+
+
+## local\.caelestia\.enable
+
+
+
+Whether to enable Caelestia shell application\.
 
 
 
@@ -1471,7 +1771,7 @@ absolute path
 *Default:*
 
 ```nix
-/nix/store/kvabd5grhcyj54wh3i7kqa8lzb3sykb8-source/secrets/secrets.yaml
+/nix/store/dcxmrmv8zfm46ifbpa1937r3qw16x0xm-source/secrets/secrets.yaml
 ```
 
 
@@ -1554,6 +1854,35 @@ string
 
 ```nix
 "~/.ssh/id_ed25519"
+```
+
+
+
+## local\.stylix\.enable
+
+
+
+Whether to enable Stylix theming system\.
+
+
+
+*Type:*
+boolean
+
+
+
+*Default:*
+
+```nix
+false
+```
+
+
+
+*Example:*
+
+```nix
+true
 ```
 
 
