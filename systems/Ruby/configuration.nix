@@ -26,7 +26,7 @@
 
     # Additional share mounts for Ruby
     shareManager.mounts = lib.mkAfter [
-      { shareName = "Porn"; localPath = "/mnt/zima/Porn"; noShow = true; }
+      { shareName = "Porn"; localPath = "/media/Porn"; noShow = true; }
     ];
   };
 

@@ -29,7 +29,7 @@ in
     backupLocation = lib.mkOption {
       type = lib.types.str;
       default = "";
-      example = "/mnt/backups";
+      example = "/media/Backups";
       description = "Base path for borg backup repository (must be a mounted filesystem)";
     };
     paths = lib.mkOption {

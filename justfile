@@ -67,7 +67,7 @@ run-backup:
 [group('backups')]
 mount-backup host=HOST:
     sudo mkdir -p /.recovery
-    sudo borg-job-zima-local mount /mnt/zima/Backups/{{host}}/ /.recovery
+    sudo borg-job-zima-local mount /media/Backups/{{host}}/ /.recovery
 
 # Unmount backups
 [group('backups')]

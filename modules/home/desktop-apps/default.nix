@@ -56,7 +56,7 @@ in
       enable = lib.mkEnableOption "MPD (Music Player Daemon) with ncmpcpp client";
       path = lib.mkOption {
         type = lib.types.str;
-        default = "/mnt/zima/Music";
+        default = "/media/Music";
         example = "/home/user/Music";
         description = "Path to the music directory for MPD to serve";
       };
