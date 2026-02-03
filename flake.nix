@@ -38,7 +38,7 @@
     flake-parts.lib.mkFlake { inherit inputs; } {
       systems = [ "x86_64-linux" ];
       imports = [
-        ./parts/discovery.nix
+        ./parts/discovery
       ];
 
       flake = {
