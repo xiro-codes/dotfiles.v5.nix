@@ -439,7 +439,7 @@ string
 *Default:*
 
 ```nix
-"/mnt/zima/Music"
+"/media/Music"
 ```
 
 
@@ -622,7 +622,7 @@ absolute path
 *Default:*
 
 ```nix
-/nix/store/j7i0bhgl08xpzyqngkyw8jb1ws45v8ri-source/secrets/secrets.yaml
+/nix/store/ik3c7pk4n6xcs5yj95gjrfivchx88b4l-source/secrets/secrets.yaml
 ```
 
 

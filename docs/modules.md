@@ -84,7 +84,7 @@ string
 *Example:*
 
 ```nix
-"/mnt/backups"
+"/media/Backups"
 ```
 
 
@@ -1078,7 +1078,7 @@ absolute path
 *Default:*
 
 ```nix
-/nix/store/j7i0bhgl08xpzyqngkyw8jb1ws45v8ri-source/secrets/secrets.yaml
+/nix/store/ik3c7pk4n6xcs5yj95gjrfivchx88b4l-source/secrets/secrets.yaml
 ```
 
 
@@ -1232,8 +1232,8 @@ list of (submodule)
 
 ```nix
 [
-        { shareName = "Media"; localPath = "/mnt/media"; }
-        { shareName = "Backups"; localPath = "/mnt/backups"; noShow = true; }
+        { shareName = "Media"; localPath = "/media/Media"; }
+        { shareName = "Backups"; localPath = "/media/Backups"; noShow = true; }
       ]
 ```
 
@@ -1243,7 +1243,7 @@ list of (submodule)
 
 
 
-Local mount point path
+Local mount point path (common locations: /media/, /mnt/, or /run/media/)
 
 
 
@@ -1255,7 +1255,7 @@ string
 *Example:*
 
 ```nix
-"/mnt/media"
+"/media/Media"
 ```
 
 
@@ -1946,7 +1946,7 @@ string
 *Default:*
 
 ```nix
-"/mnt/zima/Music"
+"/media/Music"
 ```
 
 
@@ -2129,7 +2129,7 @@ absolute path
 *Default:*
 
 ```nix
-/nix/store/j7i0bhgl08xpzyqngkyw8jb1ws45v8ri-source/secrets/secrets.yaml
+/nix/store/ik3c7pk4n6xcs5yj95gjrfivchx88b4l-source/secrets/secrets.yaml
 ```
 
 
