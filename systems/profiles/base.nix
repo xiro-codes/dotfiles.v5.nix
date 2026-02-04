@@ -2,9 +2,9 @@
 { pkgs, lib, ... }:
 {
   local = {
-    secrets.enable = lib.mkForce false;
+    #secrets.enable = lib.mkForce false;
     cache.enable = false;
-    security.enable = false;
+    #security.enable = false;
     dotfiles = {
       enable = true;
       maintenance.enable = true;
@@ -24,8 +24,8 @@
   users.users.root.shell = pkgs.fish;
 
   # Common system packages
-  environment.systemPackages = with pkgs; [ 
-    cliphist 
+  environment.systemPackages = with pkgs; [
+    cliphist
   ];
 
   # Common programs
