@@ -4,7 +4,7 @@
   local = {
     #secrets.enable = lib.mkForce false;
     cache.enable = false;
-    #security.enable = false;
+    security.enable = true;
     dotfiles = {
       enable = true;
       maintenance.enable = true;

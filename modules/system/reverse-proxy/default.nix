@@ -44,7 +44,7 @@ in
             type = lib.types.str;
             description = "URL path for this service (e.g., /gitea)";
           };
-          
+
           target = lib.mkOption {
             type = lib.types.str;
             description = "Backend target (e.g., http://localhost:3001)";
@@ -57,7 +57,7 @@ in
           };
         };
       });
-      default = {};
+      default = { };
       example = lib.literalExpression ''
         {
           gitea = {
@@ -74,7 +74,7 @@ in
     # Nginx reverse proxy
     services.nginx = {
       enable = true;
-      
+
       recommendedProxySettings = true;
       recommendedTlsSettings = true;
       recommendedOptimisation = true;
@@ -82,25 +82,27 @@ in
 
       virtualHosts.${cfg.domain} = {
         forceSSL = true;
-        
+
         # Use ACME if configured and email provided, otherwise self-signed
         enableACME = cfg.useACME && cfg.acmeEmail != "";
-        
+
         # Self-signed certificate if not using ACME
         sslCertificate = lib.mkIf (!cfg.useACME || cfg.acmeEmail == "")
-          (pkgs.runCommand "self-signed-cert" {
-            buildInputs = [ pkgs.openssl ];
-          } ''
+          (pkgs.runCommand "self-signed-cert"
+            {
+              buildInputs = [ pkgs.openssl ];
+            } ''
             mkdir -p $out
             openssl req -x509 -newkey rsa:4096 -sha256 -days 3650 \
               -nodes -keyout $out/key.pem -out $out/cert.pem -subj "/CN=${cfg.domain}" \
               -addext "subjectAltName=DNS:${cfg.domain},DNS:*.${cfg.domain}"
           '' + "/cert.pem");
-        
+
         sslCertificateKey = lib.mkIf (!cfg.useACME || cfg.acmeEmail == "")
-          (pkgs.runCommand "self-signed-cert" {
-            buildInputs = [ pkgs.openssl ];
-          } ''
+          (pkgs.runCommand "self-signed-cert"
+            {
+              buildInputs = [ pkgs.openssl ];
+            } ''
             mkdir -p $out
             openssl req -x509 -newkey rsa:4096 -sha256 -days 3650 \
               -nodes -keyout $out/key.pem -out $out/cert.pem -subj "/CN=${cfg.domain}" \
@@ -108,32 +110,34 @@ in
           '' + "/key.pem");
 
         locations = {
-          "/" = {
+          "/status" = {
             return = "200 'Server is running'";
             extraConfig = ''
               add_header Content-Type text/plain;
             '';
           };
-        } // lib.mapAttrs' (name: service: 
-          lib.nameValuePair service.path {
-            proxyPass = service.target;
-            extraConfig = ''
-              proxy_set_header Host $host;
-              proxy_set_header X-Real-IP $remote_addr;
-              proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-              proxy_set_header X-Forwarded-Proto $scheme;
-              proxy_set_header X-Forwarded-Host $host;
-              proxy_set_header X-Forwarded-Server $host;
+        } // lib.mapAttrs'
+          (name: service:
+            lib.nameValuePair service.path {
+              proxyPass = service.target;
+              extraConfig = ''
+                proxy_set_header Host $host;
+                proxy_set_header X-Real-IP $remote_addr;
+                proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+                proxy_set_header X-Forwarded-Proto $scheme;
+                proxy_set_header X-Forwarded-Host $host;
+                proxy_set_header X-Forwarded-Server $host;
               
-              # WebSocket support
-              proxy_http_version 1.1;
-              proxy_set_header Upgrade $http_upgrade;
-              proxy_set_header Connection "upgrade";
+                # WebSocket support
+                proxy_http_version 1.1;
+                proxy_set_header Upgrade $http_upgrade;
+                proxy_set_header Connection "upgrade";
               
-              ${service.extraConfig}
-            '';
-          }
-        ) cfg.services;
+                ${service.extraConfig}
+              '';
+            }
+          )
+          cfg.services;
       };
     };
 

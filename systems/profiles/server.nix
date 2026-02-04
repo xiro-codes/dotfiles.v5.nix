@@ -56,7 +56,7 @@
       };
 
       dashboard = {
-        path = "/dashboard";
+        path = "/";
         target = "http://localhost:${toString config.local.dashboard.port}";
       };
 
@@ -114,7 +114,7 @@
 
   local.dashboard = {
     enable = true;
-    subPath = "/dashboard";
+    subPath = "/";
     openFirewall = false;
   };
 

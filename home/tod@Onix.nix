@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ inputs, pkgs, ... }:
 {
   imports = [
     #./profiles/workstation.nix
@@ -10,6 +10,7 @@
     ranger.enable = true;
     fonts.enable = false;
     stylix.enable = false;
+    ssh.enable = true;
   };
   programs = {
     home-manager.enable = true;
@@ -29,21 +30,19 @@
       };
     };
   };
-  home.packages = with pkgs; [
+  home.packages = (with pkgs; [
     unzip
     p7zip
     sysstat
     bottom
     duf
     dust
-    cascadia-code
-    libnotify
     bat
     ripgrep
     fd
     procs
     tealdeer
     gping
-  ];
+  ]) ++ (with inputs.self.packages.${pkgs.stdenv.hostPlatform.system};[ ai-commit ]);
   home.stateVersion = "25.11";
 }
