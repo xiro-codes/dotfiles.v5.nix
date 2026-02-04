@@ -43,7 +43,7 @@
         transmission.target = "http://127.0.0.1:${toString config.local.download.transmission.port}/transmission";
 
         pinchflat.path = "/pinchflat";
-        pinchflat.target = "http://127.0.0.1:${toString config.local.download.pinchflat.port}/pinchflat";
+        pinchflat.target = "http://127.0.0.1:${toString config.local.download.pinchflat.port}/";
       };
     };
 
