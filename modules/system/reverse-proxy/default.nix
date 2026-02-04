@@ -6,6 +6,17 @@
 
 let
   cfg = config.local.reverse-proxy;
+  onixCert = pkgs.runCommand "onix-local-cert"
+    {
+      buildInputs = [ pkgs.openssl ];
+    } ''
+    mkdir -p $out
+    openssl req -x509 -newkey rsa:4096 -sha256 -days 3650 -nodes \
+      -keyout $out/onix.key -out $out/onix.crt \
+      -subj "/CN=onix.local" \
+      -addext "subjectAltName=DNS:onix.local" \
+      -addext "basicConstraints=CA:FALSE"
+  '';
 in
 {
   options.local.reverse-proxy = {
@@ -72,6 +83,7 @@ in
 
   config = lib.mkIf cfg.enable {
     # Nginx reverse proxy
+    security.pki.certificateFiles = [ "${onixCert}/onix.crt" ];
     services.nginx = {
       enable = true;
 
@@ -88,55 +100,51 @@ in
 
         # Self-signed certificate if not using ACME
         sslCertificate = lib.mkIf (!cfg.useACME || cfg.acmeEmail == "")
-          (pkgs.runCommand "self-signed-cert"
-            {
-              buildInputs = [ pkgs.openssl ];
-            } ''
-            mkdir -p $out
-            openssl req -x509 -newkey rsa:4096 -sha256 -days 3650 \
-              -nodes -keyout $out/key.pem -out $out/cert.pem -subj "/CN=${cfg.domain}" \
-              -addext "subjectAltName=DNS:${cfg.domain},DNS:*.${cfg.domain}"
-          '' + "/cert.pem");
+          ("${ onixCert }/onix.crt");
 
         sslCertificateKey = lib.mkIf (!cfg.useACME || cfg.acmeEmail == "")
-          (pkgs.runCommand "self-signed-cert"
-            {
-              buildInputs = [ pkgs.openssl ];
-            } ''
-            mkdir -p $out
-            openssl req -x509 -newkey rsa:4096 -sha256 -days 3650 \
-              -nodes -keyout $out/key.pem -out $out/cert.pem -subj "/CN=${cfg.domain}" \
-              -addext "subjectAltName=DNS:${cfg.domain},DNS:*.${cfg.domain}"
-          '' + "/key.pem");
+          ("${onixCert}/onix.key");
 
         locations = {
+          #"/_api" = {
+          #  proxyPass = "http://127.0.0.1:8080/_api/";
+          #  extraConfig = ''
+          #    proxy_set_header Host $host;
+          #    proxy_set_header X-Real-IP $remote_addr;
+          #    proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+          #    proxy_set_header X-Forwarded-Proto $scheme;
+          #    client_max_body_size 0;
+          #  '';
+          #};
           "/status" = {
             return = "200 'Server is running'";
             extraConfig = ''
               add_header Content-Type text/plain;
             '';
           };
-        } // lib.mapAttrs' (name: service: 
-          lib.nameValuePair service.path {
-            proxyPass = service.target;
-            extraConfig = ''
-              proxy_set_header Host $host;
-              proxy_set_header X-Real-IP $remote_addr;
-              proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-              proxy_set_header X-Forwarded-Proto $scheme;
-              proxy_set_header X-Forwarded-Host $host;
-              proxy_set_header X-Forwarded-Server $host;
-              proxy_set_header X-Forwarded-Prefix ${service.path};
+        } // lib.mapAttrs'
+          (name: service:
+            lib.nameValuePair service.path {
+              proxyPass = service.target;
+              extraConfig = ''
+                proxy_set_header Host $host;
+                proxy_set_header X-Real-IP $remote_addr;
+                proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+                proxy_set_header X-Forwarded-Proto $scheme;
+                proxy_set_header X-Forwarded-Host $host;
+                proxy_set_header X-Forwarded-Server $host;
+                proxy_set_header X-Forwarded-Prefix ${service.path};
               
-              # WebSocket support (conditional)
-              proxy_http_version 1.1;
-              proxy_set_header Upgrade $http_upgrade;
-              proxy_set_header Connection $connection_upgrade;
+                # WebSocket support (conditional)
+                proxy_http_version 1.1;
+                proxy_set_header Upgrade $http_upgrade;
+                proxy_set_header Connection $connection_upgrade;
               
-              ${service.extraConfig}
-            '';
-          }
-        ) cfg.services;
+                ${service.extraConfig}
+              '';
+            }
+          )
+          cfg.services;
       };
     };
 

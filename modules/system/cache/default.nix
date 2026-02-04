@@ -18,7 +18,7 @@ in
     };
     publicKey = lib.mkOption {
       type = lib.types.str;
-      default = "main:CqlQUu3twINKw6rrCtizlAYkrPOKUicoxMyN6EvYnbk=";
+      default = "main:zADjgl0WdN0UiTe4NgdVDYsieEaeW5oBRW+2a3mHMtY=";
       example = "cache:AbCdEf1234567890+GhIjKlMnOpQrStUvWxYz==";
       description = "Public key for cache verification";
     };

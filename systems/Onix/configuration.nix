@@ -105,10 +105,9 @@
       };
     };
     cache-server = {
-      enable = true;
+      enable = false;
       dataDir = "/media/storage/cache";
-      maxCacheSize = "1TB";
-      subPath = "/cache";
+      maxCacheSize = "1000G";
     };
     # File shares (optional)
     # shares = {

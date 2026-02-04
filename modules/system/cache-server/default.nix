@@ -75,14 +75,13 @@ in
       environmentFile = ./attic_token;
       settings = {
         listen = "${cfg.listenAddress}:${toString cfg.port}";
-
         database.url = "sqlite://${cfg.dataDir}/server.db";
-
+        #api-endpoint = "https://onix.local/cache/_api/";
         storage = {
           type = "local";
           path = "${cfg.dataDir}/storage";
         };
-
+        jwt = { };
         # Chunking
         chunking = {
           nar-size-threshold = 65536;
