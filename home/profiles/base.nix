@@ -6,10 +6,6 @@
   local = {
     secrets.enable = true;
     ssh.enable = true;
-    cache = {
-      enable = true;
-      watch = true;
-    };
     fish.enable = true;
   };
 
@@ -38,14 +34,14 @@
     # Archive tools
     unzip
     p7zip
-    
+
     # System monitoring
     sysstat
     bottom
     duf
     dust
     procs
-    
+
     # CLI utilities
     bat
     ripgrep
