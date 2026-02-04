@@ -11,6 +11,8 @@
     fonts.enable = false;
     stylix.enable = false;
     ssh.enable = true;
+    secrets.enable = true;
+    secrets.keys = [ "gemini/api_key" ];
   };
   programs = {
     home-manager.enable = true;
