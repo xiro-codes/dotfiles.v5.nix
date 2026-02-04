@@ -11,7 +11,7 @@ in
 {
   options.local.cache-server = {
     enable = lib.mkEnableOption "Attic binary cache server";
-    
+
     port = lib.mkOption {
       type = lib.types.port;
       default = 8080;
@@ -72,12 +72,12 @@ in
   config = lib.mkIf cfg.enable {
     services.atticd = {
       enable = true;
-      
+      environmentFile = ./attic_token;
       settings = {
         listen = "${cfg.listenAddress}:${toString cfg.port}";
-        
+
         database.url = "sqlite://${cfg.dataDir}/server.db";
-        
+
         storage = {
           type = "local";
           path = "${cfg.dataDir}/storage";
@@ -105,7 +105,7 @@ in
     };
 
     # Environment packages for cache management
-    environment.systemPackages = with pkgs; [ 
+    environment.systemPackages = with pkgs; [
       attic-server
       attic-client
     ];
@@ -133,7 +133,7 @@ in
       home = cfg.dataDir;
     };
 
-    users.groups.atticd = {};
+    users.groups.atticd = { };
 
     # Firewall
     networking.firewall.allowedTCPPorts = lib.mkIf cfg.openFirewall [ cfg.port ];

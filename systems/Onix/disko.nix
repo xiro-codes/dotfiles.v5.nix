@@ -1,23 +1,23 @@
 {
   disko.devices = {
     mdadm = {
-    	raid0 = {
-		type = "mdadm";
-		level = 0;
-		content = {
-			type = "gpt";
-			partitions = {
-				storage = {
-					size = "100%";
-					content = {
-						type = "filesystem";
-						format = "ext4";
-						#mountpoint = "/media/"
-					};
-				};
-			};
-		};
-	};
+      raid0 = {
+        type = "mdadm";
+        level = 0;
+        content = {
+          type = "gpt";
+          partitions = {
+            storage = {
+              size = "100%";
+              content = {
+                type = "filesystem";
+                format = "ext4";
+                mountpoint = "/media/storage";
+              };
+            };
+          };
+        };
+      };
     };
     disk = {
       main = {
@@ -48,7 +48,7 @@
             root = {
               size = "100%";
               content = {
-	      	type = "filesystem";
+                type = "filesystem";
                 format = "ext4";
                 mountpoint = "/";
                 extraArgs = [ "-L" "nixos" ];
@@ -66,8 +66,8 @@
             storage = {
               size = "100%";
               content = {
-	      	type = "mdraid";
-		name = "raid0";
+                type = "mdraid";
+                name = "raid0";
               };
             };
           };
@@ -76,12 +76,12 @@
       ssd1 = {
         type = "disk";
         device = "/dev/nvme1n1";
-        content = { type = "gpt"; partitions = { storage = { size = "100%";  content = {type = "mdraid"; name = "raid0";};}; }; };
+        content = { type = "gpt"; partitions = { storage = { size = "100%"; content = { type = "mdraid"; name = "raid0"; }; }; }; };
       };
       ssd2 = {
         type = "disk";
         device = "/dev/nvme2n1";
-        content = { type = "gpt"; partitions = { storage = { size = "100%";  content = {type = "mdraid"; name = "raid0";};}; }; };
+        content = { type = "gpt"; partitions = { storage = { size = "100%"; content = { type = "mdraid"; name = "raid0"; }; }; }; };
       };
 
 

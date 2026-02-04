@@ -90,7 +90,7 @@
     # Download services
     download = {
       enable = true;
-      downloadDir = "/srv/downloads";
+      downloadDir = "/media/Media/downloads";
 
       transmission = {
         enable = true;
@@ -104,7 +104,12 @@
         openFirewall = false;
       };
     };
-
+    cache-server = {
+      enable = true;
+      dataDir = "/media/storage/cache";
+      maxCacheSize = "1TB";
+      subPath = "/cache";
+    };
     # File shares (optional)
     # shares = {
     #   enable = true;

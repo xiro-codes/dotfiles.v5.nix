@@ -21,7 +21,7 @@ in
 
     transmission = {
       enable = lib.mkEnableOption "Transmission BitTorrent client";
-      
+
       port = lib.mkOption {
         type = lib.types.port;
         default = 9091;
@@ -71,7 +71,7 @@ in
 
     pinchflat = {
       enable = lib.mkEnableOption "Pinchflat YouTube downloader";
-      
+
       port = lib.mkOption {
         type = lib.types.port;
         default = 8945;
@@ -112,8 +112,8 @@ in
     # Ensure download directories exist
     systemd.tmpfiles.rules = [
       "d ${cfg.downloadDir} 0755 root root -"
-      "d ${cfg.downloadDir}/torrents 0755 root root -"
-      "d ${cfg.downloadDir}/youtube 0755 root root -"
+      "d ${cfg.downloadDir} 0755 root root -"
+      "d ${cfg.downloadDir}/../youtube 0755 root root -"
     ] ++ lib.optionals cfg.pinchflat.enable [
       "d ${cfg.pinchflat.dataDir} 0755 root root -"
     ];
@@ -121,32 +121,32 @@ in
     # Transmission
     services.transmission = lib.mkIf cfg.transmission.enable {
       enable = true;
-      
+
       settings = {
-        download-dir = "${cfg.downloadDir}/torrents/complete";
-        incomplete-dir = "${cfg.downloadDir}/torrents/incomplete";
+        download-dir = "${cfg.downloadDir}/complete";
+        incomplete-dir = "${cfg.downloadDir}/incomplete";
         incomplete-dir-enabled = true;
-        
+
         rpc-bind-address = "0.0.0.0";
         rpc-port = cfg.transmission.port;
         rpc-whitelist = cfg.transmission.rpcWhitelist;
         rpc-whitelist-enabled = true;
         rpc-authentication-required = false;
         rpc-url = if cfg.transmission.subPath != "" then cfg.transmission.subPath + "/" else "/transmission/";
-        
+
         peer-port = cfg.transmission.peerPort;
-        
+
         # Performance settings
         download-queue-enabled = true;
         download-queue-size = 5;
         peer-limit-global = 200;
         peer-limit-per-torrent = 50;
-        
+
         # Privacy
         dht-enabled = true;
         lpd-enabled = true;
         pex-enabled = true;
-        
+
         # Ratio
         ratio-limit-enabled = false;
       };
@@ -161,7 +161,7 @@ in
       ports = [ "${toString cfg.pinchflat.port}:8945" ];
       volumes = [
         "${cfg.pinchflat.dataDir}:/config"
-        "${cfg.downloadDir}/youtube:/downloads"
+        "${cfg.downloadDir}/../youtube:/downloads"
       ];
       environment = {
         TZ = config.time.timeZone or "UTC";
