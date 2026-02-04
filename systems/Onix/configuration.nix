@@ -85,13 +85,13 @@
       downloadDir = "/srv/downloads";
 
       transmission = {
-        enable = false;
+        enable = true;
         subPath = "/transmission";
         openFirewall = false;
       };
 
       pinchflat = {
-        enable = false;
+        enable = true;
         subPath = "/pinchflat";
         openFirewall = false;
       };
