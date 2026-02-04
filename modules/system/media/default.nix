@@ -13,8 +13,8 @@ in
 
     mediaDir = lib.mkOption {
       type = lib.types.str;
-      default = "/srv/media";
-      example = "/mnt/storage/media";
+      default = "/media/Media";
+      example = "/media/Media";
       description = "Base directory for media files";
     };
 

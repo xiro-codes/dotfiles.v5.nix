@@ -13,7 +13,7 @@ in
 
     downloadDir = lib.mkOption {
       type = lib.types.str;
-      default = "/srv/downloads";
+      default = "/media/Media/Downloads";
       example = "/mnt/storage/downloads";
       description = "Base directory for downloads";
     };
