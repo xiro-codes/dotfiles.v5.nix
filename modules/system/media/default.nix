@@ -53,41 +53,6 @@ in
       };
     };
 
-    plex = {
-      enable = lib.mkEnableOption "Plex media server";
-      
-      port = lib.mkOption {
-        type = lib.types.port;
-        default = 32400;
-        description = "HTTP port for Plex";
-      };
-
-      baseUrl = lib.mkOption {
-        type = lib.types.str;
-        default = "http://localhost:${toString config.local.media.plex.port}";
-        description = "Base URL for Plex (auto-configured based on Avahi settings)";
-      };
-
-      dataDir = lib.mkOption {
-        type = lib.types.str;
-        default = "/var/lib/plex";
-        description = "Data directory for Plex";
-      };
-
-      openFirewall = lib.mkOption {
-        type = lib.types.bool;
-        default = false;
-        description = "Open firewall port for Plex";
-      };
-
-      subPath = lib.mkOption {
-        type = lib.types.str;
-        default = "";
-        example = "/plex";
-        description = "Subpath for reverse proxy (e.g., /plex). Note: Plex has limited subpath support.";
-      };
-    };
-
     ersatztv = {
       enable = lib.mkEnableOption "ErsatzTV streaming service";
       
@@ -159,14 +124,7 @@ in
       ln -sf /etc/jellyfin/network.xml ${cfg.jellyfin.dataDir}/config/network.xml
     '';
 
-    # Plex
-    services.plex = lib.mkIf cfg.plex.enable {
-      enable = true;
-      dataDir = cfg.plex.dataDir;
-      openFirewall = cfg.plex.openFirewall;
-    };
-
-    # ErsatzTV (using virtualisation.oci-containers since there's no native NixOS module)
+    # Write Jellyfin network configuration for reverse proxy
     virtualisation.oci-containers.containers.ersatztv = lib.mkIf cfg.ersatztv.enable {
       image = "jasongdove/ersatztv:latest";
       ports = [ "${toString cfg.ersatztv.port}:8409" ];

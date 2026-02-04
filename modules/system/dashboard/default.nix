@@ -129,24 +129,17 @@ in
               }
             ];
           }
-          {
-            Media = [
-              {
-                Jellyfin = {
-                  icon = "jellyfin.png";
-                  href = serviceUrl "/jellyfin" 8096;
-                  description = "Media server";
-                };
-              }
-              {
-                Plex = {
-                  icon = "plex.png";
-                  href = serviceUrl "/plex" 32400;
-                  description = "Media server";
-                };
-              }
-            ];
-          }
+        {
+          Media = [
+            {
+              Jellyfin = {
+                icon = "jellyfin.png";
+                href = serviceUrl "/jellyfin" 8096;
+                description = "Media server";
+              };
+            }
+          ];
+        }
         ];
 
       widgets = [
