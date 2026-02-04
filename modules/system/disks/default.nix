@@ -6,7 +6,7 @@
     {
       services = {
         gvfs.enable = true;
-        udisk2.enable = true;
+        udisks2.enable = true;
         devmon.enable = true;
       };
     };
