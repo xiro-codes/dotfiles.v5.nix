@@ -2,6 +2,7 @@
 	imports = [
 		./disko.nix
 		./hardware-configuration.nix
+		../profiles/base.nix
 		../profiles/limine-uefi.nix
 	];
 	users.users.tod = {

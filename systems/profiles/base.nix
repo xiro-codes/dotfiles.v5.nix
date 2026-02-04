@@ -1,9 +1,10 @@
 # Base profile - Common configuration for all systems
-{ pkgs, ... }:
+{ pkgs, lib, ... }:
 {
   local = {
-    cache.enable = true;
-    security.enable = true;
+    secrets.enable = lib.mkForce false;
+    cache.enable = false;
+    security.enable = false;
     dotfiles = {
       enable = true;
       maintenance.enable = true;
@@ -29,8 +30,8 @@
 
   # Common programs
   programs = {
-    firefox.enable = true;
-    gpu-screen-recorder.enable = true;
+    firefox.enable = false;
+    gpu-screen-recorder.enable = false;
     git = {
       enable = true;
       config = {
