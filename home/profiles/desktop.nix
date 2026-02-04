@@ -2,12 +2,15 @@
 { pkgs, lib, inputs, ... }:
 {
   local = {
+    # Desktop environment
     hyprland.enable = true;
     kitty.enable = true;
-    nixvim.enable = true;
     stylix.enable = true;
-    ranger.enable = true;
     fonts.enable = true;
+    
+    # Desktop applications
+    nixvim.enable = true;
+    ranger.enable = true;
     mpd.enable = true;
     caelestia.enable = true;
   };
@@ -21,12 +24,21 @@
   };
 
   home.packages = with pkgs; [
-    caligula
-    grim
-    slurp
+    # Desktop applications
     firefox
     discord
     warp-terminal
+    
+    # Screenshot tools
+    caligula
+    grim
+    slurp
+    
+    # Fonts (for GUI)
+    cascadia-code
+    
+    # Notifications
+    libnotify
   ] ++ (with inputs.self.packages.${pkgs.stdenv.hostPlatform.system}; [
     ai-commit
   ]);

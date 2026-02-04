@@ -35,18 +35,21 @@
   };
 
   home.packages = with pkgs; [
+    # Archive tools
     unzip
     p7zip
+    
+    # System monitoring
     sysstat
     bottom
     duf
     dust
-    cascadia-code
-    libnotify
+    procs
+    
+    # CLI utilities
     bat
     ripgrep
     fd
-    procs
     tealdeer
     gping
   ];
