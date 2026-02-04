@@ -45,7 +45,7 @@ in
 
       rpcWhitelist = lib.mkOption {
         type = lib.types.str;
-        default = "127.0.0.1,192.168.*.*,10.*.*.*";
+        default = "onix.local,127.0.0.1,192.168.*.*,10.*.*.*";
         description = "Whitelist for RPC connections";
       };
 
@@ -129,11 +129,12 @@ in
 
         rpc-bind-address = "0.0.0.0";
         rpc-port = cfg.transmission.port;
+        rpc-host-whitelist = lib.concatStringsSep "," [ "onix.local" ];
+        rpc-host-whitelist-enable = true;
         rpc-whitelist = cfg.transmission.rpcWhitelist;
         rpc-whitelist-enabled = true;
         rpc-authentication-required = false;
         rpc-url = if cfg.transmission.subPath != "" then cfg.transmission.subPath + "/" else "/transmission/";
-
         peer-port = cfg.transmission.peerPort;
 
         # Performance settings

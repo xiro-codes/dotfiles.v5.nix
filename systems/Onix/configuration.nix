@@ -95,7 +95,7 @@
       transmission = {
         enable = true;
         subPath = "/transmission";
-        openFirewall = false;
+        openFirewall = true;
       };
 
       pinchflat = {
@@ -104,17 +104,6 @@
         openFirewall = false;
       };
     };
-    cache-server = {
-      enable = false;
-      dataDir = "/media/storage/cache";
-      maxCacheSize = "1000G";
-    };
-    # File shares (optional)
-    # shares = {
-    #   enable = true;
-    #   samba.enable = true;
-    #   samba.openFirewall = true;
-    # };
   };
 
   users.users.tod = {
