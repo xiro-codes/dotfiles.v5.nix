@@ -5,7 +5,7 @@
     ./hardware-configuration.nix
     ../profiles/base.nix
     ../profiles/workstation.nix
-    #../profiles/zima-client.nix
+    ../profiles/onix-client.nix
     ../profiles/limine-uefi.nix
   ];
   # Ruby-specific configuration
@@ -17,7 +17,7 @@
       "ssh_pub_ruby/master"
       "ssh_pub_sapphire/master"
       "ssh_pub_onix/master"
-      "zima_creds"
+      "onix_creds"
     ];
 
     # Ruby-specific bootloader UUID

@@ -14,7 +14,7 @@ in
     keys = lib.mkOption {
       type = lib.types.listOf lib.types.str;
       default = [ ];
-      example = [ "zima_creds" "ssh_pub_ruby/master" "ssh_pub_sapphire/master" ];
+      example = [ "onix_creds" "ssh_pub_ruby/master" "ssh_pub_sapphire/master" ];
       description = "List of sops keys to automatically map to /run/secrets/ for system-wide access";
     };
   };

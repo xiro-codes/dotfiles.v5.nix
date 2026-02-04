@@ -44,7 +44,7 @@ let
 in
 {
   options.local.shareManager = {
-    enable = lib.mkEnableOption "Samba mounts from ZimaOS";
+    enable = lib.mkEnableOption "Samba mounts from Onix";
     noAuth = lib.mkOption {
       type = lib.types.bool;
       default = false;
@@ -52,7 +52,7 @@ in
     };
     secretName = lib.mkOption {
       type = lib.types.str;
-      default = "zima_creds";
+      default = "onix_creds";
       example = "smb_credentials";
       description = "Name of sops secret containing SMB credentials (username=xxx and password=xxx format)";
     };

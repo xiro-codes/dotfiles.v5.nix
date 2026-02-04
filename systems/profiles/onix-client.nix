@@ -1,4 +1,4 @@
-# Zima client profile - For systems connecting to ZimaOS NAS
+# Onix client profile - For systems connecting to Onix NAS
 { lib, ... }:
 {
   local = {

@@ -56,18 +56,18 @@ update-keys:
 # Initialize backups
 [group('backups')]
 init-backup:
-    sudo borg-job-zima-local init -e none
+    sudo borg-job-onix-local init -e none
 
 # Run borg backup
 [group('backups')]
 run-backup:
-    sudo systemctl start borgbackup-job-zima-local.service
+    sudo systemctl start borgbackup-job-onix-local.service
 
 # Mount backups
 [group('backups')]
 mount-backup host=HOST:
     sudo mkdir -p /.recovery
-    sudo borg-job-zima-local mount /media/Backups/{{host}}/ /.recovery
+    sudo borg-job-onix-local mount /media/Backups/{{host}}/ /.recovery
 
 # Unmount backups
 [group('backups')]
@@ -77,12 +77,12 @@ umount-backup:
 # Check when next backup is scheduled
 [group('backups')]
 check-timer:
-    systemctl list-timers borgbackup-job-zima-local.timer
+    systemctl list-timers borgbackup-job-onix-local.timer
 
 # Show all current backups
 [group('backups')]
 list-backups:
-    sudo borg-job-zima-local list
+    sudo borg-job-onix-local list
 
 # Deploy specific host using deploy-rs
 [group('deploy')]

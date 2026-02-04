@@ -47,7 +47,7 @@ in
   };
 
   config = lib.mkIf cfg.enable {
-    services.borgbackup.jobs."zima-local" = {
+    services.borgbackup.jobs."onix-local" = {
       inherit (cfg) exclude;
       paths = finalPaths;
       repo = cfg.backupLocation + "/${config.networking.hostName}";
@@ -59,7 +59,7 @@ in
         weekly = 4;
       };
     };
-    systemd.services.borgbackup-job-zima-local.unitConfig.ConditionPathIsMountPoint =
+    systemd.services.borgbackup-job-onix-local.unitConfig.ConditionPathIsMountPoint =
       cfg.backupLocation;
     environment.etc."backup-manifest.txt".text = ''
       # Backup Manifest for ${config.networking.hostName}
