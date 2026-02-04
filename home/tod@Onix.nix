@@ -44,6 +44,6 @@
     procs
     tealdeer
     gping
-  ]
+  ];
   home.stateVersion = "25.11";
 }
