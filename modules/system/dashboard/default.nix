@@ -17,7 +17,6 @@ let
   # Auto-configure allowed hosts
   autoAllowedHosts = urlHelpers.getAllowedHosts;
 in
-in
 {
   options.local.dashboard = {
     enable = lib.mkEnableOption "homepage dashboard";
@@ -75,48 +74,74 @@ in
           };
         };
       };
-
-      services =
+      services = 
         let
           # Check if reverse proxy is enabled to determine URL format
           useProxy = config.local.reverse-proxy.enable or false;
-
+          
           # Helper to build service URL
           serviceUrl = path: port:
             if useProxy
             then "${baseUrl}${path}"
             else "${baseUrl}:${toString port}";
-        in
-        [
-          {
-            Services = [
-              {
-                Gitea = {
-                  icon = "gitea.png";
-                  href = serviceUrl "/gitea" 3001;
-                  description = "Self-hosted Git service";
-                };
-              }
-              {
-                "Nix Cache" = {
-                  icon = "nix.png";
-                  href = serviceUrl "/cache" 8080;
-                  description = "Binary cache server";
-                };
-              }
-            ];
-          }
-        {
-          Media = [
-            {
+          
+          # Build service list based on what's enabled
+          servicesList = lib.flatten [
+            # Services section
+            (lib.optional (config.local.gitea.enable or false) {
+              Gitea = {
+                icon = "gitea.png";
+                href = serviceUrl (config.local.gitea.subPath or "/gitea") (config.local.gitea.port or 3001);
+                description = "Self-hosted Git service";
+              };
+            })
+            (lib.optional (config.local.cache-server.enable or false) {
+              "Nix Cache" = {
+                icon = "nix.png";
+                href = serviceUrl (config.local.cache-server.subPath or "/cache") (config.local.cache-server.port or 8080);
+                description = "Binary cache server";
+              };
+            })
+          ];
+          
+          mediaList = lib.flatten [
+            (lib.optional (config.local.media.jellyfin.enable or false) {
               Jellyfin = {
                 icon = "jellyfin.png";
-                href = serviceUrl "/jellyfin" 8096;
+                href = serviceUrl (config.local.media.jellyfin.subPath or "/jellyfin") (config.local.media.jellyfin.port or 8096);
                 description = "Media server";
               };
-            }
+            })
+            (lib.optional (config.local.media.ersatztv.enable or false) {
+              ErsatzTV = {
+                icon = "ersatztv.png";
+                href = serviceUrl (config.local.media.ersatztv.subPath or "/ersatztv") (config.local.media.ersatztv.port or 8409);
+                description = "Live TV streaming";
+              };
+            })
           ];
-        }
+          
+          downloadList = lib.flatten [
+            (lib.optional (config.local.download.transmission.enable or false) {
+              Transmission = {
+                icon = "transmission.png";
+                href = serviceUrl (config.local.download.transmission.subPath or "/transmission") (config.local.download.transmission.port or 9091);
+                description = "BitTorrent client";
+              };
+            })
+            (lib.optional (config.local.download.pinchflat.enable or false) {
+              Pinchflat = {
+                icon = "pinchflat.png";
+                href = serviceUrl (config.local.download.pinchflat.subPath or "/pinchflat") (config.local.download.pinchflat.port or 8945);
+                description = "YouTube downloader";
+              };
+            })
+          ];
+        in
+        lib.filter (x: x != {}) [
+          (lib.mkIf (servicesList != []) { Services = servicesList; })
+          (lib.mkIf (mediaList != []) { Media = mediaList; })
+          (lib.mkIf (downloadList != []) { Downloads = downloadList; })
         ];
 
       widgets = [
