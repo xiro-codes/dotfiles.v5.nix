@@ -6,6 +6,7 @@
 
 let
   cfg = config.local.download;
+  urlHelpers = import ../lib/url-helpers.nix { inherit config lib; };
 in
 {
   options.local.download = {
@@ -29,8 +30,11 @@ in
 
       baseUrl = lib.mkOption {
         type = lib.types.str;
-        default = "http://localhost:${toString config.local.download.transmission.port}";
-        description = "Base URL for Transmission (auto-configured based on Avahi settings)";
+        default = urlHelpers.buildServiceUrl {
+          port = config.local.download.transmission.port;
+          subPath = "";
+        };
+        description = "Base URL for Transmission (auto-configured based on reverse proxy and Avahi settings)";
       };
 
       peerPort = lib.mkOption {
@@ -76,8 +80,11 @@ in
 
       baseUrl = lib.mkOption {
         type = lib.types.str;
-        default = "http://localhost:${toString config.local.download.pinchflat.port}";
-        description = "Base URL for Pinchflat (auto-configured based on Avahi settings)";
+        default = urlHelpers.buildServiceUrl {
+          port = config.local.download.pinchflat.port;
+          subPath = "";
+        };
+        description = "Base URL for Pinchflat (auto-configured based on reverse proxy and Avahi settings)";
       };
 
       dataDir = lib.mkOption {

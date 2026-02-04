@@ -6,40 +6,17 @@
 
 let
   cfg = config.local.dashboard;
-  hostsCfg = config.local.hosts;
-
-  # Determine base URL based on whether we're behind reverse proxy
-  baseUrl =
-    if config.local.reverse-proxy.enable or false
-    then
-      let
-        protocol = "https";
-        domain = config.local.reverse-proxy.domain or
-          (if hostsCfg.useAvahi
-          then "${config.networking.hostName or "localhost"}.local"
-          else "localhost");
-      in
-      "${protocol}://${domain}"
-    else "http://localhost";
-
-  # Auto-configure allowed hosts based on hosts module
-  autoAllowedHosts =
-    let
-      # Get hostname
-      hostname = config.networking.hostName or "localhost";
-
-      # Build list of addresses
-      addresses = [
-        (lib.toLower hostname)
-        "localhost"
-        "127.0.0.1"
-      ] ++ lib.optionals (builtins.hasAttr hostname hostsCfg) [
-        hostsCfg.${hostname} # IP address from hosts module
-      ] ++ lib.optionals hostsCfg.useAvahi [
-        "${lib.toLower hostname}.local" # Avahi hostname
-      ];
-    in
-    lib.unique addresses;
+  urlHelpers = import ../lib/url-helpers.nix { inherit config lib; };
+  
+  # Base URL for service links
+  baseUrl = urlHelpers.buildServiceUrl {
+    port = cfg.port;
+    subPath = "";
+  };
+  
+  # Auto-configure allowed hosts
+  autoAllowedHosts = urlHelpers.getAllowedHosts;
+in
 in
 {
   options.local.dashboard = {

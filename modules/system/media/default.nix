@@ -6,6 +6,7 @@
 
 let
   cfg = config.local.media;
+  urlHelpers = import ../lib/url-helpers.nix { inherit config lib; };
 in
 {
   options.local.media = {
@@ -29,8 +30,11 @@ in
 
       baseUrl = lib.mkOption {
         type = lib.types.str;
-        default = "http://localhost:${toString config.local.media.jellyfin.port}";
-        description = "Base URL for Jellyfin (auto-configured based on Avahi settings)";
+        default = urlHelpers.buildServiceUrl {
+          port = config.local.media.jellyfin.port;
+          subPath = "";
+        };
+        description = "Base URL for Jellyfin (auto-configured based on reverse proxy and Avahi settings)";
       };
 
       dataDir = lib.mkOption {
@@ -64,8 +68,11 @@ in
 
       baseUrl = lib.mkOption {
         type = lib.types.str;
-        default = "http://localhost:${toString config.local.media.ersatztv.port}";
-        description = "Base URL for ErsatzTV (auto-configured based on Avahi settings)";
+        default = urlHelpers.buildServiceUrl {
+          port = config.local.media.ersatztv.port;
+          subPath = "";
+        };
+        description = "Base URL for ErsatzTV (auto-configured based on reverse proxy and Avahi settings)";
       };
 
       dataDir = lib.mkOption {
