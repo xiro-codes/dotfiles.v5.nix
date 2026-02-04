@@ -11,6 +11,7 @@
   # Ruby-specific configuration
   local = {
     # Secrets specific to Ruby
+    disks.enable = true;
     secrets.keys = [
       "gemini/api_key"
       "ssh_pub_ruby/master"
