@@ -28,22 +28,22 @@
       domain = "onix.local";
       services = {
         dashboard.path = "/";
-        dashboard.target = "http://localhost:${toString config.local.dashboard.port}";
+        dashboard.target = "http://127.0.0.1:${toString config.local.dashboard.port}";
 
         gitea.path = "/gitea";
-        gitea.target = "http://localhost:${toString config.local.gitea.port}/gitea";
+        gitea.target = "http://127.0.0.1:${toString config.local.gitea.port}/";
 
         jellyfin.path = "/jellyfin";
-        jellyfin.target = "http://localhost:${toString config.local.media.jellyfin.port}/jellyfin";
+        jellyfin.target = "http://127.0.0.1:${toString config.local.media.jellyfin.port}/jellyfin";
 
         ersatztv.path = "/ersatztv";
-        ersatztv.target = "http://localhost:${toString config.local.media.ersatztv.port}/ersatztv";
+        ersatztv.target = "http://127.0.0.1:${toString config.local.media.ersatztv.port}/ersatztv";
 
         transmission.path = "/transmission";
-        transmission.target = "http://localhost:${toString config.local.download.transmission.port}/transmission";
+        transmission.target = "http://127.0.0.1:${toString config.local.download.transmission.port}/transmission";
 
         pinchflat.path = "/pinchflat";
-        pinchflat.target = "http://localhost:${toString config.local.download.pinchflat.port}/pinchflat";
+        pinchflat.target = "http://127.0.0.1:${toString config.local.download.pinchflat.port}/pinchflat";
       };
     };
 

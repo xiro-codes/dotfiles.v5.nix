@@ -75,7 +75,7 @@ in
     services.nginx = {
       enable = true;
 
-      recommendedProxySettings = true;
+      recommendedProxySettings = false;
       recommendedTlsSettings = true;
       recommendedOptimisation = true;
       recommendedGzipSettings = true;
@@ -128,10 +128,10 @@ in
               proxy_set_header X-Forwarded-Server $host;
               proxy_set_header X-Forwarded-Prefix ${service.path};
               
-              # WebSocket support
+              # WebSocket support (conditional)
               proxy_http_version 1.1;
               proxy_set_header Upgrade $http_upgrade;
-              proxy_set_header Connection "upgrade";
+              proxy_set_header Connection $connection_upgrade;
               
               ${service.extraConfig}
             '';
