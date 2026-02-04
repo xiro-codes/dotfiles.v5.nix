@@ -16,6 +16,7 @@
       "gemini/api_key"
       "ssh_pub_ruby/master"
       "ssh_pub_sapphire/master"
+      "ssh_pub_onix/master"
       "zima_creds"
     ];
 
