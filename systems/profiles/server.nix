@@ -114,7 +114,7 @@
 
   local.dashboard = {
     enable = true;
-    subPath = "/dashboard";
+    subPath = "/";
     openFirewall = false;
   };
 

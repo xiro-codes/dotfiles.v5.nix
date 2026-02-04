@@ -5,9 +5,9 @@ let
   
   # Define host mappings
   hostDefs = {
-    zimaos = {
+    onix = {
       ip = "10.0.0.65";
-      avahi = "zimaos.local";
+      avahi = "onix.local";
     };
     ruby = {
       ip = "10.0.0.66";
@@ -42,11 +42,11 @@ in
     };
     
     # Expose resolved addresses for other modules to use
-    zimaos = lib.mkOption {
+    onix = lib.mkOption {
       type = lib.types.str;
-      default = getHost "zimaos";
+      default = getHost "onix";
       readOnly = true;
-      description = "Address for ZimaOS server";
+      description = "Address for Onix host";
     };
     
     ruby = lib.mkOption {
