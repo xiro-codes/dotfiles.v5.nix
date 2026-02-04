@@ -160,6 +160,8 @@ in
         TZ = config.time.timeZone or "UTC";
         PUID = "1000";
         PGID = "1000";
+      } // lib.optionalAttrs (cfg.pinchflat.subPath != "") {
+        BASE_PATH = cfg.pinchflat.subPath;
       };
       autoStart = true;
     };

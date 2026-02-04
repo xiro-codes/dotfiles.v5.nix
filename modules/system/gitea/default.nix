@@ -71,7 +71,7 @@ in
       settings = {
         server = {
           DOMAIN = cfg.domain;
-          ROOT_URL = if cfg.subPath != "" then cfg.rootUrl + lib.removePrefix "/" cfg.subPath + "/" else cfg.rootUrl;
+          ROOT_URL = cfg.rootUrl + (if cfg.subPath != "" then cfg.subPath + "/" else "");
           HTTP_PORT = cfg.port;
           SSH_PORT = cfg.sshPort;
         };

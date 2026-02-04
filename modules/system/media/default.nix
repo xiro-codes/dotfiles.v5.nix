@@ -133,6 +133,8 @@ in
       "d ${cfg.mediaDir}/music 0755 root root -"
     ] ++ lib.optionals cfg.ersatztv.enable [
       "d ${cfg.ersatztv.dataDir} 0755 root root -"
+    ] ++ lib.optionals (cfg.jellyfin.enable && cfg.jellyfin.subPath != "") [
+      "d ${cfg.jellyfin.dataDir}/config 0755 jellyfin jellyfin -"
     ];
 
     # Jellyfin
@@ -141,6 +143,21 @@ in
       dataDir = cfg.jellyfin.dataDir;
       openFirewall = cfg.jellyfin.openFirewall;
     };
+    
+    # Write Jellyfin network configuration for reverse proxy
+    environment.etc."jellyfin/network.xml" = lib.mkIf (cfg.jellyfin.enable && cfg.jellyfin.subPath != "") {
+      text = ''<?xml version="1.0" encoding="utf-8"?>
+        <NetworkConfiguration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+          <BaseUrl>${cfg.jellyfin.subPath}</BaseUrl>
+        </NetworkConfiguration>
+      '';
+    };
+    
+    # Symlink config to Jellyfin data directory
+    systemd.services.jellyfin.preStart = lib.mkIf (cfg.jellyfin.enable && cfg.jellyfin.subPath != "") ''
+      mkdir -p ${cfg.jellyfin.dataDir}/config
+      ln -sf /etc/jellyfin/network.xml ${cfg.jellyfin.dataDir}/config/network.xml
+    '';
 
     # Plex
     services.plex = lib.mkIf cfg.plex.enable {
@@ -159,6 +176,8 @@ in
       ];
       environment = {
         TZ = config.time.timeZone or "UTC";
+      } // lib.optionalAttrs (cfg.ersatztv.subPath != "") {
+        ETV_BASE_URL = cfg.ersatztv.subPath;
       };
       autoStart = true;
     };
