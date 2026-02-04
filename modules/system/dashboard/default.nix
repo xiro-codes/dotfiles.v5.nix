@@ -7,13 +7,13 @@
 let
   cfg = config.local.dashboard;
   urlHelpers = import ../lib/url-helpers.nix { inherit config lib; };
-  
+
   # Base URL for service links
   baseUrl = urlHelpers.buildServiceUrl {
     port = cfg.port;
     subPath = "";
   };
-  
+
   # Auto-configure allowed hosts
   autoAllowedHosts = urlHelpers.getAllowedHosts;
 in
@@ -74,17 +74,17 @@ in
           };
         };
       };
-      services = 
+      services =
         let
           # Check if reverse proxy is enabled to determine URL format
           useProxy = config.local.reverse-proxy.enable or false;
-          
+
           # Helper to build service URL
           serviceUrl = path: port:
             if useProxy
             then "${baseUrl}${path}"
             else "${baseUrl}:${toString port}";
-          
+
           # Build service list based on what's enabled
           servicesList = lib.flatten [
             # Services section
@@ -103,7 +103,7 @@ in
               };
             })
           ];
-          
+
           mediaList = lib.flatten [
             (lib.optional (config.local.media.jellyfin.enable or false) {
               Jellyfin = {
@@ -120,7 +120,7 @@ in
               };
             })
           ];
-          
+
           downloadList = lib.flatten [
             (lib.optional (config.local.download.transmission.enable or false) {
               Transmission = {
@@ -138,10 +138,10 @@ in
             })
           ];
         in
-        lib.filter (x: x != {}) [
-          (lib.mkIf (servicesList != []) { Services = servicesList; })
-          (lib.mkIf (mediaList != []) { Media = mediaList; })
-          (lib.mkIf (downloadList != []) { Downloads = downloadList; })
+        lib.filter (x: x != { }) [
+          (lib.mkIf (servicesList != [ ]) { Services = servicesList; })
+          (lib.mkIf (mediaList != [ ]) { Media = mediaList; })
+          (lib.mkIf (downloadList != [ ]) { Downloads = downloadList; })
         ];
 
       widgets = [
