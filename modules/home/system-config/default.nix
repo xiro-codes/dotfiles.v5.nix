@@ -13,7 +13,7 @@ in
       watch = lib.mkEnableOption "enable systemd service to watch cache";
       serverAddress = lib.mkOption {
         type = lib.types.str;
-        default = "http://${config.osConfig.local.hosts.zimaos or "zimaos.local"}:8080/main";
+        default = "http://${config.osConfig.local.hosts.onix or "onix.local"}:8080/main";
         example = "http://cache.example.com:8080/nixos";
         description = "Attic binary cache server URL (automatically uses host from local.hosts module)";
       };
@@ -166,7 +166,7 @@ in
             identityFile = "~/.ssh/github";
           };
           "gitea" = {
-            hostname = config.osConfig.local.hosts.zimaos or "zimaos.local";
+            hostname = config.osConfig.local.hosts.onix or "onix.local";
             port = 222;
             user = "git";
             identityFile = "~/.ssh/github";

@@ -12,7 +12,7 @@ in
     enable = lib.mkEnableOption "cache module";
     serverAddress = lib.mkOption {
       type = lib.types.str;
-      default = "http://${config.local.hosts.zimaos}:8080/main?priority=1";
+      default = "http://${config.local.hosts.onix}:8080/main?priority=1";
       example = "http://cache.example.com:8080/nixos?priority=10";
       description = "Attic binary cache server URL with optional priority parameter";
     };

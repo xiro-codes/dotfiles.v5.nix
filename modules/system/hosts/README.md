@@ -10,7 +10,7 @@ Enable and configure in your system configuration:
 {
   local.hosts = {
     # Toggle between IPs and .local hostnames
-    useAvahi = true;  # Use zimaos.local, ruby.local, sapphire.local
+    useAvahi = true;  # Use onix.local, ruby.local, sapphire.local
     # useAvahi = false; # Use 10.0.0.65, 10.0.0.66, 10.0.0.67
   };
 }
@@ -28,7 +28,7 @@ Enable and configure in your system configuration:
 
 | Host Name | IP Address  | Avahi Hostname  |
 |-----------|-------------|-----------------|
-| zimaos    | 10.0.0.65   | zimaos.local    |
+| onix    | 10.0.0.65   | onix.local    |
 | ruby      | 10.0.0.66   | ruby.local      |
 | sapphire  | 10.0.0.67   | sapphire.local  |
 
@@ -37,14 +37,14 @@ Enable and configure in your system configuration:
 The following modules automatically use centralized host configuration:
 
 **System Modules:**
-- `cache` - Uses zimaos for Attic cache server
-- `share-manager` - Uses zimaos for SMB/CIFS server
-- `dotfiles` - Uses zimaos for Gitea server
+- `cache` - Uses onix for Attic cache server
+- `share-manager` - Uses onix for SMB/CIFS server
+- `dotfiles` - Uses onix for Gitea server
 
 **Home Modules:**
-- `system-config.cache` - Uses zimaos for cache server
+- `system-config.cache` - Uses onix for cache server
 - `system-config.ssh` - Uses ruby and sapphire for SSH hosts
-- `system-config.ssh` - Uses zimaos for Gitea SSH
+- `system-config.ssh` - Uses onix for Gitea SSH
 
 ## Requirements
 
@@ -59,7 +59,7 @@ When using Avahi mode (`useAvahi = true`):
 ```nix
 {
   local.hosts.useAvahi = true;
-  # Now all modules will use zimaos.local instead of 10.0.0.65
+  # Now all modules will use onix.local instead of 10.0.0.65
 }
 ```
 
@@ -67,7 +67,7 @@ When using Avahi mode (`useAvahi = true`):
 ```nix
 {
   local.hosts.useAvahi = false;
-  # All modules will use 10.0.0.65 instead of zimaos.local
+  # All modules will use 10.0.0.65 instead of onix.local
 }
 ```
 
@@ -75,6 +75,6 @@ When using Avahi mode (`useAvahi = true`):
 ```nix
 {
   # The resolved address is available as a read-only option
-  services.myservice.server = config.local.hosts.zimaos;
+  services.myservice.server = config.local.hosts.onix;
 }
 ```
