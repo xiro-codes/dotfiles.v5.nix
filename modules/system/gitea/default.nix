@@ -7,6 +7,18 @@
 let
   cfg = config.local.gitea;
   hostsCfg = config.local.hosts;
+  reverseProxyCfg = config.local.reverse-proxy;
+  
+  # Determine the actual ROOT_URL based on reverse proxy configuration
+  actualRootUrl = 
+    if reverseProxyCfg.enable or false
+    then
+      let
+        protocol = "https";
+        domain = reverseProxyCfg.domain or cfg.domain;
+      in "${protocol}://${domain}" + (if cfg.subPath != "" then cfg.subPath else "") + "/"
+    else
+      cfg.rootUrl + (if cfg.subPath != "" then cfg.subPath + "/" else "");
 in
 {
   options.local.gitea = {
@@ -70,8 +82,8 @@ in
 
       settings = {
         server = {
-          DOMAIN = cfg.domain;
-          ROOT_URL = cfg.rootUrl + (if cfg.subPath != "" then cfg.subPath + "/" else "");
+          DOMAIN = if reverseProxyCfg.enable or false then reverseProxyCfg.domain or cfg.domain else cfg.domain;
+          ROOT_URL = actualRootUrl;
           HTTP_PORT = cfg.port;
           SSH_PORT = cfg.sshPort;
         };
