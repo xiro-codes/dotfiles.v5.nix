@@ -7,24 +7,6 @@ let
 in
 {
   options.local = {
-    # Cache configuration
-    cache = {
-      enable = lib.mkEnableOption "cache module";
-      watch = lib.mkEnableOption "enable systemd service to watch cache";
-      serverAddress = lib.mkOption {
-        type = lib.types.str;
-        default = "http://${config.osConfig.local.hosts.onix or "onix.local"}:8080/main";
-        example = "http://cache.example.com:8080/nixos";
-        description = "Attic binary cache server URL (automatically uses host from local.hosts module)";
-      };
-      publicKey = lib.mkOption {
-        type = lib.types.str;
-        default = "main:CqlQUu3twINKw6EvYnbk=";
-        example = "cache:AbCdEf1234567890+GhIjKlMnOpQrStUvWxYz==";
-        description = "Public key for cache verification";
-      };
-    };
-
     # SSH configuration
     ssh = {
       enable = lib.mkEnableOption "configure ssh for user";
@@ -127,25 +109,6 @@ in
   };
 
   config = lib.mkMerge [
-    # Cache
-    (lib.mkIf cfg.cache.enable {
-      home.packages = with pkgs; [ attic-client ];
-      systemd.user.services.attic-watch = lib.mkIf cfg.cache.watch {
-        Unit = {
-          Description = "Watch Nix store and push to Attic cache";
-          After = [ "graphical-session.target" ];
-          PartOf = [ "graphical-session.target" ];
-        };
-        Service = {
-          ExecStart = "${lib.getExe' pkgs.attic-client "attic"} watch-store main";
-          Restart = "always";
-          RestartSec = 5;
-        };
-        Install = {
-          WantedBy = [ "graphical-session.target" ];
-        };
-      };
-    })
 
     # SSH
     (lib.mkIf cfg.ssh.enable {

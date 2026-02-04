@@ -3,7 +3,7 @@
 {
   local = {
     #secrets.enable = lib.mkForce false;
-    cache.enable = false;
+    #cache.enable = false; # Broken
     security.enable = true;
     dotfiles = {
       enable = true;
