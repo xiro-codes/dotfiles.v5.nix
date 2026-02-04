@@ -1,8 +1,26 @@
 { config, ... }:
 {
-  # Server profile configuration
-  # Provides base server services without specific service enablement
-  
-  # Base server settings - services are configured per-system
-  # This profile only provides common server infrastructure
+  local.shares = {
+    enable = true;
+    shareDir = "/media/";
+    nfs.enable = true;
+    samba.enable = true;
+    definitions = {
+      Media = {
+        path = "/media/Media";
+        comment = "Media files";
+        guestOk = true;
+      };
+      Music = {
+        path = "/media/Media/Music";
+        comment = "Music files";
+        guestOk = true;
+      };
+      Backups = {
+        path = "/media/Backups";
+        comment = "Backup directory";
+        guestOk = true;
+      };
+    };
+  };
 }
