@@ -7,35 +7,36 @@
 let
   cfg = config.local.dashboard;
   hostsCfg = config.local.hosts;
-  
+
   # Determine base URL based on whether we're behind reverse proxy
-  baseUrl = 
+  baseUrl =
     if config.local.reverse-proxy.enable or false
-    then 
+    then
       let
         protocol = "https";
         domain = config.local.reverse-proxy.domain or
-                 (if hostsCfg.useAvahi 
-                  then "${config.networking.hostName or "localhost"}.local"
-                  else "localhost");
-      in "${protocol}://${domain}"
+          (if hostsCfg.useAvahi
+          then "${config.networking.hostName or "localhost"}.local"
+          else "localhost");
+      in
+      "${protocol}://${domain}"
     else "http://localhost";
-  
+
   # Auto-configure allowed hosts based on hosts module
-  autoAllowedHosts = 
+  autoAllowedHosts =
     let
       # Get hostname
       hostname = config.networking.hostName or "localhost";
-      
+
       # Build list of addresses
       addresses = [
-        hostname
+        (lib.toLower hostname)
         "localhost"
         "127.0.0.1"
       ] ++ lib.optionals (builtins.hasAttr hostname hostsCfg) [
-        hostsCfg.${hostname}  # IP address from hosts module
+        hostsCfg.${hostname} # IP address from hosts module
       ] ++ lib.optionals hostsCfg.useAvahi [
-        "${hostname}.local"  # Avahi hostname
+        "${lib.toLower hostname}.local" # Avahi hostname
       ];
     in
     lib.unique addresses;
@@ -43,7 +44,7 @@ in
 {
   options.local.dashboard = {
     enable = lib.mkEnableOption "homepage dashboard";
-    
+
     port = lib.mkOption {
       type = lib.types.port;
       default = 3000;
@@ -75,13 +76,13 @@ in
     services.homepage-dashboard = {
       enable = true;
       listenPort = cfg.port;
-      
+      allowedHosts = lib.concatStringsSep "," cfg.allowedHosts;
+
       settings = {
         title = "Home Server Dashboard";
-        
+
         # Configure base path for reverse proxy
         base = lib.mkIf (cfg.subPath != "") cfg.subPath;
-        
         layout = {
           Services = {
             style = "row";
@@ -98,54 +99,55 @@ in
         };
       };
 
-      services = 
+      services =
         let
           # Check if reverse proxy is enabled to determine URL format
           useProxy = config.local.reverse-proxy.enable or false;
-          
+
           # Helper to build service URL
           serviceUrl = path: port:
             if useProxy
             then "${baseUrl}${path}"
             else "${baseUrl}:${toString port}";
-        in [
-        {
-          Services = [
-            {
-              Gitea = {
-                icon = "gitea.png";
-                href = serviceUrl "/gitea" 3001;
-                description = "Self-hosted Git service";
-              };
-            }
-            {
-              "Nix Cache" = {
-                icon = "nix.png";
-                href = serviceUrl "/cache" 8080;
-                description = "Binary cache server";
-              };
-            }
-          ];
-        }
-        {
-          Media = [
-            {
-              Jellyfin = {
-                icon = "jellyfin.png";
-                href = serviceUrl "/jellyfin" 8096;
-                description = "Media server";
-              };
-            }
-            {
-              Plex = {
-                icon = "plex.png";
-                href = serviceUrl "/plex" 32400;
-                description = "Media server";
-              };
-            }
-          ];
-        }
-      ];
+        in
+        [
+          {
+            Services = [
+              {
+                Gitea = {
+                  icon = "gitea.png";
+                  href = serviceUrl "/gitea" 3001;
+                  description = "Self-hosted Git service";
+                };
+              }
+              {
+                "Nix Cache" = {
+                  icon = "nix.png";
+                  href = serviceUrl "/cache" 8080;
+                  description = "Binary cache server";
+                };
+              }
+            ];
+          }
+          {
+            Media = [
+              {
+                Jellyfin = {
+                  icon = "jellyfin.png";
+                  href = serviceUrl "/jellyfin" 8096;
+                  description = "Media server";
+                };
+              }
+              {
+                Plex = {
+                  icon = "plex.png";
+                  href = serviceUrl "/plex" 32400;
+                  description = "Media server";
+                };
+              }
+            ];
+          }
+        ];
 
       widgets = [
         {
@@ -161,9 +163,10 @@ in
     networking.firewall.allowedTCPPorts = lib.mkIf cfg.openFirewall [ cfg.port ];
 
     # Configure homepage to accept proxied requests
-    systemd.services.homepage-dashboard = lib.mkIf (cfg.allowedHosts != []) {
+    systemd.services.homepage-dashboard = lib.mkIf (cfg.allowedHosts != [ ]) {
       environment = {
-        HOMEPAGE_CONFIG_ALLOWED_HOSTS = lib.concatStringsSep "," cfg.allowedHosts;
+        #HOMEPAGE_CONFIG_ALLOWED_HOSTS = lib.concatStringsSep "," cfg.allowedHosts;
+        #HOMEPAGE_ALLOWED_HOSTS = lib.concatStringsSep "," cfg.allowedHosts;
       };
     };
   };

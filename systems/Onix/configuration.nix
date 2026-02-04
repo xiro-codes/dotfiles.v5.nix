@@ -16,6 +16,7 @@
       "ssh_pub_onix/master"
       "zima_creds"
     ];
+    hosts.useAvahi = true;
   };
   users.users.tod = {
     shell = pkgs.fish;

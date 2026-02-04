@@ -10,7 +10,7 @@
   # Enable reverse proxy with automatic HTTPS
   local.reverse-proxy = {
     enable = true;
-
+    domain = "onix.local";
     # For local .local domains, uses self-signed certificates
     # For public domains, set useACME = true and provide acmeEmail
     useACME = false;

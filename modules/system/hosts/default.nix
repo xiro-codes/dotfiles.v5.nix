@@ -2,7 +2,7 @@
 
 let
   cfg = config.local.hosts;
-  
+
   # Define host mappings
   hostDefs = {
     onix = {
@@ -18,20 +18,20 @@ let
       avahi = "sapphire.local";
     };
   };
-  
+
   # Helper to get the address for a host
-  getHost = name: 
-    if cfg.useAvahi 
-    then hostDefs.${name}.avahi 
+  getHost = name:
+    if cfg.useAvahi
+    then hostDefs.${name}.avahi
     else hostDefs.${name}.ip;
-  
+
   # Helper to get address for current or any host
   getHostAddress = hostname:
     if builtins.hasAttr hostname hostDefs
     then getHost hostname
     else if cfg.useAvahi
-         then "${hostname}.local"
-         else hostname;  # fallback to hostname as-is
+    then "${hostname}.local"
+    else hostname; # fallback to hostname as-is
 in
 {
   options.local.hosts = {
@@ -40,7 +40,7 @@ in
       default = false;
       description = "Whether to use Avahi/mDNS hostnames (.local) instead of raw IP addresses for local network hosts";
     };
-    
+
     # Expose resolved addresses for other modules to use
     onix = lib.mkOption {
       type = lib.types.str;
@@ -48,14 +48,14 @@ in
       readOnly = true;
       description = "Address for Onix host";
     };
-    
+
     ruby = lib.mkOption {
       type = lib.types.str;
       default = getHost "ruby";
       readOnly = true;
       description = "Address for Ruby host";
     };
-    
+
     sapphire = lib.mkOption {
       type = lib.types.str;
       default = getHost "sapphire";
@@ -63,11 +63,11 @@ in
       description = "Address for Sapphire host";
     };
   };
-  
+
   config = {
     # Add entries to /etc/hosts for better reliability
     networking.hosts = lib.mkIf cfg.useAvahi {
-      "${hostDefs.zimaos.ip}" = [ "zimaos.local" ];
+      "${hostDefs.onix.ip}" = [ "onix.local" ];
       "${hostDefs.ruby.ip}" = [ "ruby.local" ];
       "${hostDefs.sapphire.ip}" = [ "sapphire.local" ];
     };
