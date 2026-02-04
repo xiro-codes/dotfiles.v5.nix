@@ -44,6 +44,14 @@
 
         pinchflat.path = "/pinchflat";
         pinchflat.target = "http://127.0.0.1:${toString config.local.download.pinchflat.port}/";
+        pinchflat.extraConfig = ''
+          sub_filter_once off;
+          sub_filter_types text/html text/javascript application/javascript;
+          sub_filter 'href="/' 'href="/pinchflat/';
+          sub_filter 'src="/' 'src="/pinchflat/';
+          sub_filter 'data-socket-path="/' 'data-socket-path="/pinchflat/';
+          sub_filter 'action="/' 'action="/pinchflat/';
+        '';
       };
     };
 
