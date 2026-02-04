@@ -118,12 +118,8 @@ in
           };
         } // lib.mapAttrs' (name: service: 
           lib.nameValuePair service.path {
-            proxyPass = service.target + "/";
+            proxyPass = service.target;
             extraConfig = ''
-              # Rewrite paths for subpath proxying
-              rewrite ^${service.path}(/.*)$ $1 break;
-              rewrite ^${service.path}$ / break;
-              
               proxy_set_header Host $host;
               proxy_set_header X-Real-IP $remote_addr;
               proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;

@@ -31,19 +31,19 @@
         dashboard.target = "http://localhost:${toString config.local.dashboard.port}";
         
         gitea.path = "/gitea";
-        gitea.target = "http://localhost:${toString config.local.gitea.port}";
+        gitea.target = "http://localhost:${toString config.local.gitea.port}/gitea";
         
         jellyfin.path = "/jellyfin";
-        jellyfin.target = "http://localhost:${toString config.local.media.jellyfin.port}";
+        jellyfin.target = "http://localhost:${toString config.local.media.jellyfin.port}/jellyfin";
         
         ersatztv.path = "/ersatztv";
-        ersatztv.target = "http://localhost:${toString config.local.media.ersatztv.port}";
+        ersatztv.target = "http://localhost:${toString config.local.media.ersatztv.port}/ersatztv";
         
         transmission.path = "/transmission";
-        transmission.target = "http://localhost:${toString config.local.download.transmission.port}";
+        transmission.target = "http://localhost:${toString config.local.download.transmission.port}/transmission";
         
         pinchflat.path = "/pinchflat";
-        pinchflat.target = "http://localhost:${toString config.local.download.pinchflat.port}";
+        pinchflat.target = "http://localhost:${toString config.local.download.pinchflat.port}/pinchflat";
       };
     };
     
