@@ -137,55 +137,57 @@ in
       "d ${cfg.downloadDir} 0755 root root -"
       "d ${cfg.downloadDir} 0755 root root -"
       "d ${cfg.downloadDir}/../youtube 0755 root root -"
-      "d /var/lib/qBittorrent/qBittorrent 0755 qbittorrent qbittorrent -"
     ] ++ lib.optionals cfg.pinchflat.enable [
       "d ${cfg.pinchflat.dataDir} 0755 root root -"
+    ] ++ lib.optionals cfg.qbittorrent.enable [
+      "d /var/lib/qbittorrent/config 0755 root root -"
     ];
     # 1. Create the "Real" Folder and Copy Files
-    systemd.services.qbittorrent.preStart = lib.mkIf cfg.qbittorrent.enable ''
-      # Define where we want the UI to live
-      UI_DIR="/var/lib/qBittorrent/qBittorrent/vuetorrent"
-    
-      # Clean up old version
-      rm -rf "$UI_DIR"
-      mkdir -p "$UI_DIR"
-    
-      # Copy files from Nix Store to the real folder
-      # -L follows symlinks (Critical!)
-      cp -L -r ${pkgs.vuetorrent}/share/vuetorrent/* "$UI_DIR/"
-    
-      # Ensure qBittorrent owns the files
-      chown -R qbittorrent:qbittorrent "$UI_DIR"
-    '';
-
-    services.qbittorrent = lib.mkIf cfg.qbittorrent.enable {
-      enable = true;
-      openFirewall = cfg.qbittorrent.openFirewall;
-      serverConfig = {
-        LegalNotice = {
-          Accepted = true;
-        };
-        Preferences = {
-          "WebUI" = {
-            AuthSubnetWhitelistEnabled = true;
-            AlternativeUIEnabled = true;
-            RootFolder = "/var/lib/qBittorrent/qBittorrent/vuetorrent";
-            AuthSubnetWhitelist = "0.0.0.0/0";
-            HostHeaderValidation = false;
-            CSRFProtection = false;
-            ClickjackingProtection = false;
-            Address = "*";
-          };
-        };
-        Downloads = {
-          # The folder for fully finished downloads
-          SavePath = "${cfg.downloadDir}/complete";
-
-          # The folder for active/partial downloads
-          TempPathEnabled = true;
-          TempPath = "${cfg.downloadDir}/incomplete";
-        };
+    systemd.services.init-qbittorrent-config = lib.mkIf cfg.qbittorrent.enable {
+      description = "Initialize qBittorrent config for passwordless access";
+      before = [ "podman-qbittorrent.service" ];
+      wantedBy = [ "multi-user.target" ];
+      serviceConfig = {
+        Type = "oneshot";
+        RemainAfterExit = true;
       };
+      script = ''
+        CONF_DIR="/var/lib/qbittorrent/config/qBittorrent"
+        CONF_FILE="$CONF_DIR/qBittorrent.conf"
+        mkdir -p "$CONF_DIR"
+
+        if [ ! -f "$CONF_FILE" ]; then
+          echo "[Preferences]" > "$CONF_FILE"
+        fi
+
+        # Use sed to ensure the whitelist is enabled and set to allow all
+        # This removes the password requirement for all IP ranges
+        sed -i '/WebUI\\AuthSubnetWhitelistEnabled=/d' "$CONF_FILE"
+        sed -i '/WebUI\\AuthSubnetWhitelist=/d' "$CONF_FILE"
+        sed -i '/\[Preferences\]/a WebUI\\AuthSubnetWhitelistEnabled=true\nWebUI\\AuthSubnetWhitelist=0.0.0.0/0' "$CONF_FILE"
+        
+        # Ensure correct permissions for the container user
+        chown -R 1000:100 "$CONF_DIR/.."
+      '';
+    };
+    virtualisation.oci-containers.containers.qbittorrent = lib.mkIf cfg.qbittorrent.enable {
+      image = "lscr.io/linuxserver/qbittorrent:latest";
+      ports = [
+        "${toString cfg.qbittorrent.port}:8080" # WebUI
+        "6881:6881" # BitTorrent TCP
+        "6881:6881/udp" # BitTorrent UDP
+      ];
+      volumes = [
+        "/var/lib/qbittorrent/config:/config"
+        "${cfg.downloadDir}:/downloads"
+      ];
+      environment = {
+        PUID = "1000"; # Matches your user ID usually
+        PGID = "100"; # 'users' group
+        TZ = config.time.timeZone or "UTC";
+        WEBUI_PORT = "8080";
+      };
+      autoStart = true;
     };
     # Transmission
     services.transmission = lib.mkIf cfg.transmission.enable {

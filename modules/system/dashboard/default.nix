@@ -70,7 +70,7 @@ in
           };
           System = {
             style = "row";
-            columns = 2;
+            columns = 3;
           };
         };
       };
@@ -78,12 +78,12 @@ in
         let
           # Check if reverse proxy is enabled to determine URL format
           useProxy = config.local.reverse-proxy.enable or false;
-
+          domain = config.local.reverse-proxy.domain or "onix.local";
           # Helper to build service URL
-          serviceUrl = path: port:
+          serviceUrl = name: port:
             if useProxy
-            then "${baseUrl}${path}"
-            else "${baseUrl}:${toString port}";
+            then "${name}.${domain}"
+            else "${domain}:${toString port}";
 
           # Build service list based on what's enabled
           servicesList = lib.flatten [
@@ -91,8 +91,15 @@ in
             (lib.optional (config.local.gitea.enable or false) {
               Gitea = {
                 icon = "gitea.png";
-                href = serviceUrl (config.local.gitea.subPath or "/gitea") (config.local.gitea.port or 3001);
+                href = serviceUrl "git" (config.local.gitea.port or 3001);
                 description = "Self-hosted Git service";
+              };
+            })
+            (lib.optional (config.local.pihole.enable or false) {
+              PiHole = {
+                icon = "pihole.png";
+                href = "http://localhost:8053/admin";
+                description = "AdBlocking and Local dns";
               };
             })
           ];
@@ -101,38 +108,31 @@ in
             (lib.optional (config.local.media.jellyfin.enable or false) {
               Jellyfin = {
                 icon = "jellyfin.png";
-                href = serviceUrl (config.local.media.jellyfin.subPath or "/jellyfin") (config.local.media.jellyfin.port or 8096);
+                href = serviceUrl "tv" (config.local.media.jellyfin.port or 8096);
                 description = "Media server";
               };
             })
             (lib.optional (config.local.media.ersatztv.enable or false) {
               ErsatzTV = {
                 icon = "ersatztv.png";
-                href = serviceUrl (config.local.media.ersatztv.subPath or "/ersatztv") (config.local.media.ersatztv.port or 8409);
+                href = serviceUrl "ch3" (config.local.media.ersatztv.port or 8409);
                 description = "Live TV streaming";
               };
             })
           ];
 
           downloadList = lib.flatten [
-            (lib.optional (config.local.download.transmission.enable or false) {
-              Transmission = {
-                icon = "transmission.png";
-                href = serviceUrl (config.local.download.transmission.subPath or "/transmission") (config.local.download.transmission.port or 9091);
-                description = "BitTorrent client";
-              };
-            })
             (lib.optional (config.local.download.pinchflat.enable or false) {
               Pinchflat = {
                 icon = "pinchflat.png";
-                href = serviceUrl (config.local.download.pinchflat.subPath or "/pinchflat") (config.local.download.pinchflat.port or 8945);
+                href = serviceUrl "yt" (config.local.download.pinchflat.port or 8945);
                 description = "YouTube downloader";
               };
             })
             (lib.optional (config.local.download.qbittorrent.enable or false) {
               Qbittorrent = {
                 icon = "qbittorrent.png";
-                href = serviceUrl (config.local.download.qbittorrent.subPath or "/qbittorrent") (config.local.download.qbittorrent.port or 8080);
+                href = serviceUrl "dl" (config.local.download.qbittorrent.port or 8080);
                 description = "BitTorrent client";
               };
             })

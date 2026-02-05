@@ -13,8 +13,8 @@ let
     mkdir -p $out
     openssl req -x509 -newkey rsa:4096 -sha256 -days 3650 -nodes \
       -keyout $out/onix.key -out $out/onix.crt \
-      -subj "/CN=onix.local" \
-      -addext "subjectAltName=DNS:onix.local" \
+      -subj "/CN=${cfg.domain}" \
+      -addext "subjectAltName=DNS:onix.local,DNS:*${cfg.domain}" \
       -addext "basicConstraints=CA:FALSE"
   '';
 in
@@ -51,10 +51,6 @@ in
     services = lib.mkOption {
       type = lib.types.attrsOf (lib.types.submodule {
         options = {
-          path = lib.mkOption {
-            type = lib.types.str;
-            description = "URL path for this service (e.g., /gitea)";
-          };
 
           target = lib.mkOption {
             type = lib.types.str;
@@ -71,10 +67,7 @@ in
       default = { };
       example = lib.literalExpression ''
         {
-          gitea = {
-            path = "/gitea";
-            target = "http://localhost:3001";
-          };
+          gitea.target = "http://localhost:3001";
         }
       '';
       description = "Services to proxy";
@@ -92,60 +85,31 @@ in
       recommendedOptimisation = true;
       recommendedGzipSettings = true;
 
-      virtualHosts.${cfg.domain} = {
-        forceSSL = true;
+      virtualHosts = lib.mapAttrs
+        (name: service: {
+          serverName = if name == "dashboard" then cfg.domain else "${name}.${cfg.domain}";
+          forceSSL = true;
+          sslCertificate = "${onixCert}/onix.crt";
+          sslCertificateKey = "${onixCert}/onix.key";
 
-        # Use ACME if configured and email provided, otherwise self-signed
-        enableACME = cfg.useACME && cfg.acmeEmail != "";
-
-        # Self-signed certificate if not using ACME
-        sslCertificate = lib.mkIf (!cfg.useACME || cfg.acmeEmail == "")
-          ("${ onixCert }/onix.crt");
-
-        sslCertificateKey = lib.mkIf (!cfg.useACME || cfg.acmeEmail == "")
-          ("${onixCert}/onix.key");
-
-        locations = {
-          #"/_api" = {
-          #  proxyPass = "http://127.0.0.1:8080/_api/";
-          #  extraConfig = ''
-          #    proxy_set_header Host $host;
-          #    proxy_set_header X-Real-IP $remote_addr;
-          #    proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-          #    proxy_set_header X-Forwarded-Proto $scheme;
-          #    client_max_body_size 0;
-          #  '';
-          #};
-          "/status" = {
-            return = "200 'Server is running'";
+          locations."/" = {
+            proxyPass = service.target;
             extraConfig = ''
-              add_header Content-Type text/plain;
+              proxy_set_header Host $host;
+              proxy_set_header X-Real-IP $remote_addr;
+              proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+              proxy_set_header X-Forwarded-Proto $scheme;
+            
+              # WebSocket support for modern apps
+              proxy_http_version 1.1;
+              proxy_set_header Upgrade $http_upgrade;
+              proxy_set_header Connection $connection_upgrade;
+
+              ${service.extraConfig}
             '';
           };
-        } // lib.mapAttrs'
-          (name: service:
-            lib.nameValuePair service.path {
-              proxyPass = service.target;
-              extraConfig = ''
-                proxy_set_header Host $host;
-                proxy_set_header X-Real-IP $remote_addr;
-                proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-                proxy_set_header X-Forwarded-Proto $scheme;
-                proxy_set_header X-Forwarded-Host $host;
-                proxy_set_header X-Forwarded-Server $host;
-                proxy_set_header X-Forwarded-Prefix ${service.path};
-              
-                # WebSocket support (conditional)
-                proxy_http_version 1.1;
-                proxy_set_header Upgrade $http_upgrade;
-                proxy_set_header Connection $connection_upgrade;
-              
-                ${service.extraConfig}
-              '';
-            }
-          )
-          cfg.services;
-      };
+        })
+        cfg.services;
     };
 
     # ACME configuration

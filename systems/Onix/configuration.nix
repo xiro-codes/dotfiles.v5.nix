@@ -19,84 +19,49 @@
       "ssh_pub_onix/master"
       "onix_creds"
     ];
+    pihole = {
+      enable = true;
+      adminPassword = "rockman";
+    };
 
     # Reverse proxy with HTTPS
     reverse-proxy = {
       enable = true;
       # Domain auto-configured from Avahi: onix.local
       useACME = false; # Self-signed for .local domains
-      domain = "onix.local";
+      domain = "onix.home";
       services = {
-        dashboard.path = "/";
         dashboard.target = "http://127.0.0.1:${toString config.local.dashboard.port}";
 
-        gitea.path = "/gitea";
-        gitea.target = "http://127.0.0.1:${toString config.local.gitea.port}/";
+        git.target = "http://127.0.0.1:${toString config.local.gitea.port}";
 
-        jellyfin.path = "/jellyfin";
-        jellyfin.target = "http://127.0.0.1:${toString config.local.media.jellyfin.port}/jellyfin";
+        tv.target = "http://127.0.0.1:${toString config.local.media.jellyfin.port}";
 
-        ersatztv.path = "/ersatztv";
-        ersatztv.target = "http://127.0.0.1:${toString config.local.media.ersatztv.port}/ersatztv";
+        ch7.target = "http://127.0.0.1:${toString config.local.media.ersatztv.port}";
 
-        qbittorrent.path = "/qbittorrent";
-        qbittorrent.target = "http://127.0.0.1:${toString config.local.download.qbittorrent.port}/";
-        qbittorrent.extraConfig = ''
-          sub_filter_once off;
-          sub_filter '<head>' '<head>\n<base href="/qbittorrent/">';      
+        dl.target = "http://127.0.0.1:${toString config.local.download.qbittorrent.port}";
 
-          # 2. Replaces absolute paths with proxied paths
-          # e.g. src="/css/..." becomes src="/qbittorrent/css/..."
-          sub_filter 'href="/' 'href="/qbittorrent/';
-          sub_filter 'src="/'  'src="/qbittorrent/';
-          sub_filter 'action="/' 'action="/qbittorrent/';
-      
-          # 3. Fixes JavaScript redirects if they exist
-          sub_filter "window.location.href = '/" "window.location.href = '/qbittorrent/";
-          proxy_set_header Accept-Encoding "";
-        '';
-        pinchflat.path = "/pinchflat";
-        pinchflat.target = "http://127.0.0.1:${toString config.local.download.pinchflat.port}/";
-        pinchflat.extraConfig = ''
-          sub_filter_once off;
-          sub_filter_types text/html text/javascript application/javascript;
-          sub_filter 'href="/' 'href="/pinchflat/';
-          sub_filter 'src="/' 'src="/pinchflat/';
-          sub_filter 'data-socket-path="/' 'data-socket-path="/pinchflat/';
-          sub_filter 'action="/' 'action="/pinchflat/';
-        '';
+        yt.target = "http://127.0.0.1:${toString config.local.download.pinchflat.port}";
       };
     };
+
     # Dashboard
     dashboard = {
       enable = true;
-      subPath = "/";
-      openFirewall = false;
+      allowedHosts = [ config.local.reverse-proxy.domain "localhost" ];
     };
 
     # Git service
-    gitea = {
-      enable = true;
-      subPath = "/gitea";
-      openFirewall = false;
-    };
+    gitea = { enable = true; };
 
     # Media services
     media = {
       enable = true;
       mediaDir = "/media/Media/";
 
-      jellyfin = {
-        enable = true;
-        subPath = "/jellyfin";
-        openFirewall = false;
-      };
+      jellyfin = { enable = true; };
 
-      ersatztv = {
-        enable = true;
-        subPath = "/ersatztv";
-        openFirewall = false;
-      };
+      ersatztv = { enable = true; };
     };
 
     # Download services
@@ -104,16 +69,8 @@
       enable = true;
       downloadDir = "/media/Media/downloads";
 
-      qbittorrent = {
-        enable = true;
-        subPath = "/qbittorrent";
-        openFirewall = true;
-      };
-      pinchflat = {
-        enable = true;
-        subPath = "/pinchflat";
-        openFirewall = false;
-      };
+      qbittorrent = { enable = true; };
+      pinchflat = { enable = true; };
     };
   };
 
