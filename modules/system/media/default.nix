@@ -21,7 +21,7 @@ in
 
     jellyfin = {
       enable = lib.mkEnableOption "Jellyfin media server";
-      
+
       port = lib.mkOption {
         type = lib.types.port;
         default = 8096;
@@ -59,7 +59,7 @@ in
 
     ersatztv = {
       enable = lib.mkEnableOption "ErsatzTV streaming service";
-      
+
       port = lib.mkOption {
         type = lib.types.port;
         default = 8409;
@@ -99,10 +99,10 @@ in
   config = lib.mkIf cfg.enable {
     # Ensure media directories exist
     systemd.tmpfiles.rules = [
-      "d ${cfg.mediaDir} 0755 root root -"
-      "d ${cfg.mediaDir}/movies 0755 root root -"
-      "d ${cfg.mediaDir}/tv 0755 root root -"
-      "d ${cfg.mediaDir}/music 0755 root root -"
+      "d ${cfg.mediaDir} 0755 tod users -"
+      "d ${cfg.mediaDir}/movies 0755 tod users -"
+      "d ${cfg.mediaDir}/tv 0755 tod users -"
+      "d ${cfg.mediaDir}/music 0755 tod users -"
     ] ++ lib.optionals cfg.ersatztv.enable [
       "d ${cfg.ersatztv.dataDir} 0755 root root -"
     ] ++ lib.optionals (cfg.jellyfin.enable && cfg.jellyfin.subPath != "") [
@@ -115,7 +115,7 @@ in
       dataDir = cfg.jellyfin.dataDir;
       openFirewall = cfg.jellyfin.openFirewall;
     };
-    
+
     # Write Jellyfin network configuration for reverse proxy
     environment.etc."jellyfin/network.xml" = lib.mkIf (cfg.jellyfin.enable && cfg.jellyfin.subPath != "") {
       text = ''<?xml version="1.0" encoding="utf-8"?>
@@ -124,12 +124,12 @@ in
         </NetworkConfiguration>
       '';
     };
-    
+
     # Symlink config to Jellyfin data directory
-    systemd.services.jellyfin.preStart = lib.mkIf (cfg.jellyfin.enable && cfg.jellyfin.subPath != "") ''
-      mkdir -p ${cfg.jellyfin.dataDir}/config
-      ln -sf /etc/jellyfin/network.xml ${cfg.jellyfin.dataDir}/config/network.xml
-    '';
+    #systemd.services.jellyfin.preStart = lib.mkIf (cfg.jellyfin.enable && cfg.jellyfin.subPath != "") ''
+    #  mkdir -p ${cfg.jellyfin.dataDir}/config
+    #  ln -sf /etc/jellyfin/network.xml ${cfg.jellyfin.dataDir}/config/network.xml
+    #'';
 
     # Write Jellyfin network configuration for reverse proxy
     virtualisation.oci-containers.containers.ersatztv = lib.mkIf cfg.ersatztv.enable {

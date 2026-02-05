@@ -72,7 +72,7 @@
     # Media services
     media = {
       enable = true;
-      mediaDir = "/srv/media";
+      mediaDir = "/media/Media/";
 
       jellyfin = {
         enable = true;
