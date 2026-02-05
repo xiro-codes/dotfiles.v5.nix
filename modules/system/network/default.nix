@@ -42,7 +42,7 @@ in
       useDHCP = lib.mkDefault true;
     };
     services.avahi = {
-      enable = true;
+      enable = false;
       nssmdns4 = true;
       publish = {
         enable = true;
