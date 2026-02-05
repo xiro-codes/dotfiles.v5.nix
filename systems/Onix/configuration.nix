@@ -39,9 +39,22 @@
         ersatztv.path = "/ersatztv";
         ersatztv.target = "http://127.0.0.1:${toString config.local.media.ersatztv.port}/ersatztv";
 
-        transmission.path = "/transmission";
-        transmission.target = "http://127.0.0.1:${toString config.local.download.transmission.port}/transmission";
+        qbittorrent.path = "/qbittorrent";
+        qbittorrent.target = "http://127.0.0.1:${toString config.local.download.qbittorrent.port}/";
+        qbittorrent.extraConfig = ''
+          sub_filter_once off;
+          sub_filter '<head>' '<head>\n<base href="/qbittorrent/">';      
 
+          # 2. Replaces absolute paths with proxied paths
+          # e.g. src="/css/..." becomes src="/qbittorrent/css/..."
+          sub_filter 'href="/' 'href="/qbittorrent/';
+          sub_filter 'src="/'  'src="/qbittorrent/';
+          sub_filter 'action="/' 'action="/qbittorrent/';
+      
+          # 3. Fixes JavaScript redirects if they exist
+          sub_filter "window.location.href = '/" "window.location.href = '/qbittorrent/";
+          proxy_set_header Accept-Encoding "";
+        '';
         pinchflat.path = "/pinchflat";
         pinchflat.target = "http://127.0.0.1:${toString config.local.download.pinchflat.port}/";
         pinchflat.extraConfig = ''
@@ -54,7 +67,6 @@
         '';
       };
     };
-
     # Dashboard
     dashboard = {
       enable = true;
@@ -92,12 +104,11 @@
       enable = true;
       downloadDir = "/media/Media/downloads";
 
-      transmission = {
+      qbittorrent = {
         enable = true;
-        subPath = "/transmission";
+        subPath = "/qbittorrent";
         openFirewall = true;
       };
-
       pinchflat = {
         enable = true;
         subPath = "/pinchflat";
@@ -110,6 +121,10 @@
     shell = pkgs.fish;
     initialPassword = "rockman";
   };
-
+  systemd.tmpfiles.rules = [
+    "d /media/Media 0777 root root -"
+    "d /media/Backups 0777 root root -"
+  ];
+  networking.firewall.trustedInterfaces = [ "lo" ];
   system.stateVersion = "25.11";
 }

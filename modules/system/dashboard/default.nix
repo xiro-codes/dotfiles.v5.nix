@@ -95,13 +95,6 @@ in
                 description = "Self-hosted Git service";
               };
             })
-            (lib.optional (config.local.cache-server.enable or false) {
-              "Nix Cache" = {
-                icon = "nix.png";
-                href = serviceUrl (config.local.cache-server.subPath or "/cache") (config.local.cache-server.port or 8080);
-                description = "Binary cache server";
-              };
-            })
           ];
 
           mediaList = lib.flatten [
@@ -134,6 +127,13 @@ in
                 icon = "pinchflat.png";
                 href = serviceUrl (config.local.download.pinchflat.subPath or "/pinchflat") (config.local.download.pinchflat.port or 8945);
                 description = "YouTube downloader";
+              };
+            })
+            (lib.optional (config.local.download.qbittorrent.enable or false) {
+              Qbittorrent = {
+                icon = "qbittorrent.png";
+                href = serviceUrl (config.local.download.qbittorrent.subPath or "/qbittorrent") (config.local.download.qbittorrent.port or 8080);
+                description = "BitTorrent client";
               };
             })
           ];
