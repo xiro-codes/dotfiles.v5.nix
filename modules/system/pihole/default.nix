@@ -50,7 +50,7 @@ in
 
     # Disable systemd-resolved from grabbing port 53
     #services.resolved.enable = false;
-    services.resolved.settings.DNSStubListener = "no";
+    #services.resolved.settings.DNSStubListener = "no";
     #services.resolved.extraConfig = ''
     #  DNSStubListener=no
     #'';
