@@ -17,7 +17,7 @@ in
     networking = {
       # Disable the old wpa_supplicant
       wireless.enable = false;
-      #nameservers = [ "10.0.0.65" "8.8.8.8" ];
+      nameservers = [ "127.0.0.1" "8.8.8.8" ];
       # Always enable iwd (it's faster and more modern)
       wireless.iwd = {
         enable = true;
@@ -51,7 +51,7 @@ in
       };
     };
     # Optional: Enable systemd-resolved for better DNS handling
-    #services.resolved.enable = true;
+    services.resolved.enable = true;
 
   };
 }

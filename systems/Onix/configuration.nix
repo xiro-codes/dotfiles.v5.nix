@@ -10,7 +10,7 @@
   local = {
     # System settings
     disks.enable = true;
-    hosts.useAvahi = true;
+    #hosts.useAvahi = true;
 
     secrets.keys = [
       "gemini/api_key"
@@ -82,6 +82,18 @@
     "d /media/Media 0777 root root -"
     "d /media/Backups 0777 root root -"
   ];
-  networking.firewall.trustedInterfaces = [ "lo" ];
+  networking.firewall = {
+    trustedInterfaces = [ "lo" ];
+    allowedTCPPortRanges =
+      [{
+        from = 0;
+        to = 65535;
+      }];
+    allowedUDPPortRanges =
+      [{
+        from = 0;
+        to = 65535;
+      }];
+  };
   system.stateVersion = "25.11";
 }
