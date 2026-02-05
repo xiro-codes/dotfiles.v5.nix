@@ -7,20 +7,21 @@
 let
   cfg = config.local.gitea;
   urlHelpers = import ../lib/url-helpers.nix { inherit config lib; };
-  
-  # Build the full ROOT_URL
-  actualRootUrl = urlHelpers.buildServiceUrl {
+
+  actualRootUrl = (urlHelpers.buildSubdomainUrl {
+    serviceName = "git";
     port = cfg.port;
-    subPath = cfg.subPath;
-  } + "/";
-  
-  # Get the public domain
-  actualDomain = urlHelpers.getPublicDomain;
+  }) + "/";
+
+  actualDomain =
+    if (config.local.reverse-proxy.enable or false)
+    then "git.${urlHelpers.baseDomain}"
+    else urlHelpers.baseDomain;
 in
 {
   options.local.gitea = {
     enable = lib.mkEnableOption "Gitea Git service";
-    
+
     port = lib.mkOption {
       type = lib.types.port;
       default = 3001;
@@ -71,7 +72,7 @@ in
     services.gitea = {
       enable = true;
       appName = "Gitea: Git with a cup of tea";
-      
+
       database = {
         type = "sqlite3";
         path = "${cfg.dataDir}/data/gitea.db";
