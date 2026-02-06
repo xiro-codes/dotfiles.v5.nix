@@ -177,8 +177,7 @@ in
     # 1. Create the "Real" Folder and Copy Files
     systemd.services.init-qbittorrent-config = lib.mkIf cfg.qbittorrent.enable {
       description = "Initialize qBittorrent config for passwordless access";
-      before = [ "podman-qbittorrent.service" ];
-      wantedBy = [ "multi-user.target" ];
+      wantedBy = [ "services.qbittorrent.service" ];
       serviceConfig = {
         Type = "oneshot";
         RemainAfterExit = true;
@@ -196,31 +195,13 @@ in
         # This removes the password requirement for all IP ranges
         sed -i '/WebUI\\AuthSubnetWhitelistEnabled=/d' "$CONF_FILE"
         sed -i '/WebUI\\AuthSubnetWhitelist=/d' "$CONF_FILE"
-        sed -i '/\[Preferences\]/a WebUI\\AuthSubnetWhitelistEnabled=true\nWebUI\\AuthSubnetWhitelist=0.0.0.0/0' "$CONF_FILE"
-        
-        # Ensure correct permissions for the container user
-        chown -R 1000:100 "$CONF_DIR/.."
+        sed -i '/\\[Preferences\\]/a WebUI\\AuthSubnetWhitelistEnabled=true\\nWebUI\\AuthSubnetWhitelist=0.0.0.0/0' "$CONF_FILE"
       '';
     };
-    virtualisation.oci-containers.containers.qbittorrent = lib.mkIf cfg.qbittorrent.enable {
-      image = "lscr.io/linuxserver/qbittorrent:latest";
-      ports = [
-        "${toString cfg.qbittorrent.port}:8080" # WebUI
-        "6881:6881" # BitTorrent TCP
-        "6881:6881/udp" # BitTorrent UDP
-      ];
-      volumes = [
-        "/var/lib/qbittorrent/config:/config"
-        "${cfg.downloadDir}:/downloads"
-        "${config.local.media.mediaDir}:/Media"
-      ];
-      environment = {
-        PUID = "1000"; # Matches your user ID usually
-        PGID = "100"; # 'users' group
-        TZ = config.time.timeZone or "UTC";
-        WEBUI_PORT = "8080";
-      };
-      autoStart = true;
+    services.qbittorrent = lib.mkIf cfg.qbittorrent.enable {
+      enable = true;
+      openFirewall = cfg.qbittorrent.openFirewall;
+      webuiPort = cfg.qbittorrent.port;
     };
     # Transmission
     services.transmission = lib.mkIf cfg.transmission.enable {

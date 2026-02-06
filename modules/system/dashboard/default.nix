@@ -14,7 +14,7 @@ let
     subPath = "";
   };
 
-  custom-homepage-dashboard = pkgs.callPackage ../../../packages/docs {};
+  custom-homepage-dashboard = pkgs.callPackage ../../../packages/docs { };
 
   # Auto-configure allowed hosts
   autoAllowedHosts = urlHelpers.getAllowedHosts;
@@ -51,7 +51,7 @@ in
   };
 
   config = lib.mkIf cfg.enable {
-services.homepage-dashboard = {
+    services.homepage-dashboard = {
       package = custom-homepage-dashboard;
       enable = true;
       listenPort = cfg.port;

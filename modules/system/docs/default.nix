@@ -5,7 +5,7 @@
     enable = lib.mkEnableOption "Enable the dotfiles documentation service";
     port = lib.mkOption {
       type = lib.types.port;
-      default = 3001;
+      default = 3088;
       description = "Port to serve the documentation on.";
     };
     package = lib.mkOption {

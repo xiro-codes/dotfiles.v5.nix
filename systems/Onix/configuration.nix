@@ -49,5 +49,12 @@
     port = 3001;
   };
 
+
+  boot.mdadm.program = ''
+    #!${pkgs.runtimeShell}
+    ssh tod@ruby "export DISPLAY=:0; notify-send 'MDADM event on Onix' '$*'"
+    ssh tod@sapphire "export DISPLAY=:0; notify-send 'MDADM event on Onix' '$*'"
+  '';
+
   system.stateVersion = "25.11";
 }
