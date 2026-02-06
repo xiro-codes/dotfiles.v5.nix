@@ -22,7 +22,7 @@
       wantedBy = [ "multi-user.target" ];
       serviceConfig = {
         ExecStart = ''
-          ${pkgs.caddy}/bin/caddy file-server --listen ":${toString config.services.docs.port}" --root "${config.services.docs.package}"
+          ${pkgs.caddy}/bin/caddy file-server --listen ":${toString config.local.docs.port}" --root "${config.local.docs.package}"
         '';
         Restart = "always";
         User = "nobody";
