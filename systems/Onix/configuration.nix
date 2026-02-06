@@ -46,7 +46,6 @@
 
   services.docs = {
     enable = true;
-    package = pkgs.docs-site;
     port = 3001;
   };
 

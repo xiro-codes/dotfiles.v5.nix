@@ -37,7 +37,6 @@
       imports = [
         ./parts/discovery
         ./parts/docs.nix
-        ./parts/docs-service.nix
       ];
     };
 }

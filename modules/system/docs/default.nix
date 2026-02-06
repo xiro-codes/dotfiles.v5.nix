@@ -1,4 +1,4 @@
-{ lib, pkgs, ... }:
+{ config, lib, pkgs, ... }:
 
 {
   options.services.docs = {
@@ -10,6 +10,7 @@
     };
     package = lib.mkOption {
       type = lib.types.package;
+      default = pkgs.docs-site;
       description = "The documentation package to serve.";
     };
   };

@@ -14,13 +14,7 @@ let
     subPath = "";
   };
 
-  # Override homepage-dashboard package to include custom icons
-  custom-homepage-dashboard = pkgs.homepage-dashboard.overrideAttrs (oldAttrs: {
-    postInstall = ''
-      mkdir -p $out/www/icons
-      cp ${../assets/dashboard-icons}/book.svg $out/www/icons/
-    '';
-  });
+  custom-homepage-dashboard = pkgs.callPackage ../../../packages/docs {};
 
   # Auto-configure allowed hosts
   autoAllowedHosts = urlHelpers.getAllowedHosts;
