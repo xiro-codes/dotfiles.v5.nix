@@ -21,9 +21,9 @@ in
     };
 
     tokenFile = lib.mkOption {
-      type = lib.types.path;
+      type = lib.types.str;
       # Assumes sops secret exists at this path by default, but can be overridden
-      default = config.sops.secrets."gitea/runner_token".path;
+      default = "/run/secrets/gitea/runner_token";
       description = "Path to the file containing the runner registration token";
     };
 
