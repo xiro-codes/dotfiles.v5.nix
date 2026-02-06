@@ -29,11 +29,22 @@
         {
           shareName = "backups";
           localPath = "/media/Backups";
-          noAuth = true;
           noShow = true;
         }
-        { shareName = "music"; localPath = "/media/Music"; }
+        {
+          shareName = "media";
+          localPath = "/media/Media";
+        }
+        {
+          shareName = "music";
+          localPath = "/media/Music";
+        }
         { shareName = "books"; localPath = "/media/Books"; }
+        {
+          shareName = "porn";
+          localPath = "/media/Porn";
+          noShow = true;
+        }
       ];
     };
   };

@@ -7,7 +7,7 @@
     kitty.enable = true;
     stylix.enable = true;
     fonts.enable = true;
-    
+
     # Desktop applications
     nixvim.enable = true;
     ranger.enable = true;
@@ -28,15 +28,15 @@
     firefox
     discord
     warp-terminal
-    
+
     # Screenshot tools
     caligula
     grim
     slurp
-    
+
     # Fonts (for GUI)
     cascadia-code
-    
+
     # Notifications
     libnotify
   ] ++ (with inputs.self.packages.${pkgs.stdenv.hostPlatform.system}; [
