@@ -1,8 +1,14 @@
 { pkgs, inputs, ... }:
 
 pkgs.writeShellScriptBin "serve-docs" ''
+  # Clean up any previous mdbook processes
+  pkill mdbook || true
+  
   # Create a temp dir for the book to combine manual + generated docs
   BOOK_DIR=$(mktemp -d)
+  
+  # Set up the book source directory
+  mkdir -p $BOOK_DIR/src
   
   # Clean up on exit
   trap "rm -rf $BOOK_DIR" EXIT
@@ -29,14 +35,20 @@ pkgs.writeShellScriptBin "serve-docs" ''
   
   echo "Preparing documentation in $BOOK_DIR..."
   
+  # Copy the book config
+  cp "$DOC_SRC/book.toml" "$BOOK_DIR/"
+  
   # Symlink docs to allow live reloading of manual edits, using README.md as intro
-  ln -s "$DOC_SRC"/* "$BOOK_DIR/"
-  ln -s "$README_SRC" "$BOOK_DIR/intro.md"
+  rm -f "$BOOK_DIR/src/modules.md" "$BOOK_DIR/src/system-modules.md" "$BOOK_DIR/src/home-modules.md"
+  ln -s "$DOC_SRC"/* "$BOOK_DIR/src/"
+  # Remove the book config from the src dir to avoid mdbook confusion
+  rm "$BOOK_DIR/src/book.toml"
+  ln -s "$README_SRC" "$BOOK_DIR/src/intro.md"
   
   # Link generated docs from the nix store (these won't live reload unless rebuilt)
-  ln -s "${inputs.self.packages.x86_64-linux.docs-generated}/README.md" "$BOOK_DIR/modules.md"
-  ln -s "${inputs.self.packages.x86_64-linux.docs-generated}/system-modules.md" "$BOOK_DIR/system-modules.md"
-  ln -s "${inputs.self.packages.x86_64-linux.docs-generated}/home-modules.md" "$BOOK_DIR/home-modules.md"
+  ln -s "${inputs.self.packages.x86_64-linux.docs-generated}/README.md" "$BOOK_DIR/src/modules.md"
+  ln -s "${inputs.self.packages.x86_64-linux.docs-generated}/system-modules.md" "$BOOK_DIR/src/system-modules.md"
+  ln -s "${inputs.self.packages.x86_64-linux.docs-generated}/home-modules.md" "$BOOK_DIR/src/home-modules.md"
   
   echo "Serving docs at http://localhost:3000 (usually)..."
   ${pkgs.mdbook}/bin/mdbook serve "$BOOK_DIR" --open

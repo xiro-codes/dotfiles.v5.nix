@@ -3830,7 +3830,7 @@ absolute path
 *Default:*
 
 ```nix
-/nix/store/rqc54ahw5c6dk3l30n31x17xhs5f8r5j-source/secrets/secrets.yaml
+/nix/store/5raz050gi5ss2pj4kc4imax2z1zs320n-source/secrets/secrets.yaml
 ```
 
 
@@ -4509,7 +4509,7 @@ absolute path
 *Default:*
 
 ```nix
-/nix/store/rqc54ahw5c6dk3l30n31x17xhs5f8r5j-source/secrets/secrets.yaml
+/nix/store/5raz050gi5ss2pj4kc4imax2z1zs320n-source/secrets/secrets.yaml
 ```
 
 
