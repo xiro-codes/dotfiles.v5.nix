@@ -14,8 +14,6 @@ let
     subPath = "";
   };
 
-  custom-homepage-dashboard = pkgs.callPackage ../../../packages/docs { };
-
   # Auto-configure allowed hosts
   autoAllowedHosts = urlHelpers.getAllowedHosts;
 in
@@ -52,7 +50,6 @@ in
 
   config = lib.mkIf cfg.enable {
     services.homepage-dashboard = {
-      package = custom-homepage-dashboard;
       enable = true;
       listenPort = cfg.port;
       allowedHosts = lib.concatStringsSep "," cfg.allowedHosts;
@@ -93,7 +90,7 @@ in
             # Documentation
             (lib.optional (config.local.docs.enable or false) {
               Docs = {
-                icon = "book.svg";
+                icon = "mdi-book-information";
                 href = serviceUrl "docs" (config.services.docs.port or 3001);
                 description = "Dotfiles Documentation";
               };
