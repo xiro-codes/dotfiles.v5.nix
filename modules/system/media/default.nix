@@ -123,6 +123,8 @@ in
       "d ${cfg.ersatztv.dataDir} 0755 root root -"
     ] ++ lib.optionals (cfg.jellyfin.enable && cfg.jellyfin.subPath != "") [
       "d ${cfg.jellyfin.dataDir}/config 0755 jellyfin jellyfin -"
+    ] ++ lib.optionals cfg.plex.enable [
+      "d /var/lib/plex 0777 root root -"
     ];
 
     # Jellyfin
