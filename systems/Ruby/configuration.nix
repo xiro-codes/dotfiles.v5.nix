@@ -5,7 +5,7 @@
     ./hardware-configuration.nix
     ../profiles/base.nix
     ../profiles/workstation.nix
-    ../profiles/onix-client.nix
+    ../profiles/client.nix
     ../profiles/limine-uefi.nix
   ];
   # Ruby-specific configuration
