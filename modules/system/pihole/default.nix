@@ -37,6 +37,7 @@ in
       environment = {
         TZ = config.time.timeZone or "UTC";
         WEBPASSWORD = cfg.adminPassword;
+        FTLCONF_dns_listeningMode = "ALL";
         # Crucial for Nginx proxying later
       };
       autoStart = true;
