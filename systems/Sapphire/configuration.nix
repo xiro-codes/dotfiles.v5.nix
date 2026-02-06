@@ -7,7 +7,7 @@
     ../profiles/base.nix
     ../profiles/workstation.nix
     ../profiles/limine-uefi.nix
-    ../profiles/onix-client.nix
+    ../profiles/client.nix
   ];
 
   # Sapphire-specific configuration
