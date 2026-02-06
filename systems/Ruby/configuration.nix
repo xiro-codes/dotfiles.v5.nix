@@ -10,7 +10,7 @@
   ];
   # Ruby-specific configuration
   local = {
-    hosts.useAvahi = true;
+    #hosts.useAvahi = true;
     # Secrets specific to Ruby
     disks.enable = true;
     secrets.keys = [

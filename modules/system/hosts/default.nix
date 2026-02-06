@@ -66,10 +66,10 @@ in
 
   config = {
     # Add entries to /etc/hosts for better reliability
-    networking.hosts = lib.mkIf cfg.useAvahi {
-      "${hostDefs.onix.ip}" = [ "onix.local" ];
-      "${hostDefs.ruby.ip}" = [ "ruby.local" ];
-      "${hostDefs.sapphire.ip}" = [ "sapphire.local" ];
+    networking.hosts = {
+      "${hostDefs.onix.ip}" = [ "onix" "onix.local" "onix.home" ];
+      "${hostDefs.ruby.ip}" = [ "ruby" "ruby.local" "ruby.home" ];
+      "${hostDefs.sapphire.ip}" = [ "sapphire" "sapphire.local" "sapphire.home" ];
     };
   };
 }
