@@ -18,6 +18,7 @@
       "ssh_pub_sapphire/master"
       "ssh_pub_onix/master"
       "onix_creds"
+      "gitea/runner_token"
     ];
     pihole = {
       enable = true;
@@ -55,6 +56,7 @@
 
     # Git service
     gitea = { enable = true; };
+    gitea-runner = { enable = true; };
 
     # Media services
     media = {

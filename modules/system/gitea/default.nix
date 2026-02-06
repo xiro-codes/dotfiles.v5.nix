@@ -84,10 +84,11 @@ in
           ROOT_URL = actualRootUrl;
           HTTP_PORT = cfg.port;
           SSH_PORT = cfg.sshPort;
+          START_SSH_SERVER = true;
         };
 
         service = {
-          DISABLE_REGISTRATION = true;
+          DISABLE_REGISTRATION = false;
           REQUIRE_SIGNIN_VIEW = false;
         };
 
@@ -101,6 +102,10 @@ in
 
         ui = {
           DEFAULT_THEME = "arc-green";
+        };
+
+        actions = {
+          ENABLED = true;
         };
       };
 
