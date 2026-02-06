@@ -1,4 +1,4 @@
-{ config, lib, pkgs, ... }:
+{ config, lib, pkgs, inputs, ... }:
 
 {
   options.services.docs = {
@@ -10,7 +10,7 @@
     };
     package = lib.mkOption {
       type = lib.types.package;
-      default = pkgs.docs-site;
+      default = inputs.self.packages.x86_64-linux.docs;
       description = "The documentation package to serve.";
     };
   };
