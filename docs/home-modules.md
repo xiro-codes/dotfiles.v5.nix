@@ -506,7 +506,7 @@ absolute path
 *Default:*
 
 ```nix
-/nix/store/yypi25wypvkjsb4fkrs93ddbclawdd8l-source/secrets/secrets.yaml
+/nix/store/l2p9i2ni8rq8fk3al7y95barrpwb2y0c-source/secrets/secrets.yaml
 ```
 
 

@@ -1,0 +1,9 @@
+[book]
+authors = ["Tod"]
+language = "en"
+src = "."
+title = "Dotfiles Documentation"
+
+[output.html]
+git-repository-url = "https://github.com/xiro-codes/dotfiles.v5.nix"
+edit-url-template = "https://github.com/xiro-codes/dotfiles.v5.nix/edit/master/docs/{path}"

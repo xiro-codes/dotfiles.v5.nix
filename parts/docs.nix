@@ -92,6 +92,54 @@ in
         view-docs = pkgs.writeShellScriptBin "view-docs" ''
           ${pkgs.glow}/bin/glow ${allDocs}/README.md
         '';
+
+        # Build the mdBook site
+        docs-site = pkgs.runCommand "dotfiles-docs-site" {
+          nativeBuildInputs = [ pkgs.mdbook ];
+        } ''
+          mkdir -p src
+          
+          # Copy manual docs, but use README.md for the intro page
+          cp -r ${inputs.self}/docs/* src/
+          cp ${inputs.self}/README.md src/intro.md
+          
+          # Copy generated docs (overwriting manual ones if they exist)
+          cp ${allDocs}/README.md src/modules.md
+          cp ${systemModuleDocs.optionsCommonMark} src/system-modules.md
+          cp ${homeModuleDocs.optionsCommonMark} src/home-modules.md
+          
+          # Build
+          cd src
+          mdbook build -d $out
+        '';
+
+        # Serve the docs locally with live reload (for manual edits)
+        serve-docs = pkgs.writeShellScriptBin "serve-docs" ''
+          # Create a temp dir for the book to combine manual + generated docs
+          BOOK_DIR=$(mktemp -d)
+          
+          # Clean up on exit
+          trap "rm -rf $BOOK_DIR" EXIT
+          
+          if [ ! -d "docs" ]; then
+             echo "Error: 'docs' directory not found. Please run this from the repository root."
+             exit 1
+          fi
+          
+          echo "Preparing documentation in $BOOK_DIR..."
+          
+          # Symlink local docs to allow live reloading of manual edits, using README.md as intro
+          ln -sf "$(pwd)/docs/"* "$BOOK_DIR/"
+          ln -sf "$(pwd)/README.md" "$BOOK_DIR/intro.md"
+          
+          # Link generated docs from the nix store (these won't live reload unless rebuilt)
+          ln -sf "${allDocs}/README.md" "$BOOK_DIR/modules.md"
+          ln -sf "${systemModuleDocs.optionsCommonMark}" "$BOOK_DIR/system-modules.md"
+          ln -sf "${homeModuleDocs.optionsCommonMark}" "$BOOK_DIR/home-modules.md"
+          
+          echo "Serving docs at http://localhost:3000 (usually)..."
+          ${pkgs.mdbook}/bin/mdbook serve "$BOOK_DIR" --open
+        '';
       };
     };
 }

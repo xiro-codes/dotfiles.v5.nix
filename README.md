@@ -1,10 +1,44 @@
 # **NixOS Dotfiles (v5)**
 
+[![Deploy Docs](https://github.com/xiro-codes/dotfiles.v5.nix/actions/workflows/docs.yml/badge.svg)](https://github.com/xiro-codes/dotfiles.v5.nix/actions/workflows/docs.yml)
+[![Built with Nix](https://img.shields.io/badge/Built_with-Nix-5277C3?logo=nixos&logoColor=white)](https://nixos.org)
+
 A declarative, multi-host NixOS configuration built with [Nix Flakes](https://nixos.wiki/wiki/Flakes), [flake-parts](https://flake.parts/), and [Home Manager](https://nixos.community/home-manager/). This setup features an automated discovery system that dynamically generates host configurations and modules.
 
-## **🚀 Architecture: Automated Discovery**
+**[📚 Read the Documentation](https://xiro-codes.github.io/dotfiles.v5.nix/)**
 
-This repository utilizes a modular discovery engine (parts/discovery/) that scans the file system to build the flake. This eliminates the need to manually register new files in flake.nix.
+## **🚀 Quick Start**
+
+### **Installation**
+
+1. **Boot the Installer**:
+   Use the custom ISO provided by this flake:
+   ```bash
+   nix build .#installer-iso
+   ```
+
+2. **Partition & Install**:
+   ```bash
+   # Using Disko (automated)
+   just install <hostname>
+   ```
+
+3. **Manual Install**:
+   ```bash
+   # Clone the repo
+   git clone https://github.com/xiro-codes/dotfiles.v5.nix /etc/nixos
+   cd /etc/nixos
+
+   # Generate hardware config
+   nixos-generate-config --show-hardware-config > systems/<hostname>/hardware.nix
+
+   # Install
+   nixos-install --flake .#<hostname>
+   ```
+
+## **Architecture: Automated Discovery**
+
+This repository utilizes a modular discovery engine (`parts/discovery/`) that scans the file system to build the flake. This eliminates the need to manually register new files in `flake.nix`.
 
 * **Systems**: Every directory in /systems is automatically converted into a nixosConfiguration.
 * **System Modules**: Found in /modules/system. Any directory with a default.nix is automatically exported as a NixOS module.
@@ -30,6 +64,13 @@ This repository utilizes a modular discovery engine (parts/discovery/) that scan
 * **IP**: 10.0.0.67
 * **Bootloader**: UEFI with **Limine**
 * **Key Features**: Remote mount configuration connecting to a central server (10.0.0.65).
+
+### [**Onix**](./systems/Onix/configuration.nix)
+
+* **Role**: Home Server
+* **IP**: 10.0.0.65
+* **Bootloader**: UEFI with **systemd-boot**
+* **Key Features**: Central file server, Gitea instance, media server, and Pi-hole.
 
 ## **🛠️ Key Modules & Features**
 
@@ -96,9 +137,17 @@ The justfile provides several helpers for system administration:
 | :---- | :---- |
 | just run-test | Build and launch the custom Installer ISO in QEMU |
 | just clean-test | Clear the test environment |
-| just init-undo | Initialize local .undo\_dir for Nixvim persistent undo |
+| just init-undo | Initialize local .undo_dir for Nixvim persistent undo |
 | just clear-undos | Clear ephemeral undo directory for current repo |
+
+### **Docs**
+
+| Command | Action |
+| :---- | :---- |
 | just gen-docs | Generate module documentation to docs/ |
+| just serve-docs | Serve docs locally and open in browser |
+| just build-docs | Build the static documentation site |
+| just view-docs | View docs in terminal |
 
 ## **📚 Module Documentation**
 

@@ -1,0 +1,15 @@
+# Summary
+
+- [Introduction](intro.md)
+- [Guides]()
+    - [File Sharing](file-sharing.md)
+    - [Reverse Proxy](reverse-proxy.md)
+    - [Backup Manager](backup-manager.md)
+    - [Media Stack](media.md)
+    - [Gitea](gitea.md)
+    - [Hyprland](hyprland.md)
+    - [Nixvim](nixvim.md)
+- [Reference]()
+    - [All Modules](modules.md)
+    - [System Modules](system-modules.md)
+    - [Home Modules](home-modules.md)

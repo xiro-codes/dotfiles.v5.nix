@@ -33,7 +33,7 @@ clear-undos:
     fi
 
 # Generate module documentation
-[group('dev')]
+[group('docs')]
 gen-docs:
     @echo "📚 Generating module documentation..."
     nix build .#docs
@@ -42,6 +42,22 @@ gen-docs:
     cp -f result/system-modules.md docs/system-modules.md
     cp -f result/home-modules.md docs/home-modules.md
     @echo "✅ Documentation generated in docs/"
+
+# Serve docs locally and open in browser
+[group('docs')]
+serve-docs:
+    nix run .#serve-docs
+
+# Build the static documentation site
+[group('docs')]
+build-docs:
+    nix build .#docs-site
+    @echo "✅ Static site built in ./result"
+
+# View docs in terminal
+[group('docs')]
+view-docs:
+    nix run .#view-docs
 
 # Edit system secrets
 [group('secrets')]
