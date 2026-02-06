@@ -574,6 +574,77 @@ true
 
 
 
+## local\.docs\.enable
+
+
+
+Whether to enable Enable the dotfiles documentation service\.
+
+
+
+*Type:*
+boolean
+
+
+
+*Default:*
+
+```nix
+false
+```
+
+
+
+*Example:*
+
+```nix
+true
+```
+
+
+
+## local\.docs\.package
+
+
+
+The documentation package to serve\.
+
+
+
+*Type:*
+package
+
+
+
+*Default:*
+
+```nix
+<derivation docs>
+```
+
+
+
+## local\.docs\.port
+
+
+
+Port to serve the documentation on\.
+
+
+
+*Type:*
+16 bit unsigned integer; between 0 and 65535 (both inclusive)
+
+
+
+*Default:*
+
+```nix
+3088
+```
+
+
+
 ## local\.dotfiles\.enable
 
 
@@ -1511,7 +1582,7 @@ Web interface port
 *Default:*
 
 ```nix
-8082
+8999
 ```
 
 
@@ -2332,8 +2403,6 @@ string
 
 ## local\.gitea\.sshPort
 
-
-
 SSH port for Git operations
 
 
@@ -2520,6 +2589,8 @@ string *(read only)*
 
 
 ## local\.hosts\.ruby
+
+
 
 Address for Ruby host
 
@@ -3759,7 +3830,7 @@ absolute path
 *Default:*
 
 ```nix
-/nix/store/l2p9i2ni8rq8fk3al7y95barrpwb2y0c-source/secrets/secrets.yaml
+/nix/store/rqc54ahw5c6dk3l30n31x17xhs5f8r5j-source/secrets/secrets.yaml
 ```
 
 
@@ -4438,7 +4509,7 @@ absolute path
 *Default:*
 
 ```nix
-/nix/store/l2p9i2ni8rq8fk3al7y95barrpwb2y0c-source/secrets/secrets.yaml
+/nix/store/rqc54ahw5c6dk3l30n31x17xhs5f8r5j-source/secrets/secrets.yaml
 ```
 
 
