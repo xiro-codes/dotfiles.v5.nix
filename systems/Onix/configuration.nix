@@ -10,7 +10,6 @@
   local = {
     # System settings
     disks.enable = true;
-    #hosts.useAvahi = true;
 
     secrets.keys = [
       "gemini/api_key"
@@ -20,6 +19,7 @@
       "onix_creds"
       "gitea/runner_token"
     ];
+    bootloader.recoveryUUID = "017aa821-7b75-492a-98cf-1174f1b15ea1";
   };
 
   users.users.tod = {

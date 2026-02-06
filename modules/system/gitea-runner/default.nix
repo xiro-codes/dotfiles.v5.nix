@@ -29,7 +29,7 @@ in
 
     labels = lib.mkOption {
       type = lib.types.listOf lib.types.str;
-      default = [ 
+      default = [
         "ubuntu-latest:docker://node:18-bullseye"
         "ubuntu-22.04:docker://node:18-bullseye"
         "ubuntu-20.04:docker://node:16-bullseye"
@@ -45,7 +45,7 @@ in
     virtualisation.podman = {
       enable = true;
       dockerCompat = true;
-      defaultNetwork.settings.dns_enabled = true;
+      #defaultNetwork.settings.dns_enabled = fa;
     };
 
     services.gitea-actions-runner = {
