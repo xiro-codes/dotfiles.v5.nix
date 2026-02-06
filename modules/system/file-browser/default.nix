@@ -14,7 +14,7 @@ in
 
     port = lib.mkOption {
       type = lib.types.port;
-      default = 8082;
+      default = 8999;
       description = "Web interface port";
     };
 
@@ -48,6 +48,7 @@ in
     # Ensure configuration directory exists
     systemd.tmpfiles.rules = [
       "d ${cfg.dataDir} 0755 root root -"
+      "d ${cfg.rootPath} 0777 root root -"
     ];
 
     # Create empty database file if it doesn't exist to prevent Docker from creating a directory
@@ -75,7 +76,7 @@ in
       ];
       environment = {
         PUID = "1000"; # Run as 'tod' (assuming id 1000)
-        PGID = "100";  # Run as 'users'
+        PGID = "100"; # Run as 'users'
       };
       autoStart = true;
     };
