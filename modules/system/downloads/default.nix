@@ -5,16 +5,16 @@
 }:
 
 let
-  cfg = config.local.download;
+  cfg = config.local.downloads;
   urlHelpers = import ../lib/url-helpers.nix { inherit config lib; };
 in
 {
-  options.local.download = {
+  options.local.downloads = {
     enable = lib.mkEnableOption "download services";
 
     downloadDir = lib.mkOption {
       type = lib.types.str;
-      default = "/media/Media/Downloads";
+      default = "${config.local.media.mediaDir}/downloads";
       example = "/mnt/storage/downloads";
       description = "Base directory for downloads";
     };
@@ -54,7 +54,7 @@ in
       baseUrl = lib.mkOption {
         type = lib.types.str;
         default = urlHelpers.buildServiceUrl {
-          port = config.local.download.transmission.port;
+          port = config.local.downloads.transmission.port;
           subPath = "";
         };
         description = "Base URL for Transmission (auto-configured based on reverse proxy and Avahi settings)";
@@ -104,7 +104,7 @@ in
       baseUrl = lib.mkOption {
         type = lib.types.str;
         default = urlHelpers.buildServiceUrl {
-          port = config.local.download.pinchflat.port;
+          port = config.local.downloads.pinchflat.port;
           subPath = "";
         };
         description = "Base URL for Pinchflat (auto-configured based on reverse proxy and Avahi settings)";
@@ -127,6 +127,38 @@ in
         default = "";
         example = "/pinchflat";
         description = "Subpath for reverse proxy (e.g., /pinchflat)";
+      };
+    };
+
+    sonarr = {
+      enable = lib.mkEnableOption "Sonarr PVR";
+
+      port = lib.mkOption {
+        type = lib.types.port;
+        default = 8989;
+        description = "Web interface port";
+      };
+
+      openFirewall = lib.mkOption {
+        type = lib.types.bool;
+        default = false;
+        description = "Open firewall port for Sonarr";
+      };
+    };
+
+    prowlarr = {
+      enable = lib.mkEnableOption "Prowlarr indexer manager";
+
+      port = lib.mkOption {
+        type = lib.types.port;
+        default = 9696;
+        description = "Web interface port";
+      };
+
+      openFirewall = lib.mkOption {
+        type = lib.types.bool;
+        default = false;
+        description = "Open firewall port for Prowlarr";
       };
     };
   };
@@ -180,6 +212,7 @@ in
       volumes = [
         "/var/lib/qbittorrent/config:/config"
         "${cfg.downloadDir}:/downloads"
+        "${config.local.media.mediaDir}:/media/Media"
       ];
       environment = {
         PUID = "1000"; # Matches your user ID usually
@@ -253,6 +286,20 @@ in
     virtualisation.podman = lib.mkIf cfg.pinchflat.enable {
       enable = true;
       dockerCompat = true;
+    };
+
+    # Sonarr
+    services.sonarr = lib.mkIf cfg.sonarr.enable {
+      enable = true;
+      openFirewall = cfg.sonarr.openFirewall;
+      user = "tod";
+      group = "users";
+    };
+
+    # Prowlarr
+    services.prowlarr = lib.mkIf cfg.prowlarr.enable {
+      enable = true;
+      openFirewall = cfg.prowlarr.openFirewall;
     };
   };
 }

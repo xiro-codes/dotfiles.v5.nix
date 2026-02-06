@@ -23,7 +23,7 @@
       ];
     };
     
-    shareManager = {
+    network-mounts = {
       enable = true;
       mounts = [
         { 

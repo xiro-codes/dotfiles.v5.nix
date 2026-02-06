@@ -88,6 +88,13 @@ in
           # Build service list based on what's enabled
           servicesList = lib.flatten [
             # Services section
+            (lib.optional (config.local.file-browser.enable or false) {
+              Files = {
+                icon = "filebrowser.png";
+                href = serviceUrl "files" (config.local.file-browser.port or 8082);
+                description = "Web File Browser";
+              };
+            })
             (lib.optional (config.local.gitea.enable or false) {
               Gitea = {
                 icon = "gitea.png";
@@ -112,6 +119,13 @@ in
                 description = "Media server";
               };
             })
+            (lib.optional (config.local.media.plex.enable or false) {
+              Plex = {
+                icon = "plex.png";
+                href = serviceUrl "plex" (config.local.media.plex.port or 32400);
+                description = "Media server";
+              };
+            })
             (lib.optional (config.local.media.ersatztv.enable or false) {
               ErsatzTV = {
                 icon = "ersatztv.png";
@@ -122,18 +136,32 @@ in
           ];
 
           downloadList = lib.flatten [
-            (lib.optional (config.local.download.pinchflat.enable or false) {
+            (lib.optional (config.local.downloads.pinchflat.enable or false) {
               Pinchflat = {
                 icon = "pinchflat.png";
-                href = serviceUrl "yt" (config.local.download.pinchflat.port or 8945);
+                href = serviceUrl "yt" (config.local.downloads.pinchflat.port or 8945);
                 description = "YouTube downloader";
               };
             })
-            (lib.optional (config.local.download.qbittorrent.enable or false) {
+            (lib.optional (config.local.downloads.qbittorrent.enable or false) {
               Qbittorrent = {
                 icon = "qbittorrent.png";
-                href = serviceUrl "dl" (config.local.download.qbittorrent.port or 8080);
+                href = serviceUrl "dl" (config.local.downloads.qbittorrent.port or 8080);
                 description = "BitTorrent client";
+              };
+            })
+            (lib.optional (config.local.downloads.sonarr.enable or false) {
+              Sonarr = {
+                icon = "sonarr.png";
+                href = serviceUrl "sonarr" (config.local.downloads.sonarr.port or 8989);
+                description = "TV/Anime PVR";
+              };
+            })
+            (lib.optional (config.local.downloads.prowlarr.enable or false) {
+              Prowlarr = {
+                icon = "prowlarr.png";
+                href = serviceUrl "prowlarr" (config.local.downloads.prowlarr.port or 9696);
+                description = "Indexer Manager";
               };
             })
           ];

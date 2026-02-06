@@ -5,7 +5,7 @@
 }:
 
 let
-  cfg = config.local.shareManager;
+  cfg = config.local.network-mounts;
   inherit (lib) mkOption mkIf types;
 
   # Helper to create SMB mount units
@@ -43,7 +43,7 @@ let
     };
 in
 {
-  options.local.shareManager = {
+  options.local.network-mounts = {
     enable = lib.mkEnableOption "Samba mounts from Onix";
     noAuth = lib.mkOption {
       type = lib.types.bool;

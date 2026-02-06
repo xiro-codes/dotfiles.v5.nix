@@ -20,62 +20,6 @@
       "onix_creds"
       "gitea/runner_token"
     ];
-    pihole = {
-      enable = true;
-      adminPassword = "rockman";
-    };
-
-    # Reverse proxy with HTTPS
-    reverse-proxy = {
-      enable = true;
-      # Domain auto-configured from Avahi: onix.local
-      useACME = false; # Self-signed for .local domains
-      domain = "onix.home";
-      services = {
-        dashboard.target = "http://127.0.0.1:${toString config.local.dashboard.port}";
-
-        git.target = "http://127.0.0.1:${toString config.local.gitea.port}";
-
-        tv.target = "http://127.0.0.1:${toString config.local.media.jellyfin.port}";
-
-        ch7.target = "http://127.0.0.1:${toString config.local.media.ersatztv.port}";
-
-        dl.target = "http://127.0.0.1:${toString config.local.download.qbittorrent.port}";
-
-        yt.target = "http://127.0.0.1:${toString config.local.download.pinchflat.port}";
-
-        pihole.target = "http://127.0.0.1:8053";
-      };
-    };
-
-    # Dashboard
-    dashboard = {
-      enable = true;
-      allowedHosts = [ config.local.reverse-proxy.domain "localhost" ];
-    };
-
-    # Git service
-    gitea = { enable = true; };
-    gitea-runner = { enable = true; };
-
-    # Media services
-    media = {
-      enable = true;
-      mediaDir = "/media/Media/";
-
-      jellyfin = { enable = true; };
-
-      ersatztv = { enable = true; };
-    };
-
-    # Download services
-    download = {
-      enable = true;
-      downloadDir = "/media/Media/downloads";
-
-      qbittorrent = { enable = true; };
-      pinchflat = { enable = true; };
-    };
   };
 
   users.users.tod = {
@@ -83,7 +27,7 @@
     initialPassword = "rockman";
   };
   systemd.tmpfiles.rules = [
-    "d /media/Media 0777 root root -"
+    # "d /media/Media 0777 root root -"
     "d /media/Backups 0777 root root -"
   ];
   networking.firewall = {

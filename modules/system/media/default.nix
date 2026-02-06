@@ -57,6 +57,22 @@ in
       };
     };
 
+    plex = {
+      enable = lib.mkEnableOption "Plex Media Server";
+
+      port = lib.mkOption {
+        type = lib.types.port;
+        default = 32400;
+        description = "HTTP port for Plex";
+      };
+
+      openFirewall = lib.mkOption {
+        type = lib.types.bool;
+        default = false;
+        description = "Open firewall port for Plex";
+      };
+    };
+
     ersatztv = {
       enable = lib.mkEnableOption "ErsatzTV streaming service";
 
@@ -99,10 +115,10 @@ in
   config = lib.mkIf cfg.enable {
     # Ensure media directories exist
     systemd.tmpfiles.rules = [
-      "d ${cfg.mediaDir} 0755 tod users -"
-      "d ${cfg.mediaDir}/movies 0755 tod users -"
-      "d ${cfg.mediaDir}/tv 0755 tod users -"
-      "d ${cfg.mediaDir}/music 0755 tod users -"
+      "d ${cfg.mediaDir} 0777 tod users -"
+      "d ${cfg.mediaDir}/movies 0777 tod users -"
+      "d ${cfg.mediaDir}/tv 0777 tod users -"
+      "d ${cfg.mediaDir}/music 0777 tod users -"
     ] ++ lib.optionals cfg.ersatztv.enable [
       "d ${cfg.ersatztv.dataDir} 0755 root root -"
     ] ++ lib.optionals (cfg.jellyfin.enable && cfg.jellyfin.subPath != "") [
@@ -114,6 +130,14 @@ in
       enable = true;
       dataDir = cfg.jellyfin.dataDir;
       openFirewall = cfg.jellyfin.openFirewall;
+    };
+
+    # Plex
+    services.plex = lib.mkIf cfg.plex.enable {
+      enable = true;
+      openFirewall = cfg.plex.openFirewall;
+      user = "tod";
+      group = "users";
     };
 
     # Write Jellyfin network configuration for reverse proxy

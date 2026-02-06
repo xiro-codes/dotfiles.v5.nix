@@ -28,7 +28,7 @@
     dotfiles.maintenance.autoUpgrade = true;
 
     # Additional share mounts for Ruby
-    shareManager.mounts = lib.mkAfter [
+    network-mounts.mounts = lib.mkAfter [
       { shareName = "Porn"; localPath = "/media/Porn"; noShow = true; }
     ];
   };

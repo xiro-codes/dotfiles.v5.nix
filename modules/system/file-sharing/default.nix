@@ -5,7 +5,7 @@
 }:
 
 let
-  cfg = config.local.shares;
+  cfg = config.local.file-sharing;
   
   # Convert structured definitions to Samba share format
   structuredSambaShares = lib.mapAttrs (name: share: {
@@ -42,7 +42,7 @@ let
   shareDirsToCreate = lib.mapAttrsToList (name: share: share.path) cfg.definitions;
 in
 {
-  options.local.shares = {
+  options.local.file-sharing = {
     enable = lib.mkEnableOption "file sharing services";
 
     shareDir = lib.mkOption {
@@ -164,13 +164,13 @@ in
 
           createMask = lib.mkOption {
             type = lib.types.str;
-            default = "0664";
+            default = "0666";
             description = "Permissions mask for created files";
           };
 
           directoryMask = lib.mkOption {
             type = lib.types.str;
-            default = "0775";
+            default = "0777";
             description = "Permissions mask for created directories";
           };
 
@@ -221,7 +221,7 @@ in
       "d ${cfg.shareDir} 0755 root root -"
       "d ${cfg.shareDir}/public 0777 root root -"
       "d ${cfg.shareDir}/private 0750 root root -"
-    ] ++ (map (path: "d ${path} 0755 root root -") shareDirsToCreate);
+    ] ++ (map (path: "d ${path} 0777 root root -") shareDirsToCreate);
 
     # NFS Server
     services.nfs.server = lib.mkIf cfg.nfs.enable {
