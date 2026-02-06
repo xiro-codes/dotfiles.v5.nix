@@ -6,13 +6,14 @@
     ./hardware-configuration.nix
     ../profiles/base.nix
     ../profiles/workstation.nix
-    #../profiles/onix-client.nix
     ../profiles/limine-uefi.nix
+    ../profiles/onix-client.nix
   ];
 
   # Sapphire-specific configuration
   local = {
     # Secrets specific to Sapphire
+
     secrets.keys = [
       "gemini/api_key"
       "ssh_pub_sapphire/master"
