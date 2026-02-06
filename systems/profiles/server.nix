@@ -81,13 +81,19 @@
       definitions = {
         media = {
           path = "${config.local.media.mediaDir}";
-          comment = "Media files";
+          comment = "Media";
           guestOk = true;
           validUsers = [ "tod" ];
         };
         music = {
           path = "${config.local.media.mediaDir}/music";
-          comment = "Music files";
+          comment = "Music";
+          guestOk = true;
+          validUsers = [ "tod" ];
+        };
+        books = {
+          path = "${config.local.media.mediaDir}/books";
+          comment = "Books";
           guestOk = true;
           validUsers = [ "tod" ];
         };

@@ -22,18 +22,18 @@
         "*/result"
       ];
     };
-    
+
     network-mounts = {
       enable = true;
       mounts = [
-        { 
-          shareName = "Backups"; 
-          localPath = "/media/Backups"; 
+        {
+          shareName = "backups";
+          localPath = "/media/Backups";
           noAuth = true;
           noShow = true;
         }
-        { shareName = "Music"; localPath = "/media/Music"; }
-        { shareName = "Books"; localPath = "/media/Books"; }
+        { shareName = "music"; localPath = "/media/Music"; }
+        { shareName = "books"; localPath = "/media/Books"; }
       ];
     };
   };
