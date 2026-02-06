@@ -161,7 +161,7 @@ in
       ports = [ "${toString cfg.ersatztv.port}:8409" ];
       volumes = [
         "${cfg.ersatztv.dataDir}:/root/.local/share/ersatztv"
-        "${cfg.mediaDir}:/media:ro"
+        "${cfg.mediaDir}:/Media:ro"
       ];
       environment = {
         TZ = config.time.timeZone or "UTC";
