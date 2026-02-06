@@ -212,7 +212,7 @@ in
       volumes = [
         "/var/lib/qbittorrent/config:/config"
         "${cfg.downloadDir}:/downloads"
-        "${config.local.media.mediaDir}:/media/Media"
+        "${config.local.media.mediaDir}:/Media"
       ];
       environment = {
         PUID = "1000"; # Matches your user ID usually

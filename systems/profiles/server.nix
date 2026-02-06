@@ -53,7 +53,7 @@
     # Media services
     media = {
       enable = true;
-      # mediaDir = "/media/Media/";
+      mediaDir = "/media/Media/";
 
       jellyfin = { enable = true; };
       plex = { enable = true; };
@@ -64,7 +64,7 @@
     # Download services
     downloads = {
       enable = true;
-      # downloadDir = "/media/Media/downloads";
+      downloadDir = "/media/Media/downloads";
 
       qbittorrent = { enable = true; };
       pinchflat = { enable = true; };
