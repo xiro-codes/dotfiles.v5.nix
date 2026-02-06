@@ -299,329 +299,6 @@ one of “systemd-boot”, “grub”, “limine”
 
 
 
-## local\.cache\.enable
-
-
-
-Whether to enable cache module\.
-
-
-
-*Type:*
-boolean
-
-
-
-*Default:*
-
-```nix
-false
-```
-
-
-
-*Example:*
-
-```nix
-true
-```
-
-
-
-## local\.cache\.publicKey
-
-
-
-Public key for cache verification
-
-
-
-*Type:*
-string
-
-
-
-*Default:*
-
-```nix
-"main:CqlQUu3twINKw6rrCtizlAYkrPOKUicoxMyN6EvYnbk="
-```
-
-
-
-*Example:*
-
-```nix
-"cache:AbCdEf1234567890+GhIjKlMnOpQrStUvWxYz=="
-```
-
-
-
-## local\.cache\.serverAddress
-
-
-
-Attic binary cache server URL with optional priority parameter
-
-
-
-*Type:*
-string
-
-
-
-*Default:*
-
-```nix
-"http://10.0.0.65:8080/main?priority=1"
-```
-
-
-
-*Example:*
-
-```nix
-"http://cache.example.com:8080/nixos?priority=10"
-```
-
-
-
-## local\.cache-server\.enable
-
-
-
-Whether to enable Attic binary cache server\.
-
-
-
-*Type:*
-boolean
-
-
-
-*Default:*
-
-```nix
-false
-```
-
-
-
-*Example:*
-
-```nix
-true
-```
-
-
-
-## local\.cache-server\.allowedUsers
-
-
-
-Users allowed to push to the cache
-
-
-
-*Type:*
-list of string
-
-
-
-*Default:*
-
-```nix
-[
-  "@wheel"
-]
-```
-
-
-
-## local\.cache-server\.cacheName
-
-
-
-Name of the cache
-
-
-
-*Type:*
-string
-
-
-
-*Default:*
-
-```nix
-"main"
-```
-
-
-
-## local\.cache-server\.dataDir
-
-
-
-Data directory for Attic server
-
-
-
-*Type:*
-string
-
-
-
-*Default:*
-
-```nix
-"/var/lib/atticd"
-```
-
-
-
-## local\.cache-server\.listenAddress
-
-
-
-Address to listen on
-
-
-
-*Type:*
-string
-
-
-
-*Default:*
-
-```nix
-"0.0.0.0"
-```
-
-
-
-## local\.cache-server\.maxCacheSize
-
-
-
-Maximum cache size (supports K, M, G suffixes)
-
-
-
-*Type:*
-string
-
-
-
-*Default:*
-
-```nix
-"100G"
-```
-
-
-
-*Example:*
-
-```nix
-"500G"
-```
-
-
-
-## local\.cache-server\.openFirewall
-
-
-
-Open firewall port for cache server
-
-
-
-*Type:*
-boolean
-
-
-
-*Default:*
-
-```nix
-false
-```
-
-
-
-## local\.cache-server\.port
-
-
-
-HTTP port for cache server
-
-
-
-*Type:*
-16 bit unsigned integer; between 0 and 65535 (both inclusive)
-
-
-
-*Default:*
-
-```nix
-8080
-```
-
-
-
-## local\.cache-server\.serverUrl
-
-
-
-Server URL for cache server (auto-configured based on Avahi settings)
-
-
-
-*Type:*
-string
-
-
-
-*Default:*
-
-```nix
-"http://localhost:8080"
-```
-
-
-
-## local\.cache-server\.subPath
-
-
-
-Subpath for reverse proxy (e\.g\., /cache)
-
-
-
-*Type:*
-string
-
-
-
-*Default:*
-
-```nix
-""
-```
-
-
-
-*Example:*
-
-```nix
-"/cache"
-```
-
-
-
 ## local\.dashboard\.enable
 
 
@@ -647,6 +324,41 @@ false
 
 ```nix
 true
+```
+
+
+
+## local\.dashboard\.allowedHosts
+
+
+
+List of allowed hostnames for accessing the dashboard (for reverse proxy)\. Defaults to hostname, IP, and \.local address\.
+
+
+
+*Type:*
+list of string
+
+
+
+*Default:*
+
+```nix
+[
+  "localhost"
+  "127.0.0.1"
+]
+```
+
+
+
+*Example:*
+
+```nix
+[
+  "onix.local"
+  "192.168.1.100"
+]
 ```
 
 
@@ -823,6 +535,35 @@ boolean
 
 ```nix
 false
+```
+
+
+
+## local\.disks\.enable
+
+
+
+Whether to enable basic configuration for disk management\.
+
+
+
+*Type:*
+boolean
+
+
+
+*Default:*
+
+```nix
+false
+```
+
+
+
+*Example:*
+
+```nix
+true
 ```
 
 
@@ -1051,7 +792,7 @@ string
 
 
 
-## local\.download\.enable
+## local\.downloads\.enable
 
 
 
@@ -1080,7 +821,7 @@ true
 
 
 
-## local\.download\.downloadDir
+## local\.downloads\.downloadDir
 
 
 
@@ -1096,7 +837,7 @@ string
 *Default:*
 
 ```nix
-"/srv/downloads"
+"/media/Media/downloads"
 ```
 
 
@@ -1109,7 +850,7 @@ string
 
 
 
-## local\.download\.pinchflat\.enable
+## local\.downloads\.pinchflat\.enable
 
 
 
@@ -1138,11 +879,11 @@ true
 
 
 
-## local\.download\.pinchflat\.baseUrl
+## local\.downloads\.pinchflat\.baseUrl
 
 
 
-Base URL for Pinchflat (auto-configured based on Avahi settings)
+Base URL for Pinchflat (auto-configured based on reverse proxy and Avahi settings)
 
 
 
@@ -1159,7 +900,7 @@ string
 
 
 
-## local\.download\.pinchflat\.dataDir
+## local\.downloads\.pinchflat\.dataDir
 
 
 
@@ -1180,7 +921,7 @@ string
 
 
 
-## local\.download\.pinchflat\.openFirewall
+## local\.downloads\.pinchflat\.openFirewall
 
 
 
@@ -1201,7 +942,7 @@ false
 
 
 
-## local\.download\.pinchflat\.port
+## local\.downloads\.pinchflat\.port
 
 
 
@@ -1222,7 +963,7 @@ Web interface port
 
 
 
-## local\.download\.pinchflat\.subPath
+## local\.downloads\.pinchflat\.subPath
 
 
 
@@ -1251,7 +992,78 @@ string
 
 
 
-## local\.download\.transmission\.enable
+## local\.downloads\.prowlarr\.enable
+
+
+
+Whether to enable Prowlarr indexer manager\.
+
+
+
+*Type:*
+boolean
+
+
+
+*Default:*
+
+```nix
+false
+```
+
+
+
+*Example:*
+
+```nix
+true
+```
+
+
+
+## local\.downloads\.prowlarr\.openFirewall
+
+
+
+Open firewall port for Prowlarr
+
+
+
+*Type:*
+boolean
+
+
+
+*Default:*
+
+```nix
+false
+```
+
+
+
+## local\.downloads\.prowlarr\.port
+
+
+
+Web interface port
+
+
+
+*Type:*
+16 bit unsigned integer; between 0 and 65535 (both inclusive)
+
+
+
+*Default:*
+
+```nix
+9696
+```
+
+
+
+## local\.downloads\.qbittorrent\.enable
 
 
 
@@ -1280,49 +1092,7 @@ true
 
 
 
-## local\.download\.transmission\.baseUrl
-
-
-
-Base URL for Transmission (auto-configured based on Avahi settings)
-
-
-
-*Type:*
-string
-
-
-
-*Default:*
-
-```nix
-"http://localhost:9091"
-```
-
-
-
-## local\.download\.transmission\.downloadDirPermissions
-
-
-
-Permissions for download directory
-
-
-
-*Type:*
-string
-
-
-
-*Default:*
-
-```nix
-"0775"
-```
-
-
-
-## local\.download\.transmission\.openFirewall
+## local\.downloads\.qbittorrent\.openFirewall
 
 
 
@@ -1343,7 +1113,220 @@ false
 
 
 
-## local\.download\.transmission\.peerPort
+## local\.downloads\.qbittorrent\.port
+
+
+
+Web interface port
+
+
+
+*Type:*
+16 bit unsigned integer; between 0 and 65535 (both inclusive)
+
+
+
+*Default:*
+
+```nix
+8080
+```
+
+
+
+## local\.downloads\.qbittorrent\.subPath
+
+
+
+Subpath for reverse proxy (e\.g\., /transmission)
+
+
+
+*Type:*
+string
+
+
+
+*Default:*
+
+```nix
+""
+```
+
+
+
+*Example:*
+
+```nix
+"/qbittorrent"
+```
+
+
+
+## local\.downloads\.sonarr\.enable
+
+
+
+Whether to enable Sonarr PVR\.
+
+
+
+*Type:*
+boolean
+
+
+
+*Default:*
+
+```nix
+false
+```
+
+
+
+*Example:*
+
+```nix
+true
+```
+
+
+
+## local\.downloads\.sonarr\.openFirewall
+
+
+
+Open firewall port for Sonarr
+
+
+
+*Type:*
+boolean
+
+
+
+*Default:*
+
+```nix
+false
+```
+
+
+
+## local\.downloads\.sonarr\.port
+
+
+
+Web interface port
+
+
+
+*Type:*
+16 bit unsigned integer; between 0 and 65535 (both inclusive)
+
+
+
+*Default:*
+
+```nix
+8989
+```
+
+
+
+## local\.downloads\.transmission\.enable
+
+
+
+Whether to enable Transmission BitTorrent client\.
+
+
+
+*Type:*
+boolean
+
+
+
+*Default:*
+
+```nix
+false
+```
+
+
+
+*Example:*
+
+```nix
+true
+```
+
+
+
+## local\.downloads\.transmission\.baseUrl
+
+
+
+Base URL for Transmission (auto-configured based on reverse proxy and Avahi settings)
+
+
+
+*Type:*
+string
+
+
+
+*Default:*
+
+```nix
+"http://localhost:9091"
+```
+
+
+
+## local\.downloads\.transmission\.downloadDirPermissions
+
+
+
+Permissions for download directory
+
+
+
+*Type:*
+string
+
+
+
+*Default:*
+
+```nix
+"0775"
+```
+
+
+
+## local\.downloads\.transmission\.openFirewall
+
+
+
+Open firewall ports for Transmission
+
+
+
+*Type:*
+boolean
+
+
+
+*Default:*
+
+```nix
+false
+```
+
+
+
+## local\.downloads\.transmission\.peerPort
 
 
 
@@ -1364,7 +1347,7 @@ Port for incoming peer connections
 
 
 
-## local\.download\.transmission\.port
+## local\.downloads\.transmission\.port
 
 
 
@@ -1385,7 +1368,7 @@ Web interface port
 
 
 
-## local\.download\.transmission\.rpcWhitelist
+## local\.downloads\.transmission\.rpcWhitelist
 
 
 
@@ -1401,12 +1384,12 @@ string
 *Default:*
 
 ```nix
-"127.0.0.1,192.168.*.*,10.*.*.*"
+"onix.local,127.0.0.1,192.168.*.*,10.*.*.*"
 ```
 
 
 
-## local\.download\.transmission\.subPath
+## local\.downloads\.transmission\.subPath
 
 
 
@@ -1431,6 +1414,733 @@ string
 
 ```nix
 "/transmission"
+```
+
+
+
+## local\.file-browser\.enable
+
+
+
+Whether to enable Web-based file browser\.
+
+
+
+*Type:*
+boolean
+
+
+
+*Default:*
+
+```nix
+false
+```
+
+
+
+*Example:*
+
+```nix
+true
+```
+
+
+
+## local\.file-browser\.dataDir
+
+
+
+Directory for File Browser database and config
+
+
+
+*Type:*
+string
+
+
+
+*Default:*
+
+```nix
+"/var/lib/filebrowser"
+```
+
+
+
+## local\.file-browser\.openFirewall
+
+
+
+Open firewall port for File Browser
+
+
+
+*Type:*
+boolean
+
+
+
+*Default:*
+
+```nix
+false
+```
+
+
+
+## local\.file-browser\.port
+
+
+
+Web interface port
+
+
+
+*Type:*
+16 bit unsigned integer; between 0 and 65535 (both inclusive)
+
+
+
+*Default:*
+
+```nix
+8082
+```
+
+
+
+## local\.file-browser\.rootPath
+
+
+
+Root path to serve files from
+
+
+
+*Type:*
+string
+
+
+
+*Default:*
+
+```nix
+"/media"
+```
+
+
+
+## local\.file-browser\.subPath
+
+
+
+Subpath for reverse proxy (e\.g\., /files)
+
+
+
+*Type:*
+string
+
+
+
+*Default:*
+
+```nix
+""
+```
+
+
+
+*Example:*
+
+```nix
+"/files"
+```
+
+
+
+## local\.file-sharing\.enable
+
+
+
+Whether to enable file sharing services\.
+
+
+
+*Type:*
+boolean
+
+
+
+*Default:*
+
+```nix
+false
+```
+
+
+
+*Example:*
+
+```nix
+true
+```
+
+
+
+## local\.file-sharing\.definitions
+
+
+
+Structured share definitions that automatically configure both Samba and NFS
+
+
+
+*Type:*
+attribute set of (submodule)
+
+
+
+*Default:*
+
+```nix
+{ }
+```
+
+
+
+*Example:*
+
+```nix
+{
+  media = {
+    path = "/srv/media";
+    comment = "Media files";
+    readOnly = true;
+    guestOk = true;
+    enableNFS = true;
+  };
+  documents = {
+    path = "/srv/documents";
+    comment = "Shared documents";
+    validUsers = [ "alice" "bob" ];
+  };
+}
+
+```
+
+
+
+## local\.file-sharing\.definitions\.\<name>\.enableNFS
+
+
+
+Also export this share via NFS
+
+
+
+*Type:*
+boolean
+
+
+
+*Default:*
+
+```nix
+false
+```
+
+
+
+## local\.file-sharing\.definitions\.\<name>\.browseable
+
+
+
+Whether the share is visible in browse lists
+
+
+
+*Type:*
+boolean
+
+
+
+*Default:*
+
+```nix
+true
+```
+
+
+
+## local\.file-sharing\.definitions\.\<name>\.comment
+
+
+
+Description of the share
+
+
+
+*Type:*
+string
+
+
+
+*Default:*
+
+```nix
+""
+```
+
+
+
+## local\.file-sharing\.definitions\.\<name>\.createMask
+
+
+
+Permissions mask for created files
+
+
+
+*Type:*
+string
+
+
+
+*Default:*
+
+```nix
+"0666"
+```
+
+
+
+## local\.file-sharing\.definitions\.\<name>\.directoryMask
+
+
+
+Permissions mask for created directories
+
+
+
+*Type:*
+string
+
+
+
+*Default:*
+
+```nix
+"0777"
+```
+
+
+
+## local\.file-sharing\.definitions\.\<name>\.guestOk
+
+
+
+Allow guest access without authentication
+
+
+
+*Type:*
+boolean
+
+
+
+*Default:*
+
+```nix
+false
+```
+
+
+
+## local\.file-sharing\.definitions\.\<name>\.nfsClients
+
+
+
+Network range for NFS access
+
+
+
+*Type:*
+string
+
+
+
+*Default:*
+
+```nix
+"192.168.0.0/16"
+```
+
+
+
+*Example:*
+
+```nix
+"192.168.1.0/24"
+```
+
+
+
+## local\.file-sharing\.definitions\.\<name>\.nfsOptions
+
+
+
+NFS export options
+
+
+
+*Type:*
+list of string
+
+
+
+*Default:*
+
+```nix
+[
+  "rw"
+  "sync"
+  "no_subtree_check"
+]
+```
+
+
+
+## local\.file-sharing\.definitions\.\<name>\.path
+
+
+
+Absolute path to the share directory
+
+
+
+*Type:*
+string
+
+
+
+## local\.file-sharing\.definitions\.\<name>\.readOnly
+
+
+
+Whether the share is read-only
+
+
+
+*Type:*
+boolean
+
+
+
+*Default:*
+
+```nix
+false
+```
+
+
+
+## local\.file-sharing\.definitions\.\<name>\.validUsers
+
+
+
+List of users allowed to access (empty = all users)
+
+
+
+*Type:*
+list of string
+
+
+
+*Default:*
+
+```nix
+[ ]
+```
+
+
+
+*Example:*
+
+```nix
+[
+  "alice"
+  "bob"
+]
+```
+
+
+
+## local\.file-sharing\.definitions\.\<name>\.writeable
+
+
+
+Whether users can write to the share
+
+
+
+*Type:*
+boolean
+
+
+
+*Default:*
+
+```nix
+true
+```
+
+
+
+## local\.file-sharing\.nfs\.enable
+
+
+
+Whether to enable NFS server\.
+
+
+
+*Type:*
+boolean
+
+
+
+*Default:*
+
+```nix
+false
+```
+
+
+
+*Example:*
+
+```nix
+true
+```
+
+
+
+## local\.file-sharing\.nfs\.exports
+
+
+
+NFS exports configuration
+
+
+
+*Type:*
+strings concatenated with “\\n”
+
+
+
+*Default:*
+
+```nix
+""
+```
+
+
+
+*Example:*
+
+```nix
+''
+  /srv/shares 192.168.1.0/24(rw,sync,no_subtree_check,no_root_squash)
+  /srv/media 192.168.1.0/24(ro,sync,no_subtree_check)
+''
+```
+
+
+
+## local\.file-sharing\.nfs\.openFirewall
+
+
+
+Open firewall ports for NFS
+
+
+
+*Type:*
+boolean
+
+
+
+*Default:*
+
+```nix
+false
+```
+
+
+
+## local\.file-sharing\.samba\.enable
+
+
+
+Whether to enable Samba server\.
+
+
+
+*Type:*
+boolean
+
+
+
+*Default:*
+
+```nix
+false
+```
+
+
+
+*Example:*
+
+```nix
+true
+```
+
+
+
+## local\.file-sharing\.samba\.openFirewall
+
+
+
+Open firewall ports for Samba
+
+
+
+*Type:*
+boolean
+
+
+
+*Default:*
+
+```nix
+false
+```
+
+
+
+## local\.file-sharing\.samba\.serverString
+
+
+
+Server description string
+
+
+
+*Type:*
+string
+
+
+
+*Default:*
+
+```nix
+"NixOS File Server"
+```
+
+
+
+## local\.file-sharing\.samba\.shares
+
+
+
+Samba share definitions
+
+
+
+*Type:*
+attribute set of attribute set of unspecified value
+
+
+
+*Default:*
+
+```nix
+{ }
+```
+
+
+
+*Example:*
+
+```nix
+{
+  public = {
+    path = "/srv/shares/public";
+    "read only" = "no";
+    browseable = "yes";
+    "guest ok" = "yes";
+  };
+  media = {
+    path = "/srv/media";
+    "read only" = "yes";
+    browseable = "yes";
+    "guest ok" = "yes";
+  };
+}
+
+```
+
+
+
+## local\.file-sharing\.samba\.workgroup
+
+
+
+Samba workgroup name
+
+
+
+*Type:*
+string
+
+
+
+*Default:*
+
+```nix
+"WORKGROUP"
+```
+
+
+
+## local\.file-sharing\.shareDir
+
+
+
+Base directory for shared files
+
+
+
+*Type:*
+string
+
+
+
+*Default:*
+
+```nix
+"/srv/shares"
+```
+
+
+
+*Example:*
+
+```nix
+"/mnt/storage/shares"
 ```
 
 
@@ -1664,9 +2374,146 @@ string
 
 
 
+## local\.gitea-runner\.enable
+
+
+
+Whether to enable Gitea Actions Runner\.
+
+
+
+*Type:*
+boolean
+
+
+
+*Default:*
+
+```nix
+false
+```
+
+
+
+*Example:*
+
+```nix
+true
+```
+
+
+
+## local\.gitea-runner\.giteaUrl
+
+
+
+URL of the Gitea instance to connect to
+
+
+
+*Type:*
+string
+
+
+
+*Default:*
+
+```nix
+"http://127.0.0.1:3001"
+```
+
+
+
+## local\.gitea-runner\.instanceName
+
+
+
+Name of the runner instance
+
+
+
+*Type:*
+string
+
+
+
+*Default:*
+
+```nix
+"default-runner"
+```
+
+
+
+## local\.gitea-runner\.labels
+
+
+
+Labels for the runner
+
+
+
+*Type:*
+list of string
+
+
+
+*Default:*
+
+```nix
+[
+  "ubuntu-latest:docker://node:18-bullseye"
+  "ubuntu-22.04:docker://node:18-bullseye"
+  "ubuntu-20.04:docker://node:16-bullseye"
+  "nixos-latest:docker://nixos/nix:latest"
+]
+```
+
+
+
+## local\.gitea-runner\.tokenFile
+
+
+
+Path to the file containing the runner registration token
+
+
+
+*Type:*
+string
+
+
+
+*Default:*
+
+```nix
+"/run/secrets/gitea/runner_token"
+```
+
+
+
+## local\.hosts\.onix
+
+
+
+Address for Onix host
+
+
+
+*Type:*
+string *(read only)*
+
+
+
+*Default:*
+
+```nix
+"10.0.0.65"
+```
+
+
+
 ## local\.hosts\.ruby
-
-
 
 Address for Ruby host
 
@@ -1723,27 +2570,6 @@ boolean
 
 ```nix
 false
-```
-
-
-
-## local\.hosts\.zimaos
-
-
-
-Address for ZimaOS server
-
-
-
-*Type:*
-string *(read only)*
-
-
-
-*Default:*
-
-```nix
-"10.0.0.65"
 ```
 
 
@@ -1897,7 +2723,7 @@ true
 
 
 
-Base URL for ErsatzTV (auto-configured based on Avahi settings)
+Base URL for ErsatzTV (auto-configured based on reverse proxy and Avahi settings)
 
 
 
@@ -2039,7 +2865,7 @@ true
 
 
 
-Base URL for Jellyfin (auto-configured based on Avahi settings)
+Base URL for Jellyfin (auto-configured based on reverse proxy and Avahi settings)
 
 
 
@@ -2164,7 +2990,7 @@ string
 *Default:*
 
 ```nix
-"/srv/media"
+"/media/Media"
 ```
 
 
@@ -2172,7 +2998,7 @@ string
 *Example:*
 
 ```nix
-"/mnt/storage/media"
+"/media/Media"
 ```
 
 
@@ -2181,7 +3007,7 @@ string
 
 
 
-Whether to enable Plex media server\.
+Whether to enable Plex Media Server\.
 
 
 
@@ -2202,48 +3028,6 @@ false
 
 ```nix
 true
-```
-
-
-
-## local\.media\.plex\.baseUrl
-
-
-
-Base URL for Plex (auto-configured based on Avahi settings)
-
-
-
-*Type:*
-string
-
-
-
-*Default:*
-
-```nix
-"http://localhost:32400"
-```
-
-
-
-## local\.media\.plex\.dataDir
-
-
-
-Data directory for Plex
-
-
-
-*Type:*
-string
-
-
-
-*Default:*
-
-```nix
-"/var/lib/plex"
 ```
 
 
@@ -2286,35 +3070,6 @@ HTTP port for Plex
 
 ```nix
 32400
-```
-
-
-
-## local\.media\.plex\.subPath
-
-
-
-Subpath for reverse proxy (e\.g\., /plex)\. Note: Plex has limited subpath support\.
-
-
-
-*Type:*
-string
-
-
-
-*Default:*
-
-```nix
-""
-```
-
-
-
-*Example:*
-
-```nix
-"/plex"
 ```
 
 
@@ -2365,6 +3120,333 @@ boolean
 
 ```nix
 true
+```
+
+
+
+## local\.network-mounts\.enable
+
+
+
+Whether to enable Samba mounts from Onix\.
+
+
+
+*Type:*
+boolean
+
+
+
+*Default:*
+
+```nix
+false
+```
+
+
+
+*Example:*
+
+```nix
+true
+```
+
+
+
+## local\.network-mounts\.mounts
+
+
+
+List of SMB/CIFS shares to mount automatically with systemd automount
+
+
+
+*Type:*
+list of (submodule)
+
+
+
+*Default:*
+
+```nix
+[ ]
+```
+
+
+
+*Example:*
+
+```nix
+[
+        { shareName = "Media"; localPath = "/media/Media"; }
+        { shareName = "Backups"; localPath = "/media/Backups"; noShow = true; }
+      ]
+```
+
+
+
+## local\.network-mounts\.mounts\.\*\.localPath
+
+
+
+Local mount point path (common locations: /media/, /mnt/, or /run/media/)
+
+
+
+*Type:*
+string
+
+
+
+*Example:*
+
+```nix
+"/media/Media"
+```
+
+
+
+## local\.network-mounts\.mounts\.\*\.noAuth
+
+
+
+Whether to mount as guest without authentication
+
+
+
+*Type:*
+boolean
+
+
+
+*Default:*
+
+```nix
+false
+```
+
+
+
+## local\.network-mounts\.mounts\.\*\.noShow
+
+
+
+Whether to hide this mount from file manager
+
+
+
+*Type:*
+boolean
+
+
+
+*Default:*
+
+```nix
+false
+```
+
+
+
+## local\.network-mounts\.mounts\.\*\.options
+
+
+
+Additional mount options to append to defaults
+
+
+
+*Type:*
+list of string
+
+
+
+*Default:*
+
+```nix
+[ ]
+```
+
+
+
+*Example:*
+
+```nix
+[
+  "ro"
+  "vers=3.0"
+]
+```
+
+
+
+## local\.network-mounts\.mounts\.\*\.shareName
+
+
+
+Name of the share on the SMB server
+
+
+
+*Type:*
+string
+
+
+
+*Example:*
+
+```nix
+"Media"
+```
+
+
+
+## local\.network-mounts\.noAuth
+
+
+
+Mount shares as guest without credentials
+
+
+
+*Type:*
+boolean
+
+
+
+*Default:*
+
+```nix
+false
+```
+
+
+
+## local\.network-mounts\.secretName
+
+
+
+Name of sops secret containing SMB credentials (username=xxx and password=xxx format)
+
+
+
+*Type:*
+string
+
+
+
+*Default:*
+
+```nix
+"onix_creds"
+```
+
+
+
+*Example:*
+
+```nix
+"smb_credentials"
+```
+
+
+
+## local\.network-mounts\.serverIp
+
+
+
+IP address or hostname of SMB/CIFS server
+
+
+
+*Type:*
+string
+
+
+
+*Default:*
+
+```nix
+"10.0.0.65"
+```
+
+
+
+*Example:*
+
+```nix
+"192.168.1.100"
+```
+
+
+
+## local\.pihole\.enable
+
+
+
+Whether to enable Pi-hole DNS service\.
+
+
+
+*Type:*
+boolean
+
+
+
+*Default:*
+
+```nix
+false
+```
+
+
+
+*Example:*
+
+```nix
+true
+```
+
+
+
+## local\.pihole\.adminPassword
+
+
+
+Admin password for the Pi-hole Web UI\.
+
+
+
+*Type:*
+string
+
+
+
+*Default:*
+
+```nix
+"admin"
+```
+
+
+
+## local\.pihole\.dataDir
+
+
+
+Directory to store Pi-hole configuration and data\.
+
+
+
+*Type:*
+string
+
+
+
+*Default:*
+
+```nix
+"/var/lib/pihole"
 ```
 
 
@@ -2508,6 +3590,8 @@ true
 
 ## local\.reverse-proxy\.services
 
+
+
 Services to proxy
 
 
@@ -2529,10 +3613,7 @@ attribute set of (submodule)
 
 ```nix
 {
-  gitea = {
-    path = "/gitea";
-    target = "http://localhost:3001";
-  };
+  gitea.target = "http://localhost:3001";
 }
 
 ```
@@ -2557,19 +3638,6 @@ strings concatenated with “\\n”
 ```nix
 ""
 ```
-
-
-
-## local\.reverse-proxy\.services\.\<name>\.path
-
-
-
-URL path for this service (e\.g\., /gitea)
-
-
-
-*Type:*
-string
 
 
 
@@ -2661,7 +3729,7 @@ list of string
 
 ```nix
 [
-  "zima_creds"
+  "onix_creds"
   "ssh_pub_ruby/master"
   "ssh_pub_sapphire/master"
 ]
@@ -2685,7 +3753,7 @@ absolute path
 *Default:*
 
 ```nix
-/nix/store/kl5326f1647cay85hgdyy3kk0wykhw1p-source/secrets/secrets.yaml
+/nix/store/yypi25wypvkjsb4fkrs93ddbclawdd8l-source/secrets/secrets.yaml
 ```
 
 
@@ -2781,847 +3849,6 @@ false
 
 ```nix
 true
-```
-
-
-
-## local\.shareManager\.enable
-
-
-
-Whether to enable Samba mounts from ZimaOS\.
-
-
-
-*Type:*
-boolean
-
-
-
-*Default:*
-
-```nix
-false
-```
-
-
-
-*Example:*
-
-```nix
-true
-```
-
-
-
-## local\.shareManager\.mounts
-
-
-
-List of SMB/CIFS shares to mount automatically with systemd automount
-
-
-
-*Type:*
-list of (submodule)
-
-
-
-*Default:*
-
-```nix
-[ ]
-```
-
-
-
-*Example:*
-
-```nix
-[
-        { shareName = "Media"; localPath = "/media/Media"; }
-        { shareName = "Backups"; localPath = "/media/Backups"; noShow = true; }
-      ]
-```
-
-
-
-## local\.shareManager\.mounts\.\*\.localPath
-
-
-
-Local mount point path (common locations: /media/, /mnt/, or /run/media/)
-
-
-
-*Type:*
-string
-
-
-
-*Example:*
-
-```nix
-"/media/Media"
-```
-
-
-
-## local\.shareManager\.mounts\.\*\.noAuth
-
-
-
-Whether to mount as guest without authentication
-
-
-
-*Type:*
-boolean
-
-
-
-*Default:*
-
-```nix
-false
-```
-
-
-
-## local\.shareManager\.mounts\.\*\.noShow
-
-
-
-Whether to hide this mount from file manager
-
-
-
-*Type:*
-boolean
-
-
-
-*Default:*
-
-```nix
-false
-```
-
-
-
-## local\.shareManager\.mounts\.\*\.options
-
-
-
-Additional mount options to append to defaults
-
-
-
-*Type:*
-list of string
-
-
-
-*Default:*
-
-```nix
-[ ]
-```
-
-
-
-*Example:*
-
-```nix
-[
-  "ro"
-  "vers=3.0"
-]
-```
-
-
-
-## local\.shareManager\.mounts\.\*\.shareName
-
-
-
-Name of the share on the SMB server
-
-
-
-*Type:*
-string
-
-
-
-*Example:*
-
-```nix
-"Media"
-```
-
-
-
-## local\.shareManager\.noAuth
-
-
-
-Mount shares as guest without credentials
-
-
-
-*Type:*
-boolean
-
-
-
-*Default:*
-
-```nix
-false
-```
-
-
-
-## local\.shareManager\.secretName
-
-
-
-Name of sops secret containing SMB credentials (username=xxx and password=xxx format)
-
-
-
-*Type:*
-string
-
-
-
-*Default:*
-
-```nix
-"zima_creds"
-```
-
-
-
-*Example:*
-
-```nix
-"smb_credentials"
-```
-
-
-
-## local\.shareManager\.serverIp
-
-
-
-IP address or hostname of SMB/CIFS server
-
-
-
-*Type:*
-string
-
-
-
-*Default:*
-
-```nix
-"10.0.0.65"
-```
-
-
-
-*Example:*
-
-```nix
-"192.168.1.100"
-```
-
-
-
-## local\.shares\.enable
-
-
-
-Whether to enable file sharing services\.
-
-
-
-*Type:*
-boolean
-
-
-
-*Default:*
-
-```nix
-false
-```
-
-
-
-*Example:*
-
-```nix
-true
-```
-
-
-
-## local\.shares\.definitions
-
-
-
-Structured share definitions that automatically configure both Samba and NFS
-
-
-
-*Type:*
-attribute set of (submodule)
-
-
-
-*Default:*
-
-```nix
-{ }
-```
-
-
-
-*Example:*
-
-```nix
-{
-  media = {
-    path = "/srv/media";
-    comment = "Media files";
-    readOnly = true;
-    guestOk = true;
-    enableNFS = true;
-  };
-  documents = {
-    path = "/srv/documents";
-    comment = "Shared documents";
-    validUsers = [ "alice" "bob" ];
-  };
-}
-
-```
-
-
-
-## local\.shares\.definitions\.\<name>\.enableNFS
-
-
-
-Also export this share via NFS
-
-
-
-*Type:*
-boolean
-
-
-
-*Default:*
-
-```nix
-false
-```
-
-
-
-## local\.shares\.definitions\.\<name>\.browseable
-
-
-
-Whether the share is visible in browse lists
-
-
-
-*Type:*
-boolean
-
-
-
-*Default:*
-
-```nix
-true
-```
-
-
-
-## local\.shares\.definitions\.\<name>\.comment
-
-
-
-Description of the share
-
-
-
-*Type:*
-string
-
-
-
-*Default:*
-
-```nix
-""
-```
-
-
-
-## local\.shares\.definitions\.\<name>\.createMask
-
-
-
-Permissions mask for created files
-
-
-
-*Type:*
-string
-
-
-
-*Default:*
-
-```nix
-"0664"
-```
-
-
-
-## local\.shares\.definitions\.\<name>\.directoryMask
-
-
-
-Permissions mask for created directories
-
-
-
-*Type:*
-string
-
-
-
-*Default:*
-
-```nix
-"0775"
-```
-
-
-
-## local\.shares\.definitions\.\<name>\.guestOk
-
-
-
-Allow guest access without authentication
-
-
-
-*Type:*
-boolean
-
-
-
-*Default:*
-
-```nix
-false
-```
-
-
-
-## local\.shares\.definitions\.\<name>\.nfsClients
-
-
-
-Network range for NFS access
-
-
-
-*Type:*
-string
-
-
-
-*Default:*
-
-```nix
-"192.168.0.0/16"
-```
-
-
-
-*Example:*
-
-```nix
-"192.168.1.0/24"
-```
-
-
-
-## local\.shares\.definitions\.\<name>\.nfsOptions
-
-
-
-NFS export options
-
-
-
-*Type:*
-list of string
-
-
-
-*Default:*
-
-```nix
-[
-  "rw"
-  "sync"
-  "no_subtree_check"
-]
-```
-
-
-
-## local\.shares\.definitions\.\<name>\.path
-
-
-
-Absolute path to the share directory
-
-
-
-*Type:*
-string
-
-
-
-## local\.shares\.definitions\.\<name>\.readOnly
-
-
-
-Whether the share is read-only
-
-
-
-*Type:*
-boolean
-
-
-
-*Default:*
-
-```nix
-false
-```
-
-
-
-## local\.shares\.definitions\.\<name>\.validUsers
-
-
-
-List of users allowed to access (empty = all users)
-
-
-
-*Type:*
-list of string
-
-
-
-*Default:*
-
-```nix
-[ ]
-```
-
-
-
-*Example:*
-
-```nix
-[
-  "alice"
-  "bob"
-]
-```
-
-
-
-## local\.shares\.definitions\.\<name>\.writeable
-
-
-
-Whether users can write to the share
-
-
-
-*Type:*
-boolean
-
-
-
-*Default:*
-
-```nix
-true
-```
-
-
-
-## local\.shares\.nfs\.enable
-
-
-
-Whether to enable NFS server\.
-
-
-
-*Type:*
-boolean
-
-
-
-*Default:*
-
-```nix
-false
-```
-
-
-
-*Example:*
-
-```nix
-true
-```
-
-
-
-## local\.shares\.nfs\.exports
-
-
-
-NFS exports configuration
-
-
-
-*Type:*
-strings concatenated with “\\n”
-
-
-
-*Default:*
-
-```nix
-""
-```
-
-
-
-*Example:*
-
-```nix
-''
-  /srv/shares 192.168.1.0/24(rw,sync,no_subtree_check,no_root_squash)
-  /srv/media 192.168.1.0/24(ro,sync,no_subtree_check)
-''
-```
-
-
-
-## local\.shares\.nfs\.openFirewall
-
-
-
-Open firewall ports for NFS
-
-
-
-*Type:*
-boolean
-
-
-
-*Default:*
-
-```nix
-false
-```
-
-
-
-## local\.shares\.samba\.enable
-
-
-
-Whether to enable Samba server\.
-
-
-
-*Type:*
-boolean
-
-
-
-*Default:*
-
-```nix
-false
-```
-
-
-
-*Example:*
-
-```nix
-true
-```
-
-
-
-## local\.shares\.samba\.openFirewall
-
-
-
-Open firewall ports for Samba
-
-
-
-*Type:*
-boolean
-
-
-
-*Default:*
-
-```nix
-false
-```
-
-
-
-## local\.shares\.samba\.serverString
-
-
-
-Server description string
-
-
-
-*Type:*
-string
-
-
-
-*Default:*
-
-```nix
-"NixOS File Server"
-```
-
-
-
-## local\.shares\.samba\.shares
-
-
-
-Samba share definitions
-
-
-
-*Type:*
-attribute set of attribute set of unspecified value
-
-
-
-*Default:*
-
-```nix
-{ }
-```
-
-
-
-*Example:*
-
-```nix
-{
-  public = {
-    path = "/srv/shares/public";
-    "read only" = "no";
-    browseable = "yes";
-    "guest ok" = "yes";
-  };
-  media = {
-    path = "/srv/media";
-    "read only" = "yes";
-    browseable = "yes";
-    "guest ok" = "yes";
-  };
-}
-
-```
-
-
-
-## local\.shares\.samba\.workgroup
-
-
-
-Samba workgroup name
-
-
-
-*Type:*
-string
-
-
-
-*Default:*
-
-```nix
-"WORKGROUP"
-```
-
-
-
-## local\.shares\.shareDir
-
-
-
-Base directory for shared files
-
-
-
-*Type:*
-string
-
-
-
-*Default:*
-
-```nix
-"/srv/shares"
-```
-
-
-
-*Example:*
-
-```nix
-"/mnt/storage/shares"
 ```
 
 

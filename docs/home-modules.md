@@ -1,117 +1,3 @@
-## local\.cache\.enable
-
-Whether to enable cache module\.
-
-
-
-*Type:*
-boolean
-
-
-
-*Default:*
-
-```nix
-false
-```
-
-
-
-*Example:*
-
-```nix
-true
-```
-
-
-
-## local\.cache\.publicKey
-
-
-
-Public key for cache verification
-
-
-
-*Type:*
-string
-
-
-
-*Default:*
-
-```nix
-"main:CqlQUu3twINKw6EvYnbk="
-```
-
-
-
-*Example:*
-
-```nix
-"cache:AbCdEf1234567890+GhIjKlMnOpQrStUvWxYz=="
-```
-
-
-
-## local\.cache\.serverAddress
-
-
-
-Attic binary cache server URL (automatically uses host from local\.hosts module)
-
-
-
-*Type:*
-string
-
-
-
-*Default:*
-
-```nix
-"http://zimaos.local:8080/main"
-```
-
-
-
-*Example:*
-
-```nix
-"http://cache.example.com:8080/nixos"
-```
-
-
-
-## local\.cache\.watch
-
-
-
-Whether to enable enable systemd service to watch cache\.
-
-
-
-*Type:*
-boolean
-
-
-
-*Default:*
-
-```nix
-false
-```
-
-
-
-*Example:*
-
-```nix
-true
-```
-
-
-
 ## local\.caelestia\.enable
 
 
@@ -142,8 +28,6 @@ true
 
 
 ## local\.caelestia\.colorScheme
-
-
 
 Color scheme name for Caelestia (e\.g\., ‘gruvbox’, ‘catppuccin’)\. If null, uses dynamic wallpaper colors\.
 
@@ -622,7 +506,7 @@ absolute path
 *Default:*
 
 ```nix
-/nix/store/kl5326f1647cay85hgdyy3kk0wykhw1p-source/secrets/secrets.yaml
+/nix/store/yypi25wypvkjsb4fkrs93ddbclawdd8l-source/secrets/secrets.yaml
 ```
 
 
