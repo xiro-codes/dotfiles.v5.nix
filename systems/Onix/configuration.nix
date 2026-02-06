@@ -43,5 +43,12 @@
         to = 65535;
       }];
   };
+
+  services.docs = {
+    enable = true;
+    package = pkgs.docs-site;
+    port = 3001;
+  };
+
   system.stateVersion = "25.11";
 }

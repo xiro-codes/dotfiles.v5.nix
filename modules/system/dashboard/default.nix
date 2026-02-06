@@ -14,6 +14,14 @@ let
     subPath = "";
   };
 
+  # Override homepage-dashboard package to include custom icons
+  custom-homepage-dashboard = pkgs.homepage-dashboard.overrideAttrs (oldAttrs: {
+    postInstall = ''
+      mkdir -p $out/www/icons
+      cp ${../assets/dashboard-icons}/book.svg $out/www/icons/
+    '';
+  });
+
   # Auto-configure allowed hosts
   autoAllowedHosts = urlHelpers.getAllowedHosts;
 in
@@ -49,7 +57,8 @@ in
   };
 
   config = lib.mkIf cfg.enable {
-    services.homepage-dashboard = {
+services.homepage-dashboard = {
+      package = custom-homepage-dashboard;
       enable = true;
       listenPort = cfg.port;
       allowedHosts = lib.concatStringsSep "," cfg.allowedHosts;
@@ -87,6 +96,15 @@ in
 
           # Build service list based on what's enabled
           servicesList = lib.flatten [
+            # Documentation
+            (lib.optional (config.services.docs.enable or false) {
+              Docs = {
+                icon = "book.svg";
+                href = serviceUrl "docs" (config.services.docs.port or 3001);
+                description = "Dotfiles Documentation";
+              };
+            })
+
             # Services section
             (lib.optional (config.local.file-browser.enable or false) {
               Files = {
