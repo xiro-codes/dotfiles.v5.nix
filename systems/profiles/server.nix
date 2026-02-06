@@ -68,8 +68,8 @@
 
       qbittorrent = { enable = true; };
       pinchflat = { enable = true; };
-      sonarr = { enable = true; };
-      prowlarr = { enable = true; };
+      sonarr = { enable = false; };
+      prowlarr = { enable = false; };
     };
 
     file-sharing = {
