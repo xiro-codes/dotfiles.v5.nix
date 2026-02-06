@@ -2,20 +2,18 @@
 
 pkgs.runCommand "dotfiles-docs-site"
 {
-  nativeBuildInputs = [ pkgs.mdbook ];
+  nativeBuildInputs = [ pkgs.mdbook inputs.self.packages.${pkgs.system}.docs-generated ];
 } ''
   mkdir -p $out/src
   
   # Copy manual docs, but use README.md for the intro page
   cp -r ${../../docs}/* $out/src/
+  mv $out/src/book.toml $out/ || true
   cp ${../../README.md} $out/src/intro.md
   
-  # Copy generated docs (overwriting manual ones if they exist)
-  cp ${inputs.self.packages.x86_64-linux.docs-generated}/README.md $out/src/modules.md
-  cp ${inputs.self.packages.x86_64-linux.docs-generated}/system-modules.md $out/src/system-modules.md
-  cp ${inputs.self.packages.x86_64-linux.docs-generated}/home-modules.md $out/src/home-modules.md
+  
+  cp -r ${inputs.self.packages.${pkgs.system}.docs-generated}/* $out/src/
   
   # Build
-  cd $out/src
-  mdbook build -d $out/
+  mdbook build -d $out/ $out
 ''
