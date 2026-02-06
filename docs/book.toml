@@ -1,7 +1,7 @@
 [book]
 authors = ["Tod"]
 language = "en"
-src = "."
+src = "src"
 title = "Dotfiles Documentation"
 
 [output.html]
