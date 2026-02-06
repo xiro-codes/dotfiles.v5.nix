@@ -10,8 +10,6 @@
   ];
   # Ruby-specific configuration
   local = {
-    #hosts.useAvahi = true;
-    # Secrets specific to Ruby
     disks.enable = true;
     secrets.keys = [
       "gemini/api_key"
@@ -29,7 +27,7 @@
 
     # Additional share mounts for Ruby
     network-mounts.mounts = lib.mkAfter [
-      { shareName = "Porn"; localPath = "/media/Porn"; noShow = true; }
+      #{ shareName = "Porn"; localPath = "/media/Porn"; noShow = true; }
     ];
   };
 
