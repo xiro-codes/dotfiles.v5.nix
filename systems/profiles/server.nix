@@ -22,7 +22,6 @@
 
         git.target = "http://localhost:${toString config.local.gitea.port}";
 
-        files.target = "http://localhost:${toString config.local.file-browser.port}";
 
         tv.target = "http://localhost:${toString config.local.media.jellyfin.port}";
         plex.target = "http://localhost:${toString config.local.media.plex.port}";
@@ -35,8 +34,9 @@
 
         sonarr.target = "http://localhost:${toString config.local.downloads.sonarr.port}";
         prowlarr.target = "http://localhost:${toString config.local.downloads.prowlarr.port}";
-        docs.target = "http://localhost:${toString config.local.docs.port}";
         pihole.target = "http://localhost:8053";
+        #files.target = "http://localhost:${toString config.local.file-browser.port}";
+        #docs.target = "http://localhost:${toString config.local.docs.port}";
       };
     };
 
@@ -57,10 +57,9 @@
 
       jellyfin = { enable = true; };
       plex = { enable = true; };
-
       ersatztv = { enable = true; };
     };
-    docs.enable = true;
+
     # Download services
     downloads = {
       enable = true;
@@ -75,28 +74,31 @@
     file-sharing = {
       enable = true;
       shareDir = "/media/";
-      nfs.enable = true;
+      nfs.enable = false;
       samba.enable = true;
 
       definitions = {
         media = {
           path = "${config.local.media.mediaDir}";
           comment = "Media";
-          guestOk = true;
           validUsers = [ "tod" ];
         };
         music = {
           path = "${config.local.media.mediaDir}/music";
           comment = "Music";
-          guestOk = true;
+          validUsers = [ "tod" ];
+        };
+        porn = {
+          path = "${config.local.media.mediaDir}/porn";
+          comment = "Porn";
           validUsers = [ "tod" ];
         };
         books = {
           path = "${config.local.media.mediaDir}/books";
           comment = "Books";
-          guestOk = true;
           validUsers = [ "tod" ];
         };
+
         backups = {
           path = "/media/Backups";
           comment = "Backup directory";
