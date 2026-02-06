@@ -82,8 +82,8 @@ in
           # Helper to build service URL
           serviceUrl = name: port:
             if useProxy
-            then "${name}.${domain}"
-            else "${domain}:${toString port}";
+            then "http://${name}.${domain}"
+            else "http://${domain}:${toString port}";
 
           # Build service list based on what's enabled
           servicesList = lib.flatten [
@@ -115,7 +115,7 @@ in
             (lib.optional (config.local.media.ersatztv.enable or false) {
               ErsatzTV = {
                 icon = "ersatztv.png";
-                href = serviceUrl "ch3" (config.local.media.ersatztv.port or 8409);
+                href = serviceUrl "ch7" (config.local.media.ersatztv.port or 8409);
                 description = "Live TV streaming";
               };
             })

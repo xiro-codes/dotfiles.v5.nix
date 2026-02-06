@@ -3,12 +3,12 @@
   system = "x86_64-linux";
   specialArgs = { inherit inputs; };
   modules = [
-    inputs.self.nixosModules.cache
+    #inputs.self.nixosModules.cache
     inputs.self.nixosModules.hosts
     inputs.self.nixosModules.settings
     {
       local = {
-        cache.enable = true;
+        #cache.enable = true;
         settings.enable = true;
         hosts.useAvahi = true;
       };
