@@ -76,26 +76,27 @@
       enable = true;
       shareDir = "/media/";
       nfs.enable = true;
-    samba.enable = true;
+      samba.enable = true;
 
-    definitions = {
-      media = {
-        path = "${config.local.media.mediaDir}";
-        comment = "Media files";
-        guestOk = true;
-        validUsers = [ "tod" ];
-      };
-      music = {
-        path = "${config.local.media.mediaDir}/music";
-        comment = "Music files";
-        guestOk = true;
-        validUsers = [ "tod" ];
-      };
-      backups = {
-        path = "/media/Backups";
-        comment = "Backup directory";
-        guestOk = true;
-        validUsers = [ "tod" ];
+      definitions = {
+        media = {
+          path = "${config.local.media.mediaDir}";
+          comment = "Media files";
+          guestOk = true;
+          validUsers = [ "tod" ];
+        };
+        music = {
+          path = "${config.local.media.mediaDir}/music";
+          comment = "Music files";
+          guestOk = true;
+          validUsers = [ "tod" ];
+        };
+        backups = {
+          path = "/media/Backups";
+          comment = "Backup directory";
+          guestOk = true;
+          validUsers = [ "tod" ];
+        };
       };
     };
   };
