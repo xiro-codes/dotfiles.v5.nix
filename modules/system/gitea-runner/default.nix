@@ -33,6 +33,7 @@ in
         "ubuntu-latest:docker://node:18-bullseye"
         "ubuntu-22.04:docker://node:18-bullseye"
         "ubuntu-20.04:docker://node:16-bullseye"
+        "nixos-latest:docker://nixos/nix:latest"
       ];
       description = "Labels for the runner";
     };
