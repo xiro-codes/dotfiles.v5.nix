@@ -1,7 +1,7 @@
 { config, lib, pkgs, inputs, ... }:
 
 {
-  options.services.docs = {
+  options.local.docs = {
     enable = lib.mkEnableOption "Enable the dotfiles documentation service";
     port = lib.mkOption {
       type = lib.types.port;
@@ -15,7 +15,7 @@
     };
   };
 
-  config = lib.mkIf config.services.docs.enable {
+  config = lib.mkIf config.local.docs.enable {
     systemd.services.docs = {
       description = "Dotfiles Documentation";
       after = [ "network.target" ];

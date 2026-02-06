@@ -91,7 +91,7 @@ in
           # Build service list based on what's enabled
           servicesList = lib.flatten [
             # Documentation
-            (lib.optional (config.services.docs.enable or false) {
+            (lib.optional (config.local.docs.enable or false) {
               Docs = {
                 icon = "book.svg";
                 href = serviceUrl "docs" (config.services.docs.port or 3001);
