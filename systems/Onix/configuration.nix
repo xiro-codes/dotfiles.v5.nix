@@ -42,6 +42,8 @@
         dl.target = "http://127.0.0.1:${toString config.local.download.qbittorrent.port}";
 
         yt.target = "http://127.0.0.1:${toString config.local.download.pinchflat.port}";
+
+        pihole.target = "http://127.0.0.1:8053";
       };
     };
 

@@ -98,7 +98,7 @@ in
             (lib.optional (config.local.pihole.enable or false) {
               PiHole = {
                 icon = "pihole.png";
-                href = "http://localhost:8053/admin";
+                href = "${serviceUrl "pihole" 8053}/admin";
                 description = "AdBlocking and Local dns";
               };
             })
