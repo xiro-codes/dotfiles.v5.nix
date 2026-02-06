@@ -56,7 +56,7 @@
 
     # Git service
     gitea = { enable = true; };
-    gitea-runner = { enable = true; };
+    gitea-runner = { enable = false; };
 
     # Media services
     media = {

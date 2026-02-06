@@ -21,7 +21,7 @@ in
     };
 
     tokenFile = lib.mkOption {
-      type = lib.types.str;
+      type = lib.types.path;
       # Assumes sops secret exists at this path by default, but can be overridden
       default = config.sops.secrets."gitea/runner_token".path;
       description = "Path to the file containing the runner registration token";
@@ -39,8 +39,13 @@ in
   };
 
   config = lib.mkIf cfg.enable {
-    # Runner typically requires container runtime
-    virtualisation.docker.enable = true;
+    # Use Podman with Docker compatibility
+    virtualisation.oci-containers.backend = "podman";
+    virtualisation.podman = {
+      enable = true;
+      dockerCompat = true;
+      defaultNetwork.settings.dns_enabled = true;
+    };
 
     services.gitea-actions-runner = {
       package = pkgs.gitea-actions-runner;
