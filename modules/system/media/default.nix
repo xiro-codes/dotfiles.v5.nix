@@ -138,8 +138,8 @@ in
     services.plex = lib.mkIf cfg.plex.enable {
       enable = true;
       openFirewall = cfg.plex.openFirewall;
-      user = "tod";
-      group = "users";
+      #user = "tod";
+      #group = "users";
     };
 
     # Write Jellyfin network configuration for reverse proxy
