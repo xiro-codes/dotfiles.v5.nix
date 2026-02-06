@@ -104,7 +104,7 @@ in
             })
             (lib.optional (config.local.pihole.enable or false) {
               PiHole = {
-                icon = "pihole.png";
+                icon = "pi-hole.png";
                 href = "${serviceUrl "pihole" 8053}/admin";
                 description = "AdBlocking and Local dns";
               };
@@ -177,7 +177,7 @@ in
           resources = {
             cpu = true;
             memory = true;
-            disk = "/";
+            disk = [ "/" "/media/Media" "/media/Backups" ];
           };
         }
       ];
