@@ -152,35 +152,21 @@ in
     };
 
     # Symlink config to Jellyfin data directory
-    #systemd.services.jellyfin.preStart = lib.mkIf (cfg.jellyfin.enable && cfg.jellyfin.subPath != "") ''
+    #systemd.services.jellyfin.preStart = lib.mkIf (cfg.jellyfin.enable && cfg.jellyfin.subPath != \"\") ''
     #  mkdir -p ${cfg.jellyfin.dataDir}/config
     #  ln -sf /etc/jellyfin/network.xml ${cfg.jellyfin.dataDir}/config/network.xml
     #'';
 
-    # Write Jellyfin network configuration for reverse proxy
-    virtualisation.oci-containers.containers.ersatztv = lib.mkIf cfg.ersatztv.enable {
-      image = "jasongdove/ersatztv:latest";
-      ports = [ "${toString cfg.ersatztv.port}:8409" ];
-      volumes = [
-        "${cfg.ersatztv.dataDir}:/root/.local/share/ersatztv"
-        "${cfg.mediaDir}:/Media:ro"
-      ];
-      environment = {
-        TZ = config.time.timeZone or "UTC";
-      } // lib.optionalAttrs (cfg.ersatztv.subPath != "") {
-        ETV_BASE_URL = cfg.ersatztv.subPath;
-      };
-      autoStart = true;
-    };
-
-    # Open firewall for ErsatzTV if needed
-    networking.firewall.allowedTCPPorts = lib.mkIf cfg.ersatztv.openFirewall [ cfg.ersatztv.port ];
-
-    # Enable Docker/Podman if ErsatzTV is enabled
-    virtualisation.oci-containers.backend = lib.mkIf cfg.ersatztv.enable "podman";
-    virtualisation.podman = lib.mkIf cfg.ersatztv.enable {
+    services.ersatztv = lib.mkIf cfg.ersatztv.enable {
       enable = true;
-      dockerCompat = true;
+      user = "tod";
+      group = "users";
+      environment = {
+        ETV_DATA_FOLDER = cfg.ersatztv.dataDir;
+        ETV_CONFIG_FOLDER = cfg.ersatztv.dataDir;
+      };
+      baseUrl = cfg.ersatztv.baseUrl;
+      openFirewall = cfg.ersatztv.openFirewall;
     };
   };
 }
