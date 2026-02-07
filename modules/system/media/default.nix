@@ -67,6 +67,38 @@ in
         description = "Open firewall port for ErsatzTV";
       };
     };
+
+    komga = {
+      enable = lib.mkEnableOption "Komga comic/manga server";
+
+      port = lib.mkOption {
+        type = lib.types.port;
+        default = 8080;
+        description = "HTTP port for Komga";
+      };
+
+      openFirewall = lib.mkOption {
+        type = lib.types.bool;
+        default = false;
+        description = "Open firewall port for Komga";
+      };
+    };
+
+    audiobookshelf = {
+      enable = lib.mkEnableOption "Audiobookshelf audiobook server";
+
+      port = lib.mkOption {
+        type = lib.types.port;
+        default = 13378;
+        description = "HTTP port for Audiobookshelf";
+      };
+
+      openFirewall = lib.mkOption {
+        type = lib.types.bool;
+        default = false;
+        description = "Open firewall port for Audiobookshelf";
+      };
+    };
   };
 
   config = lib.mkIf cfg.enable {
@@ -86,6 +118,20 @@ in
     services.ersatztv = lib.mkIf cfg.ersatztv.enable {
       enable = true;
       openFirewall = cfg.ersatztv.openFirewall;
+    };
+
+    # Komga
+    services.komga = lib.mkIf cfg.komga.enable {
+      enable = true;
+      openFirewall = cfg.komga.openFirewall;
+      port = cfg.komga.port;
+    };
+
+    # Audiobookshelf
+    services.audiobookshelf = lib.mkIf cfg.audiobookshelf.enable {
+      enable = true;
+      openFirewall = cfg.audiobookshelf.openFirewall;
+      port = cfg.audiobookshelf.port;
     };
   };
 }

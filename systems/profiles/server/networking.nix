@@ -23,6 +23,9 @@
 
         ch7.target = "http://localhost:${toString config.local.media.ersatztv.port}";
 
+        comics.target = "http://localhost:${toString config.local.media.komga.port}";
+        audiobooks.target = "http://localhost:${toString config.local.media.audiobookshelf.port}";
+
         dl.target = "http://localhost:${toString config.local.downloads.qbittorrent.port}";
 
         yt.target = "http://localhost:${toString config.local.downloads.pinchflat.port}";
