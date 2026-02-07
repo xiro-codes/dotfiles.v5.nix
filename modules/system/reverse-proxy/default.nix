@@ -88,7 +88,7 @@ in
       virtualHosts = lib.mapAttrs
         (name: service: {
           serverName = if name == "dashboard" then cfg.domain else "${name}.${cfg.domain}";
-          forceSSL = false;
+          forceSSL = true;
           sslCertificate = "${onixCert}/onix.crt";
           sslCertificateKey = "${onixCert}/onix.key";
 
