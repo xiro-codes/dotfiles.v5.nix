@@ -47,5 +47,4 @@ The module expects (and creates) the following structure under `mediaDir`:
 
 ### ErsatzTV
 - **Port**: 8409
-- **Type**: Docker/Podman container (`jasongdove/ersatztv:latest`)
-- **Integration**: Mounts `mediaDir` to `/media` read-only.
+- **Type**: NixOS service
