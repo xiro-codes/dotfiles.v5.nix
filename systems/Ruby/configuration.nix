@@ -4,9 +4,9 @@
     ./disko.nix
     ./hardware-configuration.nix
     ../profiles/base.nix
-    ../profiles/workstation
-    ../profiles/client.nix
     ../profiles/limine-uefi.nix
+    ../profiles/client.nix
+    ../profiles/workstation
   ];
   # Ruby-specific configuration
   local = {
