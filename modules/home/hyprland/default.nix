@@ -73,7 +73,7 @@ in
 
         bind = [
           "$mod, Return, exec, ${variables.terminal}"
-          
+
           # Workspace set switching
           "$mod, Tab, exec, hypr-switch-set next"
           "$mod_SHIFT, Tab, exec, hypr-switch-set prev"
@@ -92,7 +92,7 @@ in
           "$mod, E, exec, ${variables.guiFileManager}"
           "$mod_SHIFT, E, exec, ${variables.fileManager}"
           "$mod, P, exec, ${variables.launcher} "
-          
+
           # Window management
           "$mod, Space, layoutmsg, swapwithmaster master"
           "$mod_SHIFT, Q, killactive"

@@ -89,7 +89,7 @@ in
       };
       guiFileManager = lib.mkOption {
         type = lib.types.str;
-        default = "pcmanfm";
+        default = "nautilus";
         example = "nautilus";
         description = "Default GUI file manager";
       };

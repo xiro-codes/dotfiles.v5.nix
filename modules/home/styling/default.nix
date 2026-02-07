@@ -33,7 +33,7 @@ in
     (lib.mkIf cfg.stylix.enable {
       # Create .wallpaper symlink in home directory
       home.file.".wallpaper".source = ./wallpaper.jpg;
-      
+
       stylix = {
         enable = true;
         image = ./wallpaper.jpg;
@@ -52,11 +52,11 @@ in
           nixvim.colors.enable = true;
           nixvim.fonts.enable = true;
           kitty.fonts.enable = true;
-          kitty.colors.enable = false;  # Let caelestia handle colors
-          hyprland.enable = false;  # Let caelestia handle hyprland colors
+          kitty.colors.enable = false; # Let caelestia handle colors
+          hyprland.enable = false; # Let caelestia handle hyprland colors
           firefox.enable = false;
-          gtk.enable = false;  # Disable GTK theming
-          qt.enable = false;  # Disable Qt theming
+          gtk.enable = true; # Disable GTK theming
+          qt.enable = false; # Disable Qt theming
         };
         fonts = {
           monospace = {
