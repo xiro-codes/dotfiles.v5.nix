@@ -150,20 +150,6 @@ in
                 description = "BitTorrent client";
               };
             })
-            (lib.optional (config.local.downloads.sonarr.enable or false) {
-              Sonarr = {
-                icon = "sonarr.png";
-                href = serviceUrl "sonarr" (config.local.downloads.sonarr.port or 8989);
-                description = "TV/Anime PVR";
-              };
-            })
-            (lib.optional (config.local.downloads.prowlarr.enable or false) {
-              Prowlarr = {
-                icon = "prowlarr.png";
-                href = serviceUrl "prowlarr" (config.local.downloads.prowlarr.port or 9696);
-                description = "Indexer Manager";
-              };
-            })
           ];
         in
         lib.filter (x: x != { }) [
