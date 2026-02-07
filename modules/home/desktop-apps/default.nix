@@ -78,6 +78,10 @@ in
     (lib.mkIf cfg.fish.enable {
       programs.eza.enable = true;
       programs.zoxide.enable = true;
+
+      home.packages = with pkgs; [
+        trash-cli
+      ];
       programs.fish = {
         enable = true;
         interactiveShellInit = ''
@@ -92,6 +96,7 @@ in
           lsl = "eza --icons always -al";
           du = "dust";
           df = "duf";
+          rm = "trash-put";
         };
       };
     })

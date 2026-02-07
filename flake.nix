@@ -5,6 +5,7 @@
     flake-parts.url = "github:hercules-ci/flake-parts";
     stylix.url = "github:danth/stylix";
     deploy-rs.url = "github:serokell/deploy-rs";
+    nix-flatpak.url = "github:gmodena/nix-flatpak";
     zen-browser = {
       url = "github:youwen5/zen-browser-flake";
       inputs.nixpkgs.follows = "nixpkgs";

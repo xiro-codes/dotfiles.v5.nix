@@ -8,13 +8,18 @@ in
 {
   options.local.flatpak = {
     enable = mkEnableOption "Flatpak support";
+    extraPackages = mkOption {
+      type = types.listOf types.str;
+      default = [
+        "io.github.kolunmi.Bazaar"
+      ];
+    };
+
   };
 
   config = mkIf cfg.enable {
     services.flatpak.enable = true;
-
-    system.fsPackages = [ pkgs.flatpak ];
-
+    services.flatpak.update.onActivation = true;
     # Flathub repository
     services.flatpak.remotes = [{
       name = "flathub";
@@ -22,9 +27,6 @@ in
     }];
 
     # System-wide installation of applications
-    environment.flatpak.packages = [
-      # A modern software store for GNOME
-      "org.bazaar.Bazaar"
-    ];
+    services.flatpak.packages = cfg.extraPackages;
   };
 }

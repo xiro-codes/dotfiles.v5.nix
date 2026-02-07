@@ -9,7 +9,7 @@
       jellyfin.enable = true;
       plex.enable = true;
       ersatztv.enable = true;
-      audiobooks.enable = true;
+      audiobookshelf.enable = true;
       komga.enable = true;
     };
 
