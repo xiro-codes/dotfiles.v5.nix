@@ -8,7 +8,10 @@
     };
 
     # Git service
-    gitea.enable = true;
+    gitea = {
+      enable = true;
+      openFirewall = true;
+    };
     gitea-runner.enable = true;
     file-browser = {
       enable = true;
