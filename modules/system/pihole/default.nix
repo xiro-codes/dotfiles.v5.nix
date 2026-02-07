@@ -19,8 +19,8 @@ in
   config = lib.mkIf cfg.enable {
     # Ensure the data directories exist
     systemd.tmpfiles.rules = [
-      "d ${cfg.dataDir} 0755 root root -"
-      "d ${cfg.dataDir}/dnsmasq.d 0755 root root -"
+      "d ${cfg.dataDir} 0777 root root -"
+      "d ${cfg.dataDir}/dnsmasq.d 0777 root root -"
     ];
 
     virtualisation.oci-containers.containers.pihole = {
