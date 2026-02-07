@@ -66,11 +66,10 @@ in
   config = lib.mkIf cfg.enable {
     services.atticd = {
       enable = true;
-      environmentFile = ./attic_token;
+      environmentFile = config.sops.secrets."attic/token".path;
       settings = {
         listen = "${cfg.listenAddress}:${toString cfg.port}";
         database.url = "sqlite://${cfg.dataDir}/server.db";
-        #api-endpoint = "https://onix.local/cache/_api/";
         storage = {
           type = "local";
           path = "${cfg.dataDir}/storage";
