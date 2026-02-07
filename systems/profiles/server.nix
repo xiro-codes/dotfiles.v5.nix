@@ -6,10 +6,6 @@
       adminPassword = "rockman";
     };
 
-    file-browser = {
-      enable = true;
-      rootPath = "/media";
-    };
 
     # Reverse proxy with HTTPS
     reverse-proxy = {
@@ -47,8 +43,12 @@
     };
 
     # Git service
-    gitea = { enable = true; };
-    gitea-runner = { enable = true; };
+    gitea.enable = true;
+    gitea-runner.enable = true;
+    file-browser = {
+      enable = true;
+      rootPath = "/media/Media/";
+    };
 
     # Media services
     media = {
