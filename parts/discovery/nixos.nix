@@ -23,13 +23,14 @@ in
     let
       hosts =
         if pathExists paths.systems then
-          attrNames (filterAttrs
-            (name: type:
-              type == "directory"
-              && pathExists (paths.systems + "/${name}/configuration.nix")
-              && pathExists (paths.systems + "/${name}/hardware-configuration.nix")
-            )
-            (readDir paths.systems))
+          attrNames
+            (filterAttrs
+              (name: type:
+                type == "directory"
+                && pathExists (paths.systems + "/${name}/configuration.nix")
+                && pathExists (paths.systems + "/${name}/hardware-configuration.nix")
+              )
+              (readDir paths.systems))
         else
           [ ];
     in
@@ -48,6 +49,7 @@ in
               inputs.disko.nixosModules.disko
               inputs.sops-nix.nixosModules.sops
               inputs.home-manager.nixosModules.home-manager
+              inputs.nix-flatpak.nixosModules.nix-flatpak
               ({
                 networking.hostName = name;
                 local.secrets.enable = true;
