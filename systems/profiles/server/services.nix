@@ -14,5 +14,8 @@
       enable = true;
       rootPath = "/media/Media/";
     };
+    cache-server = {
+      enable = true;
+    };
   };
 }
