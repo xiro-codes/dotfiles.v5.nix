@@ -4,16 +4,22 @@ pkgs.runCommand "dotfiles-docs-site"
 {
   nativeBuildInputs = [ pkgs.mdbook inputs.self.packages.${pkgs.system}.docs-generated ];
 } ''
-  mkdir -p $out/src
+  # Setup build directory structure
+  mkdir -p tmp_book/src
   
-  # Copy manual docs, but use README.md for the intro page
-  cp -r ${../../docs}/* $out/src/
-  mv $out/src/book.toml $out/ || true
-  cp ${../../README.md} $out/src/intro.md
+  # Copy manual docs
+  cp -r ${../../docs}/* tmp_book/src/
+  chmod -R +w tmp_book/src
   
+  # Copy generated docs
+  cp -r ${inputs.self.packages.${pkgs.system}.docs-generated}/* tmp_book/src/
   
-  cp -r ${inputs.self.packages.${pkgs.system}.docs-generated}/* $out/src/
+  # Setup book.toml at the root of the book directory
+  cp tmp_book/src/book.toml tmp_book/
   
-  # Build
-  mdbook build -d $out/ $out
+  # Setup intro page
+  cp ${../../README.md} tmp_book/src/intro.md
+  
+  # Build the book to $out
+  mdbook build -d $out tmp_book
 ''

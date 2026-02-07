@@ -3,7 +3,7 @@
 {
   local = {
     backup-manager = {
-      enable = false;
+      enable = true;
       backupLocation = "/media/Backups";
       paths = [
         "/root/.ssh"

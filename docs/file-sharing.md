@@ -1,6 +1,6 @@
 # File Sharing with NFS and Samba
 
-This guide covers setting up file shares using the `local.shares` module (server-side) and accessing them with `local.shareManager` (client-side).
+This guide covers setting up file network-mounts using the `local.file-shareing` module (server-side) and accessing them with `local.network-mounts` (client-side).
 
 ## Overview
 
@@ -16,12 +16,12 @@ The file sharing system provides:
 ### Simple Configuration
 
 ```nix
-local.shares = {
+local.file-sharing = {
   enable = true;
-  
+
   samba.enable = true;
   samba.openFirewall = true;
-  
+
   definitions = {
     media = {
       path = "/srv/media";
@@ -109,10 +109,10 @@ definitions = {
 ```nix
 local.shares = {
   enable = true;
-  
+
   # Base directory for shares
   shareDir = "/srv/shares";
-  
+
   # Samba configuration
   samba = {
     enable = true;
@@ -120,7 +120,7 @@ local.shares = {
     workgroup = "WORKGROUP";
     serverString = "NixOS File Server";
   };
-  
+
   # NFS configuration
   nfs = {
     enable = true;
@@ -155,7 +155,7 @@ local.shareManager = {
   enable = true;
   serverIp = config.local.hosts.server;  # Or "192.168.1.100"
   noAuth = false;  # Requires credentials
-  
+
   mounts = [
     {
       shareName = "media";
@@ -172,7 +172,7 @@ local.shareManager = {
   enable = true;
   serverIp = "server.local";
   noAuth = true;  # Guest access, no password
-  
+
   mounts = [
     {
       shareName = "public";
@@ -200,7 +200,7 @@ local.shareManager = {
   enable = true;
   serverIp = config.local.hosts.server;
   secretName = "smb_credentials";  # Name in sops
-  
+
   mounts = [
     {
       shareName = "private";
@@ -260,7 +260,7 @@ You can use both structured definitions and manual configuration:
 local.shares = {
   enable = true;
   samba.enable = true;
-  
+
   # Structured shares (recommended)
   definitions = {
     media = {
@@ -269,7 +269,7 @@ local.shares = {
       guestOk = true;
     };
   };
-  
+
   # Manual shares (for special cases)
   samba.shares = {
     special = {
@@ -353,7 +353,7 @@ local.media.mediaDir = "/srv/media";
 local.shares = {
   enable = true;
   samba.enable = true;
-  
+
   definitions = {
     media = {
       path = config.local.media.mediaDir;
@@ -375,7 +375,7 @@ local.download.downloadDir = "/srv/downloads";
 local.shares = {
   enable = true;
   samba.enable = true;
-  
+
   definitions = {
     downloads = {
       path = config.local.download.downloadDir;
