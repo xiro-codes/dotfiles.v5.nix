@@ -27,7 +27,7 @@
     initialPassword = "rockman";
   };
   systemd.tmpfiles.rules = [
-    # "d /media/Media 0777 root root -"
+    "d /media/Media 0777 root root -"
     "d /media/Backups 0777 root root -"
   ];
   networking.firewall = {
