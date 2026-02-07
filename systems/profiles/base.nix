@@ -2,6 +2,8 @@
 { pkgs, lib, ... }:
 {
   local = {
+    #secrets.enable = lib.mkForce false;
+    #cache.enable = false;
     security.enable = true;
     dotfiles = {
       enable = true;
