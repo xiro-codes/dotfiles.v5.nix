@@ -133,6 +133,20 @@ in
                 description = "Live TV streaming";
               };
             })
+            (lib.optional (config.local.media.komga.enable or false) {
+              Komga = {
+                icon = "komga.png";
+                href = serviceUrl "comics" (config.local.media.komga.port or 8080);
+                description = "Comic/manga server";
+              };
+            })
+            (lib.optional (config.local.media.audiobookshelf.enable or false) {
+              Audiobookshelf = {
+                icon = "audiobookshelf.png";
+                href = serviceUrl "audiobooks" (config.local.media.audiobookshelf.port or 13378);
+                description = "Audiobook server";
+              };
+            })
           ];
 
           downloadList = lib.flatten [
