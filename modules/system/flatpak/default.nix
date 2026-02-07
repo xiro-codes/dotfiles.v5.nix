@@ -3,10 +3,10 @@
 with lib;
 
 let
-  cfg = config.modules.system.flatpak;
+  cfg = config.local.flatpak;
 in
 {
-  options.modules.system.flatpak = {
+  options.local.flatpak = {
     enable = mkEnableOption "Flatpak support";
   };
 

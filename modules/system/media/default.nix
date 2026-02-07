@@ -73,7 +73,7 @@ in
 
       port = lib.mkOption {
         type = lib.types.port;
-        default = 8080;
+        default = 8099;
         description = "HTTP port for Komga";
       };
 

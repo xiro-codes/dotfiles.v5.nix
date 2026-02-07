@@ -6,9 +6,11 @@
       enable = true;
       mediaDir = "/media/Media/";
 
-      jellyfin = { enable = true; };
-      plex = { enable = true; };
-      ersatztv = { enable = true; };
+      jellyfin.enable = true;
+      plex.enable = true;
+      ersatztv.enable = true;
+      audiobooks.enable = true;
+      komga.enable = true;
     };
 
     # Download services
