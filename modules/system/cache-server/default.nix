@@ -26,7 +26,7 @@ in
 
     dataDir = lib.mkOption {
       type = lib.types.str;
-      default = "/var/lib/atticd";
+      default = "/media/storage/attic";
       description = "Data directory for Attic server";
     };
 
@@ -61,12 +61,6 @@ in
       description = "Maximum cache size (supports K, M, G suffixes)";
     };
 
-    subPath = lib.mkOption {
-      type = lib.types.str;
-      default = "";
-      example = "/cache";
-      description = "Subpath for reverse proxy (e.g., /cache)";
-    };
   };
 
   config = lib.mkIf cfg.enable {
