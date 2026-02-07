@@ -44,7 +44,7 @@ in
       openFirewall = cfg.openFirewall;
       settings = {
         port = cfg.port;
-        root = cfg.roatPath;
+        root = cfg.rootPath;
       };
     };
   };
