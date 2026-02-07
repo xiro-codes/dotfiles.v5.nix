@@ -6,6 +6,7 @@
       shareDir = "/media/";
       nfs.enable = false;
       samba.enable = true;
+      samba.openFirewall = true;
 
       definitions = {
         media = {
