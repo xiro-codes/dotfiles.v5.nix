@@ -47,7 +47,7 @@ in
   config = lib.mkIf cfg.enable {
     # Ensure configuration directory exists
     systemd.tmpfiles.rules = [
-      "d ${cfg.dataDir} 0755 root root -"
+      "d ${cfg.dataDir} 0777 root root -"
       "d ${cfg.rootPath} 0777 root root -"
     ];
 
