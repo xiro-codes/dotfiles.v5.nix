@@ -1,6 +1,6 @@
 # File Sharing with NFS and Samba
 
-This guide covers setting up file network-mounts using the `local.file-shareing` module (server-side) and accessing them with `local.network-mounts` (client-side).
+This guide covers setting up file network-mounts using the `local.file-sharing` module (server-side) and accessing them with `local.network-mounts` (client-side).
 
 ## Overview
 
@@ -107,7 +107,7 @@ definitions = {
 ### Enable Services
 
 ```nix
-local.shares = {
+local.file-sharing = {
   enable = true;
 
   # Base directory for shares
@@ -144,16 +144,16 @@ sudo smbpasswd -e username
 sudo smbpasswd username
 ```
 
-## Client Configuration (share-manager)
+## Client Configuration (network-mounts)
 
-The `share-manager` module automatically mounts Samba shares from a server.
+The `network-mounts` module automatically mounts Samba shares from a server.
 
 ### Basic Mount
 
 ```nix
-local.shareManager = {
+local.network-mounts = {
   enable = true;
-  serverIp = config.local.hosts.server;  # Or "192.168.1.100"
+  serverIp = config.local.hosts.onix;  # Or "192.168.1.100"
   noAuth = false;  # Requires credentials
 
   mounts = [
@@ -168,7 +168,7 @@ local.shareManager = {
 ### Guest Access
 
 ```nix
-local.shareManager = {
+local.network-mounts = {
   enable = true;
   serverIp = "server.local";
   noAuth = true;  # Guest access, no password
@@ -196,10 +196,10 @@ password=mypassword
 3. Reference in configuration:
 
 ```nix
-local.shareManager = {
+local.network-mounts = {
   enable = true;
-  serverIp = config.local.hosts.server;
-  secretName = "smb_credentials";  # Name in sops
+  serverIp = config.local.hosts.onix;
+  secretName = "smb_credentials";  # Name in sops (default: "onix_creds")
 
   mounts = [
     {
@@ -257,7 +257,7 @@ nfs.exports = ''
 You can use both structured definitions and manual configuration:
 
 ```nix
-local.shares = {
+local.file-sharing = {
   enable = true;
   samba.enable = true;
 
@@ -333,7 +333,7 @@ sudo mount -t nfs hostname.local:/srv/media /mnt/media
 # Mount temporarily
 sudo mount -t cifs //hostname.local/media /mnt/media -o user=username
 
-# Or use share-manager module (recommended)
+# Or use network-mounts module (recommended)
 ```
 
 **Command Line (NFS):**
@@ -350,7 +350,7 @@ Share your media directories:
 ```nix
 local.media.mediaDir = "/srv/media";
 
-local.shares = {
+local.file-sharing = {
   enable = true;
   samba.enable = true;
 
@@ -372,7 +372,7 @@ Share download directories:
 ```nix
 local.download.downloadDir = "/srv/downloads";
 
-local.shares = {
+local.file-sharing = {
   enable = true;
   samba.enable = true;
 

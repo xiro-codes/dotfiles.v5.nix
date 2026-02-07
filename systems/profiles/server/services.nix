@@ -1,0 +1,18 @@
+{ config, ... }:
+{
+  local = {
+    # Dashboard
+    dashboard = {
+      enable = true;
+      allowedHosts = [ config.local.reverse-proxy.domain "localhost" ];
+    };
+
+    # Git service
+    gitea.enable = true;
+    gitea-runner.enable = true;
+    file-browser = {
+      enable = true;
+      rootPath = "/media/Media/";
+    };
+  };
+}

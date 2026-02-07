@@ -12,7 +12,6 @@ local.media = {
   jellyfin = {
     enable = true;
     openFirewall = true;
-    subPath = "/jellyfin"; # For reverse proxy
   };
   
   plex = {
@@ -39,7 +38,6 @@ The module expects (and creates) the following structure under `mediaDir`:
 ### Jellyfin
 - **Port**: 8096
 - **Config**: `/var/lib/jellyfin`
-- **Reverse Proxy**: Automatically configures `network.xml` if `subPath` is set.
 
 ### Plex
 - **Port**: 32400

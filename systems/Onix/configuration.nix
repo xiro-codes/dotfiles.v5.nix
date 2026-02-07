@@ -2,7 +2,7 @@
   imports = [
     ./disko.nix
     ./hardware-configuration.nix
-    ../profiles/server.nix
+    ../profiles/server
     ../profiles/base.nix
     ../profiles/limine-uefi.nix
   ];
