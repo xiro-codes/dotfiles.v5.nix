@@ -241,32 +241,15 @@ in
       openRPCPort = cfg.transmission.openFirewall;
     };
 
-    # Pinchflat (using OCI container)
-    virtualisation.oci-containers.containers.pinchflat = lib.mkIf cfg.pinchflat.enable {
-      image = "ghcr.io/kieraneglin/pinchflat:latest";
-      ports = [ "${toString cfg.pinchflat.port}:8945" ];
-      volumes = [
-        "${cfg.pinchflat.dataDir}:/config"
-        "${cfg.downloadDir}/../youtube:/downloads"
-      ];
-      environment = {
-        TZ = config.time.timeZone or "UTC";
-        PUID = "1000";
-        PGID = "100";
-      } // lib.optionalAttrs (cfg.pinchflat.subPath != "") {
-        BASE_PATH = cfg.pinchflat.subPath;
-      };
-      autoStart = true;
-    };
-
-    # Open firewall for Pinchflat if needed
-    networking.firewall.allowedTCPPorts = lib.mkIf cfg.pinchflat.openFirewall [ cfg.pinchflat.port ];
-
-    # Enable Podman if Pinchflat is enabled
-    virtualisation.oci-containers.backend = lib.mkIf cfg.pinchflat.enable "podman";
-    virtualisation.podman = lib.mkIf cfg.pinchflat.enable {
+    # Pinchflat
+    services.pinchflat = lib.mkIf cfg.pinchflat.enable {
       enable = true;
-      dockerCompat = true;
+      user = "tod";
+      group = "users";
+      mediaDir = \"${cfg.downloadDir}/../youtube\";
+      port = cfg.pinchflat.port;
+      openFirewall = cfg.pinchflat.openFirewall;
+      selfhosted = true;
     };
 
     # Sonarr
