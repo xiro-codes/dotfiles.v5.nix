@@ -35,7 +35,7 @@
         sonarr.target = "http://localhost:${toString config.local.downloads.sonarr.port}";
         prowlarr.target = "http://localhost:${toString config.local.downloads.prowlarr.port}";
         pihole.target = "http://localhost:8053";
-        #files.target = "http://localhost:${toString config.local.file-browser.port}";
+        files.target = "http://localhost:${toString config.local.file-browser.port}";
         #docs.target = "http://localhost:${toString config.local.docs.port}";
       };
     };
