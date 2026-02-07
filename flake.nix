@@ -34,13 +34,6 @@
     inputs@{ self, deploy-rs, flake-parts, ... }:
     flake-parts.lib.mkFlake { inherit inputs; } {
       systems = [ "x86_64-linux" ];
-      perSystem = { self', pkgs, system, ... }: {
-        _module.args = {
-          dotfiles-pkgs = self'.packages;
-          # Pass flake inputs to packages that need them
-          inputs = pkgs.lib.mkForce inputs;
-        };
-      };
       imports = [
         ./parts/discovery
       ];

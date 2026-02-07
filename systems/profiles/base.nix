@@ -2,9 +2,9 @@
 { pkgs, lib, ... }:
 {
   local = {
+    #secrets.enable = lib.mkForce false;
+    cache.enable = false;
     security.enable = true;
-    disks.enable = true;
-    registry.enable = true;
     dotfiles = {
       enable = true;
       maintenance.enable = true;
