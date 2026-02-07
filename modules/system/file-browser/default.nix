@@ -24,12 +24,6 @@ in
       description = "Open firewall port for File Browser";
     };
 
-    subPath = lib.mkOption {
-      type = lib.types.str;
-      default = "";
-      example = "/files";
-      description = "Subpath for reverse proxy (e.g., /files)";
-    };
 
     rootPath = lib.mkOption {
       type = lib.types.str;

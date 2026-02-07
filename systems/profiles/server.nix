@@ -28,8 +28,6 @@
 
         yt.target = "http://localhost:${toString config.local.downloads.pinchflat.port}";
 
-        sonarr.target = "http://localhost:${toString config.local.downloads.sonarr.port}";
-        prowlarr.target = "http://localhost:${toString config.local.downloads.prowlarr.port}";
         pihole.target = "http://localhost:8053";
         files.target = "http://localhost:${toString config.local.file-browser.port}";
         #docs.target = "http://localhost:${toString config.local.docs.port}";
@@ -65,10 +63,8 @@
       enable = true;
       downloadDir = "/media/Media/downloads";
 
-      qbittorrent = { enable = true; };
-      pinchflat = { enable = true; };
-      sonarr = { enable = false; };
-      prowlarr = { enable = false; };
+      qbittorrent.enable = true;
+      pinchflat.enable = true;
     };
 
     file-sharing = {

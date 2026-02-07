@@ -11,7 +11,6 @@ let
   # Base URL for service links
   baseUrl = urlHelpers.buildServiceUrl {
     port = cfg.port;
-    subPath = "";
   };
 
   # Auto-configure allowed hosts
@@ -33,12 +32,6 @@ in
       description = "Open firewall port for dashboard";
     };
 
-    subPath = lib.mkOption {
-      type = lib.types.str;
-      default = "";
-      example = "/dashboard";
-      description = "Subpath for reverse proxy (e.g., /dashboard)";
-    };
 
     allowedHosts = lib.mkOption {
       type = lib.types.listOf lib.types.str;
@@ -57,8 +50,6 @@ in
       settings = {
         title = "Home Server Dashboard";
 
-        # Configure base path for reverse proxy
-        base = lib.mkIf (cfg.subPath != "") cfg.subPath;
         layout = {
           Services = {
             style = "row";
@@ -68,7 +59,7 @@ in
             style = "row";
             columns = 3;
           };
-          System = {
+          Downloads = {
             style = "row";
             columns = 3;
           };

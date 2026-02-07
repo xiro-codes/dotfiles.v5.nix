@@ -60,12 +60,6 @@ in
       description = "Open firewall ports for Gitea";
     };
 
-    subPath = lib.mkOption {
-      type = lib.types.str;
-      default = "";
-      example = "/gitea";
-      description = "Subpath for reverse proxy (e.g., /gitea for https://host/gitea)";
-    };
   };
 
   config = lib.mkIf cfg.enable {
