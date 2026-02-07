@@ -31,12 +31,6 @@ in
       description = "Subpath for reverse proxy (e.g., /files)";
     };
 
-    dataDir = lib.mkOption {
-      type = lib.types.str;
-      default = "/var/lib/filebrowser";
-      description = "Directory for File Browser database and config";
-    };
-
     rootPath = lib.mkOption {
       type = lib.types.str;
       default = "/media";
@@ -45,49 +39,13 @@ in
   };
 
   config = lib.mkIf cfg.enable {
-    # Ensure configuration directory exists
-    systemd.tmpfiles.rules = [
-      "d ${cfg.dataDir} 0777 root root -"
-      "d ${cfg.rootPath} 0777 root root -"
-    ];
-
-    # Create empty database file if it doesn't exist to prevent Docker from creating a directory
-    systemd.services.init-filebrowser-db = {
-      description = "Initialize File Browser database";
-      before = [ "podman-filebrowser.service" ];
-      wantedBy = [ "multi-user.target" ];
-      serviceConfig = {
-        Type = "oneshot";
-        RemainAfterExit = true;
-      };
-      script = ''
-        touch ${cfg.dataDir}/filebrowser.db
-        touch ${cfg.dataDir}/settings.json
-      '';
-    };
-
-    virtualisation.oci-containers.containers.filebrowser = {
-      image = "filebrowser/filebrowser:latest";
-      ports = [ "${toString cfg.port}:80" ];
-      volumes = [
-        "${cfg.rootPath}:/srv"
-        "${cfg.dataDir}/filebrowser.db:/database/filebrowser.db"
-        "${cfg.dataDir}/settings.json:/.filebrowser.json"
-      ];
-      environment = {
-        PUID = "1000"; # Run as 'tod' (assuming id 1000)
-        PGID = "100"; # Run as 'users'
-      };
-      autoStart = true;
-    };
-
-    networking.firewall.allowedTCPPorts = lib.mkIf cfg.openFirewall [ cfg.port ];
-
-    # Enable Podman if not already enabled (though likely is)
-    virtualisation.oci-containers.backend = "podman";
-    virtualisation.podman = {
+    services.filebrowser = {
       enable = true;
-      dockerCompat = true;
+      openFirewall = cfg.openFirewall;
+      settings = {
+        port = cfg.port;
+        root = cfg.roatPath;
+      };
     };
   };
 }
