@@ -1,9 +1,8 @@
-# Workstation home profile - Complete desktop workstation setup
 { ... }:
 {
   imports = [
-    ./base.nix
-    ./desktop.nix
+    ../base
+    ../desktop
   ];
 
   # Workstation-specific secrets

@@ -1,7 +1,7 @@
 { ... }:
 {
   imports = [
-    ./profiles/workstation.nix
+    ./profiles/workstation
   ];
 
   home.stateVersion = "25.11";
