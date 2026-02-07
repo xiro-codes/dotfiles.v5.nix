@@ -4,6 +4,7 @@
   local = {
     security.enable = true;
     disks.enable = true;
+    registry.enable = true;
     dotfiles = {
       enable = true;
       maintenance.enable = true;
