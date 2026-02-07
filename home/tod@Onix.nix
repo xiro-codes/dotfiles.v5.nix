@@ -1,7 +1,7 @@
 { inputs, pkgs, ... }:
 {
   imports = [
-    ./profiles/server.nix
+    ./profiles/server
   ];
   
   # Server-specific secrets

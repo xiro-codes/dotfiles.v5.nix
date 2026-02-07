@@ -1,7 +1,7 @@
 { pkgs, ... }:
 {
   imports = [
-    ./profiles/workstation.nix
+    ./profiles/workstation
   ];
   home.packages = with pkgs; [
   ];

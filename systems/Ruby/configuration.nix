@@ -4,7 +4,7 @@
     ./disko.nix
     ./hardware-configuration.nix
     ../profiles/base.nix
-    ../profiles/workstation.nix
+    ../profiles/workstation
     ../profiles/client.nix
     ../profiles/limine-uefi.nix
   ];
