@@ -10,9 +10,8 @@
 
   home.packages = with pkgs; [
     # Desktop applications
-    firefox
     discord
-    warp-terminal
+    protonvpn-gui
   ] ++ (with inputs.self.packages.${pkgs.stdenv.hostPlatform.system}; [
     ai-commit
   ]);

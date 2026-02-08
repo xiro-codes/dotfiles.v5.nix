@@ -38,6 +38,16 @@ in
           playback = [ "celluloid" ];
           explorer = [ "nautilus" ];
         };
+        general.idle = {
+          timeouts = [
+            { timeout = 1800; idleAction = "lock"; }
+            {
+              timeout = 2700;
+              idleAction = "dpms off";
+              returnAction = "dpms on";
+            }
+          ];
+        };
         background = {
           enabled = true;
           visualiser = {
@@ -56,7 +66,9 @@ in
         bar.scrollAction.brightness = false;
         bar.scrollAction.volume = false;
         bar.scrollAction.workspaces = false;
+        bar.tray.recolour = true;
         osd.enableBrightness = false;
+
         paths = {
           "mediaGif" = "$HOME/.music.gif";
           "sessionGif" = "";
