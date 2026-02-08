@@ -10,9 +10,8 @@ in
     enable = mkEnableOption "Flatpak support";
     extraPackages = mkOption {
       type = types.listOf types.str;
-      default = [
-        "io.github.kolunmi.Bazaar"
-      ];
+      default = [ ];
+      description = "flatpaks to install";
     };
 
   };
@@ -27,6 +26,6 @@ in
     }];
 
     # System-wide installation of applications
-    services.flatpak.packages = cfg.extraPackages;
+    services.flatpak.packages = [ "io.github.kolunmi.Bazaar" ] ++ cfg.extraPackages;
   };
 }
