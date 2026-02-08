@@ -40,6 +40,7 @@ in
         systemd-boot.enable = cfg.uefiType == "systemd-boot";
         limine = lib.mkIf (cfg.uefiType == "limine") {
           enable = true;
+          maxGenerations = 5;
           extraEntries = lib.mkIf cfg.addRecoveryOption ''
             /Recovery
               protocol:uefi 
