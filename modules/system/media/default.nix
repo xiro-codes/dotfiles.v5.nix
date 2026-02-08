@@ -124,7 +124,8 @@ in
     services.komga = lib.mkIf cfg.komga.enable {
       enable = true;
       openFirewall = cfg.komga.openFirewall;
-      port = cfg.komga.port;
+      settings.server.port = cfg.komga.port;
+      settings.server.address = "127.0.0.1";
     };
 
     # Audiobookshelf
