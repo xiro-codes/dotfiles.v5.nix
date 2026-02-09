@@ -51,6 +51,10 @@ in
       enable = lib.mkEnableOption "Ranger terminal-based file manager with devicons support";
     };
 
+    # Superfile
+    superfile = {
+      enable = lib.mkEnableOption "Superfile terminal-based file manager with style";
+    };
     # MPD music player daemon
     mpd = {
       enable = lib.mkEnableOption "MPD (Music Player Daemon) with ncmpcpp client";
@@ -97,6 +101,7 @@ in
           du = "dust";
           df = "duf";
           rm = "trash-put";
+          ranger = "superfile";
         };
       };
     })
@@ -164,7 +169,13 @@ in
         "ranger/plugins/ranger_devicons".source = ../ranger/ranger_devicons;
       };
     })
-
+    #Superfile
+    (lib.mkIf cfg.superfile.enable {
+      programs.superfile = {
+        enable = true;
+        settings.theme = "gruvbox";
+      };
+    })
     # MPD
     (lib.mkIf cfg.mpd.enable {
       home.packages = [ pkgs.mpc pkgs.ymuse ];
