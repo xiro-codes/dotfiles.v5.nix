@@ -12,6 +12,7 @@
     # Desktop applications
     discord
     protonvpn-gui
+    warp-terminal
   ] ++ (with inputs.self.packages.${pkgs.stdenv.hostPlatform.system}; [
     ai-commit
     tgpt-auth

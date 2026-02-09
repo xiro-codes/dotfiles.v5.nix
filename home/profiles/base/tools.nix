@@ -15,7 +15,7 @@
     # Archive tools
     unzip
     p7zip
-
+    superfile
     # System monitoring
     sysstat
     bottom
