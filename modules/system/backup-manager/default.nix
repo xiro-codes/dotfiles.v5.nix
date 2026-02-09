@@ -47,6 +47,13 @@ in
   };
 
   config = lib.mkIf cfg.enable {
+    assertions = [
+      {
+        assertion = cfg.backupLocation != "";
+        message = "backup-manager: backupLocation must be set when enabled";
+      }
+    ];
+
     services.borgbackup.jobs."onix-local" = {
       inherit (cfg) exclude;
       paths = finalPaths;

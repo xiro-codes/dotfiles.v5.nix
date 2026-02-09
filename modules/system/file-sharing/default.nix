@@ -121,7 +121,7 @@ in
       type = lib.types.attrsOf (lib.types.submodule {
         options = {
           path = lib.mkOption {
-            type = lib.types.str;
+            type = lib.types.path;
             description = "Absolute path to the share directory";
           };
 
