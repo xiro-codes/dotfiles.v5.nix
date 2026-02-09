@@ -54,6 +54,8 @@ in
                 networking.hostName = name;
                 local.secrets.enable = true;
                 home-manager = {
+                  backupFileExtension = "backup";
+                  backupCommand = "${inputs.nixpkgs.legacyPackages.x86_64-linux.trash-cli}/bin/trash";
                   extraSpecialArgs = { inherit inputs; };
                   sharedModules = (attrValues discoveredHomeModules) ++ [
                     inputs.sops-nix.homeModules.sops

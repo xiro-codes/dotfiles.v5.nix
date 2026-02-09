@@ -94,14 +94,16 @@ in
           #cat $HOME/.local/state/caelestia/sequences.txt 2>/dev/null 
         '';
         shellAbbrs = {
-          ls = "eza --icons always";
           cd = "z";
+          find = "zi";
+          ls = "eza --icons always";
           lsa = "eza --icons always --all";
           lsl = "eza --icons always -al";
           du = "dust";
           df = "duf";
-          rm = "trash-put";
-          ranger = "superfile";
+          rm = "trash";
+          sf = "superfile";
+          fm = "ranger";
         };
       };
     })
