@@ -61,13 +61,19 @@ in
       encryption.mode = "none";
       compression = "zstd,1";
       startAt = "daily";
+      doInit = true;
       prune.keep = {
         daily = 7;
         weekly = 4;
       };
     };
-    systemd.services.borgbackup-job-onix-local.unitConfig.ConditionPathIsMountPoint =
-      cfg.backupLocation;
+    
+    systemd.services.borgbackup-job-onix-local = {
+      unitConfig = {
+        ConditionPathIsMountPoint = cfg.backupLocation;
+        RequiresMountsFor = cfg.backupLocation;
+      };
+    };
     environment.etc."backup-manifest.txt".text = ''
       # Backup Manifest for ${config.networking.hostName}
       # Generated: 
