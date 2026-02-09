@@ -3,6 +3,22 @@ let
   cfg = config.local.hyprland;
   variables = config.local.variables;
   hyprWorkspaceTools = inputs.self.packages.${pkgs.stdenv.hostPlatform.system}.hyprland-workspace-tools;
+  mkMenu = menu:
+    let
+      configFile = pkgs.writeText "config.yaml" (lib.generators.toYAML { } {
+        anchor = "bottom-right";
+        inherit menu;
+      });
+    in
+    pkgs.writeShellScriptBin "quick-menu" ''
+      exec ${lib.getExe pkgs.wlr-which-key} ${configFile}
+    '';
+  quick-menu = mkMenu [
+    { key = "w"; desc = "Web Browser"; cmd = "zen"; }
+    { key = "f"; desc = "File Manager"; cmd = "nautilus"; }
+    { key = "v"; desc = "Volume Control"; cmd = "pavucontrol"; }
+    { key = "d"; desc = "Discord"; cmd = "discord"; }
+  ];
 in
 {
   options.local.hyprland = {
@@ -74,6 +90,9 @@ in
           "float, class:^(steam)$, title:^(.* - Chat)$"
           "float, class:^(steam)$, title:^(Contents)$"
           "float, class:^(steam)$, title:^(Video Player)$"
+          "float, class:^(org.pulseaudio.pavucontrol)"
+          "float, class:^(org.gnome.nautilus)"
+          "float, class:^(discord)"
         ];
         "$mod" = "SUPER";
 
@@ -95,9 +114,8 @@ in
           "$mod_SHIFT, O, exec, hypr-move-to-set o"
 
           # Application launchers
-          "$mod, E, exec, ${variables.guiFileManager}"
-          "$mod_SHIFT, E, exec, ${variables.fileManager}"
           "$mod, P, exec, ${variables.launcher} "
+          "$mod, D, exec, ${lib.getExe quick-menu}"
 
           # Window management
           "$mod, Space, layoutmsg, swapwithmaster master"
