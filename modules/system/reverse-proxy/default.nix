@@ -75,6 +75,13 @@ in
   };
 
   config = lib.mkIf cfg.enable {
+    assertions = [
+      {
+        assertion = cfg.useACME -> cfg.acmeEmail != "";
+        message = "reverse-proxy: ACME requires an email address";
+      }
+    ];
+
     # Nginx reverse proxy
     security.pki.certificateFiles = [ "${onixCert}/onix.crt" ];
     services.nginx = {

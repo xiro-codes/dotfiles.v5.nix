@@ -105,6 +105,13 @@ in
   };
 
   config = mkIf cfg.enable {
+    assertions = [
+      {
+        assertion = !cfg.noAuth -> (config.sops.secrets ? "${cfg.secretName}");
+        message = "network-mounts: Secret '${cfg.secretName}' not found in sops configuration, but authentication is required.";
+      }
+    ];
+
     # Required for mounting SMB shares
     environment.systemPackages = [ pkgs.cifs-utils ];
     #services.gvfs.enable = true;
