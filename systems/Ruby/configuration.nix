@@ -36,5 +36,6 @@
     shell = pkgs.fish;
     initialPassword = "rockman";
   };
+  hardware.keyboard.qmk.enable = true;
   system.stateVersion = "25.11";
 }
