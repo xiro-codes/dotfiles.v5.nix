@@ -10,6 +10,7 @@ in
       default = "uefi";
       description = "Boot mode: UEFI or legacy BIOS";
     };
+
     uefiType = lib.mkOption {
       type = lib.types.enum [ "systemd-boot" "grub" "limine" ];
       default = "systemd-boot";
@@ -28,13 +29,20 @@ in
     };
     recoveryUUID = lib.mkOption {
       type = lib.types.str;
-      default = "0d9dddd8-9511-4101-9177-0a80cfbeb047";
+      default = "";
       example = "12345678-1234-1234-1234-123456789abc";
       description = "UUID of recovery partition for boot menu entry (use blkid to find partition UUID)";
     };
   };
 
   config = {
+    assertions = [
+      {
+        assertion = cfg.addRecoveryOption -> cfg.recoveryUUID != "";
+        message = "recoveryUUID must be set when addRecoveryOption is enabled";
+      }
+    ];
+
     boot.loader = lib.mkMerge [
       (lib.mkIf (cfg.mode == "uefi") {
         systemd-boot.enable = cfg.uefiType == "systemd-boot";
