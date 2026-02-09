@@ -33,6 +33,12 @@ in
       example = "12345678-1234-1234-1234-123456789abc";
       description = "UUID of recovery partition for boot menu entry (use blkid to find partition UUID)";
     };
+
+    enablePlymouth = lib.mkOption {
+      type = lib.types.bool;
+      default = true;
+      description = "Enable Plymouth boot splash screen";
+    };
   };
 
   config = {
@@ -70,5 +76,10 @@ in
         };
       })
     ];
+
+    boot.plymouth.enable = cfg.enablePlymouth;
+    boot.kernelParams = lib.mkIf cfg.enablePlymouth [ "quiet" "splash" ];
+    boot.consoleLogLevel = lib.mkIf cfg.enablePlymouth 0;
+    boot.initrd.verbose = lib.mkIf cfg.enablePlymouth false;
   };
 }
