@@ -4,6 +4,7 @@
     kitty.enable = true;
     nixvim.enable = true;
     ranger.enable = true;
+    superfile.enable = true;
     mpd.enable = true;
     caelestia.enable = true;
   };
