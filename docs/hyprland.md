@@ -13,8 +13,8 @@ local.hyprland.enable = true;
 ### Window Management
 
 - `SUPER + Return`: Open terminal (kitty)
-- `SUPER + Tab`: Switch to the next window
-- `SUPER_SHIFT + Tab`: Switch to the previous window
+- `SUPER + Tab`: Switch to the next workspace set
+- `SUPER_SHIFT + Tab`: Switch to the previous workspace set
 - `SUPER_SHIFT + Q`: Close the active window
 - `SUPER + F`: Toggle fullscreen for the active window
 - `SUPER_SHIFT + F`: Toggle floating for the active window
@@ -28,12 +28,12 @@ local.hyprland.enable = true;
 
 ### Workspace Management
 
-- `SUPER + U`: Switch to workspace 'u'
-- `SUPER + I`: Switch to workspace 'i'
-- `SUPER + O`: Switch to workspace 'o'
-- `SUPER_SHIFT + U`: Move active window to workspace 'u'
-- `SUPER_SHIFT + I`: Move active window to workspace 'i'
-- `SUPER_SHIFT + O`: Move active window to workspace 'o'
+- `SUPER + U`: Switch to workspace 1 in set
+- `SUPER + I`: Switch to workspace 2 in set
+- `SUPER + O`: Switch to workspace 3 in set
+- `SUPER_SHIFT + U`: Move active window to workspace 1 in set
+- `SUPER_SHIFT + I`: Move active window to workspace 2 in set
+- `SUPER_SHIFT + O`: Move active window to workspace 3 in set
 
 ### Window Movement and Resizing
 

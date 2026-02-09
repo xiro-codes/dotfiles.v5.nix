@@ -51,6 +51,12 @@ in
         };
         decoration = {
           rounding = 20;
+          active_opacity = "0.9";
+          inactive_opacity = "0.75";
+          fullscreen_opacity = "1.0";
+          blur = {
+            enabled = true;
+          };
         };
         binds = {
           workspace_back_and_forth = true;
