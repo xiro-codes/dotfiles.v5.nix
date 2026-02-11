@@ -2,7 +2,8 @@
 
 let
   cfg = config.local.gaming;
-in {
+in
+{
   options.local.gaming = {
     enable = lib.mkEnableOption "Gaming optimizations";
   };
@@ -27,8 +28,14 @@ in {
     # Support for Xbox and DualSense controllers
     hardware.xpadneo.enable = true; # Xbox One wireless
     services.joycond.enable = true; # Nintendo Joy-Cons
-    
+
     # Enable udev rules for various controllers (DualSense, Steam Controller, etc)
     hardware.steam-hardware.enable = true;
+    services.udev.extraRules = ''
+      # PS5 DualSense wired (USB)
+      KERNEL=="hidraw*", ATTRS{idVendor}=="054c", ATTRS{idProduct}=="0ce6", MODE="0666"
+      # PS5 DualSense Bluetooth
+      KERNEL=="hidraw*", KERNELS=="*054C:0CE6*", MODE="0666"
+    '';
   };
 }
