@@ -90,9 +90,9 @@ in
           "float, class:^(steam)$, title:^(.* - Chat)$"
           "float, class:^(steam)$, title:^(Contents)$"
           "float, class:^(steam)$, title:^(Video Player)$"
-          "float, class:^(org.pulseaudio.pavucontrol)$"
-          "float, class:^(org.gnome.nautilus)$"
-          "float, class:^(discord)$"
+          "float, initialclass:^(org.pulseaudio.pavucontrol)$"
+          "float, initialclass:^(org.gnome.nautilus)$"
+          "float, initialclass:^(discord)$"
         ];
         "$mod" = "SUPER";
 
