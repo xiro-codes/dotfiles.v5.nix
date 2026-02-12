@@ -56,8 +56,8 @@ in
 
   neo-tree.enable = true;
   lsp-signature-help.enable = true;
-  friendly-snippets.enable = true;
-  luasnip.enable = true;
+  friendly-snippets.enable = false;
+  luasnip.enable = false;
 
   lsp = {
     enable = true;
