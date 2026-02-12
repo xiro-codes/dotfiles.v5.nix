@@ -8,6 +8,7 @@
 
       jellyfin.enable = true;
       plex.enable = true;
+      plex.openFirewall = true;
       ersatztv.enable = true;
       audiobookshelf.enable = true;
       komga.enable = true;
