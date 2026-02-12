@@ -99,6 +99,20 @@ in
     nixGrammars = true;
     settings.highlight.enable = true;
   };
+  qmk = {
+    enable = true;
+    settings = {
+      name = "LAYOUT_planck_grid";
+      layout = [
+        "x x x x x x x x x x x x"
+        "x x x x x x x x x x x x"
+        "x x x x x x x x x x x x"
+        "x x x x x x x x x x x x"
+      ];
+      variant = "qmk";
+    };
+  };
+
   conform-nvim = {
     enable = true;
     settings = {
