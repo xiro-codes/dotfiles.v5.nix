@@ -13,6 +13,7 @@
     # Desktop applications
     discord
     protonvpn-gui
+    lunarvim
     warp-terminal
   ] ++ (with inputs.self.packages.${pkgs.stdenv.hostPlatform.system}; [
     ai-commit

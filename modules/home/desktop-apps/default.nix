@@ -91,7 +91,7 @@ in
         interactiveShellInit = ''
           set -g fish_greeting ""
           zoxide init fish | source
-          #cat $HOME/.local/state/caelestia/sequences.txt 2>/dev/null 
+          cat $HOME/.local/state/caelestia/sequences.txt 2>/dev/null 
         '';
         shellAbbrs = {
           cd = "z";
