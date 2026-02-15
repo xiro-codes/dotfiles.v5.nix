@@ -116,7 +116,8 @@ in
           # Application launchers
           "$mod, P, exec, ${variables.launcher} "
           "$mod, D, exec, ${lib.getExe quick-menu}"
-
+          "$mod, minus, exec, caelestia shell lock lock"
+          "$mod, N, exec, caelestia shell drawers toggle sidebar"
           # Window management
           "$mod, Space, layoutmsg, swapwithmaster master"
           "$mod_SHIFT, Q, killactive"

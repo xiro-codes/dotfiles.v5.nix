@@ -30,8 +30,6 @@
 
   # Common programs
   programs = {
-    firefox.enable = false;
-    gpu-screen-recorder.enable = false;
     git = {
       enable = true;
       config = {
