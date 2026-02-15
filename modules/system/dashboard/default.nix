@@ -109,6 +109,13 @@ in
                 description = "AdBlocking and Local dns";
               };
             })
+            (lib.optional (config.local.media.ersatztv.enable or false) {
+              ErsatzTV = {
+                icon = "ersatztv.png";
+                href = serviceUrl "ch7" (config.local.media.ersatztv.port or 8409);
+                description = "Live TV streaming";
+              };
+            })
           ];
 
           mediaList = lib.flatten [
@@ -124,13 +131,6 @@ in
                 icon = "plex.png";
                 href = serviceUrl "plex" (config.local.media.plex.port or 32400);
                 description = "Media server";
-              };
-            })
-            (lib.optional (config.local.media.ersatztv.enable or false) {
-              ErsatzTV = {
-                icon = "ersatztv.png";
-                href = serviceUrl "ch7" (config.local.media.ersatztv.port or 8409);
-                description = "Live TV streaming";
               };
             })
             (lib.optional (config.local.media.komga.enable or false) {

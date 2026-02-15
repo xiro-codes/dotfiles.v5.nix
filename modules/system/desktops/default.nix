@@ -71,7 +71,6 @@ in
     services.displayManager.dms-greeter = {
       enable = true;
       compositor.name = "hyprland";
-
     };
     # Desktop Selection logic using inputs from your flake
     programs.hyprland = mkIf cfg.hyprland {
