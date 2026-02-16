@@ -3,6 +3,7 @@ let
   cfg = config.local.nixvim;
 in
 {
+
   blink-cmp = {
     enable = true;
     settings = {
@@ -63,6 +64,10 @@ in
     enable = true;
     servers = {
       # nixls.enable = true;
+      gdscript = {
+        enable = true;
+        package = null;
+      };
       nixd = {
         enable = true;
         settings = {
