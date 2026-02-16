@@ -12,7 +12,7 @@ in
       description = "Directory where games will be downloaded";
     };
     interval = lib.mkOption {
-      type = lib.types.path;
+      type = lib.types.str;
       default = "daily";
       description = "Systemd timer interval.";
     };
@@ -23,7 +23,7 @@ in
     };
     extraArgs = lib.mkOption {
       type = lib.types.str;
-      default = "--repair --download --check-patches";
+      default = "--repair --download";
       description = "Extra arguments passed to lgogdownloader";
     };
     secretFile = lib.mkOption {
