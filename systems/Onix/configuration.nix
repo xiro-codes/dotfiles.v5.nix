@@ -20,6 +20,11 @@
       "onix_creds"
       "gog_creds"
     ];
+    gog-downloader = {
+      enable = true;
+      directory = "/media/Media/games";
+      secretFile = config.sops.secrets."gog_creds".path;
+    };
   };
 
   users.users.tod = {
