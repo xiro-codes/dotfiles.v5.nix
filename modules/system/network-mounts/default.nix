@@ -114,10 +114,7 @@ in
 
     # Required for mounting SMB shares
     environment.systemPackages = [ pkgs.cifs-utils ];
-    #services.gvfs.enable = true;
-    #services.udisks2.enable = true;
-    #services.devmon.enable = true;
-    # Register the mounts with systemd
+
     systemd.mounts = map mkSambaMount cfg.mounts;
 
     # Enable the automount logic
