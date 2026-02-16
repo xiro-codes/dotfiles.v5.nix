@@ -32,6 +32,17 @@ in
       if vim.fn.isdirectory(permanent_path) == 0 then vim.fn.mkdir(permanent_path, "p") end
       vim.opt.undodir = permanent_path
     end
+    -- Automatically start a server for Godot to connect to
+    local function start_godot_server()
+      local path = vim.fn.getcwd() .. "/project.godot"
+      if vim.loop.fs_stat(path) then
+        -- Using a pipe for Linux/NixOS environments
+        vim.fn.serverstart('/tmp/godot.pipe')
+      end
+    end
+
+    start_godot_server()
     setup_smart_undo()
+
   '';
 }

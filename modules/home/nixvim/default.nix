@@ -44,7 +44,13 @@ in
         #colorscheme = lib.mkForce null;
         inherit (baseOptions) globals opts extraConfigLua;
         inherit keymaps;
-
+        files."ftplugin/gdscript.lua" = {
+          options = {
+            expandtab = false;
+            shiftwidth = 4;
+            tabstop = 4;
+          };
+        };
         plugins = plugins // {
           alpha = dashboard;
         };
