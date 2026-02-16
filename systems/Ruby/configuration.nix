@@ -17,6 +17,7 @@
       "ssh_pub_sapphire/master"
       "ssh_pub_onix/master"
       "onix_creds"
+      "gog_creds"
     ];
 
     # Ruby-specific bootloader UUID
