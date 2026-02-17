@@ -12,7 +12,7 @@ let
     if [ -n "$OUT_PATHS" ]; then
       echo "Uploading to Onix cache: $OUT_PATHS"
       # Use -i to specify the path to an SSH key if needed
-      ${pkgs.nix}/bin/nix copy --to ssh://root@onix.local $OUT_PATHS
+      ${pkgs.nix}/bin/nix copy --to http://10.0.0.65:5000 $OUT_PATHS || true
     fi
   '';
 in
