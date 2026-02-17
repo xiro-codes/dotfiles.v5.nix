@@ -6,8 +6,12 @@
       enable = true;
       allowedHosts = [ config.local.reverse-proxy.domain "localhost" ];
     };
-    cache-server.enable = true;
     docs.enable = true;
+    cache-server = {
+      enable = true;
+      signKeyPath = config.sops.secrets."harmonia_key".path;
+      openFirewall = true;
+    };
     # Git service
     gitea = {
       enable = true;
