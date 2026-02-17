@@ -17,6 +17,7 @@
       "ssh_pub_ruby/master"
       "ssh_pub_sapphire/master"
       "ssh_pub_onix/master"
+      "harmonia_key"
       "onix_creds"
       "gog_creds"
     ];

@@ -91,6 +91,7 @@ in
         interactiveShellInit = ''
           set -g fish_greeting ""
           zoxide init fish | source
+          set -g fish_key_bindings fish_vi_key_bindings
           cat $HOME/.local/state/caelestia/sequences.txt 2>/dev/null 
         '';
         shellAbbrs = {
