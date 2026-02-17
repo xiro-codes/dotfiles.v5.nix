@@ -31,7 +31,6 @@
       #{ shareName = "Porn"; localPath = "/media/Porn"; noShow = true; }
     ];
   };
-
   # Ruby-specific user
   users.users.tod = {
     shell = pkgs.fish;

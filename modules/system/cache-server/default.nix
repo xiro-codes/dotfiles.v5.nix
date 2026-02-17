@@ -56,7 +56,7 @@ in
 
     maxCacheSize = lib.mkOption {
       type = lib.types.str;
-      default = "100G";
+      default = "500G";
       example = "500G";
       description = "Maximum cache size (supports K, M, G suffixes)";
     };

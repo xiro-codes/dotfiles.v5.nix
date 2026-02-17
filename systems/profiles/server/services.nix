@@ -6,6 +6,7 @@
       enable = true;
       allowedHosts = [ config.local.reverse-proxy.domain "localhost" ];
     };
+    cache-server.enable = true;
     docs.enable = true;
     # Git service
     gitea = {
