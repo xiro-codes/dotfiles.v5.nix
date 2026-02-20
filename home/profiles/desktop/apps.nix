@@ -13,7 +13,6 @@
     # Desktop applications
     discord
     protonvpn-gui
-    graphite
     unzip
     p7zip
   ] ++ (with inputs.self.packages.${pkgs.stdenv.hostPlatform.system}; [
