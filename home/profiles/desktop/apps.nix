@@ -3,7 +3,7 @@
   local = {
     kitty.enable = true;
     nixvim.enable = true;
-    ranger.enable = true;
+    yazi.enable = true;
     superfile.enable = true;
     mpd.enable = true;
     caelestia.enable = true;
@@ -13,8 +13,9 @@
     # Desktop applications
     discord
     protonvpn-gui
-    lunarvim
-    warp-terminal
+    graphite
+    unzip
+    p7zip
   ] ++ (with inputs.self.packages.${pkgs.stdenv.hostPlatform.system}; [
     ai-commit
     tgpt-auth

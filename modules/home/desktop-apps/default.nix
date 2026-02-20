@@ -14,7 +14,9 @@ in
         description = "Enable fish config if it is the system shell.";
       };
     };
-
+    yazi = {
+      enable = lib.mkEnableOption "enable yazi";
+    };
     # Kitty terminal
     kitty = {
       enable = lib.mkEnableOption "Kitty terminal emulator with custom configuration";
@@ -103,12 +105,18 @@ in
           du = "dust";
           df = "duf";
           rm = "trash";
-          sf = "superfile";
-          fm = "ranger";
+          ranger = "yazi";
+          fm = "yazi";
         };
       };
     })
-
+    (lib.mkIf cfg.yazi.enable {
+      local.variables.fileManager = "yazi";
+      programs.yazi = {
+        enable = true;
+        enableFishIntegration = true;
+      };
+    })
     # Kitty
     (lib.mkIf cfg.kitty.enable {
       local.variables.terminal = "kitty";
@@ -122,7 +130,8 @@ in
 
     # Waybar
     (lib.mkIf cfg.waybar.enable {
-      home.packages = with pkgs; [ pavucontrol jq wttrbar ];
+      home.packages = with pkgs;
+        [ pavucontrol jq wttrbar ];
       programs.waybar = {
         enable = true;
         systemd = {
