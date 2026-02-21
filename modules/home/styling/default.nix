@@ -32,7 +32,7 @@ in
     # Stylix
     (lib.mkIf cfg.stylix.enable {
       # Create .wallpaper symlink in home directory
-      home.file.".wallpaper".source = ./wallpaper.jpg;
+      home.file.".wallpaper".source = ./Wallpaper8.jpg;
 
       stylix = {
         enable = true;
