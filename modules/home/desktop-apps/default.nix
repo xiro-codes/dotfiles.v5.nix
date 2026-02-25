@@ -14,6 +14,9 @@ in
         description = "Enable fish config if it is the system shell.";
       };
     };
+    kdeconnect = {
+      enable = lib.mkEnableOption "enable kdeconnect";
+    };
     yazi = {
       enable = lib.mkEnableOption "enable yazi";
     };
@@ -160,7 +163,14 @@ in
       };
       local.variables.wallpaper = "hyprpaper";
     })
-
+    #kdeconnect 
+    (lib.mkIf cfg.kdeconnect.enable {
+      home.packages = with pkgs; [ kdePackages.kdeconnect-kde ];
+      services.kdeconnect = {
+        enable = true;
+        indicator = true;
+      };
+    })
     # Mako
     (lib.mkIf cfg.mako.enable {
       services.mako = {

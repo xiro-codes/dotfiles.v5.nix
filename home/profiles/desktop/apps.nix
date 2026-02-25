@@ -7,6 +7,7 @@
     superfile.enable = true;
     mpd.enable = true;
     caelestia.enable = true;
+    kdeconnect.enable = true;
   };
 
   home.packages = with pkgs; [

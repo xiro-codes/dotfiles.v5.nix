@@ -2,18 +2,34 @@
 
 let
   cfg = config.local.caelestia;
+  checkAndShutdown = pkgs.writeShellScriptBin "check-and-shutdown" ''
+    ACTION=$(${pkgs.libnotify}/bin/notify-send "Auto Shutdown" \
+      "PC has been idle. Shuting down in 60 secondes." \
+      --urgency=critical \
+      --action="abort=Abort Shutdown")
+    if [ "$ACTION" == "abort" ]; then 
+      echo "Shutdown aborted by user."
+      exit 0
+    fi
+    sleep 60
+    systemctl poweroff
+  '';
 in
 {
   options.local.caelestia = {
     enable = lib.mkEnableOption "Caelestia shell application";
+    idleMinutes = lib.mkOption { type = lib.types.int; default = 120; description = "Minutes of idle"; };
   };
 
   config = lib.mkIf cfg.enable {
-    home.packages = with pkgs; [
+
+    home.packages = (with pkgs; [
       nautilus
       pavucontrol
       celluloid
       kdePackages.networkmanager-qt
+    ]) ++ [
+      checkAndShutdown
     ];
     programs.caelestia = {
       enable = true;
@@ -40,11 +56,14 @@ in
         };
         general.idle = {
           timeouts = [
-            { timeout = 1800; idleAction = "lock"; }
             {
               timeout = 2700;
               idleAction = "dpms off";
               returnAction = "dpms on";
+            }
+            {
+              timeout = 2760;
+              idleAction = "${checkAndShutdown}/bin/check-and-shutdown";
             }
           ];
         };
