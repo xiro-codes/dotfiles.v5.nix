@@ -70,7 +70,10 @@ in
         wayland.enable = true;
       };
       gdm.enable = cfg.displayManager == "gdm";
-      dms-greeter.enable = cfg.displayManager == "dms";
+      dms-greeter = mkIf (cfg.displayManager == "dms") {
+        enable = true;
+        compositor.name = "hyprland";
+      };
     };
 
     # Desktop Selection logic using inputs from your flake

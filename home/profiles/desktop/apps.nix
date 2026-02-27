@@ -13,7 +13,6 @@
   home.packages = with pkgs; [
     # Desktop applications
     discord
-    yubikey-manager
     protonvpn-gui
     unzip
     p7zip
