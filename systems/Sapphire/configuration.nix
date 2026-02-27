@@ -6,6 +6,7 @@
     ./hardware-configuration.nix
     ../profiles/base.nix
     ../profiles/workstation
+    ../profiles/workstation/jovian.nix
     ../profiles/limine-uefi.nix
     ../profiles/client.nix
   ];

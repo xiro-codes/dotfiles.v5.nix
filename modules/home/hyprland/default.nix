@@ -50,7 +50,8 @@ in
           "9, persistent:true"
         ];
         monitor = [
-          ",preferred,auto,1"
+          "HDMI-A-1,preferred,auto,1"
+          "DP-3, disabled"
         ];
         input = {
           kb_layout = "us";
