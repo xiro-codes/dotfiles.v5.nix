@@ -14,7 +14,7 @@
   # Sapphire-specific configuration
   local = {
     # Secrets specific to Sapphire
-
+    desktops.displayManager = "sddm";
     secrets.keys = [
       "gemini/api_key"
       "ssh_pub_sapphire/master"

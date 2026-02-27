@@ -3,7 +3,7 @@
 let
   cfg = config.local.desktops;
   inherit (lib) mkOption mkIf mkForce;
-  inherit (lib.types) bool;
+  inherit (lib.types) bool enum;
 in
 {
   options.local.desktops = {
@@ -16,6 +16,11 @@ in
       type = bool;
       default = true;
       description = "Enable Wayland environment variables";
+    };
+    displayManager = mkOption {
+      type = enum [ "sddm" "gdm" "ly" "none" "dms" ];
+      default = "dms";
+      description = "The display manager to use";
     };
     hyprland = mkOption {
       type = bool;
@@ -58,20 +63,16 @@ in
       _JAVA_OPTIONS = "-Dawt.useSystemAAFontSettings=on";
       WARP_ENABLE_WAYLAND = "1";
     };
-
-    services.displayManager.ly = {
-      enable = false;
-      settings = {
-        animation = "matrix";
-        restore = true;
-        save = true;
-        load_last_session = true;
+    services.displayManager = mkIf (cfg.displayManager != "none") {
+      ly.enable = cfg.displayManager == "ly";
+      sddm = mkIf (cfg.displayManager == "sddm") {
+        enable = true;
+        wayland.enable = true;
       };
+      gdm.enable = cfg.displayManager == "gdm";
+      dms-greeter.enable = cfg.displayManager == "dms";
     };
-    services.displayManager.dms-greeter = {
-      enable = true;
-      compositor.name = "hyprland";
-    };
+
     # Desktop Selection logic using inputs from your flake
     programs.hyprland = mkIf cfg.hyprland {
       enable = true;
