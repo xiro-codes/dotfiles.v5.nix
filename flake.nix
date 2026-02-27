@@ -6,7 +6,7 @@
     stylix.url = "github:danth/stylix";
     deploy-rs.url = "github:serokell/deploy-rs";
     nix-flatpak.url = "github:gmodena/nix-flatpak";
-    jovian-nixos = {
+    jovian = {
       url = "github:Jovian-Experiments/Jovian-NixOS";
       inputs.nixpkgs.follows = "nixpkgs";
     };
