@@ -302,7 +302,7 @@
         "type": "github"
       }
     },
-    "jovian-nixos": {
+    "jovian": {
       "inputs": {
         "nix-github-actions": "nix-github-actions",
         "nixpkgs": [
@@ -341,7 +341,7 @@
     "nix-github-actions": {
       "inputs": {
         "nixpkgs": [
-          "jovian-nixos",
+          "jovian",
           "nixpkgs"
         ]
       },
@@ -498,7 +498,7 @@
         "disko": "disko",
         "flake-parts": "flake-parts",
         "home-manager": "home-manager",
-        "jovian-nixos": "jovian-nixos",
+        "jovian": "jovian",
         "nix-flatpak": "nix-flatpak",
         "nixpkgs": "nixpkgs_2",
         "nixvim": "nixvim",
