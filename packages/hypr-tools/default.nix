@@ -94,7 +94,7 @@ let
   '';
 in
 pkgs.symlinkJoin {
-  name = "hyprland-workspace-tools";
+  name = "hypr-tools";
   paths = [
     hypr-workspace-set
     hypr-move-to-set
