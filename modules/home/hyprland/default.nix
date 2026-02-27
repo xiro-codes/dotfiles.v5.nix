@@ -2,7 +2,7 @@
 let
   cfg = config.local.hyprland;
   variables = config.local.variables;
-  hyprWorkspaceTools = inputs.self.packages.${pkgs.stdenv.hostPlatform.system}.hyprland-workspace-tools;
+  hypr-tools = inputs.self.packages.${pkgs.stdenv.hostPlatform.system}.hypr-tools;
   mkMenu = menu:
     let
       configFile = pkgs.writeText "config.yaml" (lib.generators.toYAML { } {
@@ -18,6 +18,7 @@ let
     { key = "f"; desc = "File Manager"; cmd = "nautilus"; }
     { key = "v"; desc = "Volume Control"; cmd = "pavucontrol"; }
     { key = "d"; desc = "Discord"; cmd = "discord"; }
+    { key = "g"; desc = "Big Screen Gaming"; cmd = "hypr-gaming-mode"; }
   ];
 in
 {
@@ -30,7 +31,7 @@ in
       cliphist
       jq
       discord
-      hyprWorkspaceTools
+      hypr-tools
     ];
 
 
