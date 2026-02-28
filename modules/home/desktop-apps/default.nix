@@ -118,6 +118,7 @@ in
       programs.yazi = {
         enable = true;
         enableFishIntegration = true;
+        shellWrapperName = "yy";
       };
     })
     # Kitty

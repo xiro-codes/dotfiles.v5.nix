@@ -84,10 +84,12 @@ let
     
     if hyprctl monitors -j | jq -e '.[] | select(.name == "DP-3")' > /dev/null; then
         hyprctl keyword monitor "DP-3, disable"
+        hyprctl keyword monitor "HDMI-A-1, 2560x1080@60, 0x0, 1"
         pkill -f steam
     else
         # Re-enables centered: 1920 wide centered over 2560 ( (2560-1920)/2 = 320 )
         hyprctl keyword monitor "DP-3, 1920x1080@60, 320x0, 1"
+        hyprctl keyword monitor "HDMI-A-1, 2560x1080@60, 0x1080, 1"
         sleep 1
         steam -tenfoot &
     fi
