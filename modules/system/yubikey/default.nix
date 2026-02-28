@@ -9,11 +9,10 @@ in
   config = lib.mkIf cfg.enable {
     environment.systemPackages = with pkgs; [
       yubioath-flutter
-      ykman
+      yubikey-manager
       yubikey-personalization
       yubico-piv-tool
       yubikey-touch-detector
-      yubikey-personalization-gui
     ];
     services.udev.packages = with pkgs; [
       yubikey-personalization
