@@ -20,8 +20,8 @@ in
     ];
     services.pcscd.enable = true;
     programs.gnupg.agent = {
-      enable = true;
-      enableSSHSupport = true;
+      enable = false;
+      enableSSHSupport = false;
       pinentryPackage = pkgs.pinentry-all;
       settings = { default-cache-ttl = 600; max-cache-ttl = 7200; };
     };
