@@ -34,6 +34,7 @@
       url = "github:nix-community/disko/latest";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    hyprland.url = "github:hyprwm/Hyprland";
   };
   outputs =
     inputs@{ self, deploy-rs, flake-parts, ... }:
