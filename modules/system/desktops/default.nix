@@ -1,4 +1,4 @@
-{ pkgs, config, lib, ... }:
+{ pkgs, config, lib, inputs, ... }:
 
 let
   cfg = config.local.desktops;
@@ -80,6 +80,8 @@ in
     programs.hyprland = mkIf cfg.hyprland {
       enable = true;
       withUWSM = false;
+      package = inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.hyprland;
+      portalPackage = inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.xdg-desktop-portal-hyprland;
     };
 
     # Niri Support
