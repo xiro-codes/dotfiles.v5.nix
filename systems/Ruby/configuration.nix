@@ -20,6 +20,11 @@
       "onix_creds"
       "gog_creds"
     ];
+    gaming = {
+      enable = true;
+      packageGames = true;
+      gogPath = "/media/Media/games";
+    };
 
     # Ruby-specific bootloader UUID
     bootloader.recoveryUUID = "b0cd9860-736a-45c5-a6d2-e69cdb319f24";

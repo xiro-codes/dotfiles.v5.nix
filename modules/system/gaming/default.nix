@@ -2,13 +2,29 @@
 
 let
   cfg = config.local.gaming;
+  packager = import ./packager.nix { inherit pkgs lib; };
+  myGames =
+    if cfg.packageGames && cfg.gogPath != null
+    then packager.scanAndPackage cfg.gogPath
+    else { };
+  debugGames = builtins.trace "Detected Games: ${lib.concatStringsSep ", " (builtins.attrNames myGames)}" myGames;
 in
 {
   options.local.gaming = {
     enable = lib.mkEnableOption "Gaming optimizations";
+    packageGames = lib.mkEnableOption "automatic GOG game packaging";
+    gogPath = lib.mkOption {
+      type = lib.types.nullOr lib.types.path;
+      default = null;
+      description = "Path to the mounted GOG installers directory";
+    };
   };
 
   config = lib.mkIf cfg.enable {
+    environment.systemPackages = (lib.attrValues debugGames) ++ [
+      pkgs.wineWow64Packages.stable
+      pkgs.innoextract
+    ];
     # Enable Steam
     programs.steam = {
       enable = true;
