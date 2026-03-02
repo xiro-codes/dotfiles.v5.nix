@@ -22,8 +22,8 @@ in
 
   config = lib.mkIf cfg.enable {
     environment.systemPackages = (lib.attrValues debugGames) ++ [
-      pkgs.wineWow64Packages.stable
-      pkgs.innoextract
+      #pkgs.wineWow64Packages.stable
+      #pkgs.innoextract
     ];
     # Enable Steam
     programs.steam = {

@@ -21,9 +21,8 @@
       "gog_creds"
     ];
     gaming = {
-      enable = true;
-      packageGames = true;
-      gogPath = "/media/Media/games";
+      #packageGames = true;
+      #gogPath = "/media/Media/games";
     };
 
     # Ruby-specific bootloader UUID
