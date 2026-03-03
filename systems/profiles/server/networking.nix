@@ -12,6 +12,7 @@
       # Domain auto-configured from Avahi: hostname.local
       useACME = false; # Self-signed for .local domains
       domain = "${lib.strings.toLower config.networking.hostName}.home";
+      sharedFolder = "/media/Media/games";
       services = {
         dashboard.target = "http://localhost:${toString config.local.dashboard.port}";
 
@@ -31,7 +32,7 @@
         yt.target = "http://localhost:${toString config.local.downloads.pinchflat.port}";
 
         pihole.target = "http://localhost:8053";
-        files.target = "http://localhost:${toString config.local.file-browser.port}";
+        # files.target = "http://localhost:${toString config.local.file-browser.port}";
         docs.target = "http://localhost:3088";
         cache.target = "http://localhost:5000";
       };
