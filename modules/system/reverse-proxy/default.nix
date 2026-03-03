@@ -126,8 +126,8 @@ in
           sslCertificate = "${onixCert}/onix.crt";
           sslCertificateKey = "${onixCert}/onix.key";
           locations."/" = {
-            root = cfg.sharedFolder;
             extraConfig = ''
+              root ${cfg.sharedFolder};
               autoindex on;
               file_server browse;
               allow all;
