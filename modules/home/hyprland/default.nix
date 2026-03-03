@@ -95,6 +95,8 @@ in
           "float, initialclass:^(org.pulseaudio.pavucontrol)$"
           "float, initialclass:^(org.gnome.nautilus)$"
           "float, initialclass:^(discord)$"
+          "idleinhibit always, class:^(steamapp_(default|[0-9]+)|gamescope|.*)$, fullscreen:1"
+          "idleinhibit always, fullscreen:1"
         ];
         "$mod" = "SUPER";
 

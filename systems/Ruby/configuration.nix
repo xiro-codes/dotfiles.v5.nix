@@ -14,6 +14,12 @@
 
     yubikey.enable = true;
 
+    gaming.games = {
+      bastion.enable = true;
+      absolute-drift.enable = true;
+      dead-cells.enable = true;
+    };
+
     secrets.keys = [
       "gemini/api_key"
       "ssh_pub_ruby/master"
