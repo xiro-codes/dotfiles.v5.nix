@@ -20,7 +20,7 @@
     gitea-runner.enable = true;
     file-browser = {
       enable = true;
-      rootPath = "/media/Media/";
+      rootPath = "/media/Media/games";
     };
   };
 }

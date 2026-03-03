@@ -39,6 +39,8 @@ in
       settings = {
         port = cfg.port;
         root = cfg.rootPath;
+        noauth = true;
+        username = "admin";
       };
     };
   };

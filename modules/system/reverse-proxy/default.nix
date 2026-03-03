@@ -47,7 +47,11 @@ in
       default = true;
       description = "Open firewall ports 80 and 443";
     };
-
+    sharedFolder = lib.mkOption {
+      type = lib.types.nullOr lib.types.path;
+      default = null;
+      description = "Path on disk to serve at files.onix.home";
+    };
     services = lib.mkOption {
       type = lib.types.attrsOf (lib.types.submodule {
         options = {
@@ -91,8 +95,7 @@ in
       recommendedTlsSettings = true;
       recommendedOptimisation = true;
       recommendedGzipSettings = true;
-
-      virtualHosts = lib.mapAttrs
+      virtualHosts = (lib.mapAttrs
         (name: service: {
           serverName = if name == "dashboard" then cfg.domain else "${name}.${cfg.domain}";
           forceSSL = true;
@@ -116,7 +119,22 @@ in
             '';
           };
         })
-        cfg.services;
+        cfg.services) // (lib.optionalAttrs (cfg.sharedFolder != null) {
+        "files" = {
+          serverName = "files.onix.home";
+          forceSSL = true;
+          sslCertificate = "${onixCert}/onix.crt";
+          sslCertificateKey = "${onixCert}/onix.key";
+          locations."/" = {
+            root = cfg.sharedFolder;
+            extraConfig = ''
+              autoindex on;
+              file_server browse;
+              allow all;
+            '';
+          };
+        };
+      });
     };
 
     # ACME configuration
