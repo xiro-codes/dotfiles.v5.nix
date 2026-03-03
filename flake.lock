@@ -353,6 +353,26 @@
         "type": "gitlab"
       }
     },
+    "gog-nix": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1772537706,
+        "narHash": "sha256-YEjFwQpg0tx+aYP2fPj6QfX3Mj+hn1ceRb2k8k7oOvg=",
+        "owner": "xiro-codes",
+        "repo": "gog.nix",
+        "rev": "d76ed88f5215c96b2b9ec770ab00ef4d7b52f83e",
+        "type": "github"
+      },
+      "original": {
+        "owner": "xiro-codes",
+        "repo": "gog.nix",
+        "type": "github"
+      }
+    },
     "home-manager": {
       "inputs": {
         "nixpkgs": [
@@ -926,6 +946,7 @@
         "deploy-rs": "deploy-rs",
         "disko": "disko",
         "flake-parts": "flake-parts",
+        "gog-nix": "gog-nix",
         "home-manager": "home-manager",
         "hyprland": "hyprland",
         "jovian": "jovian",

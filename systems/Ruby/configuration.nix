@@ -11,7 +11,9 @@
   # Ruby-specific configuration
   local = {
     disks.enable = true;
+
     yubikey.enable = true;
+
     secrets.keys = [
       "gemini/api_key"
       "ssh_pub_ruby/master"
@@ -20,10 +22,6 @@
       "onix_creds"
       "gog_creds"
     ];
-    gaming = {
-      #packageGames = true;
-      #gogPath = "/media/Media/games";
-    };
 
     # Ruby-specific bootloader UUID
     bootloader.recoveryUUID = "b0cd9860-736a-45c5-a6d2-e69cdb319f24";
@@ -33,7 +31,6 @@
 
     # Additional share mounts for Ruby
     network-mounts.mounts = lib.mkAfter [
-      #{ shareName = "Porn"; localPath = "/media/Porn"; noShow = true; }
     ];
   };
   # Ruby-specific user
