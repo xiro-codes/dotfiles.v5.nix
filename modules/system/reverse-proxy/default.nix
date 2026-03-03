@@ -129,7 +129,6 @@ in
             extraConfig = ''
               root ${cfg.sharedFolder};
               autoindex on;
-              file_server browse;
               allow all;
             '';
           };
