@@ -42,13 +42,13 @@ in
         workspace = [
           "1, persistent:true"
           "2, persistent:true"
-          "3, persistent:true"
+          "3, persistent:true, layout:scrolling"
           "4, persistent:true"
           "5, persistent:true"
-          "6, persistent:true"
+          "6, persistent:true, layout:scrolling"
           "7, persistent:true"
           "8, persistent:true"
-          "9, persistent:true"
+          "9, persistent:true, layout:scrolling"
         ];
         monitor = [
           "HDMI-A-1,preferred,auto,1"
