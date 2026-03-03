@@ -88,7 +88,7 @@ in
             })
 
             # Services section
-            (lib.optional (config.local.file-browser.enable or false) {
+            (lib.optional (config.local.reverse-proxy.sharedFolder != null) {
               Files = {
                 icon = "filebrowser.png";
                 href = serviceUrl "files" (config.local.file-browser.port or 8082);
