@@ -1,81 +1,49 @@
-# Secret Management
+# secrets
 
-This document outlines how to manage secrets in this dotfiles repository. We use [sops-nix](https://github.com/Mic92/sops-nix) to manage secrets, with [age](https://github.com/FiloSottile/age) as the encryption backend.
+This Nix module provides a convenient way to manage system secrets using `sops-nix`. It enables encryption and decryption of secrets stored in a YAML file, making them accessible to your NixOS configuration.  The module automatically maps specified secrets to `/run/secrets/` to provide system-wide access, configuring the owner, group, and permissions for each secret. It also configures the global sops settings.
 
-## Overview
+## Options
 
-Secrets are stored in `secrets/secrets.yaml`, which is encrypted using `sops`. The keys are encrypted with `age` and can be decrypted by anyone with a corresponding `age` private key.
+This module exposes the following options under the `local.secrets` namespace:
 
-The `flake.nix` file is configured to use `sops-nix`, which makes the secrets available to your NixOS and home-manager configurations.
+### `local.secrets.enable`
 
-## Adding a New Secret
+Type: `boolean`
 
-To add a new secret, you need to edit the `secrets/secrets.yaml` file. You can do this by running:
+Default: `false`
 
-```bash
-sops secrets/secrets.yaml
-```
+Description: Enables or disables the `sops-nix` secret management integration. When enabled, the module configures `sops` to decrypt secrets from the specified file and make them available.  This option is the primary switch to turn on all functionality described here.
 
-This will open the file in your default editor. You can then add a new key-value pair to the file. For example:
+### `local.secrets.sopsFile`
 
-```yaml
-my_new_secret:
-  api_key: "my-secret-value"
-```
+Type: `path`
 
-When you save and close the file, `sops` will automatically encrypt the new secret.
+Default: `../../../secrets/secrets.yaml`
 
-## Accessing Secrets in Nix Configurations
+Example: `../secrets/system-secrets.yaml`
 
-To access a secret in a Nix configuration, you need to add it to the `sops.secrets` attribute in the appropriate file. For example, to make a secret available to the `tod@Onix.nix` host, you would add the following to `home/tod@Onix.nix`:
+Description: Specifies the path to the encrypted YAML file containing your system secrets. This file should be encrypted using `sops`. The `defaultSopsFile` option of sops-nix will be set to this path. It is used to configure where the module reads secret values from. It's recommended to store this file in a secure location. This supports relative paths, which are resolved relative to the module file.
 
-```nix
-{
-  # ...
-  sops.secrets.my_new_secret = {
-    # The path to the secret in the secrets.yaml file
-    key = "my_new_secret.api_key";
-  };
-  # ...
-}
-```
+### `local.secrets.keys`
 
-The secret will then be available at `/run/secrets/my_new_secret` on the `Onix` machine.
+Type: `list of string`
 
-## Editing Existing Secrets
+Default: `[ ]`
 
-To edit an existing secret, you can use the same process as adding a new secret:
+Example: `[ "onix_creds" "ssh_pub_ruby/master" "ssh_pub_sapphire/master" ]`
 
-```bash
-sops secrets/secrets.yaml
-```
+Description: A list of `sops` keys to automatically map to `/run/secrets/` for system-wide access. Each string in the list corresponds to a top-level key within your encrypted YAML file. These keys will be created as secrets in sops-nix.
 
-This will open the encrypted file in your editor, allowing you to change the value of any secret. When you save the file, `sops` will re-encrypt it with the updated values.
+When this module is enabled (`local.secrets.enable = true`), the listed secrets will be mounted in `/run/secrets/`, which is a common location for system services to access sensitive information. This is facilitated through `lib.genAttrs` and `sops.secrets`. The module will set the specified permissions for each generated entry, using the default values provided in the module. Each secret will be accessible as a file within the `/run/secrets/` directory, named after its corresponding key. The file contains the decrypted value of the secret.
 
-## Adding a New Machine or User
+## Configuration Details
 
-To give a new machine or user access to the secrets, you need to add their `age` public key to the `.sops.yaml` file in the root of the repository.
+When `local.secrets.enable` is set to `true`, the module automatically configures the `sops` options, using `sops-nix` underneath:
 
-First, get the `age` public key from the new machine or user. Then, open the `secrets/secrets.yaml` file with `sops`:
-
-```bash
-sops secrets/secrets.yaml
-```
-
-Then, add the new public key to the `sops.age.recipients` list:
-
-```yaml
-sops:
-  age:
-    - recipient: "age1..."
-    - recipient: "age2..."
-    - recipient: "new_age_public_key"
-```
-
-Save and close the file. `sops` will re-encrypt the file with the new recipient's public key, giving them access to the secrets. You will need to rekey the secrets for them to be able to decrypt them. You can do this by running the following command:
-
-```bash
-sops updatekeys secrets/secrets.yaml
-```
-
-After this, the new machine or user will be able to decrypt the secrets.
+*   `sops.defaultSopsFile` is set to the value of `cfg.sopsFile`.
+*   `sops.defaultSopsFormat` is set to `"yaml"`.
+*   `sops.age.sshKeyPaths` is set to `[ "/etc/ssh/ssh_host_ed25519_key" ]`.  This is required to automatically decrypt secrets on boot. Make sure to regenerate these host keys if deploying from an image.
+*   For each key in `cfg.keys`, a corresponding secret entry is generated under `sops.secrets`. These secrets are configured with:
+    *   `mode = "0440"` (read permissions for root and the wheel group).
+    *   `owner = "root"` (owned by the root user).
+    *   `group = "wheel"` (belonging to the wheel group).

@@ -1,467 +1,186 @@
-# File Sharing with NFS and Samba
+# file-sharing
 
-This guide covers setting up file network-mounts using the `local.file-sharing` module (server-side) and accessing them with `local.network-mounts` (client-side).
+This Nix module provides a comprehensive solution for setting up file sharing services on your NixOS system.  It supports both Samba and NFS, allowing you to easily share files with other devices on your network.  It simplifies configuration by allowing you to define shares in a structured way, and automatically generates the necessary configurations for both Samba and NFS based on these definitions.  It also handles firewall rules and directory creation.
 
-## Overview
+## Options
 
-The file sharing system provides:
-- **Samba/CIFS** - Compatible with Windows, macOS, and Linux
-- **NFS** - High-performance sharing for Unix/Linux systems
-- **Unified Configuration** - Define shares once, automatically configure both protocols
-- **Automatic Discovery** - Works with Avahi for `.local` domain resolution
-- **Access Control** - Per-share authentication and permissions
+Here's a breakdown of the options available in this module:
 
-## Quick Start (Server)
+### `local.file-sharing.enable`
 
-### Simple Configuration
+*   **Type:** `boolean`
+*   **Default:** `false`
+*   **Description:** Enables the file sharing services module.  This is the main switch to control whether the file sharing components are activated.
 
-```nix
-local.file-sharing = {
-  enable = true;
+### `local.file-sharing.shareDir`
 
-  samba.enable = true;
-  samba.openFirewall = true;
+*   **Type:** `string`
+*   **Default:** `"/srv/shares"`
+*   **Example:** `"/mnt/storage/shares"`
+*   **Description:**  Specifies the base directory where shared files will be located.  This directory will be created (if it doesn't exist) and is the root for shares defined under `definitions`.  It's good practice to set this to a dedicated mount point for your shared storage.
 
-  definitions = {
-    media = {
-      path = "/srv/media";
-      comment = "Media Files";
-      readOnly = true;
-      guestOk = true;
-    };
-  };
-};
-```
+### `local.file-sharing.nfs.enable`
 
-Access from Windows: `\\\\hostname.local\\media`
-Access from Linux: `smb://hostname.local/media`
+*   **Type:** `boolean`
+*   **Default:** `false`
+*   **Description:** Enables the NFS server. If set to `true`, the NFS server will be configured and started.
 
-## Structured Share Definitions
+### `local.file-sharing.nfs.exports`
 
-The recommended way to configure shares is using `definitions`. This automatically sets up both Samba and NFS (if enabled).
+*   **Type:** `lines` (string containing multiple lines)
+*   **Default:** `""`
+*   **Example:**
 
-### Basic Share
+    ```nix
+    ''
+      /srv/shares 192.168.1.0/24(rw,sync,no_subtree_check,no_root_squash)
+      /srv/media 192.168.1.0/24(ro,sync,no_subtree_check)
+    ''
+    ```
 
-```nix
-definitions = {
-  public = {
-    path = "/srv/public";
-    comment = "Public Files";
-    readOnly = false;
-    guestOk = true;
-    browseable = true;
-  };
-};
-```
+*   **Description:**  Defines the NFS exports configuration.  This option allows you to specify NFS exports using the standard NFS exports file syntax.  Each line represents an export, specifying the directory to share and the clients that are allowed to access it, along with their access options.  These are combined with exports from structured definitions.
 
-### Authenticated Share
+### `local.file-sharing.nfs.openFirewall`
 
-```nix
-definitions = {
-  private = {
-    path = "/srv/private";
-    comment = "Private Documents";
-    readOnly = false;
-    guestOk = false;
-    validUsers = [ "alice" "bob" ];
-    browseable = true;
-  };
-};
-```
+*   **Type:** `boolean`
+*   **Default:** `false`
+*   **Description:** Opens the necessary firewall ports for NFS.  If set to `true`, the module will automatically configure the firewall to allow NFS traffic.
 
-### Media Share with NFS
+### `local.file-sharing.samba.enable`
 
-```nix
-definitions = {
-  media = {
-    path = "/srv/media";
-    comment = "Media Library";
-    readOnly = true;
-    guestOk = true;
-    enableNFS = true;
-    nfsOptions = [ "ro" "sync" "no_subtree_check" ];
-    nfsClients = "192.168.1.0/24";
-  };
-};
-```
+*   **Type:** `boolean`
+*   **Default:** `false`
+*   **Description:** Enables the Samba server.  If set to `true`, the Samba server will be configured and started.
 
-## Share Options Reference
+### `local.file-sharing.samba.workgroup`
 
-| Option | Type | Default | Description |
-|--------|------|---------|-------------|
-| `path` | string | required | Absolute path to share directory |
-| `comment` | string | `""` | Description shown to users |
-| `readOnly` | bool | `false` | Make share read-only |
-| `guestOk` | bool | `false` | Allow guest access (no password) |
-| `browseable` | bool | `true` | Show in network browse lists |
-| `validUsers` | list | `[]` | List of allowed users (empty = all) |
-| `writeable` | bool | `true` | Allow write access (if not readOnly) |
-| `createMask` | string | `"0664"` | Permissions for new files |
-| `directoryMask` | string | `"0775"` | Permissions for new directories |
-| `enableNFS` | bool | `false` | Also export via NFS |
-| `nfsOptions` | list | `["rw","sync","no_subtree_check"]` | NFS export options |
-| `nfsClients` | string | `"192.168.0.0/16"` | Network range for NFS |
+*   **Type:** `string`
+*   **Default:** `"WORKGROUP"`
+*   **Description:** Specifies the Samba workgroup name.  This should match the workgroup used by other devices on your network.
 
-## Server Configuration
+### `local.file-sharing.samba.serverString`
 
-### Enable Services
+*   **Type:** `string`
+*   **Default:** `"NixOS File Server"`
+*   **Description:** Specifies the server description string that will be displayed in network browsing lists.
 
-```nix
-local.file-sharing = {
-  enable = true;
+### `local.file-sharing.samba.shares`
 
-  # Base directory for shares
-  shareDir = "/srv/shares";
+*   **Type:** `attribute set of attribute sets`
+*   **Default:** `{}`
+*   **Example:**
 
-  # Samba configuration
-  samba = {
-    enable = true;
-    openFirewall = true;
-    workgroup = "WORKGROUP";
-    serverString = "NixOS File Server";
-  };
-
-  # NFS configuration
-  nfs = {
-    enable = true;
-    openFirewall = true;
-  };
-};
-```
-
-### User Authentication
-
-For Samba authentication, you need to create Samba users:
-
-```bash
-# Create a Samba user (requires system user exists)
-sudo smbpasswd -a username
-
-# Enable the user
-sudo smbpasswd -e username
-
-# Change password
-sudo smbpasswd username
-```
-
-## Client Configuration (network-mounts)
-
-The `network-mounts` module automatically mounts Samba shares from a server.
-
-### Basic Mount
-
-```nix
-local.network-mounts = {
-  enable = true;
-  serverIp = config.local.hosts.onix;  # Or "192.168.1.100"
-  noAuth = false;  # Requires credentials
-
-  mounts = [
+    ```nix
     {
-      shareName = "media";
-      localPath = "/media/Media";
+      public = {
+        path = "/srv/shares/public";
+        "read only" = "no";
+        browseable = "yes";
+        "guest ok" = "yes";
+      };
+      media = {
+        path = "/srv/media";
+        "read only" = "yes";
+        browseable = "yes";
+        "guest ok" = "yes";
+      };
     }
-  ];
-};
-```
+    ```
 
-### Guest Access
+*   **Description:** Defines Samba share definitions using the raw Samba configuration format.  This is useful for advanced configurations or features not covered by the `definitions` option.  These shares are merged with those defined under the `definitions` option.  Each attribute name represents a share name, and its value is another attribute set specifying the share's configuration options.
+    *   **`path`**: (string) -  The path to the directory to be shared.
+    *   **`read only`**: (string, "yes" or "no") - Whether the share is read-only.
+    *   **`browseable`**: (string, "yes" or "no") - Whether the share is browseable.
+    *   **`guest ok`**: (string, "yes" or "no") - Whether guest access is allowed.
 
-```nix
-local.network-mounts = {
-  enable = true;
-  serverIp = "server.local";
-  noAuth = true;  # Guest access, no password
+### `local.file-sharing.samba.openFirewall`
 
-  mounts = [
+*   **Type:** `boolean`
+*   **Default:** `false`
+*   **Description:** Opens the necessary firewall ports for Samba.  If set to `true`, the module will automatically configure the firewall to allow Samba traffic.
+
+### `local.file-sharing.definitions`
+
+*   **Type:** `attribute set of submodules`
+*   **Default:** `{}`
+*   **Example:**
+
+    ```nix
     {
-      shareName = "public";
-      localPath = "/media/Public";
+      media = {
+        path = "/srv/media";
+        comment = "Media files";
+        readOnly = true;
+        guestOk = true;
+        enableNFS = true;
+      };
+      documents = {
+        path = "/srv/documents";
+        comment = "Shared documents";
+        validUsers = [ "alice" "bob" ];
+      };
     }
-  ];
-};
-```
-
-### With Credentials
-
-For authenticated access, store credentials in sops:
-
-1. Create credential file:
-```
-username=myuser
-password=mypassword
-```
-
-2. Add to sops secrets
-3. Reference in configuration:
-
-```nix
-local.network-mounts = {
-  enable = true;
-  serverIp = config.local.hosts.onix;
-  secretName = "smb_credentials";  # Name in sops (default: "onix_creds")
-
-  mounts = [
-    {
-      shareName = "private";
-      localPath = "/media/Private";
-    }
-  ];
-};
-```
-
-### Hide from File Manager
-
-```nix
-mounts = [
-  {
-    shareName = "backups";
-    localPath = "/media/Backups";
-    noShow = true;  # Hide from file manager
-  }
-];
-```
-
-## Advanced Configuration
-
-### Manual Samba Configuration
-
-For shares requiring special Samba options not covered by `definitions`:
-
-```nix
-samba.shares = {
-  timemachine = {
-    path = "/srv/timemachine";
-    "valid users" = "backup";
-    "read only" = "no";
-    "fruit:aapl" = "yes";
-    "fruit:time machine" = "yes";
-    "vfs objects" = "catia fruit streams_xattr";
-  };
-};
-```
-
-### Manual NFS Exports
-
-For custom NFS exports:
-
-```nix
-nfs.exports = ''
-  /srv/nfs-special 192.168.1.0/24(rw,async,no_subtree_check,no_root_squash)
-  /srv/readonly 10.0.0.0/8(ro,sync,no_subtree_check)
-'';
-```
-
-### Mixed Configuration
-
-You can use both structured definitions and manual configuration:
-
-```nix
-local.file-sharing = {
-  enable = true;
-  samba.enable = true;
-
-  # Structured shares (recommended)
-  definitions = {
-    media = {
-      path = "/srv/media";
-      readOnly = true;
-      guestOk = true;
-    };
-  };
-
-  # Manual shares (for special cases)
-  samba.shares = {
-    special = {
-      path = "/srv/special";
-      "vfs objects" = "full_audit";
-      "full_audit:prefix" = "%u|%I|%m|%S";
-    };
-  };
-};
-```
-
-## Ports and Firewall
-
-### Samba Ports
-- TCP 139, 445 (SMB)
-- TCP/UDP 137, 138 (NetBIOS)
-- UDP 3702 (WS-Discovery for Windows)
-
-### NFS Ports
-- TCP/UDP 111 (portmapper)
-- TCP/UDP 2049 (NFS)
-- TCP/UDP 4000, 4001, 4002 (lockd, mountd, statd)
-- TCP/UDP 20048 (mountd)
-
-Set `openFirewall = true` to automatically open required ports.
-
-## Access Methods
-
-### From Windows
-
-**File Explorer:**
-1. Open File Explorer
-2. Type in address bar: `\\hostname.local\sharename`
-3. Or: `\\192.168.1.100\sharename`
-
-**Map Network Drive:**
-1. Right-click "This PC" → "Map network drive"
-2. Enter path: `\\hostname.local\media`
-3. Check "Reconnect at sign-in"
-
-### From macOS
-
-**Finder:**
-1. Cmd+K or Go → Connect to Server
-2. Enter: `smb://hostname.local/sharename`
-3. Or: `nfs://hostname.local/srv/media`
-
-**Terminal (NFS):**
-```bash
-sudo mount -t nfs hostname.local:/srv/media /mnt/media
-```
-
-### From Linux
-
-**Nautilus/Files:**
-1. Other Locations → Connect to Server
-2. Enter: `smb://hostname.local/sharename`
-
-**Command Line (Samba):**
-```bash
-# Mount temporarily
-sudo mount -t cifs //hostname.local/media /mnt/media -o user=username
-
-# Or use network-mounts module (recommended)
-```
-
-**Command Line (NFS):**
-```bash
-sudo mount -t nfs hostname.local:/srv/media /mnt/media
-```
-
-## Integration with Other Modules
-
-### Media Server Shares
-
-Share your media directories:
-
-```nix
-local.media.mediaDir = "/srv/media";
-
-local.file-sharing = {
-  enable = true;
-  samba.enable = true;
-
-  definitions = {
-    media = {
-      path = config.local.media.mediaDir;
-      readOnly = true;
-      guestOk = true;
-      enableNFS = true;
-    };
-  };
-};
-```
-
-### Download Shares
-
-Share download directories:
-
-```nix
-local.download.downloadDir = "/srv/downloads";
-
-local.file-sharing = {
-  enable = true;
-  samba.enable = true;
-
-  definitions = {
-    downloads = {
-      path = config.local.download.downloadDir;
-      readOnly = false;
-      guestOk = true;
-    };
-  };
-};
-```
-
-## Troubleshooting
-
-### Cannot Connect to Shares
-
-1. Check services are running:
-```bash
-systemctl status smbd nmbd
-systemctl status nfs-server
-```
-
-2. Verify firewall:
-```bash
-sudo nft list ruleset | grep -E "445|2049"
-```
-
-3. Test Samba from server:
-```bash
-smbclient -L localhost -N
-```
-
-4. Check Avahi resolution:
-```bash
-avahi-resolve -n hostname.local
-```
-
-### Permission Denied
-
-1. Check directory permissions:
-```bash
-ls -la /srv/shares
-```
-
-2. Verify Samba user exists:
-```bash
-sudo pdbedit -L
-```
-
-3. Check SELinux/AppArmor (if applicable)
-
-### Slow Performance
-
-1. For large files, use NFS instead of Samba
-2. Adjust Samba performance settings:
-```nix
-samba.shares.myshare = {
-  "read raw" = "yes";
-  "write raw" = "yes";
-  "socket options" = "TCP_NODELAY IPTOS_LOWDELAY";
-};
-```
-
-### Shares Not Visible
-
-1. Check `browseable = true` in share config
-2. Verify Samba WSDD is running:
-```bash
-systemctl status wsdd
-```
-
-3. Windows: Run `\\hostname.local` in address bar
-
-## Security Best Practices
-
-1. **Use Authentication** - Avoid `guestOk` for sensitive data
-2. **Restrict Networks** - Use firewall rules to limit access
-3. **Read-Only Shares** - Make media shares read-only
-4. **Separate Users** - Create dedicated Samba users
-5. **Monitor Access** - Check logs regularly:
-```bash
-journalctl -u smbd -f
-journalctl -u nfs-server -f
-```
-
-6. **Use VPN** - For access outside local network
-7. **Backup Credentials** - Store sops secrets securely
-
-## Complete Example
-
-See `systems/profiles/shares-example.nix` for a complete configuration with multiple share types.
+    ```
+
+*   **Description:** Defines structured share definitions that automatically configure both Samba and NFS. This is the preferred way to define shares, as it provides a consistent and simplified interface for both protocols. Each attribute name represents a share name, and its value is a submodule with the following options:
+
+    *   **`path`**:
+        *   **Type:** `path`
+        *   **Description:** Absolute path to the share directory.
+
+    *   **`comment`**:
+        *   **Type:** `string`
+        *   **Default:** `""`
+        *   **Description:** Description of the share. This comment is used by both Samba and NFS.
+
+    *   **`readOnly`**:
+        *   **Type:** `boolean`
+        *   **Default:** `false`
+        *   **Description:** Whether the share is read-only.
+
+    *   **`guestOk`**:
+        *   **Type:** `boolean`
+        *   **Default:** `false`
+        *   **Description:** Allow guest access without authentication.
+
+    *   **`browseable`**:
+        *   **Type:** `boolean`
+        *   **Default:** `true`
+        *   **Description:** Whether the share is visible in browse lists.
+
+    *   **`validUsers`**:
+        *   **Type:** `list of strings`
+        *   **Default:** `[]`
+        *   **Example:** `[ "alice" "bob" ]`
+        *   **Description:** List of users allowed to access the share.  An empty list means all users are allowed.  This option only applies to Samba.
+
+    *   **`writeable`**:
+        *   **Type:** `boolean`
+        *   **Default:** `true`
+        *   **Description:** Whether users can write to the share.  Implied false if `readOnly` is true. This option applies to Samba only.
+
+    *   **`createMask`**:
+        *   **Type:** `string`
+        *   **Default:** `"0666"`
+        *   **Description:** Permissions mask for created files (Samba only).
+
+    *   **`directoryMask`**:
+        *   **Type:** `string`
+        *   **Default:** `"0777"`
+        *   **Description:** Permissions mask for created directories (Samba only).
+
+    *   **`enableNFS`**:
+        *   **Type:** `boolean`
+        *   **Default:** `false`
+        *   **Description:** Also export this share via NFS.
+
+    *   **`nfsOptions`**:
+        *   **Type:** `list of strings`
+        *   **Default:** `[ "rw" "sync" "no_subtree_check" ]`
+        *   **Description:** NFS export options.  These options are passed directly to the NFS exports file.
+
+    *   **`nfsClients`**:
+        *   **Type:** `string`
+        *   **Default:** `"192.168.0.0/16"`
+        *   **Example:** `"192.168.1.0/24"`
+        *   **Description:** Network range for NFS access. This specifies which clients are allowed to access the NFS share.
