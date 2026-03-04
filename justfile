@@ -43,6 +43,28 @@ gen-docs:
     cp -f result/home-modules.md docs/home-modules.md
     @echo "✅ Documentation generated in docs/"
 
+# Generate detailed markdown documentation for each module in the docs folder
+[group('docs')]
+gen-mod-docs:
+    #!/usr/bin/env bash
+    mkdir -p docs/modules
+    for dir in modules/system modules/home; do
+        for modpath in "$dir"/*; do
+            if [ -d "$modpath" ]; then
+                modname=$(basename "$modpath")
+                type=$(basename "$dir")
+                echo "Generating docs for $type module: $modname..."
+
+                # Pipe the module code to tgpt-auth with specific formatting instructions
+                cat "$modpath/default.nix" | tgpt-auth "Act as a Nix documentation generator.
+                Analyze this Nix module and create a detailed Markdown documentation file.
+                Include a title (# $modname), a description of what the module does,
+                and a list of its options with types and default values.
+                be detailed this should act as a guide to refresh myself on things and keep it pretty
+                Output ONLY the markdown content." > "docs/${modname}.md"
+            fi
+        done
+    done
 # Serve docs locally and open in browser
 [group('docs')]
 serve-docs:
