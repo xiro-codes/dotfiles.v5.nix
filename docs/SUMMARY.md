@@ -9,6 +9,7 @@
     - [Gitea](gitea.md)
     - [Hyprland](hyprland.md)
     - [Nixvim](nixvim.md)
+    - [YubiKey](yubikey.md)
 - [Profiles](profiles.md)
 - [Reference]()
     - [All Modules](modules.md)
