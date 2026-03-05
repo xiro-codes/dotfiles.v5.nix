@@ -9,15 +9,17 @@
     ../profiles/workstation
   ];
   # Ruby-specific configuration
+  programs.coolercontrol.enable = true;
   local = {
     disks.enable = true;
 
     yubikey.enable = true;
 
     gaming.games = {
-      bastion.enable = true;
-      absolute-drift.enable = true;
-      dead-cells.enable = true;
+      book-of-hours.enable = true;
+      graveyard-keeper.enable = true;
+      dead-cells.enable = false;
+      jenny-leclue-detectivu.enable = true;
     };
 
     secrets.keys = [
