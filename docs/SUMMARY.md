@@ -2,7 +2,7 @@
 
 - [Introduction](intro.md)
 - [Guides]()
-    - [System Utilitie Modules]()
+    - [System Modules]()
         - [Bootloader](bootloader.md)
         - [Audio](audio.md)
         - [Bluetooth](bluetooth.md)
@@ -14,7 +14,7 @@
         - [Desktops](desktops.md)
         - [Registry](registry.md)
         - [User Manager](user-manager.md)
-    - [Custom Utilite Modules]()
+    - [Custom Modules]()
         - [Reverse Proxy](reverse-proxy.md)
         - [Secrets](secrets.md)
         - [Gaming](gaming.md)
