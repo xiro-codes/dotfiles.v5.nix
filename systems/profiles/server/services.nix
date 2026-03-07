@@ -17,7 +17,6 @@
       enable = true;
       openFirewall = true;
     };
-    gitea-runner.enable = true;
     file-browser = {
       enable = false;
       rootPath = "/media/Media/games";
