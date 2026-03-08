@@ -36,7 +36,7 @@ in
 
       stylix = {
         enable = true;
-        image = ./wallpaper.jpg;
+        image = ./Wallpapers/V1-19.png;
         cursor = {
           package = pkgs.bibata-cursors;
           name = "Bibata-Modern-Ice";
