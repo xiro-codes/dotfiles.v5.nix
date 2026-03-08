@@ -36,7 +36,6 @@
 
     # Enable auto-upgrade for Ruby
     dotfiles.maintenance.autoUpgrade = true;
-
     # Additional share mounts for Ruby
     network-mounts.mounts = lib.mkAfter [
     ];

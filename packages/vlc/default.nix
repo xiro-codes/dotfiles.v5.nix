@@ -1,7 +1,8 @@
-{ pkgs, input, lib }: with pkgs; let
-  libbluray = libbluray.override {
+{ pkgs, lib, ... }:
+let
+  libbluray' = pkgs.libbluray.override {
     withAACS = true;
     withBDplus = true;
   };
 in
-vlc.override { inherit libbluray; }
+pkgs.vlc.override { libbluray = libbluray'; }

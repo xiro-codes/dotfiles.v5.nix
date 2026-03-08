@@ -9,7 +9,7 @@ in
     enable = lib.mkEnableOption "Automatic user group management";
     extraGroups = lib.mkOption {
       type = lib.types.listOf lib.types.str;
-      default = [ "wheel" "networkmanager" "input" "docker" ];
+      default = [ "wheel" "networkmanager" "input" "docker" "cdrom" ];
       example = [ "wheel" "networkmanager" "input" "video" "audio" "docker" ];
       description = "Groups to assign to all auto-discovered users on this host";
     };
