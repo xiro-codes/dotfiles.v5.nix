@@ -32,11 +32,11 @@ in
     # Stylix
     (lib.mkIf cfg.stylix.enable {
       # Create .wallpaper symlink in home directory
-      home.file.".wallpaper".source = ./Wallpaper8.jpg;
+      home.file.".wallpaper".source = ./Wallpapers/metafor.jpg;
 
       stylix = {
         enable = true;
-        image = ./Wallpapers/V1-19.png;
+        image = ./Wallpapers/metafor.jpg;
         cursor = {
           package = pkgs.bibata-cursors;
           name = "Bibata-Modern-Ice";
