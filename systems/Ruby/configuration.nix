@@ -8,20 +8,21 @@
     ../profiles/client.nix
     ../profiles/workstation
   ];
-  programs.coolercontrol.enable = true;
-
-  local = {
-    disks.enable = true;
-
-    yubikey.enable = true;
-
-    gaming.games = {
+  programs = {
+    coolercontrol.enable = true;
+    gog.games = {
       pillars-of-eternity.enable = true;
       luftrausers.enable = true;
       bastion.enable = true;
       one-step-from-eden.enable = true;
       book-of-hours.enable = true;
     };
+  };
+
+  local = {
+    disks.enable = true;
+
+    yubikey.enable = true;
 
     secrets.keys = [
       "gemini/api_key"

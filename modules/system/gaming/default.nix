@@ -2,19 +2,13 @@
 
 let
   cfg = config.local.gaming;
-  games = inputs.gog-nix.packages.x86_64-linux or { };
-  mkGameOption = name: pkg: {
-    enable = lib.mkEnableOption "the GOG game: ${name}";
-  };
 in
 {
   options.local.gaming = {
     enable = lib.mkEnableOption "Gaming optimizations";
-    games = lib.mapAttrs mkGameOption games;
   };
 
   config = lib.mkIf cfg.enable {
-    environment.systemPackages = lib.flatten (lib.mapAttrsToList (name: gameCfg: if gameCfg.enable then [ games.${name} ] else [ ]) cfg.games);
 
     # Enable Steam
     programs.steam = {
