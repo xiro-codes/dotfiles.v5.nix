@@ -8,18 +8,19 @@
     ../profiles/client.nix
     ../profiles/workstation
   ];
-  # Ruby-specific configuration
   programs.coolercontrol.enable = true;
+
   local = {
     disks.enable = true;
 
     yubikey.enable = true;
 
     gaming.games = {
+      pillars-of-eternity.enable = true;
+      luftrausers.enable = true;
+      bastion.enable = true;
+      one-step-from-eden.enable = true;
       book-of-hours.enable = true;
-      graveyard-keeper.enable = true;
-      dead-cells.enable = false;
-      jenny-leclue-detectivu.enable = true;
     };
 
     secrets.keys = [
@@ -31,14 +32,12 @@
       "gog_creds"
     ];
 
-    # Ruby-specific bootloader UUID
     bootloader.recoveryUUID = "b0cd9860-736a-45c5-a6d2-e69cdb319f24";
 
-    # Enable auto-upgrade for Ruby
     dotfiles.maintenance.autoUpgrade = true;
-    # Additional share mounts for Ruby
-    network-mounts.mounts = lib.mkAfter [
-    ];
+
+    dotfiles.maintenance.upgradeFlake = "github:xiro-codes/dotfiles.v5.nix";
+
   };
   # Ruby-specific user
   users.users.tod = {
