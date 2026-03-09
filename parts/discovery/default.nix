@@ -1,4 +1,4 @@
-{ inputs, lib, ... }:
+{ globalNixosModules ? [ ], globalHomeModules ? [ ] }: { inputs, lib, ... }:
 let
   # Import paths configuration
   paths = import ./paths.nix;
@@ -26,6 +26,8 @@ let
       hostToUsersMap
       discoveredSystemModules
       discoveredHomeModules
+      globalNixosModules
+      globalHomeModules
       ;
   };
 
@@ -37,6 +39,7 @@ let
       paths
       hostToUsersMap
       discoveredHomeModules
+      globalHomeModules
       ;
   };
 

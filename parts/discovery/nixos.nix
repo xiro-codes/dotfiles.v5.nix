@@ -4,7 +4,8 @@
 , hostToUsersMap
 , discoveredSystemModules
 , discoveredHomeModules
-,
+, globalNixosModules
+, globalHomeModules
 }:
 let
   inherit (builtins)
@@ -44,12 +45,8 @@ in
               currentHostName = name;
               currentHostUsers = map (u: u.user) (hostToUsersMap.${name} or [ ]);
             };
-            modules = [
+            modules = globalNixosModules ++ [
               (paths.systems + "/${name}/configuration.nix")
-              inputs.disko.nixosModules.disko
-              inputs.sops-nix.nixosModules.sops
-              inputs.home-manager.nixosModules.home-manager
-              inputs.nix-flatpak.nixosModules.nix-flatpak
               ({
                 networking.hostName = name;
                 local.secrets.enable = true;
@@ -57,12 +54,7 @@ in
                   backupFileExtension = "backup";
                   backupCommand = "${inputs.nixpkgs.legacyPackages.x86_64-linux.trash-cli}/bin/trash";
                   extraSpecialArgs = { inherit inputs; };
-                  sharedModules = (attrValues discoveredHomeModules) ++ [
-                    inputs.sops-nix.homeModules.sops
-                    inputs.caelestia-shell.homeManagerModules.default
-                    inputs.nixvim.homeModules.nixvim
-                    inputs.stylix.homeModules.stylix
-                  ];
+                  sharedModules = (attrValues discoveredHomeModules) ++ globalHomeModules ++ [ ];
                   users = listToAttrs (
                     map
                       (u: {
@@ -75,7 +67,7 @@ in
                 };
               })
             ]
-            ++ (attrValues discoveredSystemModules);
+              ++ (attrValues discoveredSystemModules);
 
           };
         })

@@ -45,7 +45,20 @@
     flake-parts.lib.mkFlake { inherit inputs; } {
       systems = [ "x86_64-linux" ];
       imports = [
-        ./parts/discovery
+        (import ./parts/discovery {
+          globalNixosModules = with inputs; [
+            disko.nixosModules.disko
+            sops-nix.nixosModules.sops
+            home-manager.nixosModules.home-manager
+            nix-flatpak.nixosModules.nix-flatpak
+          ];
+          globalHomeModules = with inputs; [
+            sops-nix.homeModules.sops
+            caelestia-shell.homeManagerModules.default
+            nixvim.homeModules.nixvim
+            stylix.homeModules.stylix
+          ];
+        })
       ];
     };
 }

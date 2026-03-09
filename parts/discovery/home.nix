@@ -3,7 +3,7 @@
 , paths
 , hostToUsersMap
 , discoveredHomeModules
-,
+, globalHomeModules
 }:
 let
   inherit (builtins)
@@ -40,12 +40,7 @@ in
                 home.homeDirectory = "/home/${entry.user}";
                 nix.package = inputs.nixpkgs.legacyPackages.x86_64-linux.nix;
               }
-            ] ++ (attrValues discoveredHomeModules) ++ [
-              inputs.sops-nix.homeModules.sops
-              inputs.caelestia-shell.homeManagerModules.default
-              inputs.nixvim.homeModules.nixvim
-              inputs.stylix.homeModules.stylix
-            ];
+            ] ++ (attrValues discoveredHomeModules) ++ globalHomeModules ++ [ ];
           };
         })
         userHostPairs
