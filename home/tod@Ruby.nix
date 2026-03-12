@@ -13,7 +13,7 @@
       add_newline = false;
       line_break.disabled = true;
       format = ''
-        [\[I\] ](white)$username@$hostname $directory$git_branch$nix_shell$rust$python$character
+        (white)$username@$hostname $directory($git_branch)$nix_shell$rust$python$character
       '';
 
       # 2. Replicate the [I] and user@host style
@@ -43,20 +43,20 @@
 
       # 3. Additions for Nix, Rust, and Python
       nix_shell = {
-        symbol = "❄️ ";
-        format = "via [$symbol$state]($style) ";
+        symbol = "❄️";
+        format = "[$symbol]($style) ";
         style = "bold blue";
       };
 
       rust = {
-        symbol = "🦀 ";
-        format = "[$symbol$version]($style) ";
+        symbol = "🦀";
+        format = "[$symbol]($style) ";
         style = "bold red";
       };
 
       python = {
-        symbol = "🐍 ";
-        format = "[$symbol$version]($style) ";
+        symbol = "🐍";
+        format = "[$symbol]($style) ";
         style = "yellow";
       };
 
