@@ -1,20 +1,22 @@
 { pkgs, lib, config, ... }:
 
 let
+  inherit (lib) mkEnableOption mkIf mkOption types;
+
   cfg = config.local.security;
 in
 {
   options.local.security = {
-    enable = lib.mkEnableOption "Centralized security settings";
-    adminUser = lib.mkOption {
-      type = lib.types.str;
+    enable = mkEnableOption "Centralized security settings";
+    adminUser = mkOption {
+      type = types.str;
       default = "tod";
       example = "admin";
       description = "The main admin user to grant passwordless sudo/doas access and SSH key authorization";
     };
   };
 
-  config = lib.mkIf cfg.enable {
+  config = mkIf cfg.enable {
 
     # doas setup (Modern, lightweight alternative to sudo)
     security.doas = {

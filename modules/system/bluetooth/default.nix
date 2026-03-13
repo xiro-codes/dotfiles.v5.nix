@@ -1,6 +1,8 @@
 { config, lib, pkgs, ... }:
 
 let
+  inherit (lib) mkEnableOption mkIf;
+
   cfg = config.local.bluetooth;
   # Check if the audio module is enabled elsewhere in the system config
   audioEnabled = config.local.audio.enable or false;
@@ -8,10 +10,10 @@ let
 in
 {
   options.local.bluetooth = {
-    enable = lib.mkEnableOption "Modern Bluetooth stack";
+    enable = mkEnableOption "Modern Bluetooth stack";
   };
 
-  config = lib.mkIf cfg.enable {
+  config = mkIf cfg.enable {
     hardware.bluetooth = {
       enable = true;
       powerOnBoot = true;
@@ -24,10 +26,10 @@ in
       };
     };
 
-    services.blueman.enable = lib.mkIf (!plasmaEnabled) true;
+    services.blueman.enable = mkIf (!plasmaEnabled) true;
 
     # If audio is enabled, we tell WirePlumber to use high-quality Bluetooth codecs
-    services.pipewire.wireplumber.extraConfig = lib.mkIf audioEnabled {
+    services.pipewire.wireplumber.extraConfig = mkIf audioEnabled {
       "monitor.bluez.properties" = {
         "bluez5.enable-sbc-xq" = true;
         "bluez5.enable-msbc" = true;

@@ -1,8 +1,11 @@
-{ config, lib, pkgs, ... }: {
+{ config, lib, pkgs, ... }: let
+  inherit (lib) mkEnableOption mkIf;
+in
+{
   options.local.disks = {
-    enable = lib.mkEnableOption "basic configuration for disk management";
+    enable = mkEnableOption "basic configuration for disk management";
   };
-  config = lib.mkIf config.local.disks.enable
+  config = mkIf config.local.disks.enable
     {
       services = {
         gvfs.enable = true;

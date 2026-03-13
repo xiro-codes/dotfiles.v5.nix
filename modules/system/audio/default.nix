@@ -1,13 +1,15 @@
 { config, lib, pkgs, ... }:
 
 let
+  inherit (lib) mkEnableOption mkIf;
+
   cfg = config.local.audio;
 in {
   options.local.audio = {
-    enable = lib.mkEnableOption "PipeWire based audio stack";
+    enable = mkEnableOption "PipeWire based audio stack";
   };
 
-  config = lib.mkIf cfg.enable {
+  config = mkIf cfg.enable {
     # Remove PulseAudio if it was enabled elsewhere to avoid conflicts
     services.pulseaudio.enable = false;
 

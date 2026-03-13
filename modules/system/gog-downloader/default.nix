@@ -1,33 +1,35 @@
 { config, pkgs, lib, ... }:
 let
+  inherit (lib) mkEnableOption mkIf mkOption types;
+
   cfg = config.local.gog-downloader;
   gogCmd = "${pkgs.lgogdownloader}/bin/lgogdownloader";
 in
 {
   options.local.gog-downloader = {
-    enable = lib.mkEnableOption "Automated GOG library synchronization";
-    directory = lib.mkOption {
-      type = lib.types.path;
+    enable = mkEnableOption "Automated GOG library synchronization";
+    directory = mkOption {
+      type = types.path;
       default = "/media/Media/games";
       description = "Directory where games will be downloaded";
     };
-    interval = lib.mkOption {
-      type = lib.types.str;
+    interval = mkOption {
+      type = types.str;
       default = "daily";
       description = "Systemd timer interval.";
     };
-    platforms = lib.mkOption {
-      type = lib.types.str;
+    platforms = mkOption {
+      type = types.str;
       default = "l+w";
       description = "Platforms to download (l=linux, w=windows, m=mac)";
     };
-    extraArgs = lib.mkOption {
-      type = lib.types.str;
+    extraArgs = mkOption {
+      type = types.str;
       default = "--repair --download";
       description = "Extra arguments passed to lgogdownloader";
     };
-    secretFile = lib.mkOption {
-      type = lib.types.path;
+    secretFile = mkOption {
+      type = types.path;
       description = ''
         Path to a file containing environment variables for GOG login.
         Expected format:
@@ -36,7 +38,7 @@ in
       '';
     };
   };
-  config = lib.mkIf cfg.enable {
+  config = mkIf cfg.enable {
     environment.systemPackages = [ pkgs.lgogdownloader ];
     systemd.timers.gog-downloader = {
       description = "Timer for GOG Library Sync";

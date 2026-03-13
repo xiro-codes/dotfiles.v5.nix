@@ -5,8 +5,9 @@
 }:
 
 let
+  inherit (lib) concatStringsSep literalExpression mkEnableOption mkOption types mkIf;
+
   cfg = config.local.network-mounts;
-  inherit (lib) mkOption mkIf types;
 
   # Helper to create SMB mount units
   mkSambaMount =
@@ -39,19 +40,19 @@ let
             authFlag
           ];
         in
-        lib.concatStringsSep "," (baseOptions ++ options);
+        concatStringsSep "," (baseOptions ++ options);
     };
 in
 {
   options.local.network-mounts = {
-    enable = lib.mkEnableOption "Samba mounts from Onix";
-    noAuth = lib.mkOption {
-      type = lib.types.bool;
+    enable = mkEnableOption "Samba mounts from Onix";
+    noAuth = mkOption {
+      type = types.bool;
       default = false;
       description = "Mount shares as guest without credentials";
     };
-    secretName = lib.mkOption {
-      type = lib.types.str;
+    secretName = mkOption {
+      type = types.str;
       default = "onix_creds";
       example = "smb_credentials";
       description = "Name of sops secret containing SMB credentials (username=xxx and password=xxx format)";
@@ -96,7 +97,7 @@ in
         }
       );
       default = [ ];
-      example = lib.literalExpression ''[
+      example = literalExpression ''[
         { shareName = "Media"; localPath = "/media/Media"; }
         { shareName = "Backups"; localPath = "/media/Backups"; noShow = true; }
       ]'';

@@ -1,19 +1,21 @@
 { config, lib, pkgs, inputs, currentHostUsers, ... }:
 
 let
+  inherit (lib) concatMapStringsSep getExe getExe' mkEnableOption mkIf mkOption types;
+
   cfg = config.local.dotfiles;
   repoPath = "/etc/nixos";
   gitPullSync = inputs.self.packages.${pkgs.stdenv.hostPlatform.system}.git-pull-sync;
 in
 {
   options.local.dotfiles = {
-    enable = lib.mkEnableOption "Dotfiles management";
+    enable = mkEnableOption "Dotfiles management";
 
     # Git sync options
     sync = {
-      enable = lib.mkEnableOption "Automated git sync";
-      interval = lib.mkOption {
-        type = lib.types.str;
+      enable = mkEnableOption "Automated git sync";
+      interval = mkOption {
+        type = types.str;
         default = "30m";
         example = "1h";
         description = "How often to pull changes from git (systemd time span format: 30m, 1h, 2h, etc.)";
@@ -22,14 +24,14 @@ in
 
     # Maintenance options
     maintenance = {
-      enable = lib.mkEnableOption "System maintenance (GC and optimization)";
-      autoUpgrade = lib.mkOption {
-        type = lib.types.bool;
+      enable = mkEnableOption "System maintenance (GC and optimization)";
+      autoUpgrade = mkOption {
+        type = types.bool;
         default = false;
         description = "Whether to automatically pull from git and upgrade";
       };
-      upgradeFlake = lib.mkOption {
-        type = lib.types.str;
+      upgradeFlake = mkOption {
+        type = types.str;
         default = "git+http://${config.local.hosts.onix}:3002/xiro/dotfiles.nix.git";
         example = "github:user/dotfiles";
         description = "Flake URL for system auto-upgrade";
@@ -38,9 +40,9 @@ in
 
     # Repository permissions options
     repo = {
-      enable = lib.mkEnableOption "Manage /etc/nixos permissions and symlinks";
-      editorGroup = lib.mkOption {
-        type = lib.types.str;
+      enable = mkEnableOption "Manage /etc/nixos permissions and symlinks";
+      editorGroup = mkOption {
+        type = types.str;
         default = "wheel";
         example = "users";
         description = "Group that has write access to the /etc/nixos repository";
@@ -48,9 +50,9 @@ in
     };
   };
 
-  config = lib.mkIf cfg.enable {
+  config = mkIf cfg.enable {
     # Git sync configuration
-    programs.ssh = lib.mkIf cfg.sync.enable {
+    programs.ssh = mkIf cfg.sync.enable {
       extraConfig = ''
         Host github.com
           HostName github.com
@@ -65,16 +67,16 @@ in
       '';
     };
 
-    systemd.services.dotfiles-sync = lib.mkIf cfg.sync.enable {
+    systemd.services.dotfiles-sync = mkIf cfg.sync.enable {
       description = "Auto-pull changes for /etc/nixos dotfiles";
       serviceConfig = {
         Type = "oneshot";
         User = "root";
-        ExecStart = "${lib.getExe gitPullSync}";
+        ExecStart = "${getExe gitPullSync}";
       };
     };
 
-    systemd.timers.dotfiles-sync = lib.mkIf cfg.sync.enable {
+    systemd.timers.dotfiles-sync = mkIf cfg.sync.enable {
       description = "Timer for dotfiles-sync service";
       wantedBy = [ "timers.target" ];
       timerConfig = {
@@ -85,15 +87,15 @@ in
     };
 
     # Maintenance configuration
-    nix.settings.auto-optimise-store = lib.mkIf cfg.maintenance.enable true;
+    nix.settings.auto-optimise-store = mkIf cfg.maintenance.enable true;
 
-    nix.gc = lib.mkIf cfg.maintenance.enable {
+    nix.gc = mkIf cfg.maintenance.enable {
       automatic = true;
       dates = "weekly";
       options = "--delete-older-than 7d";
     };
 
-    system.autoUpgrade = lib.mkIf (cfg.maintenance.enable && cfg.maintenance.autoUpgrade) {
+    system.autoUpgrade = mkIf (cfg.maintenance.enable && cfg.maintenance.autoUpgrade) {
       enable = true;
       flake = cfg.maintenance.upgradeFlake;
       flags = [
@@ -105,24 +107,24 @@ in
       allowReboot = false;
     };
 
-    systemd.services.post-upgrade-notify = lib.mkIf (cfg.maintenance.enable && cfg.maintenance.autoUpgrade) {
+    systemd.services.post-upgrade-notify = mkIf (cfg.maintenance.enable && cfg.maintenance.autoUpgrade) {
       description = "Notify user of system upgrade";
       serviceConfig.Type = "oneshot";
       script = ''
-        ${lib.getExe' pkgs.libnotify "notify-send"} "NixOS" "System was successfully upgraded and optimized."
+        ${getExe' pkgs.libnotify "notify-send"} "NixOS" "System was successfully upgraded and optimized."
       '';
     };
 
     # Repository permissions configuration
-    system.activationScripts.repoPermissions = lib.mkIf cfg.repo.enable {
+    system.activationScripts.repoPermissions = mkIf cfg.repo.enable {
       text = ''
         chgrp -R ${cfg.repo.editorGroup} /etc/nixos
         chmod -R g+w /etc/nixos
       '';
     };
 
-    system.activationScripts.userFileOwnership = lib.mkIf cfg.repo.enable {
-      text = lib.concatMapStringsSep "\n"
+    system.activationScripts.userFileOwnership = mkIf cfg.repo.enable {
+      text = concatMapStringsSep "\n"
         (username: ''
           find /etc/nixos/home -name "${username}@*.nix" -exec chown ${username} {} +
           find /etc/nixos/home -name "${username}@*.nix" -exec chmod 644 {} +
@@ -130,7 +132,7 @@ in
         currentHostUsers;
     };
 
-    system.userActivationScripts = lib.mkIf cfg.repo.enable (builtins.listToAttrs (
+    system.userActivationScripts = mkIf cfg.repo.enable (builtins.listToAttrs (
       map
         (username: {
           name = "link-repo-${username}";

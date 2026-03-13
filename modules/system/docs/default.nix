@@ -1,21 +1,24 @@
 { config, lib, pkgs, inputs, ... }:
 
+let
+  inherit (lib) mkEnableOption mkIf mkOption types;
+in
 {
   options.local.docs = {
-    enable = lib.mkEnableOption "Enable the dotfiles documentation service";
-    port = lib.mkOption {
-      type = lib.types.port;
+    enable = mkEnableOption "Enable the dotfiles documentation service";
+    port = mkOption {
+      type = types.port;
       default = 3088;
       description = "Port to serve the documentation on.";
     };
-    package = lib.mkOption {
-      type = lib.types.package;
+    package = mkOption {
+      type = types.package;
       default = inputs.self.packages.x86_64-linux.docs-site;
       description = "The documentation package to serve.";
     };
   };
 
-  config = lib.mkIf config.local.docs.enable {
+  config = mkIf config.local.docs.enable {
     systemd.services.docs = {
       description = "Dotfiles Documentation";
       after = [ "network.target" ];

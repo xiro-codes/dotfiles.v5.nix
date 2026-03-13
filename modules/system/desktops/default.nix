@@ -1,9 +1,11 @@
 { pkgs, config, lib, inputs, ... }:
 
 let
+  inherit (lib) types;
+
   cfg = config.local.desktops;
   inherit (lib) mkOption mkIf mkForce;
-  inherit (lib.types) bool enum;
+  inherit (types) bool enum;
 in
 {
   options.local.desktops = {

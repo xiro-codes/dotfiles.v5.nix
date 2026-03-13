@@ -5,6 +5,8 @@
 }:
 
 let
+  inherit (lib) mkEnableOption mkIf mkOption types;
+
   cfg = config.local.cache;
   uploadScript = pkgs.writeShellScript "upload-to-onix" ''
     set -eu
@@ -18,22 +20,22 @@ let
 in
 {
   options.local.cache = {
-    enable = lib.mkEnableOption "cache module";
-    serverAddress = lib.mkOption {
-      type = lib.types.str;
+    enable = mkEnableOption "cache module";
+    serverAddress = mkOption {
+      type = types.str;
       default = "http://10.0.0.65:5000/?priority=1";
       example = "http://cache.example.com:8080/nixos?priority=10";
       description = "Attic binary cache server URL with optional priority parameter";
     };
-    publicKey = lib.mkOption {
-      type = lib.types.str;
+    publicKey = mkOption {
+      type = types.str;
       default = "cache.onix.home-1:/M1y/hGaD/dB8+mDfZmMdtXaWjq7XtLc1GMycddoNIE=";
       example = "cache:AbCdEf1234567890+GhIjKlMnOpQrStUvWxYz==";
       description = "Public key for cache verification";
     };
   };
 
-  config = lib.mkIf cfg.enable {
+  config = mkIf cfg.enable {
     environment.systemPackages = with pkgs; [ ];
     nix.settings = {
       post-build-hook = "${uploadScript}";

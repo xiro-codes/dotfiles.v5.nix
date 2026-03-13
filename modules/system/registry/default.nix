@@ -1,14 +1,16 @@
 { config, lib, ... }:
 
 let
+  inherit (lib) mkEnableOption mkIf;
+
   cfg = config.local.registry;
 in
 {
   options.local.registry = {
-    enable = lib.mkEnableOption "Flake registry for dotfiles";
+    enable = mkEnableOption "Flake registry for dotfiles";
   };
 
-  config = lib.mkIf cfg.enable {
+  config = mkIf cfg.enable {
     # Make dotfiles flake available as 'dotfiles' registry entry
     nix.registry.dotfiles = {
       from = {

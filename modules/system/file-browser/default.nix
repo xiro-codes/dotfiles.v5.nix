@@ -5,34 +5,36 @@
 }:
 
 let
+  inherit (lib) mkEnableOption mkIf mkOption types;
+
   cfg = config.local.file-browser;
   urlHelpers = import ../lib/url-helpers.nix { inherit config lib; };
 in
 {
   options.local.file-browser = {
-    enable = lib.mkEnableOption "Web-based file browser";
+    enable = mkEnableOption "Web-based file browser";
 
-    port = lib.mkOption {
-      type = lib.types.port;
+    port = mkOption {
+      type = types.port;
       default = 8999;
       description = "Web interface port";
     };
 
-    openFirewall = lib.mkOption {
-      type = lib.types.bool;
+    openFirewall = mkOption {
+      type = types.bool;
       default = false;
       description = "Open firewall port for File Browser";
     };
 
 
-    rootPath = lib.mkOption {
-      type = lib.types.str;
+    rootPath = mkOption {
+      type = types.str;
       default = "/media";
       description = "Root path to serve files from";
     };
   };
 
-  config = lib.mkIf cfg.enable {
+  config = mkIf cfg.enable {
     services.filebrowser = {
       enable = true;
       openFirewall = cfg.openFirewall;

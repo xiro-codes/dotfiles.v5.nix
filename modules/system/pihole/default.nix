@@ -1,22 +1,24 @@
 { config, lib, pkgs, ... }:
 let
+  inherit (lib) mkEnableOption mkIf mkOption types;
+
   cfg = config.local.pihole;
 in
 {
   options.local.pihole = {
-    enable = lib.mkEnableOption "Pi-hole DNS service";
-    dataDir = lib.mkOption {
-      type = lib.types.str;
+    enable = mkEnableOption "Pi-hole DNS service";
+    dataDir = mkOption {
+      type = types.str;
       default = "/var/lib/pihole";
       description = "Directory to store Pi-hole configuration and data.";
     };
-    adminPassword = lib.mkOption {
-      type = lib.types.str;
+    adminPassword = mkOption {
+      type = types.str;
       default = "admin";
       description = "Admin password for the Pi-hole Web UI.";
     };
   };
-  config = lib.mkIf cfg.enable {
+  config = mkIf cfg.enable {
     # Ensure the data directories exist
     systemd.tmpfiles.rules = [
       "d ${cfg.dataDir} 0777 root root -"

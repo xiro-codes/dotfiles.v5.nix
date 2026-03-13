@@ -1,13 +1,15 @@
 { pkgs, lib, config, ... }:
 let
+  inherit (lib) mkEnableOption mkIf;
+
   cfg = config.local.settings;
 in
 {
   options.local.settings = {
-    enable = lib.mkEnableOption "Basic system and Nix settings";
+    enable = mkEnableOption "Basic system and Nix settings";
   };
   
-  config = lib.mkIf cfg.enable {
+  config = mkIf cfg.enable {
     # Nix configuration
     nix.settings = {
       accept-flake-config = true;

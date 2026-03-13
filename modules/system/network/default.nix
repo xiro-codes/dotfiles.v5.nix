@@ -1,19 +1,21 @@
 { config, lib, ... }:
 
 let
+  inherit (lib) mkDefault mkEnableOption mkIf mkOption types;
+
   cfg = config.local.network;
 in
 {
   options.local.network = {
-    enable = lib.mkEnableOption "Standard system networking";
-    useNetworkManager = lib.mkOption {
-      type = lib.types.bool;
+    enable = mkEnableOption "Standard system networking";
+    useNetworkManager = mkOption {
+      type = types.bool;
       default = true;
       description = "Whether to use NetworkManager (for desktops) or just iwd/systemd (minimal).";
     };
   };
 
-  config = lib.mkIf cfg.enable {
+  config = mkIf cfg.enable {
     networking = {
       # Disable the old wpa_supplicant
       wireless.enable = false;
@@ -32,14 +34,14 @@ in
       };
 
       # Conditional NetworkManager setup
-      networkmanager = lib.mkIf cfg.useNetworkManager {
+      networkmanager = mkIf cfg.useNetworkManager {
         enable = true;
         # Force NetworkManager to use iwd as the backend
         wifi.backend = "iwd";
       };
 
       # Basic Ethernet support (DHCP) for all interfaces starting with 'e'
-      useDHCP = lib.mkDefault true;
+      useDHCP = mkDefault true;
     };
     services.avahi = {
       enable = false;

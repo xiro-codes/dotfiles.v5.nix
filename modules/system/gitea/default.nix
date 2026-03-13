@@ -5,6 +5,8 @@
 }:
 
 let
+  inherit (lib) mkDefault mkEnableOption mkIf mkOption types;
+
   cfg = config.local.gitea;
   urlHelpers = import ../lib/url-helpers.nix { inherit config lib; };
 
@@ -20,49 +22,49 @@ let
 in
 {
   options.local.gitea = {
-    enable = lib.mkEnableOption "Gitea Git service";
+    enable = mkEnableOption "Gitea Git service";
 
-    port = lib.mkOption {
-      type = lib.types.port;
+    port = mkOption {
+      type = types.port;
       default = 3001;
       description = "HTTP port for Gitea web interface";
     };
 
-    sshPort = lib.mkOption {
-      type = lib.types.port;
+    sshPort = mkOption {
+      type = types.port;
       default = 2222;
       description = "SSH port for Git operations";
     };
 
-    domain = lib.mkOption {
-      type = lib.types.str;
+    domain = mkOption {
+      type = types.str;
       default = "localhost";
       example = "git.example.com";
       description = "Domain name for Gitea instance";
     };
 
-    rootUrl = lib.mkOption {
-      type = lib.types.str;
+    rootUrl = mkOption {
+      type = types.str;
       default = "http://localhost:${toString cfg.port}/";
       example = "https://git.example.com/";
       description = "Root URL for Gitea";
     };
 
-    dataDir = lib.mkOption {
-      type = lib.types.str;
+    dataDir = mkOption {
+      type = types.str;
       default = "/var/lib/gitea";
       description = "Data directory for Gitea";
     };
 
-    openFirewall = lib.mkOption {
-      type = lib.types.bool;
+    openFirewall = mkOption {
+      type = types.bool;
       default = false;
       description = "Open firewall ports for Gitea";
     };
 
   };
 
-  config = lib.mkIf cfg.enable {
+  config = mkIf cfg.enable {
     services.gitea = {
       enable = true;
       appName = "Gitea: Git with a cup of tea";
@@ -87,7 +89,7 @@ in
         };
 
         session = {
-          COOKIE_SECURE = lib.mkDefault false;
+          COOKIE_SECURE = mkDefault false;
         };
 
         repository = {
@@ -106,7 +108,7 @@ in
       stateDir = cfg.dataDir;
     };
 
-    networking.firewall = lib.mkIf cfg.openFirewall {
+    networking.firewall = mkIf cfg.openFirewall {
       allowedTCPPorts = [ cfg.port cfg.sshPort ];
     };
   };

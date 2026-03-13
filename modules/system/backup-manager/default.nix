@@ -5,6 +5,8 @@
 }:
 
 let
+  inherit (lib) attrValues concatMap concatStringsSep filterAttrs hasPrefix mkEnableOption mkIf mkOption types unique;
+
   cfg = config.local.backup-manager;
   userSubFolders = [
     "Projects"
@@ -13,40 +15,40 @@ let
     "Videos"
     ".ssh"
   ];
-  realUsers = lib.filterAttrs
+  realUsers = filterAttrs
     (
-      name: user: user.isNormalUser && user.home != null && (lib.hasPrefix "/home/" user.home)
+      name: user: user.isNormalUser && user.home != null && (hasPrefix "/home/" user.home)
     )
     config.users.users;
-  autoUserPaths = lib.concatMap (user: map (folder: "${user.home}/${folder}") userSubFolders) (
-    lib.attrValues realUsers
+  autoUserPaths = concatMap (user: map (folder: "${user.home}/${folder}") userSubFolders) (
+    attrValues realUsers
   );
-  finalPaths = lib.unique (autoUserPaths ++ cfg.paths);
+  finalPaths = unique (autoUserPaths ++ cfg.paths);
 in
 {
   options.local.backup-manager = {
-    enable = lib.mkEnableOption "backup-manager module";
-    backupLocation = lib.mkOption {
-      type = lib.types.str;
+    enable = mkEnableOption "backup-manager module";
+    backupLocation = mkOption {
+      type = types.str;
       default = "";
       example = "/media/Backups";
       description = "Base path for borg backup repository (must be a mounted filesystem)";
     };
-    paths = lib.mkOption {
-      type = lib.types.listOf lib.types.str;
+    paths = mkOption {
+      type = types.listOf types.str;
       default = [ ];
       example = [ "/etc/nixos" "/var/lib/important" ];
       description = "Additional paths to backup beyond auto-discovered user folders (Projects, Documents, Pictures, Videos, .ssh)";
     };
-    exclude = lib.mkOption {
-      type = lib.types.listOf lib.types.str;
+    exclude = mkOption {
+      type = types.listOf types.str;
       default = [ ];
       example = [ "*/node_modules" "*/target" "*/.cache" "*.tmp" ];
       description = "Glob patterns to exclude from backups";
     };
   };
 
-  config = lib.mkIf cfg.enable {
+  config = mkIf cfg.enable {
     assertions = [
       {
         assertion = cfg.backupLocation != "";
@@ -77,7 +79,7 @@ in
     environment.etc."backup-manifest.txt".text = ''
       # Backup Manifest for ${config.networking.hostName}
       # Generated: 
-      ${lib.concatStringsSep "\n" finalPaths}
+      ${concatStringsSep "\n" finalPaths}
     '';
   };
 }

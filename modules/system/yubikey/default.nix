@@ -1,12 +1,14 @@
 { pkgs, lib, config, ... }:
 let
+  inherit (lib) mkEnableOption mkIf;
+
   cfg = config.local.yubikey;
 in
 {
   options.local.yubikey = {
-    enable = lib.mkEnableOption "YubiKey support and GPG/SSH intergration";
+    enable = mkEnableOption "YubiKey support and GPG/SSH intergration";
   };
-  config = lib.mkIf cfg.enable {
+  config = mkIf cfg.enable {
     environment.systemPackages = with pkgs; [
       yubioath-flutter
       yubikey-manager

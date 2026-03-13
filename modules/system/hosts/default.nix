@@ -1,6 +1,8 @@
 { config, lib, ... }:
 
 let
+  inherit (lib) mkOption types;
+
   cfg = config.local.hosts;
 
   # Define host mappings
@@ -35,29 +37,29 @@ let
 in
 {
   options.local.hosts = {
-    useAvahi = lib.mkOption {
-      type = lib.types.bool;
+    useAvahi = mkOption {
+      type = types.bool;
       default = false;
       description = "Whether to use Avahi/mDNS hostnames (.local) instead of raw IP addresses for local network hosts";
     };
 
     # Expose resolved addresses for other modules to use
-    onix = lib.mkOption {
-      type = lib.types.str;
+    onix = mkOption {
+      type = types.str;
       default = getHost "onix";
       readOnly = true;
       description = "Address for Onix host";
     };
 
-    ruby = lib.mkOption {
-      type = lib.types.str;
+    ruby = mkOption {
+      type = types.str;
       default = getHost "ruby";
       readOnly = true;
       description = "Address for Ruby host";
     };
 
-    sapphire = lib.mkOption {
-      type = lib.types.str;
+    sapphire = mkOption {
+      type = types.str;
       default = getHost "sapphire";
       readOnly = true;
       description = "Address for Sapphire host";

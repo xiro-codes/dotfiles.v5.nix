@@ -1,14 +1,16 @@
 { config, lib, pkgs, inputs, ... }:
 
 let
+  inherit (lib) mkEnableOption mkIf;
+
   cfg = config.local.gaming;
 in
 {
   options.local.gaming = {
-    enable = lib.mkEnableOption "Gaming optimizations";
+    enable = mkEnableOption "Gaming optimizations";
   };
 
-  config = lib.mkIf cfg.enable {
+  config = mkIf cfg.enable {
 
     # Enable Steam
     programs.steam = {

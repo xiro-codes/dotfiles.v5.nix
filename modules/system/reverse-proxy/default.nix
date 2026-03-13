@@ -5,6 +5,8 @@
 }:
 
 let
+  inherit (lib) literalExpression mapAttrs mkEnableOption mkIf mkOption types;
+
   cfg = config.local.reverse-proxy;
   onixCert = pkgs.runCommand "onix-local-cert"
     {
@@ -20,35 +22,35 @@ let
 in
 {
   options.local.reverse-proxy = {
-    enable = lib.mkEnableOption "reverse proxy with automatic HTTPS";
+    enable = mkEnableOption "reverse proxy with automatic HTTPS";
 
-    acmeEmail = lib.mkOption {
-      type = lib.types.str;
+    acmeEmail = mkOption {
+      type = types.str;
       default = "";
       example = "admin@example.com";
       description = "Email address for ACME/Let's Encrypt certificates";
     };
 
-    useACME = lib.mkOption {
-      type = lib.types.bool;
+    useACME = mkOption {
+      type = types.bool;
       default = false;
       description = "Whether to use Let's Encrypt for HTTPS (requires public domain). If false, uses self-signed certificates.";
     };
 
-    domain = lib.mkOption {
-      type = lib.types.str;
+    domain = mkOption {
+      type = types.str;
       default = "localhost";
       example = "server.example.com";
       description = "Primary domain name for the reverse proxy";
     };
 
-    openFirewall = lib.mkOption {
-      type = lib.types.bool;
+    openFirewall = mkOption {
+      type = types.bool;
       default = true;
       description = "Open firewall ports 80 and 443";
     };
-    sharedFolders = lib.mkOption {
-      type = lib.types.attrsOf lib.types.path;
+    sharedFolders = mkOption {
+      type = types.attrsOf types.path;
       default = { };
       example = {
         games = "/media/Media/games";
@@ -56,24 +58,24 @@ in
       };
       description = "Path on disk to serve at files.onix.home";
     };
-    services = lib.mkOption {
-      type = lib.types.attrsOf (lib.types.submodule {
+    services = mkOption {
+      type = types.attrsOf (types.submodule {
         options = {
 
-          target = lib.mkOption {
-            type = lib.types.str;
+          target = mkOption {
+            type = types.str;
             description = "Backend target (e.g., http://localhost:3001)";
           };
 
-          extraConfig = lib.mkOption {
-            type = lib.types.lines;
+          extraConfig = mkOption {
+            type = types.lines;
             default = "";
             description = "Extra Nginx configuration for this location";
           };
         };
       });
       default = { };
-      example = lib.literalExpression ''
+      example = literalExpression ''
         {
           gitea.target = "http://localhost:3001";
         }
@@ -82,7 +84,7 @@ in
     };
   };
 
-  config = lib.mkIf cfg.enable {
+  config = mkIf cfg.enable {
     assertions = [
       {
         assertion = cfg.useACME -> cfg.acmeEmail != "";
@@ -99,7 +101,7 @@ in
       recommendedTlsSettings = true;
       recommendedOptimisation = true;
       recommendedGzipSettings = true;
-      virtualHosts = (lib.mapAttrs
+      virtualHosts = (mapAttrs
         (name: service: {
           serverName = if name == "dashboard" then cfg.domain else "${name}.${cfg.domain}";
           forceSSL = true;
@@ -125,7 +127,7 @@ in
         })
         cfg.services)
       //
-      (lib.mapAttrs
+      (mapAttrs
         (subdomain: path: {
           serverName = "${subdomain}.${cfg.domain}";
           forceSSL = true;
@@ -143,12 +145,12 @@ in
     };
 
     # ACME configuration
-    security.acme = lib.mkIf (cfg.useACME && cfg.acmeEmail != "") {
+    security.acme = mkIf (cfg.useACME && cfg.acmeEmail != "") {
       acceptTerms = true;
       defaults.email = cfg.acmeEmail;
     };
 
     # Firewall
-    networking.firewall.allowedTCPPorts = lib.mkIf cfg.openFirewall [ 80 443 ];
+    networking.firewall.allowedTCPPorts = mkIf cfg.openFirewall [ 80 443 ];
   };
 }

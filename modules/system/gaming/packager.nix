@@ -1,5 +1,7 @@
 { pkgs, lib, ... }:
 let
+  inherit (lib) hasSuffix removeSuffix toLower;
+
   mkNativeGame = name: src: pkgs.stdenv.mkDerivation {
     inherit name src;
     nativeBuildInputs = [ pkgs.unzip ];
@@ -7,7 +9,7 @@ let
     installPhase = ''
       mkdir -p $out/bin
       cp -r * $out/
-      [ -f $out/start.sh ] && ln -s $out/start.sh $out/bin/${lib.toLower name}
+      [ -f $out/start.sh ] && ln -s $out/start.sh $out/bin/${toLower name}
     '';
 
   };
@@ -20,7 +22,7 @@ let
       mkdir -p $out/share/${name}
       cp -r * $out/share/${name}
       # Create a wrapper that runs the game in its own prefix
-      makeWrapper ${pkgs.wineWow64Packages.stable}/bin/wine $out/bin/${lib.toLower name} \
+      makeWrapper ${pkgs.wineWow64Packages.stable}/bin/wine $out/bin/${toLower name} \
         --add-flags "$out/share/${name}/app/game.exe" \
         --set WINEPREFIX "$HOME/.local/share/wineprefixes/${name}"
     '';
@@ -39,7 +41,7 @@ in
           file:
           let
             path = "${toString dir}/${file}";
-            isInstaller = lib.hasSuffix ".sh" file || lib.hasSuffix ".exe" file;
+            isInstaller = hasSuffix ".sh" file || hasSuffix ".exe" file;
             skipped = shouldSkip dir dir;
           in
           isInstaller && !shouldSkip
@@ -48,8 +50,8 @@ in
       processFile = file:
         let
           path = "${toString dir}/${file}";
-          name = lib.removeSuffix ".sh" (lib.removeSuffix ".exe" file);
-          isLinux = lib.hasSuffix ".sh" file;
+          name = removeSuffix ".sh" (removeSuffix ".exe" file);
+          isLinux = hasSuffix ".sh" file;
         in
         {
           inherit name;

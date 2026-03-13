@@ -1,6 +1,8 @@
 { config, lib, ... }:
 
 let
+  inherit (lib) filter optionals unique;
+
   hostsCfg = config.local.hosts;
 
   reverseProxyCfg = config.local.reverse-proxy;
@@ -53,9 +55,9 @@ in
         "127.0.0.1"
 
         baseDomain
-      ] ++ lib.optionals (builtins.hasAttr hostname hostsCfg) [ hostsCfg.${hostname} ]
+      ] ++ optionals (builtins.hasAttr hostname hostsCfg) [ hostsCfg.${hostname} ]
       ++ serviceSubdomains;
     in
-    lib.unique (lib.filter (x: x != "") addresses);
+    unique (filter (x: x != "") addresses);
 
 }
