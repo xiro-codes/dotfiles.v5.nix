@@ -42,6 +42,53 @@ gen-docs:
     cp -f result/system-modules.md docs/system-modules.md
     cp -f result/home-modules.md docs/home-modules.md
     @echo "✅ Documentation generated in docs/"
+# Generate docs for a single module using AI and open an editable 2-panel diff
+[group('docs')]
+gen-mod-doc modname:
+    #!/usr/bin/env bash
+    set -e
+
+    # 1. Find the module directory
+    modpath=""
+    if [ -d "modules/system/{{modname}}" ]; then
+        modpath="modules/system/{{modname}}"
+        type="system"
+    elif [ -d "modules/home/{{modname}}" ]; then
+        modpath="modules/home/{{modname}}"
+        type="home"
+    else
+        echo "❌ Error: Module '{{modname}}' not found in modules/system/ or modules/home/."
+        exit 1
+    fi
+
+    target_doc="docs/{{modname}}.md"
+    tmp_old="/tmp/old_{{modname}}.md"
+
+    # 2. Back up the existing documentation (or create empty if it's new)
+    mkdir -p docs
+    if [ -f "$target_doc" ]; then
+        cp "$target_doc" "$tmp_old"
+    else
+        touch "$tmp_old"
+    fi
+
+    echo "🤖 Generating docs for $type module: {{modname}}..."
+
+    # 3. Pipe the module code to tgpt-auth
+    cat "$modpath/default.nix" | tgpt-auth "Act as a Nix documentation generator.
+    Analyze this Nix module and create a detailed Markdown documentation file.
+    Include a title (# {{modname}}), a description of what the module does,
+    and a list of its options with types and default values.
+    be detailed this should act as a guide to refresh myself on things and keep it pretty
+    Output ONLY the markdown content." > "$target_doc"
+
+    echo "📖 Opening diff..."
+
+    # 4. Open Neovim in diff mode
+    # -R makes the left panel (old version) read-only so you don't accidentally edit the backup
+    nvim -R "$tmp_old" -d "$target_doc"
+
+    echo "✅ Finished generating and editing docs for {{modname}}"
 
 # Generate detailed markdown documentation for each module in the docs folder
 [group('docs')]
@@ -65,6 +112,7 @@ gen-mod-docs:
             fi
         done
     done
+
 # Serve docs locally and open in browser
 [group('docs')]
 serve-docs:
