@@ -1,7 +1,7 @@
 { ... }:
 {
   local = {
-    audio.enable = true;
+    pipewire-audio.enable = true;
     bluetooth.enable = true;
   };
 }

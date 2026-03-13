@@ -7,7 +7,7 @@
 let
   inherit (lib) mkEnableOption mkIf mkOption types;
 
-  cfg = config.local.cache;
+  cfg = config.local.nix-cache-client;
   uploadScript = pkgs.writeShellScript "upload-to-onix" ''
     set -eu
     # $OUT_PATHS contains a space-separated list of store paths just built
@@ -19,7 +19,7 @@ let
   '';
 in
 {
-  options.local.cache = {
+  options.local.nix-cache-client = {
     enable = mkEnableOption "cache module";
     serverAddress = mkOption {
       type = types.str;

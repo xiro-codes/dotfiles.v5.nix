@@ -35,9 +35,9 @@
 
     bootloader.recoveryUUID = "b0cd9860-736a-45c5-a6d2-e69cdb319f24";
 
-    dotfiles.maintenance.autoUpgrade = true;
+    dotfiles-sync.maintenance.autoUpgrade = true;
 
-    dotfiles.maintenance.upgradeFlake = "github:xiro-codes/dotfiles.v5.nix";
+    dotfiles-sync.maintenance.upgradeFlake = "github:xiro-codes/dotfiles.v5.nix";
 
   };
   # Ruby-specific user

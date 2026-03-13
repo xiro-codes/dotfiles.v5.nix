@@ -3,9 +3,9 @@
 let
   inherit (lib) mkEnableOption mkIf;
 
-  cfg = config.local.audio;
+  cfg = config.local.pipewire-audio;
 in {
-  options.local.audio = {
+  options.local.pipewire-audio = {
     enable = mkEnableOption "PipeWire based audio stack";
   };
 

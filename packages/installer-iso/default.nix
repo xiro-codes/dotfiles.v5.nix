@@ -4,13 +4,13 @@
   specialArgs = { inherit inputs; };
   modules = [
     #inputs.self.nixosModules.cache
-    inputs.self.nixosModules.hosts
-    inputs.self.nixosModules.settings
+    inputs.self.nixosModules.network-hosts
+    inputs.self.nixosModules.nix-core-settings
     {
       local = {
         #cache.enable = true;
-        settings.enable = true;
-        hosts.useAvahi = true;
+        nix-core-settings.enable = true;
+        network-hosts.useAvahi = true;
       };
       imports = [
         "${inputs.nixpkgs}/nixos/modules/installer/cd-dvd/installation-cd-minimal.nix"

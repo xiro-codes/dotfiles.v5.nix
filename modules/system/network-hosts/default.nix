@@ -3,7 +3,7 @@
 let
   inherit (lib) mkOption types;
 
-  cfg = config.local.hosts;
+  cfg = config.local.network-hosts;
 
   # Define host mappings
   hostDefs = {
@@ -36,7 +36,7 @@ let
     else hostname; # fallback to hostname as-is
 in
 {
-  options.local.hosts = {
+  options.local.network-hosts = {
     useAvahi = mkOption {
       type = types.bool;
       default = false;

@@ -3,12 +3,12 @@
 let
   inherit (lib) concatMapStringsSep getExe getExe' mkEnableOption mkIf mkOption types;
 
-  cfg = config.local.dotfiles;
+  cfg = config.local.dotfiles-sync;
   repoPath = "/etc/nixos";
   gitPullSync = inputs.self.packages.${pkgs.stdenv.hostPlatform.system}.git-pull-sync;
 in
 {
-  options.local.dotfiles = {
+  options.local.dotfiles-sync = {
     enable = mkEnableOption "Dotfiles management";
 
     # Git sync options
@@ -32,7 +32,7 @@ in
       };
       upgradeFlake = mkOption {
         type = types.str;
-        default = "git+http://${config.local.hosts.onix}:3002/xiro/dotfiles.nix.git";
+        default = "git+http://${config.local.network-hosts.onix}:3002/xiro/dotfiles.nix.git";
         example = "github:user/dotfiles";
         description = "Flake URL for system auto-upgrade";
       };
@@ -60,7 +60,7 @@ in
           IdentityFile /root/.ssh/github
 
         Host gitea
-          HostName ${config.local.hosts.onix}
+          HostName ${config.local.network-hosts.onix}
           User git
           Port 2222
           IdentityFile /root/.ssh/github

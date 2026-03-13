@@ -22,7 +22,7 @@ let
     (optional (cfg.media.audiobookshelf.enable) (mkPort "Audiobookshelf" cfg.media.audiobookshelf.port))
     (optional (cfg.downloads.qbittorrent.enable) (mkPort "Qbittorrent" cfg.downloads.qbittorrent.port))
     (optional (cfg.downloads.pinchflat.enable) (mkPort "Pinchflat" cfg.downloads.pinchflat.port))
-    (optional (cfg.cache-server.enable) (mkPort "Cache Server" cfg.cache-server.port))
+    (optional (cfg.harmonia-cache.enable) (mkPort "Cache Server" cfg.harmonia-cache.port))
     (optional (cfg.pihole.enable) (mkPort "PiHole DNS" 53))
     (optional (cfg.pihole.enable) (mkPort "PiHole Web" 8053))
     (optional (cfg.reverse-proxy.enable) (mkPort "Reverse Proxy HTTP" 80))

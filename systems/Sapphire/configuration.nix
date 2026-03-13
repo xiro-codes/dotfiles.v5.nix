@@ -27,7 +27,7 @@
     bootloader.recoveryUUID = "0d9dddd8-9511-4101-9177-0a80cfbeb047";
 
     # Enable auto-upgrade for Sapphire
-    dotfiles.maintenance.autoUpgrade = true;
+    dotfiles-sync.maintenance.autoUpgrade = true;
 
     # Backup dotfiles on Sapphire
     backup-manager.paths = lib.mkAfter [

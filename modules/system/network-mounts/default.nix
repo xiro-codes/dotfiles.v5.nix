@@ -59,7 +59,7 @@ in
     };
     serverIp = mkOption {
       type = types.str;
-      default = config.local.hosts.onix;
+      default = config.local.network-hosts.onix;
       example = "192.168.1.100";
       description = "IP address or hostname of SMB/CIFS server";
     };

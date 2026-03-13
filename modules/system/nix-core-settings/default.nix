@@ -2,10 +2,10 @@
 let
   inherit (lib) mkEnableOption mkIf;
 
-  cfg = config.local.settings;
+  cfg = config.local.nix-core-settings;
 in
 {
-  options.local.settings = {
+  options.local.nix-core-settings = {
     enable = mkEnableOption "Basic system and Nix settings";
   };
   

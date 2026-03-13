@@ -6,7 +6,7 @@
     yazi.enable = true;
     superfile.enable = true;
     mpd.enable = true;
-    caelestia.enable = true;
+    caelestia-shell.enable = true;
     kdeconnect.enable = true;
   };
 

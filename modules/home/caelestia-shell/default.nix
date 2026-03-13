@@ -1,7 +1,7 @@
 { config, lib, pkgs, inputs, ... }:
 
 let
-  cfg = config.local.caelestia;
+  cfg = config.local.caelestia-shell;
   checkAndShutdown = pkgs.writeShellScriptBin "check-and-shutdown" ''
     ACTION=$(${pkgs.libnotify}/bin/notify-send "Auto Shutdown" \
       "PC has been idle. Shuting down in 60 secondes." \
@@ -16,7 +16,7 @@ let
   '';
 in
 {
-  options.local.caelestia = {
+  options.local.caelestia-shell = {
     enable = lib.mkEnableOption "Caelestia shell application";
     idleMinutes = lib.mkOption { type = lib.types.int; default = 120; description = "Minutes of idle"; };
   };

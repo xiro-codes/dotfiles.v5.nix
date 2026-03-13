@@ -3,7 +3,7 @@
 let
   inherit (lib) filter optionals unique;
 
-  hostsCfg = config.local.hosts;
+  hostsCfg = config.local.network-hosts;
 
   reverseProxyCfg = config.local.reverse-proxy;
 

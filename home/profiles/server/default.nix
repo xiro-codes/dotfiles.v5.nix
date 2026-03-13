@@ -15,6 +15,6 @@
     hyprland.enable = false;
     kitty.enable = false;
     mpd.enable = false;
-    caelestia.enable = false;
+    caelestia-shell.enable = false;
   };
 }

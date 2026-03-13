@@ -81,7 +81,7 @@ in
         };
         exec-once = [
           "wl-paste --type text --watch cliphist store"
-        ] ++ lib.optionals config.local.caelestia.enable [
+        ] ++ lib.optionals config.local.caelestia-shell.enable [
           "caelestia wallpaper set $HOME/.wallpaper"
         ];
         windowrulesv2 = [

@@ -7,7 +7,7 @@
       allowedHosts = [ config.local.reverse-proxy.domain "localhost" ];
     };
     docs.enable = true;
-    cache-server = {
+    harmonia-cache = {
       enable = true;
       signKeyPath = config.sops.secrets."harmonia_key".path;
       openFirewall = true;

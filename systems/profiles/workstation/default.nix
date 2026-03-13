@@ -5,5 +5,5 @@
     ./desktop.nix
     ./software.nix
   ];
-  local.cache.enable = true;
+  local.nix-cache-client.enable = true;
 }

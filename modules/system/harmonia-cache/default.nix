@@ -7,11 +7,11 @@
 let
   inherit (lib) mkEnableOption mkIf mkOption types;
 
-  cfg = config.local.cache-server;
+  cfg = config.local.harmonia-cache;
   hostsCfg = config.local.hosts;
 in
 {
-  options.local.cache-server = {
+  options.local.harmonia-cache = {
     enable = mkEnableOption "Attic binary cache server";
 
     port = mkOption {

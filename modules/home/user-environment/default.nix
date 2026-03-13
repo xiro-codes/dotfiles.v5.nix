@@ -14,9 +14,9 @@ in
       watch = lib.mkEnableOption "enable systemd service to watch cache";
       serverAddress = lib.mkOption {
         type = lib.types.str;
-        default = "http://${config.osConfig.local.hosts.onix or "onix.local"}:8080/main";
+        default = "http://${config.osConfig.local.network-hosts.onix or "onix.local"}:8080/main";
         example = "http://cache.example.com:8080/nixos";
-        description = "Attic binary cache server URL (automatically uses host from local.hosts module)";
+        description = "Attic binary cache server URL (automatically uses host from local.network-hosts module)";
       };
       publicKey = lib.mkOption {
         type = lib.types.str;
@@ -38,11 +38,11 @@ in
       hosts = lib.mkOption {
         type = lib.types.attrsOf lib.types.str;
         default = {
-          Sapphire = config.osConfig.local.hosts.sapphire or "sapphire.local";
-          Ruby = config.osConfig.local.hosts.ruby or "ruby.local";
+          Sapphire = config.osConfig.local.network-hosts.sapphire or "sapphire.local";
+          Ruby = config.osConfig.local.network-hosts.ruby or "ruby.local";
         };
         example = { Sapphire = "sapphire.local"; Ruby = "ruby.local"; };
-        description = "Mapping of SSH host aliases to hostnames or IP addresses (automatically uses hosts from local.hosts module)";
+        description = "Mapping of SSH host aliases to hostnames or IP addresses (automatically uses hosts from local.network-hosts module)";
       };
     };
 
@@ -167,7 +167,7 @@ in
             identityFile = "~/.ssh/github";
           };
           "gitea" = {
-            hostname = config.osConfig.local.hosts.onix or "onix.local";
+            hostname = config.osConfig.local.network-hosts.onix or "onix.local";
             port = 222;
             user = "git";
             identityFile = "~/.ssh/github";

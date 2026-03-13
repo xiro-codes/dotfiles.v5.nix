@@ -10,7 +10,7 @@
   local = {
     # System settings
     disks.enable = true;
-    hosts.useAvahi = true;
+    network-hosts.useAvahi = true;
     bootloader.recoveryUUID = "017aa821-7b75-492a-98cf-1174f1b15ea1";
     secrets.keys = [
       "gemini/api_key"

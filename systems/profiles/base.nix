@@ -5,14 +5,14 @@
     #secrets.enable = lib.mkForce false;
     #cache.enable = false;
     security.enable = true;
-    dotfiles = {
+    dotfiles-sync = {
       enable = true;
       maintenance.enable = true;
       repo.enable = true;
       sync.enable = true;
     };
     userManager.enable = true;
-    settings.enable = true;
+    nix-core-settings.enable = true;
     localization.enable = true;
     network = {
       enable = true;
