@@ -72,8 +72,8 @@ in
       services =
         let
           # Check if reverse proxy is enabled to determine URL format
-          useProxy = config.local.reverse-proxy.enable or false;
-          domain = config.local.reverse-proxy.domain or "onix.local";
+          useProxy = config.local.reverse-proxy.enable;
+          domain = config.local.reverse-proxy.domain;
           # Helper to build service URL
           serviceUrl = name: port:
             if useProxy
@@ -93,81 +93,81 @@ in
           # Build service list based on what's enabled
           servicesList = flatten [
             # Documentation
-            (optional (config.local.docs.enable or false) {
+            (optional (config.local.docs.enable) {
               Docs = {
                 icon = "mdi-book-information";
-                href = serviceUrl "docs" (config.services.docs.port or 3001);
+                href = serviceUrl "docs" config.local.docs.port;
                 description = "Dotfiles Documentation";
               };
             })
 
             # Services section
-            (optional (config.local.gitea.enable or false) {
+            (optional (config.local.gitea.enable) {
               Gitea = {
                 icon = "gitea.png";
-                href = serviceUrl "git" (config.local.gitea.port or 3001);
+                href = serviceUrl "git" config.local.gitea.port;
                 description = "Self-hosted Git service";
               };
             })
-            (optional (config.local.pihole.enable or false) {
+            (optional (config.local.pihole.enable) {
               PiHole = {
                 icon = "pi-hole.png";
                 href = "${serviceUrl "pihole" 8053}/admin";
                 description = "AdBlocking and Local dns";
               };
             })
-            (optional (config.local.media.ersatztv.enable or false) {
+            (optional (config.local.media.ersatztv.enable) {
               ErsatzTV = {
                 icon = "ersatztv.png";
-                href = serviceUrl "ch7" (config.local.media.ersatztv.port or 8409);
+                href = serviceUrl "ch7" config.local.media.ersatztv.port;
                 description = "Live TV streaming";
               };
             })
           ];
 
           mediaList = flatten [
-            (optional (config.local.media.jellyfin.enable or false) {
+            (optional (config.local.media.jellyfin.enable) {
               Jellyfin = {
                 icon = "jellyfin.png";
-                href = serviceUrl "tv" (config.local.media.jellyfin.port or 8096);
+                href = serviceUrl "tv" config.local.media.jellyfin.port;
                 description = "Media server";
               };
             })
-            (optional (config.local.media.plex.enable or false) {
+            (optional (config.local.media.plex.enable) {
               Plex = {
                 icon = "plex.png";
-                href = serviceUrl "plex" (config.local.media.plex.port or 32400);
+                href = serviceUrl "plex" config.local.media.plex.port;
                 description = "Media server";
               };
             })
-            (optional (config.local.media.komga.enable or false) {
+            (optional (config.local.media.komga.enable) {
               Komga = {
                 icon = "komga.png";
-                href = serviceUrl "comics" (config.local.media.komga.port or 8080);
+                href = serviceUrl "comics" config.local.media.komga.port;
                 description = "Comic/manga server";
               };
             })
-            (optional (config.local.media.audiobookshelf.enable or false) {
+            (optional (config.local.media.audiobookshelf.enable) {
               Audiobookshelf = {
                 icon = "audiobookshelf.png";
-                href = serviceUrl "audiobooks" (config.local.media.audiobookshelf.port or 13378);
+                href = serviceUrl "audiobooks" config.local.media.audiobookshelf.port;
                 description = "Audiobook server";
               };
             })
           ];
 
           downloadList = flatten [
-            (optional (config.local.downloads.pinchflat.enable or false) {
+            (optional (config.local.downloads.pinchflat.enable) {
               Pinchflat = {
                 icon = "pinchflat.png";
-                href = serviceUrl "yt" (config.local.downloads.pinchflat.port or 8945);
+                href = serviceUrl "yt" config.local.downloads.pinchflat.port;
                 description = "YouTube downloader";
               };
             })
-            (optional (config.local.downloads.qbittorrent.enable or false) {
+            (optional (config.local.downloads.qbittorrent.enable) {
               Qbittorrent = {
                 icon = "qbittorrent.png";
-                href = serviceUrl "dl" (config.local.downloads.qbittorrent.port or 8080);
+                href = serviceUrl "dl" config.local.downloads.qbittorrent.port;
                 description = "BitTorrent client";
               };
             })

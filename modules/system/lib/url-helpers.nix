@@ -12,8 +12,8 @@ let
 
   # Base domain logic
   baseDomain =
-    if reverseProxyCfg.enable or false
-    then reverseProxyCfg.domain or (if hostsCfg.useAvahi then "${hostname}.local" else hostname)
+    if reverseProxyCfg.enable
+    then reverseProxyCfg.domain
     else if hostsCfg.useAvahi then "${hostname}.local" else hostname;
 
 in
@@ -22,7 +22,7 @@ in
 
   # Build a subdomain URL (e.g., https://dl.onix.local)
   buildSubdomainUrl = { serviceName, port }:
-    if reverseProxyCfg.enable or false
+    if reverseProxyCfg.enable
     then "https://${serviceName}.${baseDomain}"
     else "http://${baseDomain}:${toString port}";
 
@@ -30,10 +30,10 @@ in
   # Legacy helper updated for safety
   buildServiceUrl = { port, subPath ? "" }:
     let
-      protocol = if reverseProxyCfg.enable or false then "https" else "http";
+      protocol = if reverseProxyCfg.enable then "https" else "http";
 
       portSuffix =
-        if reverseProxyCfg.enable or false then "" else ":${toString port}";
+        if reverseProxyCfg.enable then "" else ":${toString port}";
 
     in
     "${protocol}://${baseDomain}${portSuffix}${subPath}";
@@ -43,7 +43,7 @@ in
     let
       # Extract service names from the reverse proxy config to allow their subdomains
       serviceSubdomains =
-        if reverseProxyCfg.enable or false
+        if reverseProxyCfg.enable
         then map (name: "${name}.${baseDomain}") (builtins.attrNames reverseProxyCfg.services)
         else [ ];
 

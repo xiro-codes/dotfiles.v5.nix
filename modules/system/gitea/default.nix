@@ -16,7 +16,7 @@ let
   }) + "/";
 
   actualDomain =
-    if (config.local.reverse-proxy.enable or false)
+    if (config.local.reverse-proxy.enable)
     then "git.${urlHelpers.baseDomain}"
     else urlHelpers.baseDomain;
 in

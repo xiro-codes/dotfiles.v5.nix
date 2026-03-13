@@ -5,7 +5,7 @@ let
 
   cfg = config.local.bluetooth;
   # Check if the audio module is enabled elsewhere in the system config
-  audioEnabled = config.local.audio.enable or false;
+  audioEnabled = config.local.audio.enable;
   plasmaEnabled = config.services.desktopManager.plasma6.enable;
 in
 {
