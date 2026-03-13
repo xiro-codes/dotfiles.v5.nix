@@ -47,9 +47,13 @@ in
       default = true;
       description = "Open firewall ports 80 and 443";
     };
-    sharedFolder = lib.mkOption {
-      type = lib.types.nullOr lib.types.path;
-      default = null;
+    sharedFolders = lib.mkOption {
+      type = lib.types.attrsOf lib.types.path;
+      default = { };
+      example = {
+        games = "/media/Media/games";
+        wallpapers = "/media/Media/wallpapers";
+      };
       description = "Path on disk to serve at files.onix.home";
     };
     services = lib.mkOption {
@@ -119,21 +123,23 @@ in
             '';
           };
         })
-        cfg.services) // (lib.optionalAttrs (cfg.sharedFolder != null) {
-        "files" = {
-          serverName = "files.onix.home";
+        cfg.services)
+      //
+      (lib.mapAttrs
+        (subdomain: path: {
+          serverName = "${subdomain}.${cfg.domain}";
           forceSSL = true;
           sslCertificate = "${onixCert}/onix.crt";
           sslCertificateKey = "${onixCert}/onix.key";
           locations."/" = {
             extraConfig = ''
-              root ${cfg.sharedFolder};
+              root ${path};
               autoindex on;
               allow all;
             '';
           };
-        };
-      });
+        })
+        cfg.sharedFolders);
     };
 
     # ACME configuration

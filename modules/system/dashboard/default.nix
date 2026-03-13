@@ -15,6 +15,7 @@ let
 
   # Auto-configure allowed hosts
   autoAllowedHosts = urlHelpers.getAllowedHosts;
+  proxyCfg = config.local.reverse-proxy;
 in
 {
   options.local.dashboard = {
@@ -55,6 +56,7 @@ in
             style = "row";
             columns = 3;
           };
+          "Shared Folders" = { style = "row"; columns = 3; };
           Media = {
             style = "row";
             columns = 3;
@@ -76,6 +78,16 @@ in
             then "http://${name}.${domain}"
             else "http://${domain}:${toString port}";
 
+          sharedFoldersList = lib.mapAttrsToList
+            (subdomain: path: {
+              "${subdomain}" = {
+                icon = "mdi-folder-network";
+                href = if useProxy then "http://${subdomain}.${domain}" else "#";
+                description = "Static files from ${path}";
+              };
+            })
+            (proxyCfg.sharedFolders or { });
+
           # Build service list based on what's enabled
           servicesList = lib.flatten [
             # Documentation
@@ -88,13 +100,6 @@ in
             })
 
             # Services section
-            (lib.optional (config.local.reverse-proxy.sharedFolder != null) {
-              Files = {
-                icon = "filebrowser.png";
-                href = serviceUrl "files" (config.local.file-browser.port or 8082);
-                description = "Web File Browser";
-              };
-            })
             (lib.optional (config.local.gitea.enable or false) {
               Gitea = {
                 icon = "gitea.png";
@@ -168,6 +173,7 @@ in
         in
         lib.filter (x: x != { }) [
           (lib.mkIf (servicesList != [ ]) { Services = servicesList; })
+          (lib.mkIf (sharedFoldersList != [ ]) { "Shared Folders" = sharedFoldersList; })
           (lib.mkIf (mediaList != [ ]) { Media = mediaList; })
           (lib.mkIf (downloadList != [ ]) { Downloads = downloadList; })
         ];

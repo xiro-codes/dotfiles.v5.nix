@@ -12,7 +12,12 @@
       # Domain auto-configured from Avahi: hostname.local
       useACME = false; # Self-signed for .local domains
       domain = "${lib.strings.toLower config.networking.hostName}.home";
-      sharedFolder = "/media/Media/games";
+      sharedFolders = {
+        files = "/media/Media/games";
+        wallpapers = "/media/Media/wallpapers";
+        games = "/media/Media/games";
+      };
+
       services = {
         dashboard.target = "http://localhost:${toString config.local.dashboard.port}";
 
