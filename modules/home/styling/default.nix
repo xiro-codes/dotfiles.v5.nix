@@ -2,6 +2,11 @@
 
 let
   cfg = config.local;
+  remoteWallpaper = { wallpaper, sha256 }: pkgs.fetchurl {
+    url = "https://wallpapers.onix.home/${wallpaper}";
+    inherit sha256;
+    curlOptsList = [ "-X" "GET" "--insecure" ];
+  };
 in
 {
   options.local = {
@@ -32,11 +37,14 @@ in
     # Stylix
     (lib.mkIf cfg.stylix.enable {
       # Create .wallpaper symlink in home directory
-      home.file.".wallpaper".source = ./Wallpapers/metafor.jpg;
+      home.file.".wallpaper".source = remoteWallpaper {
+        wallpaper = "metafor.jpg";
+        sha256 = "sha256-DNXaKG61TSyu5DeWVCyKmBBL1h/kF+tHjUseVY9Wl+o=";
+      };
 
       stylix = {
         enable = true;
-        image = ./Wallpapers/metafor.jpg;
+        image = remoteWallpaper { wallpaper = "metafor.jpg"; sha256 = "sha256-DNXaKG61TSyu5DeWVCyKmBBL1h/kF+tHjUseVY9Wl+o="; };
         cursor = {
           package = pkgs.bibata-cursors;
           name = "Bibata-Modern-Ice";
