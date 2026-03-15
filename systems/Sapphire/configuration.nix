@@ -5,8 +5,8 @@
     ./disko.nix
     ./hardware-configuration.nix
     ../profiles/base.nix
-    ../profiles/workstation
-    ../profiles/workstation/jovian.nix
+    #../profiles/workstation
+    #../profiles/workstation/jovian.nix
     ../profiles/limine-uefi.nix
     ../profiles/client.nix
   ];
@@ -14,7 +14,8 @@
   # Sapphire-specific configuration
   local = {
     # Secrets specific to Sapphire
-    desktops.displayManager = "sddm";
+    ollama.enable = true;
+    #desktops.displayManager = "sddm";
     secrets.keys = [
       "gemini/api_key"
       "ssh_pub_sapphire/master"
