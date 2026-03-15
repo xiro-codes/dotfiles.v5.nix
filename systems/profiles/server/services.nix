@@ -9,7 +9,7 @@
     docs.enable = true;
     harmonia-cache = {
       enable = true;
-      signKeyPath = config.sops.secrets."harmonia_key".path;
+      signKeyPaths = [ config.sops.secrets."harmonia_key".path ];
       openFirewall = true;
     };
     # Git service

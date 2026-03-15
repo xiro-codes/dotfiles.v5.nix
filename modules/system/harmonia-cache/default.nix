@@ -24,17 +24,17 @@ in
       default = false;
       description = "open firewall";
     };
-    signKeyPath = mkOption {
-      type = types.path;
-      default = "";
-      description = "secret key path";
+    signKeyPaths = mkOption {
+      type = types.listOf types.path;
+      default = [ ];
+      description = "secret key paths";
     };
   };
 
   config = mkIf cfg.enable {
     services.harmonia = {
       enable = true;
-      signKeyPath = cfg.signKeyPath;
+      signKeyPaths = cfg.signKeyPaths;
     };
 
     networking.firewall.allowedTCPPorts = mkIf cfg.openFirewall [ cfg.port ];

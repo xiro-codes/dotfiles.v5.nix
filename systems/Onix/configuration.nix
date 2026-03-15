@@ -33,5 +33,7 @@
     initialPassword = "rockman";
   };
 
+  boot.swraid.mdadmConf = "MAILADDR root";
+
   system.stateVersion = "25.11";
 }
