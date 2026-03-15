@@ -30,7 +30,7 @@ in {
     environment.systemPackages = with pkgs; [
       pulsemixer # CLI mixer
       pavucontrol # GUI mixer
-      helvum # Patchbay for PipeWire
+      crosspipe # Patchbay for PipeWire
     ];
   };
 }

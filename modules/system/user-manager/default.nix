@@ -3,8 +3,6 @@ let
   inherit (lib) any genAttrs mkEnableOption mkIf mkOption types;
 
   cfg = config.local.userManager;
-  anyUserUsesFish = any (u: config.users.users.${u}.shell == pkgs.fish)
-    currentHostUsers;
 in
 {
   options.local.userManager = {
@@ -23,6 +21,7 @@ in
       isNormalUser = true;
       extraGroups = cfg.extraGroups;
     });
-    programs.fish.enable = mkIf anyUserUsesFish true;
+
+    programs.fish.enable = true;
   };
 }
