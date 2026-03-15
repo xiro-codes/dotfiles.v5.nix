@@ -4,7 +4,8 @@ let
   inherit (lib) mkEnableOption mkIf;
 
   cfg = config.local.pipewire-audio;
-in {
+in
+{
   options.local.pipewire-audio = {
     enable = mkEnableOption "PipeWire based audio stack";
   };
@@ -30,7 +31,7 @@ in {
     environment.systemPackages = with pkgs; [
       pulsemixer # CLI mixer
       pavucontrol # GUI mixer
-      crosspipe # Patchbay for PipeWire
+      #crosspipe # Patchbay for PipeWire
     ];
   };
 }
