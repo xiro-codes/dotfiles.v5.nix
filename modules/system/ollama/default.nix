@@ -11,14 +11,11 @@ in
   config = mkIf (cfg.enable) {
     services.ollama = {
       enable = true;
+      openFirewall = true;
       package = pkgs.ollama-vulkan;
     };
     hardware.graphics = {
       enable = true;
-      extraPackages = with pkgs; [
-        amdvlk
-        rocm-opencl-icd
-      ];
     };
   };
 }
