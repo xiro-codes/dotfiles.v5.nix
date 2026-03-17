@@ -208,10 +208,17 @@ boot:
 
 # Install a system from scratch using disko
 [group('install')]
-install host:
+install-local host:
     nix run github:nix-community/disko -- --mode disko --flake .#{{host}}
     mkdir -p /mnt/etc/nixos
     git clone http://10.0.0.65:3002/xiro/dotfiles.nix /mnt/etc/nixos
+    nixos-install --flake .#{{host}} --impure
+
+[group('install')]
+install-remote host:
+    nix run github:nix-community/disko -- --mode disko --flake .#{{host}}
+    mkdir -p /mnt/etc/nixos
+    git clone https://github.com/xiro-codes/dotfiles.v5.nix /mnt/etc/nixos
     nixos-install --flake .#{{host}} --impure
 
 # Quick fix for a borked system (assumes standard labels)
