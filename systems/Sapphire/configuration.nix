@@ -5,8 +5,6 @@
     ./disko.nix
     ./hardware-configuration.nix
     ../profiles/base.nix
-    #../profiles/workstation
-    #../profiles/workstation/jovian.nix
     ../profiles/limine-uefi.nix
     ../profiles/client.nix
   ];
@@ -15,7 +13,14 @@
   local = {
     # Secrets specific to Sapphire
     ollama.enable = true;
-    #desktops.displayManager = "sddm";
+    reverse-proxy = {
+      enable = true;
+      useACME = false;
+      domain = "${lib.strings.toLower config.networking.hostName}.home";
+      services = {
+        ai.target = "http://localhost:${toString config.ollama.port}";
+      };
+    };
     secrets.keys = [
       "gemini/api_key"
       "ssh_pub_sapphire/master"

@@ -7,11 +7,17 @@ in
 {
   options.local.ollama = {
     enable = mkEnableOption "Ollama vulkan setup";
+    port = mkOption {
+      type = types.port;
+      default = 8080;
+      description = "HTTP port for open webui";
+    };
   };
   config = mkIf (cfg.enable) {
     services = {
       open-webui = {
         enable = true;
+        port = cfg.port;
         openFirewall = true;
       };
 
