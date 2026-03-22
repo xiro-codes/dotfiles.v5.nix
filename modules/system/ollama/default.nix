@@ -19,6 +19,7 @@ in
         enable = true;
         openFirewall = true;
         package = pkgs.ollama-vulkan;
+        syncModels = true;
         loadModels = [
           "qwen3"
         ];
