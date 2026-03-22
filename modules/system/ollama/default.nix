@@ -9,10 +9,20 @@ in
     enable = mkEnableOption "Ollama vulkan setup";
   };
   config = mkIf (cfg.enable) {
-    services.ollama = {
-      enable = true;
-      openFirewall = true;
-      package = pkgs.ollama-vulkan;
+    services = {
+      open-webui = {
+        enable = true;
+        openFirewall = true;
+      };
+
+      ollama = {
+        enable = true;
+        openFirewall = true;
+        package = pkgs.ollama-vulkan;
+        loadModels = [
+          "qwen3"
+        ];
+      };
     };
     hardware.graphics = {
       enable = true;
