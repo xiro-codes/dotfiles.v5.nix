@@ -18,7 +18,7 @@
       useACME = false;
       domain = "${lib.strings.toLower config.networking.hostName}.home";
       services = {
-        ai.target = "http://localhost:${toString config.ollama.port}";
+        ai.target = "http://localhost:${toString config.local.ollama.port}";
       };
     };
     secrets.keys = [
