@@ -27,9 +27,19 @@ in
         enable = true;
         port = cfg.webui.port;
         openFirewall = true;
-      };
-      hardware.graphics = {
-        enable = true;
+        enviroment = {
+          "REQUESTS_VERIFY" = false;
+          # Disables SSL verification for 'aiohttp' (internal connections)
+          "AIOHTTP_CLIENT_SESSION_SSL" = "False";
+
+          # If you use a tool server, disable it there too
+          "AIOHTTP_CLIENT_SESSION_TOOL_SERVER_SSL" = "False";
+
+          # Recommended: If you've already run Open WebUI, it might have 
+          # cached old settings in its database. This forces it to 
+          # respect your Nix config on every boot.
+          "ENABLE_PERSISTENT_CONFIG" = "False";
+        };
       };
     })
     (lib.mkIf (cfg.ollama.enable) {
@@ -43,6 +53,9 @@ in
         loadModels = [
           "qwen3"
         ];
+      };
+      hardware.graphics = {
+        enable = true;
       };
     })
   ];

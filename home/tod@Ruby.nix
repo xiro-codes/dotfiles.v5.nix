@@ -5,7 +5,6 @@
   ];
   home.packages = with pkgs; [
     godot
-    crush
   ];
   programs.starship = {
     enable = true;
