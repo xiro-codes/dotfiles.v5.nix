@@ -38,7 +38,7 @@ in
         openFirewall = true;
         port = cfg.ollama.port;
         package = pkgs.ollama-vulkan;
-        host = "*";
+        host = "0.0.0.0";
         syncModels = true;
         loadModels = [
           "qwen3"
