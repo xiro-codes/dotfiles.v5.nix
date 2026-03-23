@@ -19,7 +19,7 @@ This profile configures a system to be a client of the server. It sets up backup
 This profile is now a collection of modules that provide services for a server. It is located in `systems/profiles/server`. The modules are:
 - **`default.nix`**: Imports all other server modules.
 - **`media.nix`**: Configures media services like Jellyfin and Plex.
-- **`networking.nix`**: Configures networking services like Pi-hole and the reverse proxy.
+- **`networking.nix`**: Configures networking services like Pi-hole and the reverse proxy. Sets up base domain routing for services (e.g., `dashboard.<host>.home`, `tv.<host>.home`, `git.<host>.home`, `pihole.<host>.home`, etc.).
 - **`services.nix`**: Configures other services like Gitea and a file browser.
 - **`sharing.nix`**: Configures file sharing services like Samba.
 

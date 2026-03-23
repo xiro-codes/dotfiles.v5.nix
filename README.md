@@ -60,10 +60,11 @@ This repository utilizes a modular discovery engine (`parts/discovery/`) that sc
 
 ### [**Sapphire**](./systems/Sapphire/configuration.nix)
 
-* **Role**: Secondary Workstation
+* **Role**: AI Services & Secondary Workstation
 * **IP**: 10.0.0.67
 * **Bootloader**: UEFI with **Limine**
-* **Key Features**: Remote mount configuration connecting to a central server (10.0.0.65).
+* **Key Features**: Local LLM and AI services (Ollama, Open WebUI), remote mounts.
+* **Hosted Domains**: `ui.sapphire.home`, `ai.sapphire.home`
 
 ### [**Onix**](./systems/Onix/configuration.nix)
 
@@ -71,6 +72,7 @@ This repository utilizes a modular discovery engine (`parts/discovery/`) that sc
 * **IP**: 10.0.0.65
 * **Bootloader**: UEFI with **systemd-boot**
 * **Key Features**: Central file server, Gitea instance, media server, and Pi-hole.
+* **Hosted Domains**: `dashboard.onix.home`, `git.onix.home`, `tv.onix.home`, `plex.onix.home`, `ch7.onix.home`, `comics.onix.home`, `audiobooks.onix.home`, `dl.onix.home`, `yt.onix.home`, `pihole.onix.home`, `docs.onix.home`, `cache.onix.home`
 
 ## **🛠️ Key Modules & Features**
 
