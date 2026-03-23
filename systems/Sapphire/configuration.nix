@@ -12,13 +12,17 @@
   # Sapphire-specific configuration
   local = {
     # Secrets specific to Sapphire
-    ollama.enable = true;
+    ai = {
+      ollama.enable = true;
+      webui.enable = true;
+    };
     reverse-proxy = {
       enable = true;
       useACME = false;
       domain = "${lib.strings.toLower config.networking.hostName}.home";
       services = {
-        ai.target = "http://localhost:${toString config.local.ollama.port}";
+        ui.target = "http://localhost:${toString config.local.ai.webui.port}";
+        ai.target = "http://localhost:${toString config.local.ai.ollama.port}";
       };
     };
     secrets.keys = [
