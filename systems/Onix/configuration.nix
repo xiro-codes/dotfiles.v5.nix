@@ -12,6 +12,9 @@
     disks.enable = true;
     network-hosts.useAvahi = true;
     bootloader.recoveryUUID = "017aa821-7b75-492a-98cf-1174f1b15ea1";
+    docs.enable = lib.mkForce false;
+    media.jellyfin.enable = lib.mkForce false;
+    media.ersatztv.enable = lib.mkForce false;
     secrets.keys = [
       "gemini/api_key"
       "ssh_pub_ruby/master"
