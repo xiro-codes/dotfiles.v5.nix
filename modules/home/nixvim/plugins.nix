@@ -56,7 +56,7 @@ in
   };
 
   neo-tree.enable = true;
-  lsp-signature-help.enable = true;
+  #lsp-signature-help.enable = true;
   friendly-snippets.enable = false;
   luasnip.enable = false;
 
