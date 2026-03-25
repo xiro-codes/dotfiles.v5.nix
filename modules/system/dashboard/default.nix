@@ -54,7 +54,6 @@ in
         title = "Home Server Dashboard";
         theme = "dark";
         color = "emerald";
-        background = "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?ixlib=rb-4.0.3&auto=format&fit=crop&w=2073&q=80";
 
         layout = {
           Services = {
@@ -111,6 +110,7 @@ in
                   icon = "mdi-brain";
                   href = "http://ui.sapphire.home";
                   description = "LLM Interface on Sapphire";
+                  siteMonitor = "http://ui.sapphire.home";
                 };
               }
             ]
