@@ -12,7 +12,7 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v4
       - name: Install Nix
-        uses: https://github.com/cachix/install-nix-action@v25
+        uses: cachix/install-nix-action@v25
         with:
           nix_path: nixpkgs=channel:nixos-unstable
 
@@ -23,12 +23,12 @@ jobs:
           echo "ISO_FILE=$(cat iso_path.txt)/iso/*.iso" >> $GITHUB_ENV
 
       - name: Create Release and Upload ISO
-        uses: https://gitea.com/actions/gitea-release-action@v1
+        uses: softprops/action-gh-release@v2
         with:
           files: ${{ env.ISO_FILE }}
-          name: "ISO Release - ${{ gitea.sha }}"
-          tag_name: "v${{ gitea.run_number }}"
+          name: "ISO Release - ${{ github.sha }}"
+          tag_name: "v${{ github.run_number }}"
           draft: false
           prerelease: false
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # Gitea automatically provides this
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

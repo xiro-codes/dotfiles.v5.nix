@@ -84,20 +84,6 @@ in
         ] ++ lib.optionals config.local.caelestia-shell.enable [
           "caelestia wallpaper set $HOME/.wallpaper"
         ];
-        windowrulesv2 = [
-          "focusonactivate, class:^(steam_app_.*)$"
-          "float, class:^(steam)$, title:^(Friends List)$"
-          "float, class:^(steam)$, title:^(Steam - News)$"
-          "float, class:^(steam)$, title:^([Ss]ettings)$"
-          "float, class:^(steam)$, title:^(.* - Chat)$"
-          "float, class:^(steam)$, title:^(Contents)$"
-          "float, class:^(steam)$, title:^(Video Player)$"
-          "float, initialclass:^(org.pulseaudio.pavucontrol)$"
-          "float, initialclass:^(org.gnome.nautilus)$"
-          "float, initialclass:^(discord)$"
-          "idleinhibit always, class:^(steamapp_(default|[0-9]+)|gamescope|.*)$, fullscreen:1"
-          "idleinhibit always, fullscreen:1"
-        ];
         "$mod" = "SUPER";
 
         bind = [
