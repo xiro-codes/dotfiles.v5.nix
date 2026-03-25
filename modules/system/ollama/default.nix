@@ -28,7 +28,7 @@ in
         port = cfg.webui.port;
         openFirewall = true;
         environment = {
-          "REQUESTS_VERIFY" = false;
+          "REQUESTS_VERIFY" = "False";
           # Disables SSL verification for 'aiohttp' (internal connections)
           "AIOHTTP_CLIENT_SESSION_SSL" = "False";
 
