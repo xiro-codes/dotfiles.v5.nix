@@ -21,7 +21,7 @@ in
     };
     displayManager = mkOption {
       type = enum [ "sddm" "gdm" "ly" "none" "dms" ];
-      default = "dms";
+      default = "ly";
       description = "The display manager to use";
     };
     hyprland = mkOption {
@@ -72,18 +72,12 @@ in
         wayland.enable = true;
       };
       gdm.enable = cfg.displayManager == "gdm";
-      dms-greeter = mkIf (cfg.displayManager == "dms") {
-        enable = true;
-        compositor.name = "hyprland";
-      };
     };
 
     # Desktop Selection logic using inputs from your flake
     programs.hyprland = mkIf cfg.hyprland {
       enable = true;
       withUWSM = false;
-      package = inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.hyprland;
-      portalPackage = inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.xdg-desktop-portal-hyprland;
     };
 
     # Niri Support
