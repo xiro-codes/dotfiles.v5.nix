@@ -105,6 +105,15 @@ in
             })
 
             # Services section
+            [
+              {
+                "Open WebUI" = {
+                  icon = "mdi-brain";
+                  href = "http://ui.sapphire.home";
+                  description = "LLM Interface on Sapphire";
+                };
+              }
+            ]
             (optional (config.local.gitea.enable) {
               Gitea = {
                 icon = "gitea.png";
@@ -184,6 +193,21 @@ in
         ];
 
       widgets = [
+        {
+          search = {
+            provider = "duckduckgo";
+            target = "_blank";
+          };
+        }
+        {
+          datetime = {
+            text_size = "xl";
+            format = {
+              timeStyle = "short";
+              dateStyle = "short";
+            };
+          };
+        }
         {
           resources = {
             cpu = true;
