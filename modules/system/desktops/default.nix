@@ -1,31 +1,43 @@
-{ pkgs, config, lib, ... }:
+{ pkgs, config, lib, inputs, ... }:
 
 let
+  inherit (lib) types;
+
   cfg = config.local.desktops;
   inherit (lib) mkOption mkIf mkForce;
-  inherit (lib.types) bool;
+  inherit (types) bool enum;
 in
 {
   options.local.desktops = {
     enable = mkOption {
       type = bool;
       default = false;
+      description = "Enable desktop environment support";
     };
     enableEnv = mkOption {
       type = bool;
       default = true;
+      description = "Enable Wayland environment variables";
+    };
+    displayManager = mkOption {
+      type = enum [ "sddm" "gdm" "ly" "none" "dms" ];
+      default = "ly";
+      description = "The display manager to use";
     };
     hyprland = mkOption {
       type = bool;
       default = false;
+      description = "Enable Hyprland compositor";
     };
     niri = mkOption {
       type = bool;
       default = false;
+      description = "Enable Niri compositor";
     };
     plasma6 = mkOption {
       type = bool;
       default = false;
+      description = "Enable KDE Plasma 6 desktop environment";
     };
   };
 
@@ -53,14 +65,13 @@ in
       _JAVA_OPTIONS = "-Dawt.useSystemAAFontSettings=on";
       WARP_ENABLE_WAYLAND = "1";
     };
-
-    services.displayManager.ly = {
-      enable = true;
-      settings = {
-        animation = "matrix";
-        restore = true;
-        save = true;
+    services.displayManager = mkIf (cfg.displayManager != "none") {
+      ly.enable = cfg.displayManager == "ly";
+      sddm = mkIf (cfg.displayManager == "sddm") {
+        enable = true;
+        wayland.enable = true;
       };
+      gdm.enable = cfg.displayManager == "gdm";
     };
 
     # Desktop Selection logic using inputs from your flake

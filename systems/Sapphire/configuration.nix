@@ -1,67 +1,55 @@
-# Edit this configuration file to define what should be installed on
-# your system.  Help is available in the configuration.nix(5) man page
-# and in the NixOS manual (accessible by running ‘nixos-help’).
-
-{ config, pkgs, ... }:
+{ lib, config, pkgs, ... }:
 
 {
   imports = [
+    ./disko.nix
     ./hardware-configuration.nix
+    ../profiles/base.nix
+    ../profiles/limine-uefi.nix
+    ../profiles/client.nix
   ];
 
+  # Sapphire-specific configuration
   local = {
-    cache.enable = true;
-
-    bootloader = {
-      mode = "uefi";
-      uefiType = "systemd-boot";
+    # Secrets specific to Sapphire
+    ai = {
+      ollama.enable = true;
+      webui.enable = true;
     };
-    maintenance = {
+    reverse-proxy = {
       enable = true;
-      autoUpgrade = true;
+      useACME = false;
+      domain = "${lib.strings.toLower config.networking.hostName}.home";
+      services = {
+        ui.target = "http://localhost:${toString config.local.ai.webui.port}";
+        ai.target = "http://localhost:${toString config.local.ai.ollama.port}";
+      };
     };
+    secrets.keys = [
+      "gemini/api_key"
+      "ssh_pub_sapphire/master"
+      "ssh_pub_ruby/master"
+      "ssh_pub_onix/master"
+      "onix_creds"
+    ];
 
-    desktops = {
-      enable = true;
-      enableEnv = true;
-      hyprland = true;
-      plasma6 = false;
-    };
-    #backupManager.enable = true;
-    userManager.enable = true;
-    repoManager.enable = true;
-    shareManager = {
-      enable = true;
-      serverIp = "10.0.0.65";
-      mounts = [
-        { shareName = "Music"; localPath = "/mnt/zima/Music"; }
-      ];
-    };
+    # Sapphire-specific bootloader UUID
+    bootloader.recoveryUUID = "0d9dddd8-9511-4101-9177-0a80cfbeb047";
 
-    gitSync.enable = true;
+    # Enable auto-upgrade for Sapphire
+    dotfiles-sync.maintenance.autoUpgrade = true;
 
-    bluetooth.enable = true;
-    audio.enable = true;
-    gaming.enable = true;
-    settings.enable = true;
-    network = {
-      enable = true;
-      useNetworkManager = true;
-    };
-
+    # Backup dotfiles on Sapphire
+    backup-manager.paths = lib.mkAfter [
+      "/etc/nixos/"
+    ];
   };
-  services.sshd.enable = true;
-  users.users.tod.shell = pkgs.fish;
-  programs.firefox.enable = true;
-  programs.git = {
-    enable = true;
-    config = {
-      safe.directory = "/etc/nixos";
-    };
+
+  # Sapphire-specific user
+  users.users.tod = {
+    shell = pkgs.fish;
+    initialPassword = "rockman";
   };
-  environment.systemPackages = [
-    pkgs.attic-client
-  ];
   system.stateVersion = "25.11"; # Did you read the comment?
 
 }

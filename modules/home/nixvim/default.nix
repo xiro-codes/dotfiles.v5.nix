@@ -1,129 +1,65 @@
-{ pkgs, config, lib, ... }:
+{ pkgs
+, config
+, lib
+, ...
+}:
 let
   cfg = config.local.nixvim;
   inherit (lib) mkOption mkIf types;
 in
 {
   options.local.nixvim = {
-    enable = mkOption { type = types.bool; default = false; };
-    rust = mkOption { type = types.bool; default = false; };
-    python = mkOption { type = types.bool; default = false; };
-    javascript = mkOption { type = types.bool; default = false; };
+    enable = mkOption {
+      type = types.bool;
+      default = false;
+      description = "Enable nixvim configuration";
+    };
+    rust = mkOption {
+      type = types.bool;
+      default = false;
+      description = "Enable Rust language support";
+    };
+    smartUndo = mkOption {
+      type = types.bool;
+      default = true;
+      description = "Enable persistent undo with smart directory management";
+    };
   };
   config = mkIf cfg.enable {
     home.packages = with pkgs; [
       nixpkgs-fmt
-      rustfmt
-      black
       neovide
+      lazygit
     ];
-    programs.nixvim = {
-      enable = true;
-      defaultEditor = true;
-      globals.mapleader = ";";
-      opts = {
-        number = true;
-        relativenumber = true;
-        shiftwidth = 2;
-        tabstop = 2;
-        expandtab = true;
-        smartindent = true;
-        cursorline = true;
-        scrolloff = 8;
-        termguicolors = true;
-      };
-      colorschemes.base16 = {
+    programs.nixvim =
+      let
+        baseOptions = import ./options.nix { inherit config lib; };
+        dashboard = import ./dashboard.nix { };
+        plugins = import ./plugins.nix { inherit pkgs config lib; };
+        keymaps = import ./keymaps.nix { inherit pkgs config lib; };
+      in
+      {
         enable = true;
-        setUpDefault = true;
+        defaultEditor = true;
+        #colorscheme = lib.mkForce null;
+        inherit (baseOptions) globals opts extraConfigLua;
+        inherit keymaps;
+        files."ftplugin/gdscript.lua" = {
+          options = {
+            expandtab = false;
+            shiftwidth = 4;
+            tabstop = 4;
+          };
+        };
+        plugins = plugins // {
+          alpha = dashboard;
+        };
+
+        extraPackages = with pkgs; [
+          ripgrep
+          fd
+          gcc # For treesitter builds
+        ];
       };
-      # opts.guifont = "Cascadia Code:h13";
-
-      keymaps = [
-        { mode = "n"; key = "gg=G"; action = "<cmd>lua vim.lsp.buf.format()<CR>"; options = { silent = true; desc = "format whole file"; }; }
-        { mode = "n"; key = "rp"; action = "<cmd>split | term cargo run<CR>i"; options.desc = "Cargo Run Project"; }
-        { mode = "n"; key = "rb"; action = "<cmd>split | term cargo build<CR>i"; options.desc = "Cargo Build Project"; }
-      ];
-      plugins = {
-        toggleterm = {
-          enable = true;
-          settings = {
-            open_mapping = "[[<C-t>]]";
-            derection = "float";
-            float_opts = {
-              border = "curved";
-              winblend = 3;
-            };
-            start_in_insert = true;
-            terminal_mappings = true;
-            insert_mappings = true;
-          };
-        };
-        neovide = {
-          enable = true;
-          settings = {
-            confirm_quit = true;
-            cursor_animation_length = 0.15;
-            font = "Cascadia Code:h13";
-            cursor_vfx_mode = "railgun";
-            cursor_vfx_particle_speed = 10.0;
-            refresh_rate = 75;
-            rember_window_size = true;
-            maximized = false;
-          };
-        };
-        conform-nvim = {
-          enable = true;
-          settings = {
-            formatters_by_ft = {
-              nix = [ "nixpkgs_fmt" ];
-              rust = [ "rustfmt" ];
-              python = [ "black" ];
-              "_" = [ "trim_whitespace" ];
-            };
-            format_on_save = {
-              lspFallback = true;
-              timeoutMs = 500;
-            };
-          };
-        };
-        lualine.enable = true;
-        neo-tree.enable = true;
-        telescope.enable = true;
-        which-key.enable = true;
-        web-devicons.enable = true;
-        treesitter = {
-          enable = true;
-          nixGrammars = true;
-          settings.highlight.enable = true;
-        };
-        lsp = {
-          enable = true;
-          servers = {
-            nil_ls.enable = true;
-            rust_analyzer = {
-              enable = true;
-              installRustc = false;
-              installCargo = false;
-            };
-          };
-        };
-        cmp = {
-          enable = true;
-          settings.sources = [
-            { name = "nvim_lsp"; }
-            { name = "path"; }
-            { name = "buffer"; }
-          ];
-        };
-
-      };
-
-
-      extraPackages = with pkgs; [
-        ripgrep
-        fd
-        gcc # For treesitter builds
-      ];
-    };
   };
 }

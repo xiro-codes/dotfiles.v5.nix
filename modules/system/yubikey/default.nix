@@ -1,0 +1,39 @@
+{ pkgs, lib, config, ... }:
+let
+  inherit (lib) mkEnableOption mkIf;
+
+  cfg = config.local.yubikey;
+in
+{
+  options.local.yubikey = {
+    enable = mkEnableOption "YubiKey support and GPG/SSH intergration";
+  };
+  config = mkIf cfg.enable {
+    environment.systemPackages = with pkgs; [
+      yubioath-flutter
+      yubikey-manager
+      yubikey-personalization
+      yubico-piv-tool
+      yubikey-touch-detector
+    ];
+    services.udev.packages = with pkgs; [
+      yubikey-personalization
+      libu2f-host
+    ];
+    services.pcscd.enable = true;
+    programs.gnupg.agent = {
+      enable = false;
+      enableSSHSupport = false;
+      pinentryPackage = pkgs.pinentry-all;
+      settings = { default-cache-ttl = 600; max-cache-ttl = 7200; };
+    };
+    systemd.user.services.yubikey-touch-detector = {
+      description = "Detects when your YubiKey is waiting for a touch";
+      wantedBy = [ "graphical-session.target" ];
+      serviceConfig = {
+        ExecStart = "${pkgs.yubikey-touch-detector}/bin/yubikey-touch-detector";
+        Restart = "on-failure";
+      };
+    };
+  };
+}

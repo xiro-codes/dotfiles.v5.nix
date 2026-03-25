@@ -67,7 +67,7 @@
       "format" = "{} °";
       "tooltip" = true;
       "interval" = 3600;
-      "exec" = "${pkgs.wttrbar}/bin/wttrbar --fahrenheit --main-indicator 'temp_F'";
+      "exec" = "${pkgs.lib.getExe pkgs.wttrbar} --fahrenheit --main-indicator 'temp_F'";
       "return-type" = "json";
     };
     "hyprland/workspaces" = {

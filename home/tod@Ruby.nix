@@ -1,48 +1,71 @@
-{ pkgs, inputs, ... }: {
-  home.stateVersion = "25.11";
-
-  home.packages = with pkgs; [
-    unzip
-    p7zip
-    sysstat
-    grim
-    slurp
-    bottom
-    duf
-    dust
-    cascadia-code
-    libnotify
-    plex-desktop
+{ pkgs, ... }:
+{
+  imports = [
+    ./profiles/workstation
   ];
-  local = {
-    cache = {
-      enable = true;
-      watch = true;
-    };
-    theming.enable = true;
-    hyprland.enable = true;
-    nixvim.enable = true;
-    variables.enable = true;
-    ranger.enable = true;
-    kitty.enable = true;
-    fonts.enable = true;
-    mpd.enable = true;
-  };
-  programs = {
-    home-manager.enable = true;
-    direnv = {
-      enable = true;
-      nix-direnv.enable = true;
-      silent = true;
-    };
-    git = {
-      enable = true;
-      settings = {
-        user.name = "Travis Davis";
-        user.email = "me@tdavis.dev";
-        credential.helper = "store";
-        safe.directory = "*";
+  home.packages = with pkgs; [
+    godot
+    crush
+  ];
+  programs.starship = {
+    enable = true;
+    enableFishIntegration = true;
+    settings = {
+      add_newline = false;
+      line_break.disabled = true;
+      format = ''
+        (white)$username@$hostname $directory($git_branch)$nix_shell$rust$python$character
+      '';
+
+      # 2. Replicate the [I] and user@host style
+      username = {
+        show_always = true;
+        format = "[$user]($style)";
+        style_user = "white";
+      };
+
+      hostname = {
+        ssh_only = false;
+        format = "[$hostname]($style) ";
+        style = "white";
+      };
+
+      directory = {
+        style = "blue";
+        truncation_length = 3;
+        fish_style_pwd_dir_length = 1; # Replicates ~/P/style
+      };
+
+      git_branch = {
+        symbol = ""; # Remove the default icon if you want it exactly like std fish
+        format = "([$branch]($style)) ";
+        style = "white";
+      };
+
+      # 3. Additions for Nix, Rust, and Python
+      nix_shell = {
+        symbol = "❄️";
+        format = "[$symbol]($style) ";
+        style = "bold blue";
+      };
+
+      rust = {
+        symbol = "🦀";
+        format = "[$symbol]($style) ";
+        style = "bold red";
+      };
+
+      python = {
+        symbol = "🐍";
+        format = "[$symbol]($style) ";
+        style = "yellow";
+      };
+
+      character = {
+        success_symbol = "[>](bold white)";
+        error_symbol = "[>](bold red)";
       };
     };
   };
+  home.stateVersion = "25.11";
 }
