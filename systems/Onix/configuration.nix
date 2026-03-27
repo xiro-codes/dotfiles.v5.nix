@@ -23,12 +23,14 @@
       "harmonia_key"
       "onix_creds"
       "gog_creds"
+      "zerotier_network_id"
     ];
     gog-downloader = {
       enable = true;
       directory = "/media/Media/games";
       secretFile = config.sops.secrets."gog_creds".path;
     };
+    zerotier.enable = true;
   };
 
   users.users.tod = {
