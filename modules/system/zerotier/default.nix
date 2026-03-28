@@ -28,6 +28,9 @@ in {
         if [ -f ${config.sops.secrets."${cfg.networkIdSecret}".path} ]; then
           NETWORK_ID=$(cat ${config.sops.secrets."${cfg.networkIdSecret}".path})
           if [ -n "$NETWORK_ID" ]; then
+            while ! ${pkgs.zerotierone}/bin/zerotier-cli info >/dev/null 2>&1; do
+              sleep 1
+            done
             ${pkgs.zerotierone}/bin/zerotier-cli join "$NETWORK_ID"
           else
             echo "Network ID is empty!"
