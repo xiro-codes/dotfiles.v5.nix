@@ -81,6 +81,8 @@ in
         };
         exec-once = [
           "wl-paste --type text --watch cliphist store"
+          "steam -silent"
+          "discord --start-minimized"
         ] ++ lib.optionals config.local.caelestia-shell.enable [
           "caelestia wallpaper set $HOME/.wallpaper"
         ];

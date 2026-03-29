@@ -7,8 +7,14 @@
     godot
     crush
     eog
-    xivlauncher
+    (symlinkJoin {
+      name = "xivlauncher-wrapped";
+      paths = [ xivlauncher ];
+      buildInputs = [ makeWrapper ];
+      postBuild = ''
+        wrapProgram $out/bin/XIVLauncher.Core --set XL_SECRET_PROVIDER FILE
+      '';
+    })
   ];
-  services.gnome-keyring.enable = true;
   home.stateVersion = "25.11";
 }
