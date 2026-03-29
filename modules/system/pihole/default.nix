@@ -40,6 +40,8 @@ in
         TZ = config.time.timeZone or "UTC";
         WEBPASSWORD = cfg.adminPassword;
         FTLCONF_dns_listeningMode = "ALL";
+        PIHOLE_DNS_ = "1.1.1.1;1.0.0.1";
+        IPv6 = "False";
         # Crucial for Nginx proxying later
       };
       autoStart = true;
