@@ -28,5 +28,6 @@
     fd
     tealdeer
     gping
+    graphviz
   ];
 }

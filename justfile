@@ -118,9 +118,14 @@ gen-mod-docs:
 serve-docs:
     nix run .#serve-docs
 
+# Generate the network diagram
+[group('docs')]
+gen-network:
+    dot -Tpng docs/network.dot -o docs/network.png
+
 # Build the static documentation site
 [group('docs')]
-build-docs:
+build-docs: gen-network
     nix build .#docs-site
     @echo "✅ Static site built in ./result"
 

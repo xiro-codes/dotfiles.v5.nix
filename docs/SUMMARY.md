@@ -1,6 +1,7 @@
 # Summary
 
 - [Introduction](intro.md)
+- [Architecture](network-diagram.md)
 - [Guides]()
     - [System Modules]()
         - [Bluetooth](bluetooth.md)
@@ -14,6 +15,7 @@
         - [Pipewire Audio](pipewire-audio.md)
         - [Registry](registry.md)
         - [User Manager](user-manager.md)
+        - [ZeroTier](zerotier.md)
     - [Custom Modules]()
         - [Backup Manager](backup-manager.md)
         - [Dotfiles Sync](dotfiles-sync.md)
@@ -45,10 +47,9 @@
         - [Desktop Apps](desktop-apps.md)
         - [Hyprland](hyprland.md)
         - [Nixvim](nixvim.md)
-        - [Ranger](ranger.md)
+        - [Starship](starship.md)
         - [Stylix Theming](stylix-theming.md)
         - [User Environment](user-environment.md)
-        - [Waybar](waybar.md)
 
 - [Profiles](profiles.md)
 - [Reference]()
