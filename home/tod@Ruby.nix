@@ -5,7 +5,6 @@
   ];
   home.packages = with pkgs; [
     godot
-    crush
     eog
     (symlinkJoin {
       name = "xivlauncher-wrapped";

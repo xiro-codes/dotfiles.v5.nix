@@ -51,6 +51,14 @@ This repository utilizes a modular discovery engine (`parts/discovery/`) that sc
 
 ## **💻 Managed Systems**
 
+### [**Onix**](./systems/Onix/configuration.nix)
+
+* **Role**: Home Server
+* **IP**: 10.0.0.65
+* **Bootloader**: UEFI with **systemd-boot**
+* **Key Features**: Central file server, Gitea instance, media server, and Pi-hole.
+* **Hosted Domains**: `dashboard.onix.home`, `git.onix.home`, `tv.onix.home`, `plex.onix.home`, `ch7.onix.home`, `comics.onix.home`, `audiobooks.onix.home`, `dl.onix.home`, `yt.onix.home`, `pihole.onix.home`, `docs.onix.home`, `cache.onix.home`
+
 ### [**Ruby**](./systems/Ruby/configuration.nix)
 
 * **Role**: Primary Workstation
@@ -66,13 +74,6 @@ This repository utilizes a modular discovery engine (`parts/discovery/`) that sc
 * **Key Features**: Local LLM and AI services (Ollama, Open WebUI), remote mounts.
 * **Hosted Domains**: `ui.sapphire.home`, `ai.sapphire.home`
 
-### [**Onix**](./systems/Onix/configuration.nix)
-
-* **Role**: Home Server
-* **IP**: 10.0.0.65
-* **Bootloader**: UEFI with **systemd-boot**
-* **Key Features**: Central file server, Gitea instance, media server, and Pi-hole.
-* **Hosted Domains**: `dashboard.onix.home`, `git.onix.home`, `tv.onix.home`, `plex.onix.home`, `ch7.onix.home`, `comics.onix.home`, `audiobooks.onix.home`, `dl.onix.home`, `yt.onix.home`, `pihole.onix.home`, `docs.onix.home`, `cache.onix.home`
 
 ## **🛠️ Key Modules & Features**
 
