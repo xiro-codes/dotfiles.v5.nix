@@ -6,8 +6,9 @@
   home.packages = with pkgs; [
     godot
     crush
-    surge-XT
-    vital
+    eog
+    xivlauncher
   ];
+  services.gnome-keyring.enable = true;
   home.stateVersion = "25.11";
 }
