@@ -16,7 +16,7 @@ in
         add_newline = false;
         line_break.disabled = true;
         format = ''
-          (white)$username@$hostname $directory($git_branch)$nix_shell$rust$python$character
+          (white)$username@$hostname $directory($git_branch)$nix_shell$rust$python$shlvl$character
         '';
 
         # 2. Replicate the [I] and user@host style
@@ -61,6 +61,11 @@ in
           symbol = "🐍";
           format = "[$symbol]($style) ";
           style = "yellow";
+        };
+
+        shlvl = {
+          disabled = false;
+          format = "[$symbol$shlvl]($style) ";
         };
 
         character = {
