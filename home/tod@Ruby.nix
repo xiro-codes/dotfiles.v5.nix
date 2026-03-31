@@ -1,4 +1,10 @@
-{ pkgs, ... }:
+{ pkgs, inputs, ... }:
+let
+  unstable-pkgs = import inputs.nixpkgs-unstable {
+    system = pkgs.system;
+    config.permittedInsecurePackages = [ "openclaw-2026.3.12" ];
+  };
+in
 {
   imports = [
     ./profiles/workstation
@@ -7,7 +13,7 @@
     godot
     eog
     crush
-    aider-chat-full
+    unstable-pkgs.openclaw
     (symlinkJoin {
       name = "xivlauncher-wrapped";
       paths = [ xivlauncher ];
