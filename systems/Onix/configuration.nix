@@ -6,7 +6,10 @@
     ../profiles/limine-uefi.nix
     ../profiles/server
   ];
-
+  networking = {
+    bridges."br0".interfaces = [ "enp5s0" ];
+    interfaces."br0".useDHCP = true;
+  };
   local = {
     # System settings
     disks.enable = true;
@@ -38,10 +41,12 @@
     initialPassword = "rockman";
   };
 
-  boot.swraid.mdadmConf = "MAILADDR root";
+  boot = {
+    swraid.mdadmConf = "MAILADDR root";
+    kernelParams = [ "intel_iommu=on" "iommu=pt" ];
+  };
 
   networking.nftables.enable = true;
-
   virtualisation.incus = {
     enable = true;
     ui.enable = true;
