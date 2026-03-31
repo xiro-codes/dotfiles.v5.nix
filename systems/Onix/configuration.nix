@@ -89,9 +89,10 @@
   };
 
   local.reverse-proxy.services.vm = {
-    target = "https://127.0.0.1:8443";
-    extraConfig = "proxy_ssl_verify off;";
+    target = "http://unix:/var/lib/incus/unix.socket:/";
   };
+
+  users.users.nginx.extraGroups = [ "incus-admin" ];
 
   system.stateVersion = "25.11";
 }
