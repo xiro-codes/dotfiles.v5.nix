@@ -1,8 +1,12 @@
-{ config, lib, pkgs, ... }:
+{ config, lib, pkgs, inputs, ... }:
 let
 
   inherit (lib) mkDefault mkEnableOption mkIf mkOption types;
   cfg = config.local.ai;
+  unstable-pkgs = import inputs.nixpkgs-unstable {
+    system = pkgs.stdenv.hostPlatform.system;
+    config.allowUnfree = true;
+  };
 in
 {
   options.local.ai.webui = {
@@ -47,7 +51,7 @@ in
         enable = true;
         openFirewall = true;
         port = cfg.ollama.port;
-        package = pkgs.ollama-vulkan;
+        package = unstable-pkgs.ollama-vulkan;
         host = "0.0.0.0";
         syncModels = true;
         loadModels = [
