@@ -6,6 +6,7 @@
   home.packages = with pkgs; [
     godot
     eog
+    crush
     aider-chat-full
     (symlinkJoin {
       name = "xivlauncher-wrapped";

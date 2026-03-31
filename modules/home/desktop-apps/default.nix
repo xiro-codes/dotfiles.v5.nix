@@ -41,7 +41,7 @@ in
       wallpapers = lib.mkOption {
         type = lib.types.listOf lib.types.path;
         default = [ ];
-        example = lib.literalExpression ''[ ./wallpapers/gruvbox.png ./wallpapers/catppuccin.jpg ]'';
+        example = lib.literalExpression ''[ ~/.wallpaper ]'';
         description = "List of wallpaper paths to preload for Hyprpaper";
       };
     };

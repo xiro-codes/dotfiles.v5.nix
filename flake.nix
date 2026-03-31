@@ -6,7 +6,7 @@
     flake-parts.url = "github:hercules-ci/flake-parts";
     deploy-rs.url = "github:serokell/deploy-rs";
     zen-browser = {
-      url = "github:youwen5/zen-browser-flake";
+      url = "github:0xc000022070/zen-browser-flake";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     inputs-nix = {

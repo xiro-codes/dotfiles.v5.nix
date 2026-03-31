@@ -29,9 +29,7 @@ in
     };
 
     environment.systemPackages = with pkgs; [
-      pulsemixer # CLI mixer
-      pavucontrol # GUI mixer
-      #crosspipe # Patchbay for PipeWire
+      wiremix
     ];
   };
 }

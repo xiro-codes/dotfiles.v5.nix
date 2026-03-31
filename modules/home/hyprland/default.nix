@@ -20,15 +20,6 @@ let
     { key = "d"; desc = "Discord"; cmd = "discord"; }
     { key = "g"; desc = "Big Screen Gaming"; cmd = "hypr-gaming-mode"; }
   ];
-  waydroid-setup = pkgs.writeShellScriptBin "waydroid-setup" ''
-    if [ ! -d "/var/lib/waydroid/images" ] || [ -z "$(ls -A /var/lib/waydroid/images 2>/dev/null)" ]; then
-      echo "Initializing Waydroid..."
-      sudo waydroid init
-    else
-      echo "Waydroid is already initialized."
-    fi
-    sudo systemctl restart waydroid-container
-  '';
 in
 {
   options.local.hyprland = {
@@ -41,7 +32,6 @@ in
       jq
       discord
       hypr-tools
-      waydroid-setup
     ];
 
 
@@ -93,7 +83,6 @@ in
           "wl-paste --type text --watch cliphist store"
           "steam -silent"
           "discord --start-minimized"
-          "[workspace special:chromeos silent] waydroid show-full-ui"
         ] ++ lib.optionals config.local.caelestia-shell.enable [
           "caelestia wallpaper set $HOME/.wallpaper"
         ];
