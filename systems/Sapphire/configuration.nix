@@ -11,6 +11,7 @@
 
   # Sapphire-specific configuration
   local = {
+    kmscon.enable = true;
     # Secrets specific to Sapphire
     ai = {
       ollama.enable = true;

@@ -11,6 +11,7 @@
     interfaces."br0".useDHCP = true;
   };
   local = {
+    kmscon.enable = true;
     # System settings
     disks.enable = true;
     network-hosts.useAvahi = true;
