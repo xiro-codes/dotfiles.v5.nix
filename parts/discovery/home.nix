@@ -30,7 +30,7 @@ in
         (entry: {
           # Name format: user@host
           name = "${entry.user}@${entry.host}";
-          value = inputs.home-manager.lib.homeManagerConfiguration {
+          value = inputs.inputs-nix.inputs.home-manager.lib.homeManagerConfiguration {
             pkgs = inputs.nixpkgs.legacyPackages.x86_64-linux;
             extraSpecialArgs = { inherit inputs; };
             modules = [

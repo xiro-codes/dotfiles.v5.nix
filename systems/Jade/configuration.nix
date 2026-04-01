@@ -4,9 +4,12 @@
     ../profiles/base.nix
     ./hardware-configuration.nix
   ];
-
+  services.dbus.enable = true;
+  environment.extraInit = ''
+    export DBUS_SESSION_BUS_ADDRESS="unix:path=/run/user/$(id -u)/bus"
+  '';
   networking.hostName = "Jade";
-
+  nix.settings.sandbox = false;
   networking = {
     dhcpcd.enable = false;
     useDHCP = false;
@@ -41,6 +44,7 @@
       "ssh_pub_ruby/master"
       "ssh_pub_sapphire/master"
       "ssh_pub_onix/master"
+      "ssh_pub_jade/master"
       "harmonia_key"
       "onix_creds"
       "gog_creds"
@@ -52,14 +56,7 @@
     extraGroups = [ "wheel" "incus-admin" ];
     shell = pkgs.fish;
     initialPassword = "rockman";
-    openssh.authorizedKeys.keys = [
-      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIM227AYpwEQOxdXY4lL4MKVtft2ooiM7nrpMjVED/kAt tod@Onix"
-    ];
   };
-
-  users.users.root.openssh.authorizedKeys.keys = [
-    "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIM227AYpwEQOxdXY4lL4MKVtft2ooiM7nrpMjVED/kAt tod@Onix"
-  ];
 
   system.stateVersion = "25.11";
 }

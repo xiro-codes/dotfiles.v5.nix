@@ -7,7 +7,7 @@
 
   local = {
     nixvim.enable = true;
-    ranger.enable = true;
+    yazi.enable = true;
 
     # No GUI features
     fonts.enable = false;
