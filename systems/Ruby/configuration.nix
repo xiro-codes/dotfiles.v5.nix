@@ -46,5 +46,6 @@
     initialPassword = "rockman";
   };
   hardware.keyboard.qmk.enable = true;
+  boot.kernelParams = [ "video=HDMI-A-1:2560x1080@60" "video=DP-3:d" ];
   system.stateVersion = "25.11";
 }
