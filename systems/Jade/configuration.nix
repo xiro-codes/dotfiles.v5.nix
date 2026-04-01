@@ -4,7 +4,10 @@
     ../profiles/base.nix
     ./hardware-configuration.nix
   ];
-
+  services.dbus.enable = true;
+  environment.extraInit = ''
+    export DBUS_SESSION_BUS_ADDRESS="unix:path=/run/user/$(id -u)/bus"
+  '';
   networking.hostName = "Jade";
   nix.settings.sandbox = false;
   networking = {
