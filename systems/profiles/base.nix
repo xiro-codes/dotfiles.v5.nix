@@ -37,4 +37,13 @@
       };
     };
   };
+
+  services.kmscon = {
+    enable = true;
+    hwRender = true;
+    fonts = [{
+      name = "Cascadia Code";
+      package = pkgs.cascadia-code;
+    }];
+  };
 }
