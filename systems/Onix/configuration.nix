@@ -6,7 +6,10 @@
     ../profiles/limine-uefi.nix
     ../profiles/server
   ];
-
+  networking = {
+    bridges."br0".interfaces = [ "enp5s0" ];
+    interfaces."br0".useDHCP = true;
+  };
   local = {
     # System settings
     disks.enable = true;
@@ -38,7 +41,63 @@
     initialPassword = "rockman";
   };
 
-  boot.swraid.mdadmConf = "MAILADDR root";
+  boot = {
+    swraid.mdadmConf = "MAILADDR root";
+    kernelParams = [ "intel_iommu=on" "iommu=pt" ];
+  };
+
+  networking.nftables.enable = true;
+  virtualisation.incus = {
+    enable = true;
+    ui.enable = true;
+    preseed = {
+      config = {
+        "core.https_address" = "127.0.0.1:8443";
+      };
+      networks = [
+        {
+          name = "incusbr0";
+          type = "bridge";
+          config = {
+            "ipv4.address" = "auto";
+            "ipv6.address" = "none";
+          };
+        }
+      ];
+      profiles = [
+        {
+          name = "default";
+          devices = {
+            eth0 = {
+              name = "eth0";
+              network = "incusbr0";
+              type = "nic";
+            };
+            root = {
+              path = "/";
+              pool = "default";
+              type = "disk";
+            };
+          };
+        }
+      ];
+      storage_pools = [
+        {
+          name = "default";
+          driver = "dir";
+          config = {
+            source = "/media/storage/incus";
+          };
+        }
+      ];
+    };
+  };
+
+  local.reverse-proxy.services.vm = {
+    target = "http://unix:/var/lib/incus/unix.socket:/";
+  };
+
+  users.users.nginx.extraGroups = [ "incus-admin" ];
 
   system.stateVersion = "25.11";
 }

@@ -56,6 +56,7 @@ in
         syncModels = true;
         loadModels = [
           "qwen3"
+          "glm-4.7-flash"
         ];
       };
       hardware.graphics = {
