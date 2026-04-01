@@ -12,7 +12,6 @@
     disks.enable = true;
     network-hosts.useAvahi = true;
     bootloader.recoveryUUID = "017aa821-7b75-492a-98cf-1174f1b15ea1";
-
     docs.enable = lib.mkForce false;
     media = {
       jellyfin.enable = lib.mkForce false;
@@ -24,6 +23,7 @@
       "ssh_pub_ruby/master"
       "ssh_pub_sapphire/master"
       "ssh_pub_onix/master"
+      "ssh_pub_jade/master"
       "harmonia_key"
       "onix_creds"
       "gog_creds"
