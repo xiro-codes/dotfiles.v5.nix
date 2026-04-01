@@ -40,6 +40,8 @@ in
         default = {
           Sapphire = config.osConfig.local.network-hosts.sapphire or "sapphire.local";
           Ruby = config.osConfig.local.network-hosts.ruby or "ruby.local";
+          Onix = config.osConfig.local.network-hosts.onix or "onix.local";
+          Jade = config.osConfig.local.network-hosts.jade or "jade.local";
         };
         example = { Sapphire = "sapphire.local"; Ruby = "ruby.local"; };
         description = "Mapping of SSH host aliases to hostnames or IP addresses (automatically uses hosts from local.network-hosts module)";
