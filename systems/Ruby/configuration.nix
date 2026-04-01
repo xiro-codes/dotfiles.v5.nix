@@ -41,12 +41,12 @@
     disks.enable = true;
 
     yubikey.enable = true;
-
     secrets.keys = [
       "gemini/api_key"
       "ssh_pub_ruby/master"
       "ssh_pub_sapphire/master"
       "ssh_pub_onix/master"
+      "ssh_pub_jade/master"
       "onix_creds"
       "gog_creds"
     ];
