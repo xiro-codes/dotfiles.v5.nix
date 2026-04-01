@@ -81,6 +81,8 @@ in
         };
         exec-once = [
           "wl-paste --type text --watch cliphist store"
+          "steam -silent"
+          "discord --start-minimized"
         ] ++ lib.optionals config.local.caelestia-shell.enable [
           "caelestia wallpaper set $HOME/.wallpaper"
         ];
@@ -109,6 +111,7 @@ in
           "$mod, minus, exec, caelestia shell lock lock"
           "$mod, N, exec, caelestia shell drawers toggle sidebar"
           # Window management
+          "$mod, C, togglespecialworkspace, chromeos"
           "$mod, Space, layoutmsg, swapwithmaster master"
           "$mod_SHIFT, Q, killactive"
           "$mod, F, fullscreen"
@@ -129,6 +132,10 @@ in
         bindm = [
           "$mod,mouse:272, movewindow"
           "$mod,mouse:273, resizewindow"
+        ];
+        windowrulev2 = [
+          "workspace special:chromeos, class:^(waydroid.*)$"
+          "workspace special:chromeos, class:^(Waydroid.*)$"
         ];
 
       };

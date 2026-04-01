@@ -19,6 +19,10 @@ let
       ip = "10.0.0.67";
       avahi = "sapphire.local";
     };
+    jade = {
+      ip = "10.0.0.68";
+      avahi = "jade.local";
+    };
   };
 
   # Helper to get the address for a host

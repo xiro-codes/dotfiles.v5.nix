@@ -18,17 +18,35 @@
       book-of-hours.enable = true;
     };
   };
+  nixpkgs.overlays = [
+    (self: super: {
+      libbluray = super.libbluray.override {
+        withAACS = true;
+        withBDplus = true;
+        withJava = true; # Needed for menus
+      };
+      # Ensure VLC is actually using your overridden libbluray
+      vlc = super.vlc.override {
+        libbluray = self.libbluray;
+      };
+    })
+  ];
+
+  environment.systemPackages = with pkgs; [
+    vlc
+    libaacs
+  ];
 
   local = {
     disks.enable = true;
 
     yubikey.enable = true;
-
     secrets.keys = [
       "gemini/api_key"
       "ssh_pub_ruby/master"
       "ssh_pub_sapphire/master"
       "ssh_pub_onix/master"
+      "ssh_pub_jade/master"
       "onix_creds"
       "gog_creds"
     ];
@@ -46,5 +64,6 @@
     initialPassword = "rockman";
   };
   hardware.keyboard.qmk.enable = true;
+  boot.kernelParams = [ "video=HDMI-A-1:2560x1080@60" "video=DP-3:d" ];
   system.stateVersion = "25.11";
 }

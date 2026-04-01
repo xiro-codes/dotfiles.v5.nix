@@ -20,7 +20,7 @@ in
     services.pipewire = {
       enable = true;
       alsa.enable = true;
-      alsa.support32Bit = true;
+      alsa.support32Bit = lib.mkForce false;
       pulse.enable = true;
       jack.enable = true;
 
@@ -29,9 +29,7 @@ in
     };
 
     environment.systemPackages = with pkgs; [
-      pulsemixer # CLI mixer
-      pavucontrol # GUI mixer
-      #crosspipe # Patchbay for PipeWire
+      wiremix
     ];
   };
 }

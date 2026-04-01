@@ -52,6 +52,8 @@ in
 
       settings = {
         title = "Home Server Dashboard";
+        theme = "dark";
+        color = "emerald";
 
         layout = {
           Services = {
@@ -102,6 +104,24 @@ in
             })
 
             # Services section
+            [
+              {
+                "Open WebUI" = {
+                  icon = "mdi-brain";
+                  href = "http://ui.sapphire.home";
+                  description = "LLM Interface on Sapphire";
+                  siteMonitor = "http://ui.sapphire.home";
+                };
+              }
+              {
+                "VMs" = {
+                  icon = "mdi-server";
+                  href = "http://vm.onix.home";
+                  description = "Incus Virtual Machines";
+                  siteMonitor = "http://vm.onix.home";
+                };
+              }
+            ]
             (optional (config.local.gitea.enable) {
               Gitea = {
                 icon = "gitea.png";
@@ -181,6 +201,21 @@ in
         ];
 
       widgets = [
+        {
+          search = {
+            provider = "duckduckgo";
+            target = "_blank";
+          };
+        }
+        {
+          datetime = {
+            text_size = "xl";
+            format = {
+              timeStyle = "short";
+              dateStyle = "short";
+            };
+          };
+        }
         {
           resources = {
             cpu = true;

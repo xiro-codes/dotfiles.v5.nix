@@ -4,6 +4,7 @@
     secrets.enable = true;
     ssh.enable = true;
     fish.enable = true;
+    starship.enable = true;
   };
 
   programs.direnv = {

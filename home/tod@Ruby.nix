@@ -1,71 +1,27 @@
-{ pkgs, ... }:
+{ pkgs, inputs, ... }:
+let
+  unstable-pkgs = import inputs.nixpkgs-unstable {
+    system = pkgs.system;
+    config.permittedInsecurePackages = [ "openclaw-2026.3.12" ];
+  };
+in
 {
   imports = [
     ./profiles/workstation
   ];
   home.packages = with pkgs; [
     godot
+    eog
     crush
-  ];
-  programs.starship = {
-    enable = true;
-    enableFishIntegration = true;
-    settings = {
-      add_newline = false;
-      line_break.disabled = true;
-      format = ''
-        (white)$username@$hostname $directory($git_branch)$nix_shell$rust$python$character
+    unstable-pkgs.openclaw
+    (symlinkJoin {
+      name = "xivlauncher-wrapped";
+      paths = [ xivlauncher ];
+      buildInputs = [ makeWrapper ];
+      postBuild = ''
+        wrapProgram $out/bin/XIVLauncher.Core --set XL_SECRET_PROVIDER FILE
       '';
-
-      # 2. Replicate the [I] and user@host style
-      username = {
-        show_always = true;
-        format = "[$user]($style)";
-        style_user = "white";
-      };
-
-      hostname = {
-        ssh_only = false;
-        format = "[$hostname]($style) ";
-        style = "white";
-      };
-
-      directory = {
-        style = "blue";
-        truncation_length = 3;
-        fish_style_pwd_dir_length = 1; # Replicates ~/P/style
-      };
-
-      git_branch = {
-        symbol = ""; # Remove the default icon if you want it exactly like std fish
-        format = "([$branch]($style)) ";
-        style = "white";
-      };
-
-      # 3. Additions for Nix, Rust, and Python
-      nix_shell = {
-        symbol = "❄️";
-        format = "[$symbol]($style) ";
-        style = "bold blue";
-      };
-
-      rust = {
-        symbol = "🦀";
-        format = "[$symbol]($style) ";
-        style = "bold red";
-      };
-
-      python = {
-        symbol = "🐍";
-        format = "[$symbol]($style) ";
-        style = "yellow";
-      };
-
-      character = {
-        success_symbol = "[>](bold white)";
-        error_symbol = "[>](bold red)";
-      };
-    };
-  };
+    })
+  ];
   home.stateVersion = "25.11";
 }

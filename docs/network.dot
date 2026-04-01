@@ -1,0 +1,138 @@
+digraph Network {
+    // Modern global styling
+    graph [
+        rankdir=LR,
+        fontname="Helvetica",
+        nodesep=0.6,
+        ranksep=0.8,
+        splines=spline,
+        bgcolor="#ffffff",
+        pad="0.5"
+    ];
+
+    node [
+        fontname="Helvetica",
+        shape=rect,
+        style="rounded,filled",
+        fillcolor="#e2e8f0",
+        color="#94a3b8",
+        penwidth=1.5,
+        fontcolor="#1e293b",
+        margin="0.2,0.1"
+    ];
+
+    edge [
+        fontname="Helvetica",
+        color="#cbd5e1",
+        penwidth=1.5,
+        fontcolor="#475569",
+        fontsize=10
+    ];
+
+    Internet [shape=ellipse, fillcolor="#f1f5f9", color="#cbd5e1"];
+    ATTRouter [label="AT&T Router", fillcolor="#bfdbfe", color="#60a5fa"];
+    OpenWrt [label="OpenWrt Router", fillcolor="#bfdbfe", color="#60a5fa"];
+    Phone [label="Mobile Phone\n(ZeroTier Client)", shape=ellipse, fillcolor="#fde68a", color="#f59e0b"];
+
+    subgraph cluster_zerotier {
+        label = "ZeroTier Virtual Network";
+        style = "rounded,dashed";
+        color = "#3b82f6";
+        fontcolor = "#1d4ed8";
+        bgcolor = "#eff6ff";
+        Phone;
+    }
+
+    subgraph cluster_homelab {
+        label = "Homelab (NixOS Hosts)";
+        style = "rounded,dashed";
+        color = "#94a3b8";
+        fontcolor = "#475569";
+        bgcolor = "#f8fafc";
+        
+        PiHole [label="Pi-hole (DNS)", shape=cylinder, fillcolor="#fef08a", color="#eab308"];
+
+        subgraph cluster_onix {
+            label = "Onix (Server)\nDomain: onix.home";
+            style = "rounded,filled";
+            color = "#cbd5e1";
+            fillcolor = "#ffffff";
+            fontcolor = "#334155";
+
+            ReverseProxyOnix [label="Nginx Reverse Proxy\n(*.onix.home)", fillcolor="#bbf7d0", color="#4ade80"];
+
+            subgraph cluster_media {
+                label = "Media";
+                style = "rounded,filled";
+                color = "#e2e8f0";
+                fillcolor = "#f8fafc";
+                Jellyfin; Plex; ErsatzTV; Komga; Audiobookshelf;
+            }
+
+            subgraph cluster_apps {
+                label = "Apps & Tools";
+                style = "rounded,filled";
+                color = "#e2e8f0";
+                fillcolor = "#f8fafc";
+                Gitea; Homepage [label="Homepage Dashboard"]; Filebrowser; Harmonia [label="Harmonia Cache"];
+            }
+
+            subgraph cluster_downloads {
+                label = "Downloads";
+                style = "rounded,filled";
+                color = "#e2e8f0";
+                fillcolor = "#f8fafc";
+                qBittorrent; Pinchflat;
+            }
+
+            ReverseProxyOnix -> Homepage [label="dashboard"];
+            ReverseProxyOnix -> Jellyfin [label="jellyfin"];
+            ReverseProxyOnix -> Plex;
+            ReverseProxyOnix -> Gitea [label="git"];
+            ReverseProxyOnix -> Filebrowser [label="files"];
+            ReverseProxyOnix -> qBittorrent;
+        }
+
+        Ruby [label="Ruby\n(Workstation)\nDomain: ruby.home", fillcolor="#fbcfe8", color="#f472b6"];
+
+        subgraph cluster_sapphire {
+            label = "Sapphire (GPU Server)\nDomain: sapphire.home";
+            style = "rounded,filled";
+            color = "#cbd5e1";
+            fillcolor = "#ffffff";
+
+            ReverseProxySapphire [label="Nginx Reverse Proxy\n(*.sapphire.home)", fillcolor="#bbf7d0", color="#4ade80"];
+
+            subgraph cluster_ai {
+                label = "AI";
+                style = "rounded,filled";
+                color = "#e2e8f0";
+                fillcolor = "#f8fafc";
+                Ollama; OpenWebUI [label="Open-WebUI"];
+            }
+
+            ReverseProxySapphire -> OpenWebUI [label="ai"];
+            OpenWebUI -> Ollama;
+        }
+
+        Jade [label="Jade\n(Host - Inactive)", fillcolor="#f1f5f9", color="#cbd5e1", style="rounded,dashed"];
+    }
+
+    Internet -> Phone [dir=both, style=dashed, color="#94a3b8"];
+    Internet -> ATTRouter [dir=both, color="#94a3b8"];
+    ATTRouter -> OpenWrt [dir=both, color="#94a3b8"];
+    OpenWrt -> PiHole [label="DNS Queries", style=dotted, color="#94a3b8"];
+
+    OpenWrt -> ReverseProxyOnix [dir=both, label="80/443"];
+    OpenWrt -> ReverseProxySapphire [dir=both, label="80/443"];
+    OpenWrt -> Ruby [dir=both];
+    OpenWrt -> Jade [dir=both, style=dashed, color="#cbd5e1"];
+
+    Phone -> ReverseProxyOnix [dir=both, label="ZeroTier", color="#3b82f6", fontcolor="#3b82f6", style=dashed];
+    Phone -> ReverseProxySapphire [dir=both, label="ZeroTier", color="#3b82f6", fontcolor="#3b82f6", style=dashed];
+
+    # DNS routing representation
+    Ruby -> PiHole [style=dotted, color="#cbd5e1"];
+    ReverseProxyOnix -> PiHole [style=dotted, color="#cbd5e1"];
+    ReverseProxySapphire -> PiHole [style=dotted, color="#cbd5e1"];
+}

@@ -11,6 +11,7 @@
 
   # Sapphire-specific configuration
   local = {
+    kmscon.enable = true;
     # Secrets specific to Sapphire
     ai = {
       ollama.enable = true;
@@ -30,6 +31,7 @@
       "ssh_pub_sapphire/master"
       "ssh_pub_ruby/master"
       "ssh_pub_onix/master"
+      "ssh_pub_jade/master"
       "onix_creds"
     ];
 

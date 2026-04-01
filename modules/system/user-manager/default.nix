@@ -9,7 +9,7 @@ in
     enable = mkEnableOption "Automatic user group management";
     extraGroups = mkOption {
       type = types.listOf types.str;
-      default = [ "wheel" "networkmanager" "input" "docker" "cdrom" ];
+      default = [ "wheel" "networkmanager" "input" "docker" "cdrom" "incus-admin" ];
       example = [ "wheel" "networkmanager" "input" "video" "audio" "docker" ];
       description = "Groups to assign to all auto-discovered users on this host";
     };

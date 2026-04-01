@@ -5,7 +5,7 @@ in
 
 pkgs.runCommand "dotfiles-docs-site"
 {
-  nativeBuildInputs = [ pkgs.mdbook inputs.self.packages.${system}.docs-generated ];
+  nativeBuildInputs = [ pkgs.mdbook pkgs.graphviz inputs.self.packages.${system}.docs-generated ];
 } ''
   # Setup build directory structure
   mkdir -p tmp_book/src
@@ -22,6 +22,9 @@ pkgs.runCommand "dotfiles-docs-site"
   
   # Setup intro page
   cp ${../../README.md} tmp_book/src/intro.md
+  
+  # Generate network diagram
+  dot -Tpng tmp_book/src/network.dot -o tmp_book/src/network.png
   
   # Build the book to $out
   mdbook build -d $out tmp_book
