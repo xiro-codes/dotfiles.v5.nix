@@ -35,15 +35,13 @@
   local = {
     # System settings
     disks.enable = false;
-<<<<<<< Updated upstream
     network-hosts.useAvahi = true;
-=======
->>>>>>> Stashed changes
     secrets.keys = [
       "gemini/api_key"
       "ssh_pub_ruby/master"
       "ssh_pub_sapphire/master"
       "ssh_pub_onix/master"
+      "ssh_pub_jade/master"
       "harmonia_key"
       "onix_creds"
       "gog_creds"
@@ -55,14 +53,7 @@
     extraGroups = [ "wheel" "incus-admin" ];
     shell = pkgs.fish;
     initialPassword = "rockman";
-    openssh.authorizedKeys.keys = [
-      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIM227AYpwEQOxdXY4lL4MKVtft2ooiM7nrpMjVED/kAt tod@Onix"
-    ];
   };
-
-  users.users.root.openssh.authorizedKeys.keys = [
-    "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIM227AYpwEQOxdXY4lL4MKVtft2ooiM7nrpMjVED/kAt tod@Onix"
-  ];
 
   system.stateVersion = "25.11";
 }
