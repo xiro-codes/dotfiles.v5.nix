@@ -113,6 +113,14 @@ in
                   siteMonitor = "http://ui.sapphire.home";
                 };
               }
+              {
+                "VMs" = {
+                  icon = "mdi-server";
+                  href = "http://vm.onix.home";
+                  description = "Incus Virtual Machines";
+                  siteMonitor = "http://vm.onix.home";
+                };
+              }
             ]
             (optional (config.local.gitea.enable) {
               Gitea = {

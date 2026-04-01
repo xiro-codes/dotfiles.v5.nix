@@ -6,18 +6,18 @@
     ../profiles/limine-uefi.nix
     ../profiles/server
   ];
-  networking = {
-    bridges."br0".interfaces = [ "enp5s0" ];
-    interfaces."br0".useDHCP = true;
-  };
   local = {
     # System settings
     disks.enable = true;
     network-hosts.useAvahi = true;
     bootloader.recoveryUUID = "017aa821-7b75-492a-98cf-1174f1b15ea1";
+
     docs.enable = lib.mkForce false;
-    media.jellyfin.enable = lib.mkForce false;
-    media.ersatztv.enable = lib.mkForce false;
+    media = {
+      jellyfin.enable = lib.mkForce false;
+      ersatztv.enable = lib.mkForce false;
+    };
+
     secrets.keys = [
       "gemini/api_key"
       "ssh_pub_ruby/master"
@@ -47,6 +47,8 @@
   };
 
   networking.nftables.enable = true;
+  networking.firewall.trustedInterfaces = [ "incusbr0" ];
+
   virtualisation.incus = {
     enable = true;
     ui.enable = true;
@@ -61,6 +63,13 @@
           config = {
             "ipv4.address" = "auto";
             "ipv6.address" = "none";
+          };
+        }
+        {
+          name = "macvlan0";
+          type = "macvlan";
+          config = {
+            parent = "enp6s0";
           };
         }
       ];
