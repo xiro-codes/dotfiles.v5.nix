@@ -18,6 +18,24 @@
       book-of-hours.enable = true;
     };
   };
+  nixpkgs.overlays = [
+    (self: super: {
+      libbluray = super.libbluray.override {
+        withAACS = true;
+        withBDplus = true;
+        withJava = true; # Needed for menus
+      };
+      # Ensure VLC is actually using your overridden libbluray
+      vlc = super.vlc.override {
+        libbluray = self.libbluray;
+      };
+    })
+  ];
+
+  environment.systemPackages = with pkgs; [
+    vlc
+    libaacs
+  ];
 
   local = {
     disks.enable = true;
