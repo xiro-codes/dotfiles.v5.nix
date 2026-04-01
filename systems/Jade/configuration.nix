@@ -35,7 +35,7 @@
   local = {
     # System settings
     disks.enable = false;
-    secrets.enable = true;
+    network-hosts.useAvahi = true;
     secrets.keys = [
       "gemini/api_key"
       "ssh_pub_ruby/master"
