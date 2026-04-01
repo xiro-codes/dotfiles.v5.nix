@@ -2,9 +2,10 @@ keys:
   - &ruby age1gnsqhrf20kx55jpxewp5g9h3u8hffh8tlvstwwett57rp5letu3sndsh9k
   - &sapphire age15ml8l9utxuawp2sr55n0krrc5zvj7yp5agvpytfjeyllg3pm6vxsfjvcjn
   - &onix age1gjp4864pmtvyqmdxtd8lt2f9cv2rtd5mcuzljd4hwjk48ajvd9fqfmgr2p
+  - &jade age1wtywr95s8kfelzq63cxvh9jywdhfke75vusm6smdqys5my7phees268gaz
   - &tod_ruby age168wrrgww4sag8mmy3c97ylr6uvls8chsseaktxtjxgwpyp95as5szlccwl #tod@Ruby
   - &tod_sapphire age14f0n6yg4eldphlkcjw44uxpz8npqrt0fn688nz9whmvcdwr004lsqw30zc #tod@Sapphire
-  - &tod_onix age103xn7xm5sdee32qnjqpkez90ffrnq3nlk6jv6dj4gkzd4ht5gq7qn5vcvj
+  - &tod_onix age103xn7xm5sdee32qnjqpkez90ffrnq3nlk6jv6dj4gkzd4ht5gq7qn5vcvj #tod@Onix
 creation_rules:
   - path_regex: secrets/secrets.yaml
     key_groups:
@@ -13,6 +14,7 @@ creation_rules:
           - *ruby
           - *sapphire
           - *onix
+          - *jade
           - *tod_sapphire
           - *tod_ruby
           - *tod_onix
