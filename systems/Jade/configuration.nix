@@ -6,7 +6,7 @@
   ];
 
   networking.hostName = "Jade";
-
+  nix.settings.sandbox = false;
   networking = {
     dhcpcd.enable = false;
     useDHCP = false;
@@ -35,7 +35,10 @@
   local = {
     # System settings
     disks.enable = false;
+<<<<<<< Updated upstream
     network-hosts.useAvahi = true;
+=======
+>>>>>>> Stashed changes
     secrets.keys = [
       "gemini/api_key"
       "ssh_pub_ruby/master"
