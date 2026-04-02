@@ -3,50 +3,34 @@
     ../profiles/base.nix
     ./hardware-configuration.nix
   ];
-  services.dbus.enable = true;
-  environment.extraInit = ''
-    export DBUS_SESSION_BUS_ADDRESS="unix:path=/run/user/$(id -u)/bus"
-  '';
+
   networking.hostName = "Jade";
-  nix.settings.sandbox = false;
-  networking = {
-    dhcpcd.enable = false;
-    useDHCP = false;
-    useHostResolvConf = false;
-  };
+  boot.isContainer = true;
+
+  networking.useDHCP = false;
 
   systemd.network = {
     enable = true;
-    networks."50-eth0" = {
-      matchConfig.Name = "eth0";
+    networks."50-macvlan" = {
+      matchConfig.Name = "mv-enp6s0";
       networkConfig = {
         DHCP = "ipv4";
-        IPv6AcceptRA = true;
       };
-      linkConfig.RequiredForOnline = "routable";
     };
   };
 
+  # Allow SSH
   services.openssh.enable = true;
   services.openssh.settings.PermitRootLogin = "prohibit-password";
 
-  boot.loader.systemd-boot.enable = lib.mkForce false;
-  boot.loader.efi.canTouchEfiVariables = lib.mkForce false;
-  boot.isContainer = true;
-
   local = {
-    # System settings
+    network.useNetworkManager = lib.mkForce false;
     disks.enable = false;
-    network-hosts.useAvahi = true;
     secrets.keys = [
-      "gemini/api_key"
+      "ssh_pub_jade/master"
+      "ssh_pub_onix/master"
       "ssh_pub_ruby/master"
       "ssh_pub_sapphire/master"
-      "ssh_pub_onix/master"
-      "ssh_pub_jade/master"
-      "harmonia_key"
-      "onix_creds"
-      "gog_creds"
     ];
   };
 

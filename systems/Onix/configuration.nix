@@ -48,18 +48,12 @@
   };
 
   networking.nftables.enable = true;
-  networking.firewall.trustedInterfaces = [ "incusbr0" ];
 
-  networking.bridges.incusbr0.interfaces = [];
-  networking.macvlans.macvlan0 = {
-    interface = "enp6s0";
-    mode = "bridge";
-  };
 
   containers.jade = {
     autoStart = true;
     privateNetwork = true;
-    hostBridge = "incusbr0";
+    macvlans = [ "enp6s0" ];
     path = inputs.self.nixosConfigurations.Jade.config.system.build.toplevel;
   };
 
