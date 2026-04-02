@@ -1,4 +1,4 @@
-{ pkgs, config, lib, ... }: {
+{ pkgs, config, lib, inputs, ... }: {
   imports = [
     ./disko.nix
     ./hardware-configuration.nix
@@ -50,64 +50,20 @@
   networking.nftables.enable = true;
   networking.firewall.trustedInterfaces = [ "incusbr0" ];
 
-  virtualisation.incus = {
-    enable = true;
-    ui.enable = true;
-    preseed = {
-      config = {
-        "core.https_address" = "127.0.0.1:8443";
-      };
-      networks = [
-        {
-          name = "incusbr0";
-          type = "bridge";
-          config = {
-            "ipv4.address" = "auto";
-            "ipv6.address" = "none";
-          };
-        }
-        {
-          name = "macvlan0";
-          type = "macvlan";
-          config = {
-            parent = "enp6s0";
-          };
-        }
-      ];
-      profiles = [
-        {
-          name = "default";
-          devices = {
-            eth0 = {
-              name = "eth0";
-              network = "incusbr0";
-              type = "nic";
-            };
-            root = {
-              path = "/";
-              pool = "default";
-              type = "disk";
-            };
-          };
-        }
-      ];
-      storage_pools = [
-        {
-          name = "default";
-          driver = "dir";
-          config = {
-            source = "/media/storage/incus";
-          };
-        }
-      ];
-    };
+  networking.bridges.incusbr0.interfaces = [];
+  networking.macvlans.macvlan0 = {
+    interface = "enp6s0";
+    mode = "bridge";
   };
 
-  local.reverse-proxy.services.vm = {
-    target = "http://unix:/var/lib/incus/unix.socket:/";
+  containers.jade = {
+    autoStart = true;
+    privateNetwork = true;
+    hostBridge = "incusbr0";
+    path = inputs.self.nixosConfigurations.Jade.config.system.build.toplevel;
   };
 
-  users.users.nginx.extraGroups = [ "incus-admin" ];
+
 
   system.stateVersion = "25.11";
 }

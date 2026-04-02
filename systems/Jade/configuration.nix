@@ -1,6 +1,5 @@
 { pkgs, config, lib, modulesPath, ... }: {
   imports = [
-    (modulesPath + "/virtualisation/lxc-container.nix")
     ../profiles/base.nix
     ./hardware-configuration.nix
   ];
@@ -53,7 +52,7 @@
 
   users.users.tod = {
     isNormalUser = true;
-    extraGroups = [ "wheel" "incus-admin" ];
+    extraGroups = [ "wheel" ];
     shell = pkgs.fish;
     initialPassword = "rockman";
   };

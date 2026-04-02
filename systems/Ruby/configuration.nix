@@ -47,6 +47,7 @@
       "ssh_pub_ruby/master"
       "ssh_pub_sapphire/master"
       "ssh_pub_onix/master"
+      "ssh_pub_jade/master"
       "onix_creds"
       "gog_creds"
     ];
