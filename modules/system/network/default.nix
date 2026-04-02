@@ -19,6 +19,7 @@ in
     networking = {
       # Disable the old wpa_supplicant
       wireless.enable = false;
+      firewall.allowedTCPPorts = [ 5201 5202 ];
       nameservers = [ "10.0.0.65" "8.8.8.8" ];
       # Always enable iwd (it's faster and more modern)
       wireless.iwd = {

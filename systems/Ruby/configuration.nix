@@ -41,7 +41,6 @@
     disks.enable = true;
 
     yubikey.enable = true;
-
     secrets.keys = [
       "gemini/api_key"
       "ssh_pub_ruby/master"
