@@ -33,7 +33,37 @@
       "ssh_pub_sapphire/master"
     ];
   };
-
+  services.ddns-updater = {
+    enable = true;
+    environment = {
+      CONFIG_FILEPATH = "/etc/ddns-updater/config.json";
+    };
+  };
+  security.acme = {
+    acceptTerms = true;
+    defaults.email = "me@tdavis.dev";
+    certs."tdavis.dev" = {
+      domain = "tdavis.dev";
+      dnsProvider = "cloudflare";
+      environmentFile = "/var/lib/acme/cloudflare.env";
+      group = "nginx";
+    };
+  };
+  services.nginx = {
+    enable = true;
+    recommendedTlsSettings = true;
+    virtualHosts = {
+      "tdavis.dev" = {
+        forceSSL = false;
+        addSSL = true;
+        useACMEHost = "tdavis.dev";
+        locations."/" = {
+          proxyPass = "http://localhost:8000";
+        };
+      };
+    };
+  };
+  networking.firewall.allowedTCPPorts = [ 80 443 ];
   users.users.tod = {
     isNormalUser = true;
     extraGroups = [ "wheel" ];
