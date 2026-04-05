@@ -40,7 +40,7 @@
         
         ────────────────────────────────────────────────────────────────
         💡 Tips:
-           • Run 'fastfetch' or 'neofetch' to see system info
+           • Run 'fastfetch' to see system info
            • Available hosts: Ruby, Sapphire
            • Use 'just rescue' for emergency system recovery
         ────────────────────────────────────────────────────────────────
@@ -59,7 +59,6 @@
           inputs.nixpkgs.legacyPackages.x86_64-linux.parted
           inputs.nixpkgs.legacyPackages.x86_64-linux.util-linux
           inputs.nixpkgs.legacyPackages.x86_64-linux.fastfetch
-          inputs.nixpkgs.legacyPackages.x86_64-linux.neofetch
         ];
 
       fonts = {

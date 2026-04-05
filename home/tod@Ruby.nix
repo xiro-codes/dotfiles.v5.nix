@@ -11,6 +11,7 @@ in
   home.packages = with pkgs; [
     godot
     eog
+    crush
     #unstable-pkgs.zed-editor
     (symlinkJoin {
       name = "xivlauncher-wrapped";

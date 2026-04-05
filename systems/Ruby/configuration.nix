@@ -26,10 +26,6 @@
         withBDplus = true;
         withJava = true; # Needed for menus
       };
-      # Ensure VLC is actually using your overridden libbluray
-      vlc = super.vlc.override {
-        libbluray = self.libbluray;
-      };
     })
   ];
 
