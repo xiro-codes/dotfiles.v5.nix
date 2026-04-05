@@ -13,6 +13,11 @@ in
       default = true;
       description = "Whether to use NetworkManager (for desktops) or just iwd/systemd (minimal).";
     };
+    usePihole = mkOption {
+      type = types.bool;
+      default = true;
+      description = "Whether to prioritize the local Pi-hole (192.168.1.65) for DNS.";
+    };
   };
 
   config = mkIf cfg.enable {
@@ -20,8 +25,8 @@ in
       # Disable the old wpa_supplicant
       wireless.enable = false;
       firewall.allowedTCPPorts = [ 5201 5202 ];
-      # Prioritize local Pi-hole
-      nameservers = [ "127.0.0.1" "192.168.1.65" ];
+      # Prioritize Pi-hole if enabled
+      nameservers = if cfg.usePihole then [ "192.168.1.65" "1.1.1.1" ] else [ "1.1.1.1" "8.8.8.8" ];
       # Always enable iwd (it's faster and more modern)
       wireless.iwd = {
         enable = true;

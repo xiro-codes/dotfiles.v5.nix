@@ -7,6 +7,11 @@
     ../profiles/server
   ];
   local = {
+    network = {
+      enable = true;
+      usePihole = true;
+    };
+
     kmscon.enable = true;
     # System settings
     disks.enable = true;
@@ -48,6 +53,7 @@
   };
 
   networking.nftables.enable = true;
+  networking.nameservers = lib.mkForce [ "127.0.0.1" "192.168.1.65" ];
 
 
   containers.jade = {
