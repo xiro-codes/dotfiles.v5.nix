@@ -1,4 +1,4 @@
 {
-  hostname = "10.0.0.66";
+  hostname = "192.168.1.66";
   user = "root";
 }
