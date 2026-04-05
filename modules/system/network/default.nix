@@ -20,7 +20,8 @@ in
       # Disable the old wpa_supplicant
       wireless.enable = false;
       firewall.allowedTCPPorts = [ 5201 5202 ];
-      nameservers = [ "192.168.1.65" "8.8.8.8" ];
+      # Prioritize local Pi-hole
+      nameservers = [ "127.0.0.1" "192.168.1.65" ];
       # Always enable iwd (it's faster and more modern)
       wireless.iwd = {
         enable = true;
