@@ -8,19 +8,19 @@ let
   # Define host mappings
   hostDefs = {
     onix = {
-      ip = "10.0.0.65";
+      ip = "192.168.1.65";
       avahi = "onix.local";
     };
     ruby = {
-      ip = "10.0.0.66";
+      ip = "192.168.1.66";
       avahi = "ruby.local";
     };
     sapphire = {
-      ip = "10.0.0.67";
+      ip = "192.168.1.67";
       avahi = "sapphire.local";
     };
     jade = {
-      ip = "10.0.0.68";
+      ip = "192.168.1.68";
       avahi = "jade.local";
     };
   };

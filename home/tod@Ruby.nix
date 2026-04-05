@@ -2,7 +2,6 @@
 let
   unstable-pkgs = import inputs.nixpkgs-unstable {
     system = pkgs.system;
-    config.permittedInsecurePackages = [ "openclaw-2026.3.12" ];
   };
 in
 {
@@ -12,8 +11,7 @@ in
   home.packages = with pkgs; [
     godot
     eog
-    crush
-    unstable-pkgs.openclaw
+    #unstable-pkgs.zed-editor
     (symlinkJoin {
       name = "xivlauncher-wrapped";
       paths = [ xivlauncher ];

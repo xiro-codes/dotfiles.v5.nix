@@ -23,7 +23,7 @@ in
     enable = mkEnableOption "cache module";
     serverAddress = mkOption {
       type = types.str;
-      default = "http://10.0.0.65:5000/?priority=1";
+      default = "http://192.168.1.65:5000/?priority=1";
       example = "http://cache.example.com:8080/nixos?priority=10";
       description = "Attic binary cache server URL with optional priority parameter";
     };
