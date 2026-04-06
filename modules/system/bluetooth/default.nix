@@ -27,7 +27,7 @@ in
     };
 
     services.blueman.enable = mkIf (!plasmaEnabled) true;
-
+    environment.systemPackages = [ pkgs.overskride ];
     # If audio is enabled, we tell WirePlumber to use high-quality Bluetooth codecs
     services.pipewire.wireplumber.extraConfig = mkIf audioEnabled {
       "monitor.bluez.properties" = {

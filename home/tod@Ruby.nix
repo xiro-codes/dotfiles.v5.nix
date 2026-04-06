@@ -1,8 +1,5 @@
 { pkgs, inputs, ... }:
 let
-  unstable-pkgs = import inputs.nixpkgs-unstable {
-    system = pkgs.system;
-  };
 in
 {
   imports = [
@@ -12,7 +9,6 @@ in
     godot
     eog
     crush
-    #unstable-pkgs.zed-editor
     (symlinkJoin {
       name = "xivlauncher-wrapped";
       paths = [ xivlauncher ];

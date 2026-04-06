@@ -20,13 +20,13 @@
   };
   boot.enableContainers = true;
   nixpkgs.overlays = [
-    (self: super: {
-      libbluray = super.libbluray.override {
-        withAACS = true;
-        withBDplus = true;
-        withJava = true; # Needed for menus
-      };
-    })
+    # (self: super: {
+    #   libbluray = super.libbluray.override {
+    #     withAACS = true;
+    #     withBDplus = true;
+    #     withJava = true; # Needed for menus
+    #   };
+    # })
   ];
 
   environment.systemPackages = with pkgs; [

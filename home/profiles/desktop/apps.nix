@@ -13,7 +13,8 @@
   home.packages = with pkgs; [
     # Desktop applications
     discord
-    protonvpn-gui
+    proton-vpn
+    proton-vpn-cli
     unzip
     p7zip
 

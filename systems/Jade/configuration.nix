@@ -49,6 +49,11 @@
       group = "nginx";
     };
   };
+  services.rocket-blog = {
+    enable = true;
+    domain = "tdavis.dev";
+    manageDatabase = true;
+  };
   services.nginx = {
     enable = true;
     recommendedTlsSettings = true;
@@ -57,9 +62,6 @@
         forceSSL = false;
         addSSL = true;
         useACMEHost = "tdavis.dev";
-        locations."/" = {
-          proxyPass = "http://localhost:8000";
-        };
       };
     };
   };
