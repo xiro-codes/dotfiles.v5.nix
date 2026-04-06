@@ -1,4 +1,4 @@
-{ pkgs, config, lib, modulesPath, ... }: {
+{ pkgs, config, lib, modulesPath, inputs, ... }: {
   imports = [
     ../profiles/base.nix
     ./hardware-configuration.nix
@@ -31,6 +31,7 @@
       "ssh_pub_onix/master"
       "ssh_pub_ruby/master"
       "ssh_pub_sapphire/master"
+      "apps/blog_key"
     ];
   };
   services.ddns-updater = {
@@ -51,8 +52,10 @@
   };
   services.rocket-blog = {
     enable = true;
+    package = inputs.inputs-nix.inputs.rocket-blog.packages.${pkgs.stdenv.hostPlatform.system}.rocket-blog;
     domain = "tdavis.dev";
     manageDatabase = true;
+    secretKeyFile = config.sops.secrets."apps/blog_key".path;
   };
   services.nginx = {
     enable = true;
