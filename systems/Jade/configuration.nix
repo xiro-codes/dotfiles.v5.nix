@@ -56,6 +56,7 @@
     package = inputs.inputs-nix.inputs.rocket-blog.packages.${pkgs.stdenv.hostPlatform.system}.rocket-blog;
     domain = "blog.tdavis.dev";
     worktimeDomain = "worklog.tdavis.dev";
+    portfolioDomain = "tdavis.dev";
     manageDatabase = true;
     secretKeyFile = config.sops.secrets."apps/blog_key".path;
   };
@@ -67,9 +68,6 @@
         forceSSL = false;
         addSSL = true;
         useACMEHost = "tdavis.dev";
-        locations."/" = {
-          proxyPass = "http://127.0.0.1:8000";
-        };
       };
       "blog.tdavis.dev" = {
         forceSSL = false;
