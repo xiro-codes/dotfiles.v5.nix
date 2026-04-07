@@ -45,6 +45,7 @@
     defaults.email = "me@tdavis.dev";
     certs."tdavis.dev" = {
       domain = "tdavis.dev";
+      extraDomainNames = [ "blog.tdavis.dev" "worklog.tdavis.dev" ];
       dnsProvider = "cloudflare";
       environmentFile = "/var/lib/acme/cloudflare.env";
       group = "nginx";
@@ -53,7 +54,8 @@
   services.rocket-blog = {
     enable = true;
     package = inputs.inputs-nix.inputs.rocket-blog.packages.${pkgs.stdenv.hostPlatform.system}.rocket-blog;
-    domain = "tdavis.dev";
+    domain = "blog.tdavis.dev";
+    worktimeDomain = "worklog.tdavis.dev";
     manageDatabase = true;
     secretKeyFile = config.sops.secrets."apps/blog_key".path;
   };
@@ -62,6 +64,19 @@
     recommendedTlsSettings = true;
     virtualHosts = {
       "tdavis.dev" = {
+        forceSSL = false;
+        addSSL = true;
+        useACMEHost = "tdavis.dev";
+        locations."/" = {
+          proxyPass = "http://127.0.0.1:8000";
+        };
+      };
+      "blog.tdavis.dev" = {
+        forceSSL = false;
+        addSSL = true;
+        useACMEHost = "tdavis.dev";
+      };
+      "worklog.tdavis.dev" = {
         forceSSL = false;
         addSSL = true;
         useACMEHost = "tdavis.dev";
