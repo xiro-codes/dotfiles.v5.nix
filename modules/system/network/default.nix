@@ -26,7 +26,7 @@ in
       wireless.enable = false;
       firewall.allowedTCPPorts = [ 5201 5202 ];
       # Prioritize Pi-hole if enabled
-      nameservers = if cfg.usePihole then [ "192.168.1.65" "1.1.1.1" ] else [ "1.1.1.1" "8.8.8.8" ];
+      nameservers = if cfg.usePihole then [ "192.168.1.65" "8.8.8.8" ] else [ "8.8.8.8" "1.1.1.1" ];
       # Always enable iwd (it's faster and more modern)
       wireless.iwd = {
         enable = true;
@@ -45,6 +45,7 @@ in
         enable = true;
         # Force NetworkManager to use iwd as the backend
         wifi.backend = "iwd";
+        insertNameservers = if cfg.usePihole then [ "192.168.1.65" "8.8.8.8" ] else [ "8.8.8.8" "1.1.1.1" ];
       };
 
       # Basic Ethernet support (DHCP) for all interfaces starting with 'e'

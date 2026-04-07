@@ -61,7 +61,7 @@
   };
 
   networking.nftables.enable = true;
-  networking.nameservers = lib.mkForce [ "127.0.0.1" "192.168.1.65" ];
+  networking.nameservers = lib.mkForce [ "192.168.1.65" "8.8.8.8" ];
 
 
   containers.jade = {
