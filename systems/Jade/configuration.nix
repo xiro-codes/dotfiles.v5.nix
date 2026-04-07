@@ -54,7 +54,7 @@
   services.rocket-blog = {
     enable = true;
     package = inputs.inputs-nix.inputs.rocket-blog.packages.${pkgs.stdenv.hostPlatform.system}.rocket-blog;
-    domain = "blog.tdavis.dev";
+    domain = "tdavis.dev";
     worktimeDomain = "worklog.tdavis.dev";
     portfolioDomain = "tdavis.dev";
     manageDatabase = true;
@@ -65,16 +65,6 @@
     recommendedTlsSettings = true;
     virtualHosts = {
       "tdavis.dev" = {
-        forceSSL = false;
-        addSSL = true;
-        useACMEHost = "tdavis.dev";
-      };
-      "blog.tdavis.dev" = {
-        forceSSL = false;
-        addSSL = true;
-        useACMEHost = "tdavis.dev";
-      };
-      "worklog.tdavis.dev" = {
         forceSSL = false;
         addSSL = true;
         useACMEHost = "tdavis.dev";
