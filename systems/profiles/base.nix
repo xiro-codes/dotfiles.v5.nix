@@ -1,6 +1,15 @@
 # Base profile - Common configuration for all systems
 { pkgs, lib, ... }:
 {
+  security.polkit.extraConfig = ''
+    polkit.addRule(function(action, subject) {
+      if (action.id == "org.freedesktop.policykit.exec" &&
+          action.lookup("program") == "/run/current-system/sw/bin/nixos-container" &&
+          subject.isInGroup("wheel")) {
+        return polkit.Result.YES;
+      }
+    });
+  '';
   local = {
     #secrets.enable = lib.mkForce false;
     #cache.enable = false;

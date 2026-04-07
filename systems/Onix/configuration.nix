@@ -41,7 +41,15 @@
     };
     zerotier.enable = true;
   };
-
+  security.polkit.extraConfig = ''
+    polkit.addRule(function(action, subject) {
+      if (action.id == "org.freedesktop.policykit.exec" &&
+          action.lookup("program") == "/run/current-system/sw/bin/nixos-container" &&
+          subject.isInGroup("wheel")) {
+        return polkit.Result.YES;
+      }
+    });
+  '';
   users.users.tod = {
     shell = pkgs.fish;
     initialPassword = "rockman";
