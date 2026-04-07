@@ -382,11 +382,11 @@
         "stylix": "stylix"
       },
       "locked": {
-        "lastModified": 1775562723,
-        "narHash": "sha256-QRIbs8uMjEHOvIpYArPOsQaM7UygwYmTqjWOcG870Bc=",
+        "lastModified": 1775575559,
+        "narHash": "sha256-nXoEDQSW/rMkBxRGtfeMefTBcML7KIqzqKbazhRMN3E=",
         "owner": "xiro-codes",
         "repo": "inputs.nix",
-        "rev": "244db22e808422d81b7b99c09f8e0b6f25f2e1d1",
+        "rev": "875390834f9df5d1250939609ee3ad5fa9c67398",
         "type": "github"
       },
       "original": {
@@ -599,11 +599,11 @@
         "rust-overlay": "rust-overlay"
       },
       "locked": {
-        "lastModified": 1775562689,
-        "narHash": "sha256-SFxlarI6+uX/fHOYD2wkxTIb4+xxS0McOW4IO3B1Co0=",
+        "lastModified": 1775575508,
+        "narHash": "sha256-c6fChEyACIKBdH42UZGQbvBeTiZnupP3fiGjNHgb+pQ=",
         "owner": "xiro-codes",
         "repo": "rocket_blog",
-        "rev": "226a2b522051ac8872b20b07f9e8bd6dfe8d9fa3",
+        "rev": "884bcdaa6cb0bee8ce7acbb2c753654d6f9e56bc",
         "type": "github"
       },
       "original": {
