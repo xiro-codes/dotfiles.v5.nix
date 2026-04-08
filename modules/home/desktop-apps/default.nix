@@ -90,6 +90,7 @@ in
 
       home.packages = with pkgs; [
         trash-cli
+        fastfetch
       ];
       programs.fish = {
         enable = true;
@@ -98,6 +99,7 @@ in
           zoxide init fish | source
           set -g fish_key_bindings fish_vi_key_bindings
           cat $HOME/.local/state/caelestia/sequences.txt 2>/dev/null 
+          fastfetch
         '';
         shellAbbrs = {
           cd = "z";
