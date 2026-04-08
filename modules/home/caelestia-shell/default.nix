@@ -50,12 +50,12 @@ in
         general.idle = {
           timeouts = [
             {
-              timeout = 2700;
+              timeout = cfg.idleMinutes * 60;
               idleAction = "dpms off";
               returnAction = "dpms on";
             }
             {
-              timeout = 2760;
+              timeout = (cfg.idleMinutes * 60) + 60;
               idleAction = "${checkAndShutdown}/bin/check-and-shutdown";
             }
           ];

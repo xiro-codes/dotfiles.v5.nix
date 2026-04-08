@@ -13,14 +13,18 @@
       url = "github:xiro-codes/inputs.nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    silentsddm = {
+      url = "github:uiriansan/SilentSDDM";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
   outputs =
-    inputs@{ self, deploy-rs, flake-parts, inputs-nix, nixpkgs-unstable, ... }:
+    inputs@{ self, deploy-rs, flake-parts, inputs-nix, nixpkgs-unstable, silentsddm, ... }:
     flake-parts.lib.mkFlake { inherit inputs; } {
       systems = [ "x86_64-linux" ];
       imports = [
         (import ./parts/discovery {
-          globalNixosModules = [ inputs-nix.nixosModules.default ];
+          globalNixosModules = [ inputs-nix.nixosModules.default silentsddm.nixosModules.default ];
           globalHomeModules = [ inputs-nix.homeModules.default ];
         })
       ];

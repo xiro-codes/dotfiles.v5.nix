@@ -38,13 +38,13 @@ in
     (lib.mkIf cfg.stylix.enable {
       # Create .wallpaper symlink in home directory
       home.file.".wallpaper".source = remoteWallpaper {
-        wallpaper = "metafor.jpg";
-        sha256 = "sha256-DNXaKG61TSyu5DeWVCyKmBBL1h/kF+tHjUseVY9Wl+o=";
+        wallpaper = "Deskmat/1.jpg";
+        sha256 = "sha256-MDIjJVlhXCLgCMsc9aGEx8A09hgJasjjvWdTTrTVL5c=";
       };
 
       stylix = {
         enable = true;
-        image = remoteWallpaper { wallpaper = "metafor.jpg"; sha256 = "sha256-DNXaKG61TSyu5DeWVCyKmBBL1h/kF+tHjUseVY9Wl+o="; };
+        image = remoteWallpaper { wallpaper = "Deskmat/1.jpg"; sha256 = "sha256-MDIjJVlhXCLgCMsc9aGEx8A09hgJasjjvWdTTrTVL5c="; };
         cursor = {
           package = pkgs.bibata-cursors;
           name = "Bibata-Modern-Ice";

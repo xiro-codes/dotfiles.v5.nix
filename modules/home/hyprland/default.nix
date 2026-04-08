@@ -67,6 +67,10 @@ in
           layout = "master";
 
         };
+        misc = {
+          disable_hyprland_logo = true;
+          force_default_wallpaper = 0;
+        };
         decoration = {
           rounding = 20;
           active_opacity = "1.0";

@@ -21,7 +21,7 @@ in
     };
     displayManager = mkOption {
       type = enum [ "sddm" "gdm" "ly" "none" "dms" ];
-      default = "ly";
+      default = "sddm";
       description = "The display manager to use";
     };
     hyprland = mkOption {
@@ -67,11 +67,27 @@ in
     };
     services.displayManager = mkIf (cfg.displayManager != "none") {
       ly.enable = cfg.displayManager == "ly";
-      sddm = mkIf (cfg.displayManager == "sddm") {
-        enable = true;
-        wayland.enable = true;
-      };
       gdm.enable = cfg.displayManager == "gdm";
+    };
+
+    programs.silentSDDM = mkIf (cfg.displayManager == "sddm") {
+      enable = true;
+      theme = "rei";
+      backgrounds = {
+        main = pkgs.fetchurl {
+          url = "https://wallpapers.onix.home/Deskmat/1.jpg";
+          sha256 = "sha256-MDIjJVlhXCLgCMsc9aGEx8A09hgJasjjvWdTTrTVL5c=";
+          curlOptsList = [ "-X" "GET" "--insecure" ];
+        };
+      };
+      settings = {
+        "LoginScreen" = {
+          background = "main";
+        };
+        "LockScreen" = {
+          background = "main";
+        };
+      };
     };
 
     # Desktop Selection logic using inputs from your flake
