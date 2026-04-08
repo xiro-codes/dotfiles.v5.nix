@@ -63,6 +63,8 @@ in
           kitty.colors.enable = false; # Let caelestia handle colors
           hyprland.enable = false; # Let caelestia handle hyprland colors
           firefox.enable = false;
+          zen-browser.enable = true;
+          zen-browser.profileNames = [ "default" ];
           gtk.enable = true; # Disable GTK theming
           qt.enable = false; # Disable Qt theming
         };

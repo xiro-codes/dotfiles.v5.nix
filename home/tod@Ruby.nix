@@ -9,6 +9,8 @@ in
     godot
     eog
     crush
+    vital
+    neothesia
     (symlinkJoin {
       name = "xivlauncher-wrapped";
       paths = [ xivlauncher ];

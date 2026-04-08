@@ -36,7 +36,7 @@ clear-undos:
 [group('docs')]
 gen-docs:
     @echo "📚 Generating module documentation..."
-    nix build .#docs
+    nix build .#docs-generated
     mkdir -p docs
     cp -f result/README.md docs/modules.md
     cp -f result/system-modules.md docs/system-modules.md
