@@ -75,6 +75,7 @@ in
       theme = "rei";
       backgrounds = {
         main = pkgs.fetchurl {
+          name = "bg.jpg";
           url = "https://wallpapers.onix.home/Deskmat/1.jpg";
           sha256 = "sha256-MDIjJVlhXCLgCMsc9aGEx8A09hgJasjjvWdTTrTVL5c=";
           curlOptsList = [ "-X" "GET" "--insecure" ];
@@ -82,10 +83,10 @@ in
       };
       settings = {
         "LoginScreen" = {
-          background = "main";
+          background = "bg.jpg";
         };
         "LockScreen" = {
-          background = "main";
+          background = "bg.jpg";
         };
       };
     };

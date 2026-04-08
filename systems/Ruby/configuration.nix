@@ -11,28 +11,11 @@
   programs = {
     coolercontrol.enable = true;
     gog.games = {
-      pillars-of-eternity.enable = true;
-      luftrausers.enable = true;
-      bastion.enable = true;
       one-step-from-eden.enable = true;
-      book-of-hours.enable = true;
     };
   };
   boot.enableContainers = true;
-  nixpkgs.overlays = [
-    # (self: super: {
-    #   libbluray = super.libbluray.override {
-    #     withAACS = true;
-    #     withBDplus = true;
-    #     withJava = true; # Needed for menus
-    #   };
-    # })
-  ];
 
-  environment.systemPackages = with pkgs; [
-    vlc
-    libaacs
-  ];
 
   local = {
     disks.enable = true;

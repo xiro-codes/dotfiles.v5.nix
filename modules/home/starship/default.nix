@@ -65,6 +65,8 @@ in
 
         shlvl = {
           disabled = false;
+          symbol = "🐚";
+          threshold = 3;
           format = "[$symbol$shlvl]($style) ";
         };
 
@@ -76,3 +78,4 @@ in
     };
   };
 }
+
