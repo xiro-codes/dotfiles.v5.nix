@@ -13,6 +13,12 @@
     };
 
     kmscon.enable = true;
+    virtualisation.incus = {
+      enable = true;
+      ui.enable = true;
+      macvlanInterface = "enp6s0";
+      storageSource = "/media/storage/incus";
+    };
     # System settings
     disks.enable = true;
     network-hosts.useAvahi = true;

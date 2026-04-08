@@ -1,7 +1,7 @@
 { config, lib, pkgs, ... }:
 
 let
-  inherit (lib) mkEnableOption mkIf;
+  inherit (lib) mkEnableOption mkOption types mkIf optional;
   cfg = config.local.virtualisation.incus;
 in
 {
@@ -10,6 +10,21 @@ in
     ui = {
       enable = mkEnableOption "Incus UI";
     };
+    macvlanInterface = mkOption {
+      type = types.nullOr types.str;
+      default = null;
+      description = "Physical interface to attach macvlan network to.";
+    };
+    storageSource = mkOption {
+      type = types.str;
+      default = "/var/lib/incus/storage";
+      description = "Path for the default storage pool.";
+    };
+    enableReverseProxy = mkOption {
+      type = types.bool;
+      default = true;
+      description = "Whether to configure the reverse proxy for the Incus UI/socket.";
+    };
   };
 
   config = mkIf cfg.enable {
@@ -17,9 +32,12 @@ in
     networking.firewall.trustedInterfaces = [ "incusbr0" ];
 
     networking.bridges.incusbr0.interfaces = [];
-    networking.macvlans.macvlan0 = {
-      interface = "enp6s0";
-      mode = "bridge";
+    
+    networking.macvlans = mkIf (cfg.macvlanInterface != null) {
+      macvlan0 = {
+        interface = cfg.macvlanInterface;
+        mode = "bridge";
+      };
     };
 
     virtualisation.incus = {
@@ -38,14 +56,13 @@ in
               "ipv6.address" = "none";
             };
           }
-          {
-            name = "macvlan0";
-            type = "macvlan";
-            config = {
-              parent = "enp6s0";
-            };
-          }
-        ];
+        ] ++ (if cfg.macvlanInterface != null then [{
+          name = "macvlan0";
+          type = "macvlan";
+          config = {
+            parent = cfg.macvlanInterface;
+          };
+        }] else []);
         profiles = [
           {
             name = "default";
@@ -68,17 +85,17 @@ in
             name = "default";
             driver = "dir";
             config = {
-              source = "/media/storage/incus";
+              source = cfg.storageSource;
             };
           }
         ];
       };
     };
 
-    local.reverse-proxy.services.vm = {
+    local.reverse-proxy.services.vm = mkIf cfg.enableReverseProxy {
       target = "http://unix:/var/lib/incus/unix.socket:/";
     };
 
-    users.users.nginx.extraGroups = [ "incus-admin" ];
+    users.users.nginx.extraGroups = mkIf cfg.enableReverseProxy [ "incus-admin" ];
   };
 }
