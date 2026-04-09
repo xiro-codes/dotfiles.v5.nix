@@ -14,7 +14,6 @@
     # Desktop applications
     discord
     proton-vpn
-    proton-vpn-cli
     unzip
     p7zip
 

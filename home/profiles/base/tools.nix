@@ -21,7 +21,7 @@
     duf
     dust
     procs
-
+    proton-vpn-cli
     # CLI utilities
     bat
     ripgrep
