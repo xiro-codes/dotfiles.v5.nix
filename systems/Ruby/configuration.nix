@@ -33,6 +33,8 @@
 
     bootloader.recoveryUUID = "b0cd9860-736a-45c5-a6d2-e69cdb319f24";
 
+    recovery-builder.enable = true;
+
     dotfiles-sync.maintenance.autoUpgrade = true;
 
     dotfiles-sync.maintenance.upgradeFlake = "github:xiro-codes/dotfiles.v5.nix";

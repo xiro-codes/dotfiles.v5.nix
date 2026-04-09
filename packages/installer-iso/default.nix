@@ -23,19 +23,13 @@
         ║                                                               ║
         ╚═══════════════════════════════════════════════════════════════╝
         
-        📦 Installation Steps:
+        📦 Auto-Setup:
         ────────────────────────────────────────────────────────────────
         
-        1️⃣  Clone the dotfiles repository:
-            git clone http://10.0.0.65:3002/xiro/dotfiles.nix.git
+        The dotfiles repository will be automatically cloned and 
+        the nix development shell will be launched.
         
-        2️⃣  Enter the repository:
-            cd dotfiles.nix
-        
-        3️⃣  Enter development shell:
-            nix develop
-        
-        4️⃣  Install system:
+        Once inside, you can install the system:
             just install <HOSTNAME>
         
         ────────────────────────────────────────────────────────────────
@@ -45,6 +39,18 @@
            • Use 'just rescue' for emergency system recovery
         ────────────────────────────────────────────────────────────────
         
+      '';
+
+      services.getty.autologinUser = inputs.nixpkgs.lib.mkForce "nixos";
+
+      environment.loginShellInit = ''
+        if [ ! -d "$HOME/dotfiles.v5.nix" ]; then
+          echo "📥 Cloning dotfiles repository..."
+          git clone https://github.com/xiro-codes/dotfiles.v5.nix "$HOME/dotfiles.v5.nix"
+        fi
+        cd "$HOME/dotfiles.v5.nix"
+        echo "🚀 Entering development shell..."
+        exec nix develop
       '';
 
       environment.etc."dotfiles-src".source = builtins.path {

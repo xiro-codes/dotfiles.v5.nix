@@ -17,6 +17,9 @@
       enable = true;
       openFirewall = true;
     };
+    recovery-builder = {
+      enable = true;
+    };
     file-browser = {
       enable = false;
       rootPath = "/media/Media/games";

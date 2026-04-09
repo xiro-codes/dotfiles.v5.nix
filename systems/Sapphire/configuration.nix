@@ -38,6 +38,8 @@
     # Sapphire-specific bootloader UUID
     bootloader.recoveryUUID = "0d9dddd8-9511-4101-9177-0a80cfbeb047";
 
+    recovery-builder.enable = true;
+
     # Enable auto-upgrade for Sapphire
     dotfiles-sync.maintenance.autoUpgrade = true;
 
