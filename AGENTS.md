@@ -29,7 +29,7 @@ This project uses `just` as its command runner. **Always use `just` commands whe
 ### Remote Deployment
 - `just deploy <host>`: Deploy to a remote node using `deploy-rs`.
 - `just deploy-all`: Deploy all nodes.
-- `just check`: Check flake evaluation before deploying.
+- **DO NOT RUN** `just check`: Checking flake evaluation is forbidden.
 
 ### Development & Testing
 - `just run-test`: Build and launch the custom Installer ISO in a QEMU VM. Very useful for testing configurations safely.
@@ -52,6 +52,7 @@ This project uses `just` as its command runner. **Always use `just` commands whe
 
 ## ⚠️ Gotchas & Important Notes
 
+- **DO NOT** run `just check`.
 - **DO NOT** edit `flake.nix` to add a new system or module. Just create the directory in the right place.
 - **DO NOT** edit generated documentation in `docs/` directly without running the generation scripts, as they may get overwritten. 
 - The project relies heavily on `sops-nix`. If you need to add a new secret, you must use `just edit-secrets`.

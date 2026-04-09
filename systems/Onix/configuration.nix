@@ -7,6 +7,11 @@
     ../profiles/server
   ];
   local = {
+    minecraft-server = {
+      enable = true;
+      eula = true;
+      openFirewall = true;
+    };
     network = {
       enable = true;
       usePihole = true;
