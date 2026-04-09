@@ -4,7 +4,7 @@
 , ...
 }:
 with lib; let
-  cfg = config.local.services.minecraft-server;
+  cfg = config.local.minecraft-server;
 
   # We don't allow eula=false anyways
   eulaFile = builtins.toFile "eula.txt" ''
@@ -63,7 +63,7 @@ with lib; let
 in
 {
   options = {
-    local.services.minecraft-server = {
+    local.minecraft-server = {
       enable = mkOption {
         type = types.bool;
         default = false;
