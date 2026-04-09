@@ -11,6 +11,15 @@
       enable = true;
       eula = true;
       openFirewall = true;
+      declarative = true;
+      package = inputs.self.packages.${pkgs.system}.tekkit-server;
+      serverProperties = {
+        server-port = 25565;
+        difficulty = 1;
+        gamemode = 0;
+        max-players = 10;
+        motd = "Tekkit Server on Onix";
+      };
     };
     network = {
       enable = true;
