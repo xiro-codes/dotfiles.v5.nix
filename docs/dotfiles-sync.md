@@ -1,59 +1,59 @@
 # dotfiles-sync
 
-This Nix module provides a comprehensive solution for managing and synchronizing dotfiles within the `/etc/nixos` directory. It automates tasks such as pulling changes from a Git repository, maintaining system health through garbage collection and optimization, and managing permissions for the dotfiles repository. It's designed to streamline the management of system configurations and ensure consistency across deployments.
+This Nix module provides comprehensive dotfiles management for a NixOS system, focusing on automated Git synchronization, system maintenance, and repository permissions. It's designed to keep your `/etc/nixos` directory up-to-date, perform system optimization, and manage user access to configuration files.
 
 ## Options
 
-This module offers several configurable options to tailor its behavior to specific needs:
+This module exposes the following options within the `local.dotfiles-sync` scope:
 
 ### `local.dotfiles-sync.enable`
 
 *   **Type:** `types.bool`
 *   **Default:** `false`
-*   **Description:** Enables or disables the dotfiles management module. This is the main switch to control whether any of the dotfiles-sync functionality is active.
+*   **Description:** Enables or disables the entire dotfiles management module. This is the main switch to activate the functionalities defined in this module.
 
 ### `local.dotfiles-sync.sync.enable`
 
 *   **Type:** `types.bool`
 *   **Default:** `false`
-*   **Description:** Enables automated Git synchronization for the `/etc/nixos` directory.  When enabled, a systemd timer will periodically pull changes from the configured Git repository.
+*   **Description:** Enables automated Git synchronization for the `/etc/nixos` directory. When enabled, a systemd service and timer will be configured to periodically pull changes from a Git repository.
 
 ### `local.dotfiles-sync.sync.interval`
 
 *   **Type:** `types.str`
 *   **Default:** `"30m"`
 *   **Example:** `"1h"`
-*   **Description:** Specifies how often to pull changes from the Git repository. This uses the systemd time span format (e.g., `30m`, `1h`, `2h`). It determines the interval at which the `dotfiles-sync` service will run. Shorter intervals provide more frequent updates, while longer intervals reduce network activity.
+*   **Description:** Specifies how often to pull changes from the Git repository. The value must be a string representing a time span in a format understood by systemd (e.g., "30m" for 30 minutes, "1h" for 1 hour, "2h" for 2 hours).
 
 ### `local.dotfiles-sync.maintenance.enable`
 
 *   **Type:** `types.bool`
 *   **Default:** `false`
-*   **Description:** Enables system maintenance tasks, including garbage collection (GC) and optimization of the Nix store.  This also enables the automatic upgrade functionality, if configured.
+*   **Description:** Enables system maintenance tasks, including garbage collection and optimization.  These settings can reduce disk space usage and improve system performance.
 
 ### `local.dotfiles-sync.maintenance.autoUpgrade`
 
 *   **Type:** `types.bool`
 *   **Default:** `false`
-*   **Description:** Enables automatic pulling from git and upgrading the system.  This should be used with caution, as it can automatically apply changes to your system. It leverages the `upgradeFlake` option to determine the source of the new configuration.
+*   **Description:** Determines whether to automatically pull from Git and upgrade the system. If enabled, the system will periodically check for and apply updates from the specified Flake URL. Requires `local.dotfiles-sync.maintenance.enable` to also be true.
 
 ### `local.dotfiles-sync.maintenance.upgradeFlake`
 
 *   **Type:** `types.str`
 *   **Default:** `"git+http://${config.local.network-hosts.onix}:3002/xiro/dotfiles.nix.git"`
 *   **Example:** `"github:user/dotfiles"`
-*   **Description:** Specifies the Flake URL for the system auto-upgrade.  This URL points to the Git repository containing the desired system configuration. It can be a local Git repository, a remote repository on GitHub, or any other valid Flake URL.
+*   **Description:**  The Flake URL used for system auto-upgrade. This specifies the source of the system configuration, allowing you to manage your NixOS configuration in a Git repository and automatically deploy changes. Can be a local git repository or a remote one.
 
 ### `local.dotfiles-sync.repo.enable`
 
 *   **Type:** `types.bool`
 *   **Default:** `false`
-*   **Description:** Enables management of `/etc/nixos` permissions and symlinks.  This option allows you to control who has write access to the repository and creates symlinks to the repository in user home directories.
+*   **Description:** Enables management of `/etc/nixos` permissions and symlinks. When enabled, the module will set appropriate group ownership and permissions on the `/etc/nixos` directory, and create symlinks in user home directories pointing to the configuration.
 
 ### `local.dotfiles-sync.repo.editorGroup`
 
 *   **Type:** `types.str`
 *   **Default:** `"wheel"`
 *   **Example:** `"users"`
-*   **Description:** Specifies the group that has write access to the `/etc/nixos` repository. This allows you to grant write permissions to a specific group, enabling collaborative management of the system configuration.  Ensure the specified group exists on the system.
+*   **Description:** The group that has write access to the `/etc/nixos` repository. This allows you to control which users or groups are authorized to modify the system configuration files.  It's crucial for maintaining system integrity and security.
 

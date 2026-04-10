@@ -1,56 +1,74 @@
-# Desktops
+# desktops
 
-This Nix module provides a convenient way to enable and configure various desktop environments and related settings within your NixOS system. It includes options for enabling core desktop requirements, setting up Wayland environment variables, choosing a display manager, and enabling support for specific compositors like Hyprland and Niri, as well as the KDE Plasma 6 desktop environment.
+This module provides a convenient way to enable and configure desktop environment support on NixOS. It handles setting up display managers, Wayland environment variables, and enabling specific desktop environments like Hyprland, Niri, and Plasma 6.  It aims to simplify the process of setting up a modern desktop environment, particularly for Wayland-based compositors.
 
 ## Options
 
-Here's a detailed breakdown of the available options within the `local.desktops` scope:
+Here's a detailed breakdown of the available options within the `local.desktops` namespace:
 
 ### `local.desktops.enable`
 
-*   **Type:** `boolean`
-*   **Default:** `false`
-*   **Description:**
-    Enables the core desktop environment support. This is the primary switch that activates the module's functionality, including setting up essential system packages and potentially configuring a display manager.  If this option is set to `true`, the module proceeds to configure other options, like the display manager, environment variables, and specific desktop environments. If `false`, most of the module's configuration is skipped.  It is the foundational setting upon which all others depend.
+**Type:** boolean
+
+**Default:** `false`
+
+**Description:**
+This option is the main switch to enable or disable desktop environment support. Setting this to `true` activates all the core desktop requirements, environment variables, and display manager configuration based on your other desktop options.
 
 ### `local.desktops.enableEnv`
 
-*   **Type:** `boolean`
-*   **Default:** `true`
-*   **Description:**
-    Enables the setting of Wayland-specific environment variables. These variables are crucial for applications to function correctly within a Wayland environment.  These variables configure application backends and display configurations to integrate smoothly with the Wayland display server. Disabling this might lead to compatibility issues with Wayland-native applications. When enabled, the module sets variables like `NIXOS_OZONE_WL`, `CLUTTER_BACKEND`, `GDK_BACKEND`, `MOZ_ENABLE_WAYLAND` and others.
+**Type:** boolean
+
+**Default:** `true`
+
+**Description:**
+Determines whether to enable Wayland-specific environment variables.  These variables are crucial for ensuring proper rendering and functionality of Wayland applications. Disabling this option may cause issues with Wayland applications if the environment variables are not set elsewhere.
+
+Example values:
+
+*   `true`: Enables environment variables such as `NIXOS_OZONE_WL`, `CLUTTER_BACKEND`, `GDK_BACKEND`, etc.
+*   `false`: Disables the setting of Wayland environment variables.
 
 ### `local.desktops.displayManager`
 
-*   **Type:** `enum [ "sddm" "gdm" "ly" "none" "dms" ]`
-*   **Default:** `"dms"`
-*   **Description:**
-    Specifies the display manager to use.  The display manager handles the login process and starts the desktop environment.
+**Type:** enum of "sddm", "gdm", "ly", "none", "dms"
 
-    *   `"sddm"`:  Enables the Simple Desktop Display Manager (SDDM), a modern and highly customizable display manager. Enables Wayland support for SDDM.
-    *   `"gdm"`: Enables the GNOME Display Manager (GDM), the default display manager for GNOME-based systems.
-    *   `"ly"`: Enables Ly, a lightweight TTY-based display manager.
-    *   `"none"`: Disables any display manager.  This is useful for headless systems or when managing display management through other means, such as a custom script.
-    *   `"dms"`: Enables `dms-greeter` display manager, configured to use Hyprland as the compositor.  This is typically used in conjunction with enabling Hyprland in the module.
+**Default:** `"sddm"`
 
+**Description:**
+Specifies the display manager to use.  The display manager is responsible for presenting a graphical login screen and starting the desktop environment.
+
+Possible values:
+
+*   `"sddm"`:  Uses the SDDM display manager, configured with a custom theme.
+*   `"gdm"`:  Uses the GDM display manager.
+*   `"ly"`:  Uses the LY display manager.
+*   `"none"`: Disables the display manager, which requires manual login via the console or SSH.
+*   `"dms"`: Uses the default NixOS Display Manager Services (DMS) module.
 ### `local.desktops.hyprland`
 
-*   **Type:** `boolean`
-*   **Default:** `false`
-*   **Description:**
-    Enables the Hyprland compositor. Hyprland is a dynamic tiling Wayland compositor based on wlroots, known for its customization options. This option ensures Hyprland is installed and configured to run. Uses a flake input to find the package.
+**Type:** boolean
+
+**Default:** `false`
+
+**Description:**
+Enables the Hyprland compositor. Hyprland is a dynamic tiling Wayland compositor based on wlroots. Setting this to `true` enables the `programs.hyprland` module.
 
 ### `local.desktops.niri`
 
-*   **Type:** `boolean`
-*   **Default:** `false`
-*   **Description:**
-    Enables the Niri compositor. This option installs and configures the Niri compositor, providing an alternative desktop environment.
+**Type:** boolean
+
+**Default:** `false`
+
+**Description:**
+Enables the Niri compositor.  Niri is another Wayland compositor option. Setting this to `true` enables the `programs.niri` module.
 
 ### `local.desktops.plasma6`
 
-*   **Type:** `boolean`
-*   **Default:** `false`
-*   **Description:**
-    Enables the KDE Plasma 6 desktop environment. This option configures Plasma 6 as the active desktop environment, ensuring all necessary packages are installed and configured.
+**Type:** boolean
+
+**Default:** `false`
+
+**Description:**
+Enables the KDE Plasma 6 desktop environment.  Setting this to `true` enables the `services.desktopManager.plasma6` module. This requires plasma6 packages in scope (likely via your `nixpkgs.url` flake input pointing to a Plasma 6-enabled channel).
 

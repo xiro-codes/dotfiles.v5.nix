@@ -1,130 +1,119 @@
 # desktop-apps
 
-This Nix module provides a collection of configurations and options for various desktop applications, aiming to streamline their setup and integration within a NixOS environment. It covers a range of tools, from terminal emulators and file managers to status bars and music players, allowing users to easily enable and customize their desktop experience.
+This Nix module provides a collection of configurations and options for various desktop applications, enhancing the user experience with customized settings and integrations. It allows users to easily enable and configure programs like fish, kitty, waybar, hyprpaper, ranger, mpd, and others.  The module uses `mkEnableOption` extensively to simplify enabling or disabling applications. It integrates with system services like `hyprpaper`, `kdeconnect`, `mako`, and `mpd`, and customizes application settings via NixOS options.
 
 ## Options
 
-Here's a detailed breakdown of the available options within the `local` namespace:
+Here is a detailed breakdown of the available options:
 
-### `fish`
+### `local.fish`
 
 #### `local.fish.enable`
 
-*   **Type:** `boolean`
-*   **Default:** `true` (if Fish is the system shell, otherwise `false`)
-*   **Description:** Enables Fish shell configuration. This option automatically sets up Fish with custom settings, abbreviations, and integrations if Fish is detected as the user's system shell. Specifically, it:
-    *   Enables `eza` for enhanced `ls` commands.
-    *   Enables `zoxide` for smart directory navigation.
-    *   Installs `trash-cli` for safer file removal.
-    *   Configures Fish with a minimal greeting, `zoxide` integration, VI key bindings, and sourcing `caelestia` sequences if available.
-    *   Defines shell abbreviations for frequently used commands like `cd`, `find`, `ls`, `rm`, and file manager shortcuts.
+*   **Type:** `Boolean`
+*   **Default:** Determined by if the system shell is fish (`isDefaultShell`).
+*   **Description:** Enables fish shell configuration if it is the system shell.  This includes setting up `eza`, `zoxide`, `trash-cli`, `fastfetch`, shell abbreviations, and interactive shell initialization. If set to true, the module will configure fish with the specified settings.
 
-### `kdeconnect`
+### `local.kdeconnect`
 
 #### `local.kdeconnect.enable`
 
-*   **Type:** `boolean`
+*   **Type:** `Boolean`
 *   **Default:** `false`
-*   **Description:** Enables KDE Connect integration. This option installs KDE Connect and configures it as a service with a tray indicator for seamless device connectivity.
+*   **Description:** Enables kdeconnect and its associated services. When enabled, it installs the `kdeconnect-kde` package and configures the `kdeconnect` service to run with an indicator icon.
 
-### `yazi`
+### `local.yazi`
 
 #### `local.yazi.enable`
 
-*   **Type:** `boolean`
+*   **Type:** `Boolean`
 *   **Default:** `false`
-*   **Description:** Enables the `yazi` terminal file manager, replacing default file manager.
-    *  `yazi` will be called with `yy` shell abbr.
+*   **Description:** Enables yazi, a terminal file manager. When enabled, it installs and configures the yazi package, enabling fish integration and defining a shell wrapper alias `yy`. Also, the file manager variable will be set to `yazi`.
 
-### `kitty`
+### `local.kitty`
 
 #### `local.kitty.enable`
 
-*   **Type:** `boolean`
+*   **Type:** `Boolean`
 *   **Default:** `false`
-*   **Description:** Enables the Kitty terminal emulator. It sets up Kitty with a custom configuration, including a window padding width of 5 pixels.
+*   **Description:** Enables the Kitty terminal emulator with a custom configuration. When enabled, it installs and configures Kitty, adding extra configuration options such as `window_padding_width`. The terminal variable will also be set to kitty.
 
-### `waybar`
+### `local.waybar`
 
 #### `local.waybar.enable`
 
-*   **Type:** `boolean`
+*   **Type:** `Boolean`
 *   **Default:** `false`
-*   **Description:** Enables the Waybar status bar for Wayland compositors. This option configures Waybar as a systemd service, targeting the `hyprland-session.target`, and utilizes a custom settings file (`../waybar/settings.nix`) that can be further customized.  It also installs `pavucontrol`, `jq`, and `wttrbar`.
+*   **Description:** Enables the Waybar status bar for Wayland compositors. When enabled, it installs necessary packages like `pavucontrol`, `jq`, and `wttrbar`, configures the Waybar service, and enables it as a systemd target under the `hyprland-session.target`. Also uses a custom `settings.nix` file for waybar.
 
-### `hyprlauncher`
+### `local.hyprlauncher`
 
 #### `local.hyprlauncher.enable`
 
-*   **Type:** `boolean`
+*   **Type:** `Boolean`
 *   **Default:** `false`
-*   **Description:** Enables Hyprlauncher, a native application launcher for Hyprland.  Installs the launcher.
+*   **Description:** Enables Hyprlauncher, the native Hyprland application launcher. When enabled, it installs the `hyprlauncher` package and sets the local variable `launcher` to "hyprlauncher".
 
-### `hyprpaper`
+### `local.hyprpaper`
 
 #### `local.hyprpaper.enable`
 
-*   **Type:** `boolean`
+*   **Type:** `Boolean`
 *   **Default:** `false`
-*   **Description:** Enables Hyprpaper, a wallpaper daemon for Hyprland. This option configures Hyprpaper as a service and allows preloading a list of wallpaper paths.
+*   **Description:** Enables Hyprpaper, the native Hyprland wallpaper daemon. When enabled, it configures the `hyprpaper` service to preload and set wallpapers specified in `local.hyprpaper.wallpapers`.  Also sets the variable `wallpaper` to `hyprpaper`.
 
 #### `local.hyprpaper.wallpapers`
 
-*   **Type:** `list of paths`
-*   **Default:** `[]`
-*   **Example:**
+*   **Type:** `List of Paths`
+*   **Default:** `[ ]`
+*   **Example:** `[ ~/.wallpaper ]`
+*   **Description:** A list of wallpaper paths to preload for Hyprpaper. This list defines which wallpapers Hyprpaper will manage and display. The first wallpaper in the list will be actively set.
 
-    ```nix
-    [ ./wallpapers/gruvbox.png ./wallpapers/catppuccin.jpg ]
-    ```
-
-*   **Description:** A list of wallpaper paths to preload for Hyprpaper. This is essential for setting the wallpaper. The first element in the list will be used as the active wallpaper.
-
-### `mako`
+### `local.mako`
 
 #### `local.mako.enable`
 
-*   **Type:** `boolean`
+*   **Type:** `Boolean`
 *   **Default:** `false`
-*   **Description:** Enables the Mako notification daemon for Wayland. This option configures Mako with specific settings such as padding, border size, and border radius.
+*   **Description:** Enables the Mako notification daemon for Wayland. When enabled, it configures the `mako` service with custom padding, border size, and border radius settings.
 
-### `ranger`
+### `local.ranger`
 
 #### `local.ranger.enable`
 
-*   **Type:** `boolean`
+*   **Type:** `Boolean`
 *   **Default:** `false`
-*   **Description:** Enables Ranger, a terminal-based file manager with devicons support. This option installs Ranger along with necessary utilities like `p7zip` and `unzip`, and configures Ranger with custom `rifle.conf`, `rc.conf`, and devicons plugin.
+*   **Description:** Enables the Ranger terminal-based file manager with devicons support. When enabled, it installs Ranger, p7zip, and unzip, sets the fileManager variable to ranger, and configures Ranger's rifle.conf, rc.conf, and ranger_devicons.
 
-### `superfile`
+### `local.superfile`
 
 #### `local.superfile.enable`
 
-*   **Type:** `boolean`
+*   **Type:** `Boolean`
 *   **Default:** `false`
-*   **Description:** Enables Superfile, a terminal-based file manager with style.  Configures Superfile's theme.
+*   **Description:** Enables the Superfile terminal-based file manager. When enabled, it installs and configures superfile with a gruvbox theme.
 
-### `mpd`
+### `local.mpd`
 
 #### `local.mpd.enable`
 
-*   **Type:** `boolean`
+*   **Type:** `Boolean`
 *   **Default:** `false`
-*   **Description:** Enables MPD (Music Player Daemon) with the ncmpcpp client.  It sets up MPD and integrates it with ncmpcpp.
+*   **Description:** Enables MPD (Music Player Daemon) with ncmpcpp client. When enabled, it configures MPD with a music directory and custom audio outputs (pipewire and fifo for visualizer support), configures ncmpcpp with visualizer support, key bindings, and notification settings.
 
 #### `local.mpd.path`
 
-*   **Type:** `string`
+*   **Type:** `String`
 *   **Default:** `"/media/Music"`
 *   **Example:** `"/home/user/Music"`
-*   **Description:** The path to the music directory for MPD to serve. This determines where MPD will look for music files.
+*   **Description:** Path to the music directory for MPD to serve. This specifies where MPD should look for music files.
 
-### `caelestia`
+### `local.caelestia`
 
 #### `local.caelestia.colorScheme`
 
-*   **Type:** `null or string`
+*   **Type:** `Null or String`
 *   **Default:** `null`
 *   **Example:** `"gruvbox"`
-*   **Description:** The color scheme name for Caelestia (e.g., 'gruvbox', 'catppuccin'). If `null`, it will attempt to dynamically generate one from the wallpaper.
+*   **Description:** Color scheme name for Caelestia (e.g., 'gruvbox', 'catppuccin'). If `null`, Caelestia uses dynamic wallpaper colors. Provides a mechanism to set the desired color scheme for the `caelestia` program.
 

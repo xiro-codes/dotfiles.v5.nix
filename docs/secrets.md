@@ -1,49 +1,47 @@
+```markdown
 # secrets
 
-This Nix module provides a convenient way to manage system secrets using `sops-nix`. It enables encryption and decryption of secrets stored in a YAML file, making them accessible to your NixOS configuration.  The module automatically maps specified secrets to `/run/secrets/` to provide system-wide access, configuring the owner, group, and permissions for each secret. It also configures the global sops settings.
+This module provides a convenient way to manage secrets using sops-nix. It enables automatic decryption and mounting of secrets from an encrypted YAML file into `/run/secrets`, making them easily accessible system-wide. This configuration simplifies the process of managing sensitive data, such as passwords, API keys, and certificates, within a NixOS environment.
 
 ## Options
 
-This module exposes the following options under the `local.secrets` namespace:
+This module defines the following options under the `local.secrets` namespace:
 
-### `local.secrets.enable`
+- **`local.secrets.enable`** (type: boolean, default: `false`):
 
-Type: `boolean`
+  Enables or disables the sops-nix secret management functionality. When enabled, the module will configure sops to decrypt and mount secrets specified in the `keys` option.
 
-Default: `false`
+- **`local.secrets.sopsFile`** (type: path, default: `../../../secrets/secrets.yaml`):
 
-Description: Enables or disables the `sops-nix` secret management integration. When enabled, the module configures `sops` to decrypt secrets from the specified file and make them available.  This option is the primary switch to turn on all functionality described here.
+  Specifies the path to the encrypted YAML file containing the secrets. This file should be encrypted using sops and contain key-value pairs where the keys correspond to the secret names you want to expose.
 
-### `local.secrets.sopsFile`
+  *Example:*
+    ```nix
+    ../secrets/system-secrets.yaml
+    ```
+    This example indicates that the secrets are stored in a file named `system-secrets.yaml` located in the parent directory, then secrets.
 
-Type: `path`
+- **`local.secrets.keys`** (type: list of strings, default: `[]`):
 
-Default: `../../../secrets/secrets.yaml`
+  A list of sops keys (i.e., secret names from the `sopsFile`) to automatically map to `/run/secrets/` for system-wide access. Each key in this list will have a corresponding file created in `/run/secrets/` with the decrypted value.
 
-Example: `../secrets/system-secrets.yaml`
+  *Example:*
+    ```nix
+    [ "onix_creds" "ssh_pub_ruby/master" "ssh_pub_sapphire/master" ]
+    ```
+    This example defines three secrets: `onix_creds`, `ssh_pub_ruby/master`, and `ssh_pub_sapphire/master`. After enabling the module and configuring sops correctly, these secrets will be available at `/run/secrets/onix_creds`, `/run/secrets/ssh_pub_ruby/master`, and `/run/secrets/ssh_pub_sapphire/master` respectively.
 
-Description: Specifies the path to the encrypted YAML file containing your system secrets. This file should be encrypted using `sops`. The `defaultSopsFile` option of sops-nix will be set to this path. It is used to configure where the module reads secret values from. It's recommended to store this file in a secure location. This supports relative paths, which are resolved relative to the module file.
+## Implementation Details
 
-### `local.secrets.keys`
+When `local.secrets.enable` is set to `true`, the module performs the following actions:
 
-Type: `list of string`
+1.  Sets `sops.defaultSopsFile` to the value of `local.secrets.sopsFile`.
+2.  Sets `sops.defaultSopsFormat` to `"yaml"` to ensure the sops plugin correctly parses the encrypted file.
+3.  Configures `sops.age.sshKeyPaths` to include `/etc/ssh/ssh_host_ed25519_key`. This assumes that you are using an SSH key to decrypt your sops file; you may need to adjust this depending on your sops configuration. It's considered best practice to generate new age keys for server environment and rotate the /etc/ssh host keys!
+4.  Generates the `sops.secrets` attribute set based on the `local.secrets.keys` list.  For each key in the list, a corresponding entry is created in `sops.secrets` with the following attributes:
+    - `mode`: Set to `"0440"` to ensure secrets are readable only by the owner and group.
+    - `owner`: Set to `"root"`.
+    - `group`: Set to `"wheel"` allowing admins to read the secrets.
 
-Default: `[ ]`
-
-Example: `[ "onix_creds" "ssh_pub_ruby/master" "ssh_pub_sapphire/master" ]`
-
-Description: A list of `sops` keys to automatically map to `/run/secrets/` for system-wide access. Each string in the list corresponds to a top-level key within your encrypted YAML file. These keys will be created as secrets in sops-nix.
-
-When this module is enabled (`local.secrets.enable = true`), the listed secrets will be mounted in `/run/secrets/`, which is a common location for system services to access sensitive information. This is facilitated through `lib.genAttrs` and `sops.secrets`. The module will set the specified permissions for each generated entry, using the default values provided in the module. Each secret will be accessible as a file within the `/run/secrets/` directory, named after its corresponding key. The file contains the decrypted value of the secret.
-
-## Configuration Details
-
-When `local.secrets.enable` is set to `true`, the module automatically configures the `sops` options, using `sops-nix` underneath:
-
-*   `sops.defaultSopsFile` is set to the value of `cfg.sopsFile`.
-*   `sops.defaultSopsFormat` is set to `"yaml"`.
-*   `sops.age.sshKeyPaths` is set to `[ "/etc/ssh/ssh_host_ed25519_key" ]`.  This is required to automatically decrypt secrets on boot. Make sure to regenerate these host keys if deploying from an image.
-*   For each key in `cfg.keys`, a corresponding secret entry is generated under `sops.secrets`. These secrets are configured with:
-    *   `mode = "0440"` (read permissions for root and the wheel group).
-    *   `owner = "root"` (owned by the root user).
-    *   `group = "wheel"` (belonging to the wheel group).
+This configuration mounts the decrypted secrets into `/run/secrets` with appropriate file permissions, making them readily accessible to system services and applications that require them.  Remember to set appropriate `age.keyPaths` to ensure proper decryption.
+```

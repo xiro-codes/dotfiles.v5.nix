@@ -1,68 +1,52 @@
 # gitea
 
-This module provides a Nix configuration for deploying a Gitea Git service. Gitea is a self-hosted Git management software. It includes options for configuring the HTTP and SSH ports, domain, root URL, data directory, and firewall settings. It also configures the Gitea service with sensible defaults and enables it if specified.
+This Nix module provides a convenient way to deploy and configure a Gitea Git service. Gitea is a self-hosted Git management solution, offering features like repository hosting, issue tracking, and code review. This module simplifies the setup and configuration of Gitea within a NixOS environment, allowing you to quickly get a self-hosted Git service up and running. It handles basic configuration options and integrates with NixOS services and firewall management.
 
 ## Options
 
-Here's a detailed list of the available options and their configurations:
+Here's a detailed breakdown of the available configuration options within the `local.gitea` namespace:
 
 ### `local.gitea.enable`
 
-*   **Type:** `boolean`
+*   **Type:** `types.bool`
 *   **Default:** `false`
-*   **Description:** Enables or disables the Gitea Git service. Setting this option to `true` will configure and enable the Gitea service.
+*   **Description:** Enables the Gitea Git service. When set to `true`, this option activates the Gitea service and configures it according to the other options in this module.
 
 ### `local.gitea.port`
 
-*   **Type:** `port` (integer representing a port number)
+*   **Type:** `types.port`
 *   **Default:** `3001`
-*   **Description:** The HTTP port for the Gitea web interface. This is the port that users will use to access Gitea through a web browser.
+*   **Description:** Specifies the HTTP port that the Gitea web interface will listen on. This is the port you will use to access Gitea in your web browser.
 
 ### `local.gitea.sshPort`
 
-*   **Type:** `port` (integer representing a port number)
+*   **Type:** `types.port`
 *   **Default:** `2222`
-*   **Description:** The SSH port for Git operations. This port is used for cloning, pushing, and pulling Git repositories via SSH.
+*   **Description:** Defines the SSH port used for Git operations (e.g., `git clone`, `git push`, `git pull`).  Make sure this port is not already in use by another service.
 
 ### `local.gitea.domain`
 
-*   **Type:** `string`
+*   **Type:** `types.str`
 *   **Default:** `"localhost"`
 *   **Example:** `"git.example.com"`
-*   **Description:** The domain name for the Gitea instance. This should be a valid domain name or subdomain that resolves to the server running Gitea.
+*   **Description:** Sets the domain name for the Gitea instance. This is crucial for configuring Gitea to work correctly with your network and DNS settings. If you're using a reverse proxy, ensure this matches the domain the proxy is configured for.
 
 ### `local.gitea.rootUrl`
 
-*   **Type:** `string`
-*   **Default:** `"http://localhost:3001/"`
+*   **Type:** `types.str`
+*   **Default:** `"http://localhost:3001/"` (dynamically constructed using `cfg.port`)
 *   **Example:** `"https://git.example.com/"`
-*   **Description:** The root URL for accessing Gitea. This URL is used by Gitea to generate links and redirects.  It *must* end with a trailing slash.  If you are using HTTPS, be sure to specify `https://` here.
+*   **Description:**  Determines the root URL for the Gitea instance. This URL is used internally by Gitea for generating links and redirects.  Pay close attention to including the trailing slash (`/`) and ensuring the protocol (HTTP or HTTPS) is correct, especially if using a reverse proxy with SSL termination.
 
 ### `local.gitea.dataDir`
 
-*   **Type:** `string`
+*   **Type:** `types.str`
 *   **Default:** `"/var/lib/gitea"`
-*   **Description:** The data directory for Gitea. This directory stores the Gitea database, repositories, and other data. Make sure this directory is writable by the Gitea user.
+*   **Description:**  Specifies the directory where Gitea stores its data, including the SQLite database (if used), repositories, and configuration files.  Ensure this directory exists and is writable by the Gitea service user.  Consider backing up this directory regularly to protect your Gitea data.
 
 ### `local.gitea.openFirewall`
 
-*   **Type:** `boolean`
+*   **Type:** `types.bool`
 *   **Default:** `false`
-*   **Description:**  Opens the firewall ports for Gitea, specifically the HTTP port (`local.gitea.port`) and SSH port (`local.gitea.sshPort`).  Setting this to true will automatically configure the NixOS firewall to allow traffic on these ports.
-
-## Configuration Details
-
-When `local.gitea.enable` is set to `true`, the following configurations are applied:
-
-*   The `services.gitea.enable` option is set to `true`, enabling the Gitea service.
-*   The `services.gitea.appName` is set to `"Gitea: Git with a cup of tea"`.
-*   The database type is set to `sqlite3` and the path is set to `${cfg.dataDir}/data/gitea.db`.
-*   The `settings.server.DOMAIN` is set to the calculated domain.
-*   The `settings.server.ROOT_URL` is set to the calculated root URL.
-*   The `settings.server.HTTP_PORT` is set to the value of `local.gitea.port`.
-*   The `settings.server.SSH_PORT` is set to the value of `local.gitea.sshPort`.
-*   The `settings.server.START_SSH_SERVER` is set to `true`.
-*   Various settings for `service`, `session`, `repository`, `ui`, and `actions` are configured with reasonable defaults.
-*   The `services.gitea.stateDir` is set to the value of `local.gitea.dataDir`.
-*   If `local.gitea.openFirewall` is set to `true`, the `networking.firewall.allowedTCPPorts` option is configured to allow traffic on the HTTP and SSH ports.
+*   **Description:**  When set to `true`, this option automatically opens the HTTP port (`local.gitea.port`) and the SSH port (`local.gitea.sshPort`) in the NixOS firewall, allowing external access to the Gitea instance.  Only enable this option if you are not using a separate firewall management system or have already configured the firewall manually.  If you're using a reverse proxy, you might not need to open the SSH port.
 

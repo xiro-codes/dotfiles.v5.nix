@@ -1,23 +1,95 @@
-# security
+# security
 
-This Nix module provides centralized security settings for a NixOS system. It configures `doas` and `sudo` for passwordless administrative access, hardens the SSH service, applies SSH keys to the root and admin user, and sets up Nix daemon trust for remote deployments.  It primarily aims to improve the security posture of a NixOS system with sensible defaults and easy customization.
+This module provides centralized security settings for a NixOS system, including doas and sudo configuration, SSH service hardening, authorized key management for root and a specified admin user, and Nix daemon trust configuration. It aims to simplify and standardize security configurations across multiple systems.
 
 ## Options
 
-### `local.security.enable`
+Here's a detailed breakdown of the available options within the `local.security` namespace:
 
-Type: boolean
+-   **`local.security.enable`**
+    *   Type: `Boolean`
+    *   Default: `false` (Implied by `mkEnableOption`)
+    *   Description: Enables the centralized security settings defined in this module. When enabled, the module configures `doas`, `sudo`, `openssh`, user SSH keys and nix daemon.
 
-Default: `false`
+-   **`local.security.adminUser`**
+    *   Type: `String`
+    *   Default: `"tod"`
+    *   Example: `"admin"`
+    *   Description: Specifies the main administrative user to be granted passwordless `sudo`/`doas` access and SSH key authorization.  This user is treated as a privileged user with extended permissions.
 
-Description: Enables the centralized security settings provided by this module. When enabled, `doas`, `sudo`, SSH hardening, SSH key deployment, and Nix daemon trust settings are applied.
+## Configuration Details
 
-### `local.security.adminUser`
+When `local.security.enable` is set to `true`, the following configurations are applied:
 
-Type: string
+### doas setup
 
-Default: `"tod"`
+Enables `doas` and configures it to allow the specified `adminUser` to execute commands without a password. The `keepEnv` option ensures that the user's environment variables are preserved when using `doas`.
 
-Example: `"admin"`
+```nix
+security.doas = {
+  enable = true;
+  extraRules = [
+    {
+      users = [ cfg.adminUser ];
+      keepEnv = true;
+      noPass = true;
+    }
+  ];
+};
+```
 
-Description: The main admin user to grant passwordless `sudo`/`doas` access and SSH key authorization. This user will be granted `doas` and `sudo` access without a password, and their SSH keys will be authorized for login.  This is the primary administrative account.
+### sudo setup
+
+Enables `sudo` and configures it so the `wheel` group does not need a password.  This is included to ensure that `deploy-rs` and other systems relying on `sudo` can still function correctly.
+
+```nix
+security.sudo = {
+  enable = true;
+  wheelNeedsPassword = false;
+};
+```
+
+### SSH Service Hardening
+
+Configures the `openssh` service to enhance security by disabling password authentication and keyboard-interactive authentication, and prohibiting root login with a password.
+
+```nix
+services.openssh = {
+  enable = true;
+  settings = {
+    PasswordAuthentication = false;
+    KbdInteractiveAuthentication = false;
+    PermitRootLogin = "prohibit-password";
+  };
+};
+```
+
+### Authorized Keys
+
+Adds the SSH public keys (sourced from SOPS secrets) to the `authorizedKeys` file for both the `root` user and the specified `adminUser`.  This allows passwordless SSH access for these users when using the corresponding private keys.
+
+```nix
+users.users.root.openssh.authorizedKeys.keyFiles = [
+  config.sops.secrets."ssh_pub_ruby/master".path
+  config.sops.secrets."ssh_pub_sapphire/master".path
+  config.sops.secrets."ssh_pub_onix/master".path
+  config.sops.secrets."ssh_pub_jade/master".path
+];
+users.users.${cfg.adminUser}.openssh.authorizedKeys.keyFiles = [
+  config.sops.secrets."ssh_pub_ruby/master".path
+  config.sops.secrets."ssh_pub_sapphire/master".path
+  config.sops.secrets."ssh_pub_onix/master".path
+  config.sops.secrets."ssh_pub_jade/master".path
+];
+```
+
+*Note:* The `ssh_pub_ruby/master`, `ssh_pub_sapphire/master`, `ssh_pub_onix/master`, and `ssh_pub_jade/master` secrets should contain valid SSH public keys.
+
+### Nix Daemon Trust
+
+Configures the Nix daemon to trust both the `root` user and the specified `adminUser`.  This allows these users to perform actions that require elevated privileges, such as building and deploying NixOS configurations.  This is particularly important for remote deployments.
+
+```nix
+nix.settings.trusted-users = [ "root" cfg.adminUser ];
+```
+

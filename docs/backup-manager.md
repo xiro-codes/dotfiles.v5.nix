@@ -1,43 +1,45 @@
+```markdown
 # backup-manager
 
-This Nix module simplifies the configuration of BorgBackup for backing up user data and system configurations. It automatically discovers user home directories and common subfolders (Projects, Documents, Pictures, Videos, .ssh) for inclusion in the backup, and allows you to specify additional paths and exclude patterns. This makes it easy to set up a comprehensive backup solution with minimal manual configuration. The module creates a borgbackup job named `onix-local` that will backup the `finalPaths` to a borg repository. The paths are automatically generated from users home directories and common subfolders and can be extended with custom paths.
+This Nix module configures Borg Backup to automatically backup specified paths on a daily basis. It automatically discovers user home directories and common subfolders (Projects, Documents, Pictures, Videos, .ssh), and allows you to specify additional paths and exclusion patterns. It also configures a systemd service that runs the backup job, ensuring that the backup location is a mount point before running.
 
 ## Options
 
 ### `local.backup-manager.enable`
 
-Type: `boolean`
+Type: boolean
 
 Default: `false`
 
-Description: Enables or disables the backup-manager module. When enabled, it configures a BorgBackup job and related systemd service.
+Description: Enables the backup-manager module.
 
 ### `local.backup-manager.backupLocation`
 
-Type: `string`
+Type: string
 
-Default: `""` (empty string)
+Default: `""`
 
 Example: `"/media/Backups"`
 
-Description: The base path for the BorgBackup repository. This should be a mounted filesystem where your backups will be stored.  Crucially, this directory *must* be a mountpoint, as the systemd service will check for it and require mounts for it.
+Description: The base path for the Borg Backup repository. This **must** be a mounted filesystem.  This is where the backups will be stored. A subfolder will be created within this path named after the host machine.
 
 ### `local.backup-manager.paths`
 
-Type: `list of strings`
+Type: list of strings
 
-Default: `[]` (empty list)
+Default: `[ ]`
 
 Example: `[ "/etc/nixos" "/var/lib/important" ]`
 
-Description: A list of additional paths to include in the backup. These paths are added to the automatically discovered user home directory subfolders.  Useful for backing up system-level configurations or other important data outside of the user's home directories. The paths should be absolute.
+Description: A list of additional paths to backup, beyond the automatically discovered user folders (Projects, Documents, Pictures, Videos, and .ssh).  These are absolute paths to directories that should be included in the borg backup.
 
 ### `local.backup-manager.exclude`
 
-Type: `list of strings`
+Type: list of strings
 
-Default: `[]` (empty list)
+Default: `[ ]`
 
 Example: `[ "*/node_modules" "*/target" "*/.cache" "*.tmp" ]`
 
-Description: A list of glob patterns to exclude from the backups. This allows you to exclude unnecessary or large files and directories, such as node_modules, target directories, cache directories, and temporary files. These exclude patterns will be passed directly to BorgBackup.
+Description: A list of glob patterns to exclude from backups. These patterns are applied to all paths being backed up.  Using globs here prevents matching these folders or filetypes.
+```

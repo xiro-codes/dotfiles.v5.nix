@@ -1,67 +1,62 @@
+```markdown
 # flatpak
 
-This module provides a convenient way to enable and configure Flatpak support on your NixOS system. It simplifies the installation of Flatpak itself, configures automatic updates, adds the Flathub repository, and allows you to specify a list of Flatpak packages to be installed system-wide.
+This Nix module provides a convenient way to enable Flatpak support on your system, configure Flatpak remotes, and install Flatpak applications system-wide.  It simplifies the process of setting up Flatpak, ensuring that applications are installed consistently and automatically updated. It leverages the `services.flatpak` NixOS module under the hood.
 
 ## Options
 
-This module exposes the following options under the `local.flatpak` namespace:
+This module defines the following options within the `local.flatpak` namespace:
 
 ### `local.flatpak.enable`
 
-*   **Type:** `types.bool` (boolean)
-*   **Default:** `false`
-*   **Description:** Enables or disables Flatpak support. When enabled, the module configures Flatpak services and installs specified packages.
+Type: `boolean`
 
-    **Example:**
+Default: `false`
 
-    To enable flatpak set this option to true
-
-    ```nix
-    local.flatpak.enable = true;
-    ```
+Description:
+Enables or disables Flatpak support. Setting this option to `true` activates the module, configuring Flatpak services and installing specified packages.  When set to `false` the module has no effect. It is the primary switch to turn on or off Flatpak functionality controlled by this module. Enabling automatically sets up `services.flatpak.enable = true` within the NixOS configuration.
 
 ### `local.flatpak.extraPackages`
 
-*   **Type:** `types.listOf types.str` (list of strings)
-*   **Default:** `[]` (empty list)
-*   **Description:** A list of Flatpak package names to install system-wide in addition to the default `io.github.kolunmi.Bazaar` application.  Each element of the list should be a string representing the full Flatpak application ID (e.g., `org.mozilla.firefox`).
+Type: `list of string`
 
-    **Example:**
+Default: `[]` (empty list)
 
-    To install Firefox and LibreOffice as Flatpaks, configure the option as follows:
-
-    ```nix
-    local.flatpak.enable = true;
-    local.flatpak.extraPackages = [
-      "org.mozilla.firefox"
-      "org.libreoffice.LibreOffice"
-    ];
-    ```
-
-## Configuration Details
-
-When `local.flatpak.enable` is set to `true`, the following configurations are applied:
-
-*   **`services.flatpak.enable = true;`**:  Enables the Flatpak system service, making Flatpak available on your system.
-*   **`services.flatpak.update.onActivation = true;`**: Configures Flatpak to automatically update its packages whenever the NixOS configuration is activated (e.g., after running `nixos-rebuild switch`). This ensures that your Flatpak applications are always up-to-date.
-*   **`services.flatpak.remotes = [{ name = "flathub"; location = "https://flathub.org/repo/flathub.flatpakrepo"; }];`**: Adds the Flathub repository, the most common and comprehensive Flatpak repository, to your Flatpak configuration.  This allows you to easily install applications available on Flathub. The `name` "flathub" is used as the alias and the `location` specifies the URL of the repository configuration file.
-*   **`services.flatpak.packages = [ "io.github.kolunmi.Bazaar" ] ++ cfg.extraPackages;`**:  Specifies the list of Flatpak packages to be installed system-wide.  It automatically includes the `io.github.kolunmi.Bazaar` application and concatenates it with the list provided via the `local.flatpak.extraPackages` option.  This ensures that all listed applications are installed whenever the NixOS configuration is applied.
+Description:
+A list of Flatpak package names (application IDs) to install system-wide. These packages are added to the default application, "io.github.kolunmi.Bazaar", specified by the module, providing a means of automatically installing additional Flatpak applications.  These package names correspond directly to the application IDs found on platforms like Flathub.  For example, to install the GIMP image editor, you would add `"org.gimp.GIMP"` to this list. These are combined with the default `Bazaar` application, meaning that it will always be installed.
 
 ## Usage Example
 
-To enable Flatpak, add the Flathub repository, configure automatic updates, and install Firefox and Bazaar, use the following configuration in your `configuration.nix`:
+To enable Flatpak support and install the `org.gimp.GIMP` Flatpak, add the following to your `configuration.nix`:
 
 ```nix
 {
   imports = [
-    ./path/to/this/module.nix  # Replace with the actual path to this module
+    ./modules/flatpak.nix  # Assuming the module is located at this path
   ];
 
-  local.flatpak.enable = true;
-  local.flatpak.extraPackages = [
-    "org.mozilla.firefox"
-  ];
+  local.flatpak = {
+    enable = true;
+    extraPackages = [ "org.gimp.GIMP" ];
+  };
 }
 ```
 
-After adding this configuration, run `sudo nixos-rebuild switch` to apply the changes. Flatpak will be enabled, Flathub added as a remote, and both Bazaar and Firefox will be installed as Flatpak applications. Subsequent rebuilds will ensure the apps are up to date.
+This configuration will:
+
+1.  Enable the Flatpak service.
+2.  Add the Flathub remote (if it's not already added).
+3.  Install both `io.github.kolunmi.Bazaar` and `org.gimp.GIMP` system-wide as Flatpak applications.
+4.  Configure automatic Flatpak updates on system activation.
+
+## Implementation Details
+
+When `local.flatpak.enable` is set to `true`, the module:
+
+*   Sets `services.flatpak.enable = true` to activate the Flatpak service in NixOS.
+*   Enables automatic Flatpak updates on system activation using `services.flatpak.update.onActivation = true`.
+*   Configures the Flathub remote using `services.flatpak.remotes`, ensuring that it's available for installing applications.
+*   Installs the default application `io.github.kolunmi.Bazaar` and any applications specified in `local.flatpak.extraPackages` using `services.flatpak.packages`.
+
+This module simplifies Flatpak management by encapsulating these configurations in a single, easy-to-use module.  It reduces boilerplate and provides a consistent way to manage Flatpak applications across different systems.
+```

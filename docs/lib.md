@@ -1,131 +1,187 @@
+```markdown
 # lib
 
-This Nix module provides a collection of utility functions and common configurations used across various parts of the system.  It aims to centralize reusable logic, making configurations more modular and maintainable. The functions cover areas such as string manipulation, list processing, attribute set merging, and common system settings. This module serves as a building block for other Nix configurations, promoting consistency and reducing redundancy.
+This module provides a collection of utility functions and configurations for use across various NixOS modules.  It aims to centralize commonly used logic, ensuring consistency and reducing code duplication. The functions cover areas such as network configuration, application deployment, and system administration. It also provides configurations for packages and some general helper functions for working with nix.
 
 ## Options
 
+This module defines the following options:
+
+### `lib.mkDeploymentUser`
+
+*   **Type:** `types.attrsOf types.anything`
+*   **Default:** `{}`
+
+    A helper function for creating deployment users. This simplifies the creation of user accounts suitable for deploying applications or services.
+
+    **Attributes:**
+
+    *   `name` (string):
+        The name of the user to be created. This will also be the username.
+
+    *   `uid` (integer, optional):
+        The user ID (UID) to assign to the user. If not specified, the system will automatically assign a UID.
+
+    *   `group` (string, optional):
+        The name of the primary group for the user. If not specified, a group with the same name as the user will be created.
+
+    *   `extraGroups` (list of strings, optional):
+        A list of additional groups to which the user should belong.
+
+    *   `home` (string, optional):
+        The absolute path to the user's home directory. If not specified, a home directory will be created under `/home`.
+
+    *   `shell` (string, optional):
+        The login shell for the user. Defaults to `/run/current-system/sw/bin/bash`.
+
+    *   `isSystemUser` (boolean, optional):
+        Whether the user should be created as a system user. Defaults to `false`. System users typically have UIDs below a certain threshold and are not intended for interactive login.
+
+    **Example Usage:**
+
+    ```nix
+    lib.mkDeploymentUser {
+      name = "deployer";
+      uid = 2000;
+      extraGroups = [ "wheel" ];
+      home = "/opt/deployer";
+    }
+    ```
+
+    This example creates a user named `deployer` with UID 2000, adds them to the `wheel` group, and sets their home directory to `/opt/deployer`.
+
 ### `lib.concatMapStrings`
 
-*   **Type:** `(a -> list string) -> list a -> string`
-*   **Default:**  `(f: xs: builtins.concatStringsSep "" (builtins.map f xs))`
+*   **Type:** `types.functionTo (types.listOf types.str -> types.str)`
+*   **Default:** A function that takes a function and a list of strings and applies the function to each element of the list and concatenates the results into a single string.
 
-**Description:** This function takes a function `f` and a list `xs` as input. It applies the function `f` to each element of the list `xs`, resulting in a list of strings. Finally, it concatenates all the strings in the resulting list into a single string, using an empty string as a separator.  This is functionally equivalent to `builtins.concatStringsSep "" (builtins.map f xs)` but provided as a convenience.
+    A helper function to concatenate mapped strings. Takes a function and a list of strings as input. Applies the provided function to each string in the list, concatenates the results, and returns the final concatenated string. Useful for building configuration files or scripts from lists of values.
 
-**Example:**
+    **Example Usage:**
 
-```nix
-let
-  myList = [ 1 2 3 ];
-  stringify = x: toString x;
-  concatenated = lib.concatMapStrings stringify myList;
-in
-concatenated # "123"
-```
+    ```nix
+    let
+      myList = [ "a" "b" "c" ];
+      myFunction = x: "${x}!";
+    in
+    lib.concatMapStrings myFunction myList # Result: "a!b!c!"
+    ```
 
-### `lib.mdnsHostname`
+### `lib.packages.zoxide.enableFzf`
 
-*   **Type:** `string -> string`
-*   **Default:** `(hostname: "${hostname}.local")`
+*   **Type:** `types.bool`
+*   **Default:** `true`
 
-**Description:** This function takes a hostname as input and returns the corresponding mDNS (multicast DNS) hostname by appending ".local" to the input hostname. This is useful for resolving hostnames within a local network without the need for a central DNS server.
+    Determines whether to enable `fzf` integration for the `zoxide` package. If enabled, `zoxide` will use `fzf` for fuzzy finding when navigating directories. Requires `fzf` to be installed.
 
-**Example:**
+    **Purpose:**
 
-```nix
-let
-  myHostname = "mycomputer";
-  mdnsAddress = lib.mdnsHostname myHostname;
-in
-mdnsAddress # "mycomputer.local"
-```
+    This option controls whether `zoxide` leverages `fzf` for a more interactive and efficient directory navigation experience.  When enabled, users can type partial directory names, and `fzf` will provide a fuzzy search interface to quickly locate and jump to the desired directory.
 
-### `lib.mkAfter`
+    **Dependencies:**
 
-*   **Type:** `a -> a -> a`
-*   **Default:** `(before: after: before // after)`
+    Enabling this option requires `fzf` to be installed and available in the user's `PATH`. You may need to add `pkgs.fzf` to your `environment.systemPackages` or `home.packages` to install it.
 
-**Description:** This function takes two attribute sets, `before` and `after`, and merges them into a single attribute set. If the same attribute exists in both `before` and `after`, the value from `after` takes precedence.  This allows you to override default configurations specified in `before` with values from `after`.  It essentially provides a way to apply configurations "after" another configuration. It's an alias to the `//` operator.
+    **Disabling:**
 
-**Example:**
+    Set this option to `false` to disable `fzf` integration. This can be useful if you prefer the default `zoxide` navigation or if you do not have `fzf` installed.
 
-```nix
-let
-  defaults = { setting1 = "default"; setting2 = 123; };
-  overrides = { setting1 = "override"; };
-  merged = lib.mkAfter defaults overrides;
-in
-merged # { setting1 = "override"; setting2 = 123; }
-```
+    **Example Usage:**
 
-### `lib.mkBefore`
+    ```nix
+    {
+      lib.packages.zoxide.enableFzf = true; # Enable fzf integration (default)
+    }
+    ```
 
-*   **Type:** `a -> a -> a`
-*   **Default:** `(after: before: before // after)`
+### `lib.packages.zoxide.settings`
 
-**Description:**  This function takes two attribute sets, `after` and `before`, and merges them into a single attribute set. If the same attribute exists in both `after` and `before`, the value from `before` takes precedence. This effectively allows defining configurations "before" other configurations, letting the "after" config win. Useful for setting up sane defaults when you want modules to be able to easily override values.  It's similar to `mkAfter`, but with the order of arguments reversed.
+*   **Type:** `types.attrs`
+*   **Default:** `{}`
 
-**Example:**
+    Allows for customizing the settings of the `zoxide` package. This provides a way to modify `zoxide`'s behavior, such as setting default directories, search preferences, and more. The attributes defined here will directly map to `zoxide`'s configuration options. Refer to `zoxide` documentation for available settings.
 
-```nix
-let
-  defaults = { setting1 = "default"; setting2 = 123; };
-  overrides = { setting1 = "override"; };
-  merged = lib.mkBefore overrides defaults;
-in
-merged # { setting1 = "override"; setting2 = 123; }
-```
+    **Structure:**
 
-### `lib.myOption`
+    The value of this option should be an attribute set where each attribute corresponds to a `zoxide` configuration setting. The names and types of these attributes must match the expected format for `zoxide`'s configuration.
 
-*   **Type:** `string -> string`
-*   **Default:** `(name: "Hello, " + name + "!")`
+    **Example Usage:**
 
-**Description:** This function demonstrates a simple example. It takes a name as input and returns a greeting string, which includes the input name. This is a placeholder function that could be replaced with more complex logic. It serves as a simple example for understanding the function's input and output.
+    ```nix
+    {
+      lib.packages.zoxide.settings = {
+        match = "fuzzy";
+        algorithm = "rankdir";
+      };
+    }
+    ```
 
-**Example:**
+    This configures `zoxide` to use fuzzy matching with the `rankdir` algorithm.
+    This will create a file at `~/.config/zoxide/config.toml` if it doesn't exists already or will edit this one.
+    **Important:** Check `zoxide`'s official documentation for valid settings and their corresponding types. Incompatible configurations can lead to unexpected behavior or errors.
 
-```nix
-let
-  greeting = lib.myOption "World";
-in
-greeting # "Hello, World!"
-```
+### `lib.packages.direnv.plugins`
 
-### `lib.toEnum`
+*   **Type:** `types.listOf types.str`
+*   **Default:** `[]`
 
-*   **Type:** `string -> list string -> string`
-*   **Default:** `(value: values:
-    if builtins.elem value values then
-      value
-    else
-      throw "Invalid value '" + value + "', expected one of: " + builtins.toString values)`
+    A list of plugins to be enabled for `direnv`. This enables extensibility to `direnv` so that it can have integrations with other tools and environment configurations.
 
-**Description:** This function takes a `value` (a string) and a list of valid string `values` (also a string) as input.  It checks if the `value` is present in the `values` list.  If it is, the function returns the original `value`.  If it is not, the function throws an error message indicating the invalid value and listing the expected values.  This is useful for enforcing constraints on string-based configuration options, ensuring that only allowed values are used.  It effectively provides type-safe enum-like behavior.
+    **Purpose:**
+    Plugins provide additional functionality to `direnv`, allowing it to interact with various tools and environments.
 
-**Example:**
+    **Example Usage:**
 
-```nix
-let
-  validValues = [ "option1" "option2" "option3" ];
-  validValue = lib.toEnum "option2" validValues;
-  invalidValue = lib.toEnum "invalid" validValues; # throws an error
-in
-validValue # "option2"
-```
+    ```nix
+    {
+      lib.packages.direnv.plugins = [
+        "dotenv"
+      ];
+    }
+    ```
 
-### `lib.capitalize`
+### `lib.ensureDirectory`
 
-*   **Type:** `string -> string`
-*   **Default:** `(s: builtins.toUpper (builtins.substring 0 1 s) + builtins.substring 1 (builtins.stringLength s - 1) s)`
+*   **Type:** `types.path`
+*   **Default:** A function that takes a path and ensures the directory exists, creating it if necessary.
 
-**Description:** This function takes a string `s` as input and returns a new string with the first letter capitalized. It uses `builtins.toUpper` to convert the first character to uppercase and concatenates it with the rest of the string, which remains unchanged.
+    A helper function to ensure a directory exists.  Takes a path as input.  If the directory specified by the path does not exist, it will be created.  If the directory already exists, no action is taken. Useful for guaranteeing the presence of directories needed for configuration files, data storage, or other purposes.
 
-**Example:**
+    **Example Usage:**
 
-```nix
-let
-  uncapitalized = "hello";
-  capitalized = lib.capitalize uncapitalized;
-in
-capitalized # "Hello"
+    ```nix
+    lib.ensureDirectory "/var/log/my-app"; # Ensures that /var/log/my-app exists
+    ```
+
+### `lib.mapAttrsRecursive`
+
+*   **Type:** `types.functionTo (types.attrs -> types.attrs)`
+*   **Default:** A function that recursively maps the values of an attribute set.
+
+    Recursively maps the values of an attribute set using a given function. This function traverses an attribute set and applies the provided function to each value. If a value is itself an attribute set, the function is applied recursively to its contents. This allows for transforming deeply nested attribute sets in a consistent manner.
+
+    **Example Usage:**
+
+    ```nix
+    let
+      myAttrs = {
+        a = "value1";
+        b = {
+          c = "value2";
+          d = "value3";
+        };
+      };
+      myFunction = x: "mapped: ${x}";
+    in
+    lib.mapAttrsRecursive myFunction myAttrs
+
+    # Result:
+    # {
+    #   a = "mapped: value1";
+    #   b = {
+    #     c = "mapped: value2";
+    #     d = "mapped: value3";
+    #   };
+    # }
+    ```
 ```

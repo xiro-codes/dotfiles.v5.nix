@@ -1,172 +1,212 @@
 # user-environment
 
-This Nix module provides a comprehensive configuration for a user environment, encompassing caching, SSH, secrets management, and system variables. It aims to streamline the setup and management of a personalized and secure user workspace.
+This Nix module provides a comprehensive set of configurations for the user environment, including settings for caching, SSH, secrets management with SOPS, and common system variables. It allows users to easily manage their environment configurations, SSH keys, and sensitive information through a declarative Nix configuration.
 
 ## Options
 
-### `local.cache`
+### `local.cache.enable`
 
-Configuration options related to caching.
+Type: `boolean`
 
-#### `local.cache.enable`
+Default: `false`
 
-(Type: `boolean`, Default: `false`)
+Description: Enables the cache module, which configures the system to use an Attic binary cache server. When enabled, the `attic-client` package is added to the user's home packages.
 
-Enables or disables the cache module.  Enabling this will install `attic-client` into the user's home directory.
+### `local.cache.watch`
 
-#### `local.cache.watch`
+Type: `boolean`
 
-(Type: `boolean`, Default: `false`)
+Default: `false`
 
-Enables or disables the systemd service to watch the Nix store and push changes to the Attic cache. This option is only relevant if `local.cache.enable` is also enabled.
+Description: Enables a systemd service to watch the Nix store and push changes to the Attic cache server. Requires `local.cache.enable` to be enabled.
 
-#### `local.cache.serverAddress`
+### `local.cache.serverAddress`
 
-(Type: `string`, Default: `"http://${config.osConfig.local.network-hosts.onix or "onix.local"}:8080/main"`)
+Type: `string`
+
+Default: `"http://${config.osConfig.local.network-hosts.onix or "onix.local"}:8080/main"`
 
 Example: `"http://cache.example.com:8080/nixos"`
 
-The URL of the Attic binary cache server.  It automatically uses the host defined in the `local.network-hosts` module if available, defaulting to `onix.local` if not.
+Description: The URL of the Attic binary cache server. It automatically uses the host from the `local.network-hosts` module if available, defaulting to `onix.local`.
 
-#### `local.cache.publicKey`
+### `local.cache.publicKey`
 
-(Type: `string`, Default: `"main:CqlQUu3twINKw6EvYnbk="`)
+Type: `string`
+
+Default: `"main:CqlQUu3twINKw6EvYnbk="`
 
 Example: `"cache:AbCdEf1234567890+GhIjKlMnOpQrStUvWxYz=="`
 
-The public key used for verifying the cache.
+Description: The public key used for verifying the Attic cache. This key is crucial for ensuring the integrity of packages retrieved from the cache.
 
-### `local.ssh`
+### `local.ssh.enable`
 
-Configuration options related to SSH.
+Type: `boolean`
 
-#### `local.ssh.enable`
+Default: `false`
 
-(Type: `boolean`, Default: `false`)
+Description: Enables SSH configuration for the user. When enabled, it configures SSH settings based on the module options.
 
-Enables or disables the SSH configuration for the user. Enables `programs.ssh` and disables the default config, allowing configuration of match blocks.
+### `local.ssh.masterKeyPath`
 
-#### `local.ssh.masterKeyPath`
+Type: `string`
 
-(Type: `string`, Default: `"~/.ssh/id_ed25519"`)
+Default: `"~/.ssh/id_ed25519"`
 
 Example: `"~/.ssh/id_rsa"`
 
-The path to the SSH master private key file.  This key will be used for connecting to hosts defined in `local.ssh.hosts`.
+Description: The path to the user's SSH master private key file. This key is used for authentication with SSH servers.
 
-#### `local.ssh.hosts`
+### `local.ssh.hosts`
 
-(Type: `attribute set of strings`, Default: `{ Sapphire = config.osConfig.local.network-hosts.sapphire or "sapphire.local"; Ruby = config.osConfig.local.network-hosts.ruby or "ruby.local"; }`)
+Type: `attribute set of strings`
 
-Example: `{ Sapphire = "sapphire.local"; Ruby = "ruby.local"; }`
+Default:
 
-A mapping of SSH host aliases to hostnames or IP addresses. It automatically uses the hosts defined in the `local.network-hosts` module if available, defaulting to `sapphire.local` and `ruby.local` if not. These are used to generate `Match` blocks in the SSH config.
+```nix
+{
+  Sapphire = config.osConfig.local.network-hosts.sapphire or "sapphire.local";
+  Ruby = config.osConfig.local.network-hosts.ruby or "ruby.local";
+  Onix = config.osConfig.local.network-hosts.onix or "onix.local";
+  Jade = config.osConfig.local.network-hosts.jade or "jade.local";
+}
+```
 
-### `local.secrets`
+Example:
 
-Configuration options related to secrets management.
+```nix
+{
+  Sapphire = "sapphire.example.com";
+  Ruby = "192.168.1.10";
+}
+```
 
-#### `local.secrets.enable`
+Description: A mapping of SSH host aliases to hostnames or IP addresses.  It automatically uses hosts defined in the `local.network-hosts` module if they exist, providing convenient aliases for SSH connections.
 
-(Type: `boolean`, Default: `false`)
+### `local.secrets.enable`
 
-Enables or disables the secrets module, which relies on `sops`. Enabling this will install `userSops` into the user's home directory.
+Type: `boolean`
 
-#### `local.secrets.sopsFile`
+Default: `false`
 
-(Type: `path`, Default: `../../../secrets/secrets.yaml`)
+Description: Enables the secrets module, which integrates with SOPS (Secrets OPerationS) to manage encrypted secrets.
+
+### `local.secrets.sopsFile`
+
+Type: `path`
+
+Default: `../../../secrets/secrets.yaml`
 
 Example: `../secrets/user-secrets.yaml`
 
-The path to the encrypted YAML file containing the secrets. This file is decrypted using `sops`.  It's recommended to keep this file outside the user's home directory and under version control.
+Description: The path to the encrypted YAML file containing secrets managed by SOPS.
 
-#### `local.secrets.keys`
+### `local.secrets.keys`
 
-(Type: `list of strings`, Default: `[ ]`)
+Type: `list of strings`
+
+Default: `[ ]`
 
 Example: `[ "github/token" "api/openai" "passwords/vpn" ]`
 
-A list of `sops` keys to automatically map to files in the `$HOME/.secrets/` directory. Each key will correspond to a file containing the decrypted secret. Ensure proper permissions are set on the `$HOME/.secrets/` directory.
+Description: A list of SOPS keys to automatically map to files in the `$HOME/.secrets/` directory. Each key corresponds to a secret stored in the SOPS file.
 
-### `local.variables`
+### `local.variables.enable`
 
-Configuration options related to setting system environment variables.
+Type: `boolean`
 
-#### `local.variables.enable`
+Default: `true`
 
-(Type: `boolean`, Default: `true`)
+Description: Enables setting system environment variables for common tools and applications.
 
-Enables or disables the configuration of system environment variables for common tools and applications.
+### `local.variables.editor`
 
-#### `local.variables.editor`
+Type: `string`
 
-(Type: `string`, Default: `"nvim"`)
+Default: `"nvim"`
 
 Example: `"vim"`
 
-The default terminal text editor. This value will be assigned to the `EDITOR` and `VISUAL` environment variables.
+Description: The default terminal text editor.  This variable is used for setting both `EDITOR` and `VISUAL` environment variables.
 
-#### `local.variables.guiEditor`
+### `local.variables.guiEditor`
 
-(Type: `string`, Default: `"neovide"`)
+Type: `string`
+
+Default: `"neovide"`
 
 Example: `"code"`
 
-The default GUI text editor. This value will be assigned to the `GUI_EDITOR` environment variable.
+Description: The default GUI text editor. This variable is used for setting the `GUI_EDITOR` environment variable.
 
-#### `local.variables.fileManager`
+### `local.variables.fileManager`
 
-(Type: `string`, Default: `"ranger"`)
+Type: `string`
+
+Default: `"ranger"`
 
 Example: `"lf"`
 
-The default terminal file manager. This value will be assigned to the `FILEMANAGER` environment variable.
+Description: The default terminal file manager. This variable is used for setting the `FILEMANAGER` environment variable.
 
-#### `local.variables.guiFileManager`
+### `local.variables.guiFileManager`
 
-(Type: `string`, Default: `"nautilus"`)
+Type: `string`
 
-Example: `"nautilus"`
+Default: `"nautilus"`
 
-The default GUI file manager. This value will be assigned to the `GUI_FILEMANAGER` environment variable.
+Example: `"thunar"`
 
-#### `local.variables.terminal`
+Description: The default GUI file manager. This variable is used for setting the `GUI_FILEMANAGER` environment variable.
 
-(Type: `string`, Default: `"kitty"`)
+### `local.variables.terminal`
+
+Type: `string`
+
+Default: `"kitty"`
 
 Example: `"alacritty"`
 
-The default terminal emulator. This value will be assigned to the `TERMINAL` and `GUI_TERMINAL` environment variables.
+Description: The default terminal emulator. This variable is used for setting both `TERMINAL` and `GUI_TERMINAL` environment variables.
 
-#### `local.variables.launcher`
+### `local.variables.launcher`
 
-(Type: `string`, Default: `"rofi -show drun"`)
+Type: `string`
+
+Default: `"rofi -show drun"`
 
 Example: `"wofi --show drun"`
 
-The command for the default application launcher. This value will be assigned to the `LAUNCHER` environment variable.
+Description: The command to launch the default application launcher.  This is used for setting the `LAUNCHER` environment variable.
 
-#### `local.variables.wallpaper`
+### `local.variables.wallpaper`
 
-(Type: `string`, Default: `"hyprpaper"`)
+Type: `string`
+
+Default: `"hyprpaper"`
 
 Example: `"swaybg"`
 
-The default wallpaper daemon or manager. This value will be assigned to the `WALLPAPER` environment variable.
+Description: The default wallpaper daemon or manager. This is used for setting the `WALLPAPER` environment variable.
 
-#### `local.variables.browser`
+### `local.variables.browser`
 
-(Type: `string`, Default: `"firefox"`)
+Type: `string`
+
+Default: `"firefox"`
 
 Example: `"chromium"`
 
-The default web browser. This value will be assigned to the `BROWSER` environment variable.
+Description: The default web browser. This is used for setting the `BROWSER` environment variable.
 
-#### `local.variables.statusBar`
+### `local.variables.statusBar`
 
-(Type: `string`, Default: `"hyprpanel"`)
+Type: `string`
+
+Default: `"hyprpanel"`
 
 Example: `"waybar"`
 
-The default status bar or panel application. This value will be assigned to the `STATUS_BAR` environment variable.
+Description: The default status bar or panel application. This is used for setting the `STATUS_BAR` environment variable.
 

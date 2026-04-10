@@ -1,41 +1,61 @@
-# pihole
+# pihole
 
-This module provides an easy way to deploy Pi-hole, a network-wide ad blocker, using Nix and OCI containers (specifically, Docker). It configures a containerized Pi-hole instance with persistent storage, sets up necessary firewall rules, and ensures that the required data directories exist.  The module aims to simplify the deployment process and integrate well within a NixOS environment. It shifts the web UI port to 8053 to avoid conflicts with other web servers potentially running on port 80 (like Nginx).
+This module provides a NixOS configuration for deploying Pi-hole, a network-wide ad blocker, using OCI containers. It sets up the necessary directories, configures the container with appropriate settings, and opens firewall ports for DNS traffic.
 
 ## Options
 
-Here's a detailed breakdown of the configurable options available within the `local.pihole` namespace.
-
 ### `local.pihole.enable`
 
-**Type:**  `boolean`
+Type: boolean
 
-**Default:**  `false` (disabled)
+Default: `false`
 
-**Description:**
-
-This option is the primary switch to enable or disable the Pi-hole service. Setting it to `true` will activate the entire Pi-hole configuration defined within this module, including container deployment, firewall rules, and directory setup.  When disabled, none of the Pi-hole related components will be configured. Use this to easily turn Pi-hole on and off without removing its configuration.
+Description: Enables or disables the Pi-hole DNS service. When enabled, this module configures a container to run Pi-hole and sets up necessary system configurations like firewall rules.
 
 ### `local.pihole.dataDir`
 
-**Type:**  `string`
+Type: string
 
-**Default:**  `"/var/lib/pihole"`
+Default: `"/var/lib/pihole"`
 
-**Description:**
-
-Specifies the directory used to store Pi-hole's persistent data, including its configuration files, DNS blocklists, and other relevant data.  This directory is mounted as a volume into the Pi-hole container, ensuring that Pi-hole's data persists across container restarts and updates.  It's crucial for maintaining your Pi-hole setup. Make sure this directory is properly backed up.
-
-It also creates a `dnsmasq.d` subdirectory within the specified `dataDir` to hold custom DNS configurations for `dnsmasq`, the DNS server used by Pi-hole.
+Description: The directory to store Pi-hole's configuration and data. This directory is mounted as a volume into the Pi-hole container, ensuring data persistence across container restarts. Make sure this directory exists and is writeable.
 
 ### `local.pihole.adminPassword`
 
-**Type:**  `string`
+Type: string
 
-**Default:**  `"admin"`
+Default: `"admin"`
 
-**Description:**
+Description: The admin password for accessing the Pi-hole web UI.  It's *highly recommended* to change this to a strong, unique password for security reasons. This password will be set as the `WEBPASSWORD` environment variable inside the container.
 
-Sets the password for the Pi-hole web administration interface. This password is used to protect the web UI and prevent unauthorized access to Pi-hole's settings.
+## Implementation Details
 
-**Important Security Note:** The default password "admin" is extremely insecure and should **always** be changed to a strong, unique password before deploying Pi-hole in a production environment. Failing to do so will expose your Pi-hole installation to potential attacks and unauthorized configuration changes.  A long, randomly generated password is highly recommended.
+When `local.pihole.enable` is set to `true`, the following actions are taken:
+
+1.  **Data Directory Creation:**
+    *   Systemd tmpfiles rules are created to ensure that the specified `dataDir` and its subdirectory `dnsmasq.d` exist with appropriate permissions (0777, owned by root).  The `dnsmasq.d` directory is specifically used for custom dnsmasq configurations.
+
+2.  **OCI Container Configuration:**
+    *   An OCI container named `pihole` is defined using `virtualisation.oci-containers.containers.pihole`.
+    *   **Image:** The `pihole/pihole:latest` Docker image is used, ensuring the latest version of Pi-hole is deployed.
+    *   **Ports:** The following ports are exposed:
+        *   `53:53/tcp`: Standard DNS over TCP.
+        *   `53:53/udp`: Standard DNS over UDP.
+        *   `8053:80/tcp`: The Pi-hole web UI is exposed on port 8053 on the host, mapped to port 80 inside the container. Shifting it to `8053` avoids conflicts with other services (like Nginx) that may also want to use port 80.
+    *   **Volumes:** The following volumes are mounted:
+        *   `${cfg.dataDir}:/etc/pihole`:  Mounts the `dataDir` on the host to `/etc/pihole` inside the container, storing Pi-hole's core configuration (e.g., adlists, whitelist, blacklist, DHCP settings).
+        *   `${cfg.dataDir}/dnsmasq.d:/etc/dnsmasq.d`: Mounts the `dnsmasq.d` subdirectory to `/etc/dnsmasq.d` inside the container, allowing you to add custom `dnsmasq` configurations by dropping `.conf` files into this directory.
+    *   **Environment Variables:** Crucial environment variables are set:
+        *   `TZ = config.time.timeZone or "UTC"`: Sets the timezone of the Pi-hole container. If `config.time.timeZone` is defined in your NixOS configuration, it's used; otherwise, defaults to UTC.
+        *   `WEBPASSWORD = cfg.adminPassword`: Sets the admin password for the Pi-hole web UI.
+        *   `FTLCONF_dns_listeningMode = "ALL"`:  This is a critical option. It configures Pi-hole to listen on all interfaces (both IPv4 and IPv6). If it's not explicitly set, Pi-hole might only listen on a single interface (e.g., only IPv4), which can lead to DNS resolution failures.
+        *   `PIHOLE_DNS_ = "1.1.1.1;1.0.0.1"`: Sets the upstream DNS servers that Pi-hole will use to resolve queries after filtering. In this case, it uses Cloudflare's public DNS servers.  You can customize this list with your preferred DNS providers, separating multiple addresses with semicolons.
+        *   `IPv6 = "False"`: This option explicitly disables IPv6 within pihole, this may be required to ensure pihole functions as expected when IPv6 is not properly configured.
+    *   `autoStart = true`: Configures the container to start automatically on system boot.
+
+3.  **Firewall Configuration:**
+    *   The NixOS firewall is configured to allow TCP and UDP traffic on port 53, enabling external devices on the network to query the Pi-hole DNS server.
+
+4.  **Systemd-resolved Mitigation (Commented Out):**
+    *   The original code included attempts to disable `systemd-resolved` from using port 53. This is commented out because disabling `systemd-resolved` might impact other services or require careful network configuration.  If you experience conflicts with `systemd-resolved` using port 53, uncomment and adapt these lines, or preferrably, configure `systemd-resolved` to use a different port for its stub listener.  The code shows the configuration to disable the `DNSStubListener` completely.
+

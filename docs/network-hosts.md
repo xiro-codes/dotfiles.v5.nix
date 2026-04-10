@@ -1,58 +1,83 @@
 ```markdown
-# network-hosts
+# `local.network-hosts`
 
-This Nix module manages local network host configuration. It provides options to use either raw IP addresses or Avahi/mDNS hostnames for resolving local network hosts. It also configures the `/etc/hosts` file with static IP-to-hostname mappings for specific hosts (onix, ruby, sapphire).  This setup helps ensure reliable name resolution within a local network, especially when DHCP leases might change.
+This Nix module provides a convenient way to manage local network hostnames and IP addresses. It defines a set of host mappings and exposes them as configuration options, allowing other modules to easily reference these hosts.  Additionally, it automatically populates the `/etc/hosts` file with the defined hostnames and IP addresses, ensuring reliable name resolution within the local network. This module also supports Avahi/mDNS for automatic hostname resolution.
 
 ## Options
 
-This module defines the following options under the `local.network-hosts` namespace:
+This module defines the following options under the `local.network-hosts` scope:
 
--   **`local.network-hosts.useAvahi`**
-    <sup>Type: boolean</sup>
-    <sup>Default: `false`</sup>
+### `local.network-hosts.useAvahi`
 
-    Whether to use Avahi/mDNS hostnames (e.g., `.local`) instead of raw IP addresses for local network hosts. When set to `true`, the module will attempt to resolve hosts using their Avahi names. When set to `false`, it uses the configured IP addresses directly. This option affects how hostnames are resolved for the `onix`, `ruby`, and `sapphire` hosts.
+*   **Type:** `boolean`
+*   **Default:** `false`
+*   **Description:**
 
--   **`local.network-hosts.onix`**
-    <sup>Type: string</sup>
-    <sup>Default: _Dynamically evaluated to the IP or Avahi hostname of the "onix" host based on the `useAvahi` setting._</sup>
-    <sup>Read-only</sup>
+    Whether to use Avahi/mDNS hostnames (`.local`) instead of raw IP addresses for local network hosts.  When enabled, hostnames will resolve using mDNS.  When disabled, IP addresses will be used. This option affects the values of `onix`, `ruby`, and `sapphire` options and their resolution.
 
-    The resolved address for the Onix host. This is either the IP address (e.g., `10.0.0.65`) or the Avahi hostname (e.g., `onix.local`), depending on the value of the `useAvahi` option.  This option is read-only, meaning it cannot be directly set by the user, but its value is dynamically calculated by the module based on the configuration.  You can reference this value in other modules that require the Onix host's address.
+    Example:
+    ```nix
+    {
+      local.network-hosts.useAvahi = true;
+    }
+    ```
 
--   **`local.network-hosts.ruby`**
-    <sup>Type: string</sup>
-    <sup>Default: _Dynamically evaluated to the IP or Avahi hostname of the "ruby" host based on the `useAvahi` setting._</sup>
-    <sup>Read-only</sup>
+    In this example, the `onix`, `ruby`, and `sapphire` options will resolve to addresses of the form `hostname.local` instead of raw IP addresses if they are defined.  If the hostnames aren't defined then they default to a standard host address, which if Avahi is on defaults to `hostname.local`
 
-    The resolved address for the Ruby host. This is either the IP address (e.g., `10.0.0.66`) or the Avahi hostname (e.g., `ruby.local`), depending on the value of the `useAvahi` option.  This option is read-only, meaning it cannot be directly set by the user, but its value is dynamically calculated by the module based on the configuration.  You can reference this value in other modules that require the Ruby host's address.
+### `local.network-hosts.onix`
 
--   **`local.network-hosts.sapphire`**
-    <sup>Type: string</sup>
-    <sup>Default: _Dynamically evaluated to the IP or Avahi hostname of the "sapphire" host based on the `useAvahi` setting._</sup>
-    <sup>Read-only</sup>
+*   **Type:** `string`
+*   **Default:** Evaluates to "onix.local" when `useAvahi` is `true`, and to "192.168.1.65" when `useAvahi` is `false`
+*   **Read Only:** `true`
+*   **Description:**
 
-    The resolved address for the Sapphire host. This is either the IP address (e.g., `10.0.0.67`) or the Avahi hostname (e.g., `sapphire.local`), depending on the value of the `useAvahi` option. This option is read-only, meaning it cannot be directly set by the user, but its value is dynamically calculated by the module based on the configuration. You can reference this value in other modules that require the Sapphire host's address.
+    Address for the Onix host. The value of this option depends on the `useAvahi` setting. If `useAvahi` is enabled, it will be `onix.local`; otherwise, it will be the IP address `192.168.1.65`.  This value is read-only and automatically derived from the module's internal definitions and the `useAvahi` setting.
 
-## Configuration
+    Example Usage:
 
-In addition to the configurable options, this module configures the `/etc/hosts` file by adding the following entries:
+    ```nix
+    {
+      services.example-service.settings.onix_address = config.local.network-hosts.onix;
+    }
+    ```
 
--   `10.0.0.65 onix onix.local onix.home`
--   `10.0.0.66 ruby ruby.local ruby.home`
--   `10.0.0.67 sapphire sapphire.local sapphire.home`
+    This example showcases accessing the address of Onix from another module.
 
-These entries ensure that the hostnames `onix`, `ruby`, and `sapphire`, as well as their `.local` and `.home` variants, resolve to the specified IP addresses.  This provides a static and reliable way to resolve these hostnames, regardless of DHCP or DNS configurations.
+### `local.network-hosts.ruby`
 
-## Usage Example
+*   **Type:** `string`
+*   **Default:** Evaluates to "ruby.local" when `useAvahi` is `true`, and to "192.168.1.66" when `useAvahi` is `false`
+*   **Read Only:** `true`
+*   **Description:**
 
-To enable Avahi/mDNS hostname resolution, add the following to your NixOS configuration:
+    Address for the Ruby host.  The value of this option depends on the `useAvahi` setting. If `useAvahi` is enabled, it will be `ruby.local`; otherwise, it will be the IP address `192.168.1.66`. This value is read-only and automatically derived from the module's internal definitions and the `useAvahi` setting.
 
-```nix
-{
-  local.network-hosts.useAvahi = true;
-}
-```
+    Example Usage:
 
-This will configure the module to use `onix.local`, `ruby.local`, and `sapphire.local` as the addresses for the respective hosts. You can then refer to these addresses using the `config.local.network-hosts.onix`, `config.local.network-hosts.ruby`, and `config.local.network-hosts.sapphire` options in other modules.
+    ```nix
+    {
+      services.another-service.settings.ruby_address = config.local.network-hosts.ruby;
+    }
+    ```
+
+    This example demonstrates how other modules access the address of the Ruby host.
+
+### `local.network-hosts.sapphire`
+
+*   **Type:** `string`
+*   **Default:** Evaluates to "sapphire.local" when `useAvahi` is `true`, and to "192.168.1.67" when `useAvahi` is `false`
+*   **Read Only:** `true`
+*   **Description:**
+
+    Address for the Sapphire host.  The value of this option depends on the `useAvahi` setting. If `useAvahi` is enabled, it will be `sapphire.local`; otherwise, it will be the IP address `192.168.1.67`. This value is read-only and automatically derived from the module's internal definitions and the `useAvahi` setting.
+
+    Example Usage:
+
+    ```nix
+    {
+      programs.cool-tool.settings.sapphire_address = config.local.network-hosts.sapphire;
+    }
+    ```
+
+    This demonstrates referencing the Sapphire host's address within another module.
 ```

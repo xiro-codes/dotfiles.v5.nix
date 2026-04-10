@@ -1,81 +1,63 @@
 # dashboard
 
-This Nix module configures a homepage dashboard, providing a central interface to access various services running on your server.  It offers features like service links, resource monitoring widgets, and integration with other modules in your NixOS configuration. The module allows you to enable and configure the dashboard, define allowed hosts for access (especially useful when using a reverse proxy), and open the necessary firewall port.
+This Nix module configures and enables a homepage dashboard. It provides options to customize the dashboard's port, firewall settings, and allowed hosts. The module also configures the `homepage` service with various settings, services, media links, and widgets.  It is designed to integrate with other modules like `reverse-proxy`, `docs`, `gitea`, `pihole`, `ersatztv`, `jellyfin`, `plex`, `komga`, `audiobookshelf`, `pinchflat`, and `qbittorrent` by dynamically generating links based on their enabled status and configured ports/domains.  It assumes that the `homepage` service is available.
 
 ## Options
 
-Here's a breakdown of the configurable options within the `local.dashboard` namespace:
-
 ### `local.dashboard.enable`
 
-*   **Type:** `types.bool`
-*   **Default:** `false`
-*   **Description:** Enables the homepage dashboard. When set to `true`, the module activates the necessary services and configurations to run the dashboard. This is the primary switch to turn the dashboard functionality on or off.
+Type: `types.bool`
 
-    ```nix
-    local.dashboard.enable = true;
-    ```
+Default: `false`
+
+Description: Enables the homepage dashboard.  Setting this to `true` will configure and start the `homepage-dashboard` service.
 
 ### `local.dashboard.port`
 
-*   **Type:** `types.port` (An integer representing a valid TCP/UDP port number.)
-*   **Default:** `3000`
-*   **Description:** Specifies the port number on which the dashboard service will listen for incoming connections.  You can change this to avoid conflicts with other services or to use a different port for security reasons.
+Type: `types.port`
 
-    ```nix
-    local.dashboard.port = 8080; # Example: Change the port to 8080
-    ```
+Default: `3000`
+
+Description: Port to run the dashboard on. This specifies the TCP port that the `homepage-dashboard` service will listen on.
 
 ### `local.dashboard.openFirewall`
 
-*   **Type:** `types.bool`
-*   **Default:** `false`
-*   **Description:** Determines whether the NixOS firewall should be configured to allow TCP traffic on the specified `port`. Setting this to `true` automatically opens the port, making the dashboard accessible from other devices on your network.  It's crucial for making the dashboard accessible, but be mindful of security implications when opening ports.
+Type: `types.bool`
 
-    ```nix
-    local.dashboard.openFirewall = true; # Open the firewall port
-    ```
+Default: `false`
+
+Description: Open firewall port for the dashboard. When set to `true`, this option will configure the firewall to allow TCP traffic on the port specified by `local.dashboard.port`.
 
 ### `local.dashboard.allowedHosts`
 
-*   **Type:** `types.listOf types.str` (A list of strings representing valid hostnames or IP addresses.)
-*   **Default:** Automatically generated list of allowed hosts based on the system's hostname, IP address and `.local` address.
-*   **Example:** `[ "onix.local" "192.168.1.100" ]`
-*   **Description:**  A list of allowed hostnames or IP addresses that are permitted to access the dashboard.  This is particularly important when using a reverse proxy, as it restricts which hosts can be used to access the dashboard.  The default value automatically configures this list based on the system's hostname, IP, and `.local` address, providing a reasonable default for local network access.  You should explicitly define this if you intend to access the dashboard from specific domains or IPs through a reverse proxy.
+Type: `types.listOf types.str`
 
-    ```nix
-    local.dashboard.allowedHosts = [ "dashboard.example.com" "192.168.1.50" ];
-    ```
+Default: _Dynamically generated based on hostname, IP, and .local address._
 
-## Implementation Details
+Example: `[ "onix.local" "192.168.1.100" ]`
 
-The module leverages several NixOS features:
+Description: List of allowed hostnames for accessing the dashboard (for reverse proxy). This option is crucial for security when using a reverse proxy.  It allows you to specify a list of hostnames that are permitted to access the dashboard.  The default value is automatically generated to include the system's hostname, IP address, and a `.local` address, providing a reasonable starting point for most local setups.  If you are accessing the dashboard through a reverse proxy with a specific domain name, you *must* include that domain in this list to prevent access restrictions.
 
-*   **`services.homepage-dashboard`:**  This section configures the underlying `homepage` service to listen on the specified port, sets the allowed hosts, and configures the dashboard's settings (title, layout, services, and widgets).  The `services` setting is dynamically generated based on other NixOS modules that are enabled (e.g., Gitea, Jellyfin, Pi-hole).
-*   **`networking.firewall.allowedTCPPorts`:** This is only configured when `openFirewall` is enabled. It opens the specified port in the NixOS firewall.
-*   **`systemd.services.homepage-dashboard`:** This allows for further configuration of the systemd service that runs the dashboard. The current implementation is intended to allow the `HOMEPAGE_CONFIG_ALLOWED_HOSTS` and `HOMEPAGE_ALLOWED_HOSTS` to be set via environment variables which are useful when running behind a reverse proxy.
+## Configuration Details
 
-## Dependencies
+When `local.dashboard.enable` is set to `true`, the following configurations are applied:
 
-*   **`../lib/url-helpers.nix`:** This file contains functions for constructing URLs and deriving default allowed hosts based on the system configuration.  It simplifies the process of generating service links and setting up access restrictions.  Specifically the `buildServiceUrl` function generates urls for various services. And the `getAllowedHosts` function gathers the hostname, ip address and .local address as allowed hosts.
-*   **`config.local.reverse-proxy`:** This configuration is used to determine if a reverse proxy is enabled and to retrieve the domain name, which affects how service URLs are constructed.
-*   Other `config.local.*` modules (e.g., `config.local.gitea`, `config.local.media.jellyfin`) for dynamic service configuration. The existence of these modules are checked and used to provide service links to those applications on the dashboard.
+*   **`services.homepage-dashboard`**: Enables and configures the `homepage-dashboard` service. This includes:
+    *   `enable`: `true` (enables the service)
+    *   `listenPort`: The value of `cfg.port`.
+    *   `allowedHosts`: A comma-separated string of hostnames from `cfg.allowedHosts`.
+    *   `settings`: Configuration options for the dashboard itself, including:
+        *   `title`: "Home Server Dashboard"
+        *   `theme`: "dark"
+        *   `color`: "emerald"
+        *   `layout`: Defines the layout of services, shared folders, media, and downloads sections using a row style with 3 columns each.
+        *   `services`: Dynamically generates a list of services based on whether associated modules (`docs`, `gitea`, `pihole`, `ersatztv`) are enabled. Each service entry includes an icon, `href` (generated either directly or using a reverse proxy if enabled), and a description. The service URLs are dynamically generated based on the `local.reverse-proxy.enable` and `local.reverse-proxy.domain` settings.  If a reverse proxy is used, URLs are of the form `http://${name}.${domain}`; otherwise, they are of the form `http://${domain}:${port}`.
+        *   `Shared Folders`: Uses shared folder configurations to generate displayable links with associated folder and description.
+        *   `media`: Populates the services with `jellyfin`, `plex`, `komga`, and `audiobookshelf`.
+        *   `downloads`: Populates the services with `pinchflat` and `qbittorrent`.
+    *   `widgets`: Configures widgets for search (using DuckDuckGo) and displaying date/time and system resources (CPU, memory, and disk usage for `/`, `/media/Media`, and `/media/Backups`).
 
-## Usage Example
+*   **`networking.firewall.allowedTCPPorts`**: If `cfg.openFirewall` is `true`, adds `cfg.port` to the list of allowed TCP ports in the firewall.
 
-To enable the dashboard, open the firewall, and allow access from a specific domain, you would add the following to your `configuration.nix`:
-
-```nix
-{
-  imports = [
-    ./modules/dashboard.nix
-  ];
-
-  local.dashboard = {
-    enable = true;
-    openFirewall = true;
-    allowedHosts = [ "dashboard.example.com" ];
-  };
-}
-```
+*   **`systemd.services.homepage-dashboard`**: Configures systemd service environment variables related to allowed hosts. *Note: These are commented out in the code, meaning they are not currently being set.*
 
