@@ -18,12 +18,13 @@ in
 
   nodes = {
     # Define dummy interfaces for NixOS hosts so we can connect to them
-    Onix.interfaces.eth0.network = "home";
+    Onix.interfaces.enp6s0.network = "home";
     Onix.interfaces.zt0.network = "zerotier";
     Sapphire.interfaces.eth0.network = "home";
     Sapphire.interfaces.zt0.network = "zerotier";
     Ruby.interfaces.eth0.network = "home";
-    Jade.interfaces.eth0.network = "home";
+    Jade.interfaces."mv-enp6s0".network = "home";
+    Jade.interfaces."mv-enp6s0".physicalConnections = [ (mkConnection "Onix" "enp6s0") ];
     
     # Jade runs as a VM inside Onix
     Jade.parent = "Onix";
@@ -52,7 +53,7 @@ in
       interfaces.eth3.network = "home";
       interfaces.eth4.network = "home";
 
-      connections.eth1 = mkConnection "Onix" "eth0";
+      connections.eth1 = mkConnection "Onix" "enp6s0";
       connections.eth2 = mkConnection "Sapphire" "eth0";
       connections.eth3 = mkConnection "Ruby" "eth0";
     };
