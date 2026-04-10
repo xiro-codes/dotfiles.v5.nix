@@ -1,4 +1,3 @@
-```markdown
 # file-sharing
 
 This module provides a convenient way to configure file sharing services, including NFS and Samba, on NixOS. It allows you to define shares with various options, such as read-only access, guest access, and user-based permissions.  It generates configurations and sets up the necessary services. It also allows for opening firewall ports for these services.
@@ -176,5 +175,4 @@ Here's a detailed breakdown of the available configuration options:
         *   **Default:** `"192.168.0.0/16"`
         *   **Example:** `"192.168.1.0/24"`
         *   **Description:** Network range for NFS access (CIDR notation).
-
 

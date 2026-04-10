@@ -1,4 +1,3 @@
-```markdown
 # pipewire-audio
 
 This module provides a convenient way to enable a PipeWire-based audio stack on NixOS.  It handles disabling PulseAudio, enabling necessary PipeWire services, configuring ALSA, and installing supporting packages like wiremix. It aims to be a one-stop shop for setting up modern, low-latency audio using PipeWire.
@@ -45,4 +44,3 @@ To enable the PipeWire audio stack, add the following to your `configuration.nix
 ```
 
 This will disable PulseAudio, enable rtkit, and configure PipeWire with ALSA, PulseAudio, JACK, and WirePlumber support. It will also install the `wiremix` utility.
-```

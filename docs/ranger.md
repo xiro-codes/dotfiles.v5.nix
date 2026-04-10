@@ -1,4 +1,3 @@
-```markdown
 # ranger
 
 This Nix module configures the ranger file manager, a console-based file manager with VI key bindings. It provides options to customize ranger's settings, plugins, and general behavior, making it easy to integrate ranger into your NixOS or home-manager configuration. This module ensures consistent and reproducible ranger setups across different machines.
@@ -198,5 +197,4 @@ programs.ranger.scopeShExtra = ''
     mdcat "$@"
   }
 '';
-```
 ```

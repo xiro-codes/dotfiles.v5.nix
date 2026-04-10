@@ -1,4 +1,3 @@
-```markdown
 # zerotier
 
 This module configures and enables ZeroTier, a virtual network, on your system.  It automatically joins a specified ZeroTier network by retrieving the Network ID from a SOPS secret. This ensures that the system connects to your ZeroTier network during boot.
@@ -65,4 +64,3 @@ To enable ZeroTier and configure it to join a network using a SOPS secret named 
 ```
 
 **Note:** Make sure that the `sops` module is correctly configured and that the `sopsFile` path points to your encrypted SOPS secret file. Also, remember to properly encrypt the ZeroTier network ID using SOPS.
-```

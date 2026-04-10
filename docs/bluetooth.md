@@ -1,4 +1,3 @@
-```markdown
 # bluetooth
 
 This module configures a modern Bluetooth stack, enabling Bluetooth support, setting power-on behavior, and applying various quality-of-life settings.  It also integrates with PipeWire for improved audio codec support when audio is enabled via the `local.pipewire-audio` module. Additionally, it handles the installation of necessary packages and the activation of the `blueman` service if Plasma is not being used as the desktop environment.
@@ -43,4 +42,3 @@ When `local.bluetooth.enable` is set to `true`, the following configurations are
 	    *	`bap_source`: Bluetooth Audio Profile source
         *   `hsp_hs`: Headset Profile - Headset
         *   `hfp_ag`: Hands-Free Profile - Audio Gateway (e.g., a phone or computer acting as the audio source)
-```

@@ -1,4 +1,3 @@
-```markdown
 # nix-cache-client
 
 This module configures a Nix client to use a custom binary cache server, primarily for development or local network scenarios. It sets up Nix to push build artifacts to the specified cache after a build, and also configures it to trust and fetch artifacts from that cache. This is useful for speeding up builds on multiple machines within a local network or for sharing development builds.
@@ -54,4 +53,3 @@ When the `local.nix-cache-client.enable` option is set to `true`, the following 
 *   **Priorities:**  The `priority` parameter in the `serverAddress` URL and in the standard NixOS cache URL affects which cache is preferred. Higher values mean higher priority.
 
 *   **Error Handling:** The `uploadScript` uses `|| true` to prevent upload failures from causing build failures. This ensures that builds can continue even if the cache server is temporarily unavailable. However, it also means that upload failures will not be immediately apparent. Consider adding more robust error handling to the script if reliable uploading is essential.
-```

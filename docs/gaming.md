@@ -1,4 +1,3 @@
-```markdown
 # gaming
 
 This Nix module provides a convenient way to enable various gaming-related optimizations and features on your NixOS system. It configures Steam, optimizes Bluetooth for lower controller latency, enables GameMode, and provides support for Xbox, DualSense, and other controllers. This helps create a smoother and more enjoyable gaming experience.
@@ -57,4 +56,3 @@ To enable gaming optimizations, add the following to your `configuration.nix`:
 ```
 
 After adding this configuration, rebuild your system with `sudo nixos-rebuild switch` to apply the changes.
-```

@@ -1,4 +1,3 @@
-```markdown
 # caelestia-shell
 
 This Nix module configures and enables the Caelestia shell application, providing a customized desktop environment with specific applications, settings, and idle behavior. It also manages dependencies, configures idle timeouts, and sets up a custom shutdown script triggered after a period of inactivity.
@@ -89,4 +88,3 @@ The `programs.caelestia` option is enabled and configured with specific settings
 ### Home Files
 
 *   `home.file.".music.gif"`: Creates a symlink from `~/.music.gif` to `./media.gif`. This ensures that a specific media file is available in the user's home directory.
-```

@@ -1,4 +1,3 @@
-```markdown
 # disks
 
 This module provides basic configuration for disk management, enabling services that allow for automatic mounting of removable drives and seamless integration with the desktop environment.
@@ -22,4 +21,3 @@ Enables basic configuration for disk management. When enabled, this module activ
 -   `devmon`: Monitors device events and automatically mounts/unmounts removable media such as USB drives when they are plugged in or removed.  This provides a convenient plug-and-play experience.
 
 When disabled, none of the aforementioned services are enabled, leaving disk management to the base system configuration.  This is useful when you want to manage disks manually or rely on an alternative disk management solution.
-```

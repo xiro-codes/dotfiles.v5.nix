@@ -1,4 +1,3 @@
-```markdown
 # lib
 
 This module provides a collection of utility functions and configurations for use across various NixOS modules.  It aims to centralize commonly used logic, ensuring consistency and reducing code duplication. The functions cover areas such as network configuration, application deployment, and system administration. It also provides configurations for packages and some general helper functions for working with nix.
@@ -184,4 +183,3 @@ This module defines the following options:
     #   };
     # }
     ```
-```

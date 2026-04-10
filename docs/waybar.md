@@ -1,4 +1,3 @@
-```markdown
 # waybar
 
 This Nix module configures the Waybar status bar, a highly customizable and lightweight bar for Wayland window managers. It allows you to define the modules, style, and behavior of your Waybar instance.  This module aims to provide a declarative and reproducible way to manage your Waybar configuration.
@@ -277,4 +276,3 @@ A path to a pre-existing waybar configuration file. If set, this option will ski
 ```nix
 configFile = ./my-waybar-config.jsonc;
 ```
-

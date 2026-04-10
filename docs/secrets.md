@@ -1,4 +1,3 @@
-```markdown
 # secrets
 
 This module provides a convenient way to manage secrets using sops-nix. It enables automatic decryption and mounting of secrets from an encrypted YAML file into `/run/secrets`, making them easily accessible system-wide. This configuration simplifies the process of managing sensitive data, such as passwords, API keys, and certificates, within a NixOS environment.
@@ -44,4 +43,3 @@ When `local.secrets.enable` is set to `true`, the module performs the following 
     - `group`: Set to `"wheel"` allowing admins to read the secrets.
 
 This configuration mounts the decrypted secrets into `/run/secrets` with appropriate file permissions, making them readily accessible to system services and applications that require them.  Remember to set appropriate `age.keyPaths` to ensure proper decryption.
-```

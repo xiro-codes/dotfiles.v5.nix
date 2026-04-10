@@ -1,4 +1,3 @@
-```markdown
 # user-manager
 
 This Nix module provides a convenient way to automatically manage user groups for all auto-discovered users on a host.  It ensures that users are configured as normal users and are added to a set of predefined or user-specified groups.  It also disables the default sudo password requirement for the `wheel` group and enables the `fish` shell. This module simplifies the process of setting up user environments across multiple machines.
@@ -33,4 +32,3 @@ Description:  A list of group names to assign to all auto-discovered users on th
    - `"incus-admin"`: Allows users to administer Incus containers.
 
 You can customize this list to suit your specific needs, adding or removing groups as required.  Ensure that the specified groups actually exist on the system or are defined elsewhere in your Nix configuration. If non-existent groups are specified, the user creation might fail.
-```

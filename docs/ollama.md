@@ -1,4 +1,3 @@
-```markdown
 # ollama
 
 This module provides configuration options to easily set up and manage Ollama, a tool for running large language models locally, along with an optional web UI. It allows enabling Ollama with Vulkan support and configuring a separate web UI for interacting with Ollama models.
@@ -77,4 +76,3 @@ This module streamlines the setup of Ollama and Open WebUI within a NixOS enviro
 ```
 
 This example enables both the web UI and Ollama services.  The web UI will listen on port 8081, and Ollama will listen on port 11435. It also ensures both `qwen3` and `llama2` models are loaded upon startup. Remember to adapt the configuration to your specific needs.
-```

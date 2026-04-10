@@ -1,4 +1,3 @@
-```markdown
 # minecraft-server
 
 This module provides a way to easily deploy and manage a Minecraft server on NixOS. It allows for both imperative and declarative configuration of the server, including whitelisting players and setting server properties. It also handles user creation, file management, and systemd service configuration.
@@ -99,4 +98,3 @@ Here's a detailed breakdown of the available options:
     + "-XX:+CMSClassUnloadingEnabled -XX:ParallelGCThreads=2 "
     + "-XX:MinHeapFreeRatio=5 -XX:MaxHeapFreeRatio=10"
     ```
-```

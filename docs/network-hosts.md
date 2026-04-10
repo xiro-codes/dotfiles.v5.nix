@@ -1,4 +1,3 @@
-```markdown
 # `local.network-hosts`
 
 This Nix module provides a convenient way to manage local network hostnames and IP addresses. It defines a set of host mappings and exposes them as configuration options, allowing other modules to easily reference these hosts.  Additionally, it automatically populates the `/etc/hosts` file with the defined hostnames and IP addresses, ensuring reliable name resolution within the local network. This module also supports Avahi/mDNS for automatic hostname resolution.
@@ -80,4 +79,3 @@ This module defines the following options under the `local.network-hosts` scope:
     ```
 
     This demonstrates referencing the Sapphire host's address within another module.
-```

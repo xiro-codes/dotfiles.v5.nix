@@ -1,4 +1,3 @@
-```markdown
 # registry
 
 This Nix module manages a flake registry entry and NIX_PATH entry for the dotfiles repository. It allows referencing the dotfiles flake via the `dotfiles` alias. This is particularly useful for quickly accessing configurations and modules within the dotfiles repository using Nix commands. It also adds the dotfiles path to the NIX_PATH for compatibility with classic Nix commands.
@@ -42,4 +41,3 @@ To enable the dotfiles flake registry, add the following to your NixOS configura
 ```
 
 This will add the `dotfiles` alias to your Nix registry and the dotfiles path to your `NIX_PATH`.
-

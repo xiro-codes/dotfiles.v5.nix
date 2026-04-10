@@ -1,4 +1,3 @@
-```markdown
 # incus
 
 This module provides configuration options for setting up and managing Incus, a system container and virtual machine manager. It handles networking, storage, UI enablement, and reverse proxy configuration for accessing the Incus UI.  It leverages NixOS modules to configure networking, firewall rules, and the Incus service itself.
@@ -85,4 +84,3 @@ This example enables Incus, enables the UI, attaches a macvlan network to the `e
 *   **Reverse Proxy:** This module assumes the existence of a `local.reverse-proxy.services.vm` module. You may need to define this module separately, for example using nginx. Make sure that the module configures TLS certificates!
 *   **Security:** The reverse proxy exposes your incus API.  If you disable the reverse proxy, you must have direct access to the incus host to use the UI.
 *   **User Permissions:** The `nginx` user is automatically added to the `incus-admin` group when `enableReverseProxy` is true, granting it the necessary permissions to access the Incus socket.  If you use a different reverse proxy, you'll need to configure the user permissions manually.
-```

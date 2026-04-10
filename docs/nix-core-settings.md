@@ -1,4 +1,3 @@
-```markdown
 # nix-core-settings
 
 This Nix module provides a set of basic system and Nix configurations. It enables flakes, allows unfree packages, installs essential system packages, configures Nix settings, and adds a udev rule to ignore ISO 9660 recovery partitions from automount. This module serves as a foundational layer for customizing a NixOS system with common and convenient settings.
@@ -55,4 +54,3 @@ To enable the core Nix settings, add the following to your `configuration.nix`:
 ```
 
 This will enable flakes, allow unfree software, install neovim, and apply the udev rule.  You can then further customize the settings by modifying the `nix.settings`, `environment.systemPackages` and other configuration options to fit your specific needs.
-```

@@ -1,4 +1,3 @@
-```markdown
 # harmonia-cache
 
 This Nix module provides configuration options for setting up an Attic binary cache server, specifically designed for the Harmonia ecosystem. It allows you to easily enable and configure the cache server, including specifying the port it listens on, whether to open the firewall for access, and the paths to the secret keys used for signing the cache.
@@ -46,4 +45,3 @@ This example enables the cache server, sets the port to 8080, opens the firewall
 - **Signing Keys:** Protect your signing keys carefully, as they are crucial for the security of your binary cache.  Consider storing these keys in a secure location and restricting access to them.
 - **Dependencies:**  This module relies on the `services.harmonia.cache` service being available.  Ensure that you have the Harmonia services module configured correctly as well.
 - **Clients:**  Clients accessing the cache must be configured to either trust the signing key (if the cache is signed) or trust unsigned caches (if `signKeyPaths` is empty).
-```

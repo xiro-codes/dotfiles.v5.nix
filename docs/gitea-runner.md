@@ -1,4 +1,3 @@
-```markdown
 # gitea-runner
 
 This module configures and enables a Gitea Actions Runner, leveraging Podman for container execution. It provides options to customize the runner's connection to a Gitea instance, its registration token, and the labels used to identify it for job assignment. It assumes podman is being used for containerisation.
@@ -52,4 +51,3 @@ Default:
 ```
 
 Description: A list of labels for the runner. These labels are used to match the runner with jobs that require specific environments or capabilities.  The format `ubuntu-latest:docker://node:18-bullseye` indicates that the label is `ubuntu-latest` and the container image to use for the job is `docker://node:18-bullseye`.
-```

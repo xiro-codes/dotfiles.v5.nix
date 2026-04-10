@@ -1,4 +1,3 @@
-```markdown
 # Dotfiles Documentation Module
 
 This Nix module provides a way to serve documentation for your dotfiles using Caddy. It sets up a systemd service that serves the documentation package on a specified port.
@@ -53,4 +52,3 @@ The service is configured to:
 *   **Group:** `nogroup` (runs the service under the `nogroup` group for security)
 
 This setup allows you to easily access your dotfiles documentation in a web browser on your local machine or network, making it convenient to reference and share.
-```

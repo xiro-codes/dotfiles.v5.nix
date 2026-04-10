@@ -1,4 +1,3 @@
-```markdown
 # bootloader
 
 This Nix module configures the system's bootloader, supporting both UEFI and legacy BIOS modes. It provides options for selecting the boot mode, choosing a specific UEFI bootloader (systemd-boot, GRUB, or Limine), configuring the device for BIOS boot, adding a recovery partition boot option, and enabling Plymouth for a boot splash screen.
@@ -48,4 +47,3 @@ This Nix module configures the system's bootloader, supporting both UEFI and leg
 *   **Type:** `bool`
 *   **Default:** `true`
 *   **Description:**  Enables or disables the Plymouth boot splash screen.  When enabled (`true`), Plymouth will display a graphical splash screen during the boot process. Disabling it (`false`) shows the text-based boot output. Enabling it also set kernel parameters "quiet" and "splash", console log level to 0 and disables verbose initrd output.
-```

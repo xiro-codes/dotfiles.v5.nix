@@ -1,4 +1,3 @@
-```markdown
 # yubikey
 
 This Nix module provides comprehensive support for YubiKey devices, streamlining GPG and SSH integration and installing necessary tools for managing and utilizing your YubiKey. It automatically installs essential packages, configures udev rules, enables PC/SC smart card daemon, and sets up a systemd service to detect when your YubiKey requires a touch.
@@ -52,4 +51,3 @@ When `local.yubikey.enable` is set to `true`, the following actions are performe
     *   `serviceConfig`: Configures the service's behavior.
         *   `ExecStart = "${pkgs.yubikey-touch-detector}/bin/yubikey-touch-detector"`: Specifies the command to execute when the service starts.  This runs the `yubikey-touch-detector` executable.
         *   `Restart = "on-failure"`: Configures the service to automatically restart if it fails. This ensures that the touch detection functionality remains available even if the detector encounters an error.
-```

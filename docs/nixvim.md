@@ -1,4 +1,3 @@
-```markdown
 # nixvim
 
 This Nix module provides a comprehensive configuration for Neovim, enabling various features, language support, and plugins. It leverages the `nixvim` Nix package for a declarative and reproducible Neovim setup. This module allows you to easily manage your Neovim configuration, plugins, and settings through Nix.
@@ -45,4 +44,3 @@ When `local.nixvim.enable` is set to `true`, the following configuration is appl
         *   `ripgrep`: A fast search tool.
         *   `fd`: A simple, fast and user-friendly alternative to `find`.
         *   `gcc`: For building treesitter grammars.
-```

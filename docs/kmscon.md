@@ -1,4 +1,3 @@
-```markdown
 # kmscon
 
 This Nix module configures the `kmscon` terminal emulator, primarily intended for use on servers without a graphical interface. It allows you to enable and customize `kmscon` to provide a console-based terminal experience.
@@ -27,4 +26,3 @@ When `local.kmscon.enable` is set to `true`, the following configuration is appl
     *   **`package`**: Specifies the Nix package containing the font, set to `pkgs.cascadia-code`.  This ensures that the Cascadia Code font is available for `kmscon` to use. You can add more fonts by adding other elements to the list.  Example: `{ name = "Another Font"; package = pkgs.another-font; }`
 
 This module provides a basic setup for `kmscon` using hardware rendering and the Cascadia Code font.  Further customization of `kmscon` can be achieved by extending the `services.kmscon` configuration. Please refer to the NixOS options documentation for `services.kmscon` for more options.
-```

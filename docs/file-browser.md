@@ -1,4 +1,3 @@
-```markdown
 # file-browser
 
 This Nix module provides a web-based file browser interface. It allows you to easily browse files on your server through a convenient web interface. The module configures a `filebrowser` service with customizable options, enabling easy access to your files via a web browser. It's designed to be simple to set up and use, offering a user-friendly way to manage files remotely.
@@ -45,4 +44,3 @@ Defines the root path from which the file browser will serve files. This directo
 
 ```
 ```
-

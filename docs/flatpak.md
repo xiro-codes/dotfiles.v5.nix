@@ -1,4 +1,3 @@
-```markdown
 # flatpak
 
 This Nix module provides a convenient way to enable Flatpak support on your system, configure Flatpak remotes, and install Flatpak applications system-wide.  It simplifies the process of setting up Flatpak, ensuring that applications are installed consistently and automatically updated. It leverages the `services.flatpak` NixOS module under the hood.
@@ -59,4 +58,3 @@ When `local.flatpak.enable` is set to `true`, the module:
 *   Installs the default application `io.github.kolunmi.Bazaar` and any applications specified in `local.flatpak.extraPackages` using `services.flatpak.packages`.
 
 This module simplifies Flatpak management by encapsulating these configurations in a single, easy-to-use module.  It reduces boilerplate and provides a consistent way to manage Flatpak applications across different systems.
-```

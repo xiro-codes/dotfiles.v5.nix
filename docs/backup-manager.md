@@ -1,4 +1,3 @@
-```markdown
 # backup-manager
 
 This Nix module configures Borg Backup to automatically backup specified paths on a daily basis. It automatically discovers user home directories and common subfolders (Projects, Documents, Pictures, Videos, .ssh), and allows you to specify additional paths and exclusion patterns. It also configures a systemd service that runs the backup job, ensuring that the backup location is a mount point before running.
@@ -42,4 +41,3 @@ Default: `[ ]`
 Example: `[ "*/node_modules" "*/target" "*/.cache" "*.tmp" ]`
 
 Description: A list of glob patterns to exclude from backups. These patterns are applied to all paths being backed up.  Using globs here prevents matching these folders or filetypes.
-```

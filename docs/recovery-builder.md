@@ -1,4 +1,3 @@
-```markdown
 # recovery-builder
 
 This Nix module provides a systemd service and timer to automatically build and burn a recovery ISO image to a dedicated partition, typically labeled `disk-main-recovery`. This setup is designed to keep a regularly updated recovery image on the system, allowing for quick and easy restoration in case of system failure. The module uses `caligula` to efficiently burn the ISO to the partition without prompting for user interaction, and skips hash verification during the write process to optimize for speed. It's suitable for environments where an up-to-date recovery partition is desired without manual intervention.
@@ -54,4 +53,3 @@ When `local.recovery-builder.enable` is set to `true`, the module configures the
         *   **OnCalendar:** `weekly` -  Sets the timer to trigger weekly (every Sunday at 00:00 by default).
         *   **Persistent:** `true` - Ensures that the timer is triggered even if the system was powered off during its scheduled time.
         *   **Unit:** `recovery-builder.service` - Specifies the service to be executed when the timer triggers.
-```

@@ -1,4 +1,3 @@
-```markdown
 # gog-downloader
 
 This Nix module provides a convenient way to automate the synchronization of your GOG library using `lgogdownloader`. It sets up a systemd timer and service to periodically download and update your games based on your specified configuration.  It also manages credentials via a file, which is the preferred way to interact with the downloader.
@@ -58,4 +57,3 @@ Here is a detailed breakdown of the available options within the `local.gog-down
     ```
 
     It's extremely important to protect this file and restrict its access to prevent unauthorized access to your GOG account.
-```

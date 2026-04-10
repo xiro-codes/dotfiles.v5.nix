@@ -1,4 +1,3 @@
-```markdown
 # network-mounts
 
 This module provides a convenient way to automatically mount Samba (SMB/CIFS) network shares using systemd automount. It simplifies the configuration process by defining a set of options that handle authentication, permissions, and automount behavior. This module relies on `cifs-utils` and `sops` for secure credential management.  It also provides options to hide the mount from file managers like Nautilus and Dolphin.
@@ -151,4 +150,3 @@ In this example:
 - **Systemd Automount:** The module uses systemd automount, which means that the shares will only be mounted when accessed. This can improve boot times and reduce resource usage.
 
 By using this module, you can easily and securely manage your SMB/CIFS network mounts in a declarative and reproducible way. Remember to adjust the options to match your specific environment and security requirements.
-```
