@@ -57,7 +57,7 @@
     domain = "tdavis.dev";
     worktimeDomain = "worklog.tdavis.dev";
     portfolioDomain = "tdavis.dev";
-    handymanDomain = "_";
+    handymanDomain = "handyman.tdavis.dev";
     manageDatabase = true;
     secretKeyFile = config.sops.secrets."apps/blog_key".path;
   };
