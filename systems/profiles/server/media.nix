@@ -6,10 +6,10 @@
       enable = true;
       mediaDir = "/media/Media/";
 
-      jellyfin.enable = true;
+      jellyfin.enable = false;
       plex.enable = true;
       plex.openFirewall = true;
-      ersatztv.enable = true;
+      ersatztv.enable = false;
       audiobookshelf.enable = true;
       komga.enable = true;
     };

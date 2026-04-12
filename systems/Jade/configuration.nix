@@ -45,19 +45,34 @@
     defaults.email = "me@tdavis.dev";
     certs."tdavis.dev" = {
       domain = "tdavis.dev";
-      extraDomainNames = [ "blog.tdavis.dev" "worklog.tdavis.dev" ];
+      extraDomainNames = [ "blog.tdavis.dev" "worktime.tdavis.dev" "demo.tdavis.dev" ];
       dnsProvider = "cloudflare";
       environmentFile = "/var/lib/acme/cloudflare.env";
       group = "nginx";
     };
   };
-  services.rocket-blog = {
-    enable = true;
-    package = inputs.inputs-nix.inputs.rocket-blog.packages.${pkgs.stdenv.hostPlatform.system}.rocket-blog;
-    domain = "tdavis.dev";
-    worktimeDomain = "worklog.tdavis.dev";
-    portfolioDomain = "tdavis.dev";
-    handymanDomain = "handyman.tdavis.dev";
+  services.rocket-forge = {
+    package = inputs.inputs-nix.inputs.rocket-blog.packages.${pkgs.stdenv.hostPlatform.system}.rocket-forge;
+    worktime = {
+      enable = true;
+      port = 8081;
+      domain = "worktime.tdavis.dev";
+    };
+    portfolio = {
+      enable = true;
+      port = 8082;
+      domain = "tdavis.dev";
+    };
+    handyman = {
+      enable = true;
+      port = 8083;
+      domain = "demo.tdavis.dev";
+    };
+    blog = {
+      enable = true;
+      port = 8084;
+      domain = "blog.tdavis.dev";
+    };
     manageDatabase = true;
     secretKeyFile = config.sops.secrets."apps/blog_key".path;
   };
