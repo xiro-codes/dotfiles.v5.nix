@@ -41,23 +41,6 @@
         
       '';
 
-      services.getty.autologinUser = inputs.nixpkgs.lib.mkForce "nixos";
-
-      environment.loginShellInit = ''
-        if [ ! -d "$HOME/dotfiles.v5.nix" ]; then
-          echo "📥 Cloning dotfiles repository..."
-          git clone https://github.com/xiro-codes/dotfiles.v5.nix "$HOME/dotfiles.v5.nix"
-        fi
-        cd "$HOME/dotfiles.v5.nix"
-        echo "🚀 Entering development shell..."
-        exec nix develop
-      '';
-
-      environment.etc."dotfiles-src".source = builtins.path {
-        path = inputs.self.outPath;
-        name = "dotfiles-git-src";
-        filter = path: type: true;
-      };
       environment.systemPackages =
         [
           inputs.nixpkgs.legacyPackages.x86_64-linux.python3

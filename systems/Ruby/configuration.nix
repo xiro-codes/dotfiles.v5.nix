@@ -19,7 +19,7 @@
 
   local = {
     disks.enable = true;
-
+    userManager.extraGroups = [ "wheel" "networkmanager" "input" "video" "audio" "docker" "adbusers" ];
     yubikey.enable = true;
     secrets.keys = [
       "gemini/api_key"
