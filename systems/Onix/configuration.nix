@@ -37,11 +37,6 @@
     disks.enable = true;
     network-hosts.useAvahi = true;
     bootloader.recoveryUUID = "017aa821-7b75-492a-98cf-1174f1b15ea1";
-    docs.enable = lib.mkForce false;
-    media = {
-      jellyfin.enable = lib.mkForce false;
-      ersatztv.enable = lib.mkForce false;
-    };
 
     secrets.keys = [
       "gemini/api_key"
@@ -55,21 +50,13 @@
       "zerotier_network_id"
     ];
     gog-downloader = {
-      enable = true;
+      enable = false;
       directory = "/media/Media/games";
       secretFile = config.sops.secrets."gog_creds".path;
     };
     zerotier.enable = true;
   };
-  security.polkit.extraConfig = ''
-    polkit.addRule(function(action, subject) {
-      if (action.id == "org.freedesktop.policykit.exec" &&
-          action.lookup("program") == "/run/current-system/sw/bin/nixos-container" &&
-          subject.isInGroup("wheel")) {
-        return polkit.Result.YES;
-      }
-    });
-  '';
+
   users.users.tod = {
     shell = pkgs.fish;
     initialPassword = "rockman";
