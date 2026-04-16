@@ -28,7 +28,7 @@
 
     kmscon.enable = true;
     virtualisation.incus = {
-      enable = true;
+      enable = false;
       ui.enable = true;
       macvlanInterface = "enp6s0";
       storageSource = "/media/storage/incus";
@@ -76,6 +76,12 @@
     privateNetwork = true;
     macvlans = [ "enp6s0" ];
     path = inputs.self.nixosConfigurations.Jade.config.system.build.toplevel;
+  };
+  containers.cinnabar = {
+    autoStart = true;
+    privateNetwork = true;
+    macvlans = [ "enp6s0" ];
+    path = inputs.self.nixosConfigurations.Cinnabar.config.system.build.toplevel;
   };
 
 
