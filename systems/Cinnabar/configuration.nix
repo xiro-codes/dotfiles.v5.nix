@@ -41,7 +41,7 @@
     config = {
       settings = [{
         provider = "cloudflare";
-        domain = "tdavis.dev";
+        domain = "cloud.tdavis.dev";
         ttl = 1;
       }];
     };
