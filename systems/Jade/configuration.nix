@@ -32,12 +32,18 @@
       "ssh_pub_ruby/master"
       "ssh_pub_sapphire/master"
       "apps/blog_key"
+      "apps/cloudflare_token"
+      "apps/cloudflare_zone_id"
     ];
   };
   services.ddns-updater = {
     enable = true;
-    environment = {
-      CONFIG_FILEPATH = "/etc/ddns-updater/config.json";
+    config = {
+      settings = [{
+        provider = "cloudflare";
+        domain = "tdavis.dev";
+        ttl = 1;
+      }];
     };
   };
   security.acme = {
