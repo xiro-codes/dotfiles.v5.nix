@@ -22,11 +22,32 @@ in
 
   config = mkIf cfg.enable {
     networking = {
+      hosts = {
+        "192.168.1.65" = [
+          "yt.onix.home"
+          "dashboard.onix.home"
+          "files.onix.home"
+          "wallpapers.onix.home"
+          "games.onix.home"
+          "git.onix.home"
+          "tv.onix.home"
+          "plex.onix.home"
+          "onix.home"
+          "ch7.onix.home"
+          "comics.onix.home"
+          "audiobooks.onix.home"
+          "dl.onix.home"
+          "pihole.onix.home"
+          "docs.onix.home"
+          "cache.onix.home"
+        ];
+      };
       # Disable the old wpa_supplicant
       wireless.enable = false;
       firewall.allowedTCPPorts = [ 5201 5202 ];
       # Prioritize Pi-hole if enabled
       # Always enable iwd (it's faster and more modern)
+      nameservers = [ "8.8.8.8" ];
       wireless.iwd = {
         enable = true;
         settings = {

@@ -26,6 +26,8 @@ in
     }];
 
     # System-wide installation of applications
-    services.flatpak.packages = [ "io.github.kolunmi.Bazaar" ] ++ cfg.extraPackages;
+    services.flatpak.packages = [
+      #"io.github.kolunmi.Bazaar" 
+    ] ++ cfg.extraPackages;
   };
 }

@@ -11,7 +11,7 @@
   programs = {
     coolercontrol.enable = true;
     gog.games = {
-      one-step-from-eden.enable = true;
+      one-step-from-eden.enable = false;
     };
   };
   boot.enableContainers = true;
@@ -44,12 +44,6 @@
   users.users.tod = {
     shell = pkgs.fish;
     initialPassword = "rockman";
-  };
-  networking.nat = {
-    enable = true;
-    internalInterfaces = [ "ve-+" ];
-    externalInterface = "enp7s0";
-    enableIPv6 = false;
   };
   hardware.keyboard.qmk.enable = true;
   boot.kernelParams = [ "video=HDMI-A-1:2560x1080@60" "video=DP-3:d" ];
