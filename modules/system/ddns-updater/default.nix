@@ -2,11 +2,12 @@
 with lib;
 let
   cfg = config.services.ddns-updater;
-in {
+in
+{
   options.services.ddns-updater = {
     config = mkOption {
       type = types.attrs;
-      default = {};
+      default = { };
       description = "The configuration for ddns-updater.";
     };
   };
@@ -19,11 +20,11 @@ in {
           TOKEN=$(cat ${config.sops.secrets."apps/cloudflare_token".path})
           ZONE=$(cat ${config.sops.secrets."apps/cloudflare_zone_id".path})
           ${pkgs.jq}/bin/jq --arg token "$TOKEN" --arg zone "$ZONE" \
-            '.settings[0].token = $token | .settings[0].zone_identifier = $zone' \
+            '.settings |= map(.token = $token | .zone_identifier = $zone)' \
             <<'EOF' > /etc/ddns-updater/config.json
           ${builtins.toJSON cfg.config}
           EOF
-          chmod 600 /etc/ddns-updater/config.json
+          chmod 777 /etc/ddns-updater/config.json
         '')
       ];
     };

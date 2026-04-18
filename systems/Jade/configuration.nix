@@ -39,11 +39,18 @@
   services.ddns-updater = {
     enable = true;
     config = {
-      settings = [{
-        provider = "cloudflare";
-        domain = "tdavis.dev";
-        ttl = 1;
-      }];
+      settings = [
+        ({
+          provider = "cloudflare";
+          domain = "tdavis.dev";
+          ttl = 1;
+        })
+        ({
+          provider = "cloudflare";
+          domain = "cloud.tdavis.dev";
+          ttl = 1;
+        })
+      ];
     };
   };
   security.acme = {
@@ -51,7 +58,12 @@
     defaults.email = "me@tdavis.dev";
     certs."tdavis.dev" = {
       domain = "tdavis.dev";
-      extraDomainNames = [ "blog.tdavis.dev" "worktime.tdavis.dev" "demo.tdavis.dev" ];
+      dnsProvider = "cloudflare";
+      environmentFile = "/var/lib/acme/cloudflare.env";
+      group = "nginx";
+    };
+    certs."cloud.tdavis.dev" = {
+      domain = "cloud.tdavis.dev";
       dnsProvider = "cloudflare";
       environmentFile = "/var/lib/acme/cloudflare.env";
       group = "nginx";
@@ -64,6 +76,15 @@
     manageDatabase = true;
     secretKeyFile = config.sops.secrets."apps/blog_key".path;
   };
+  services.nextcloud = {
+    enable = true;
+    hostName = "cloud.tdavis.dev";
+    config = {
+      adminuser = "admin";
+      adminpassFile = config.sops.secrets."apps/blog_key".path;
+      dbtype = "sqlite";
+    };
+  };
   services.nginx = {
     enable = true;
     recommendedTlsSettings = true;
@@ -72,6 +93,11 @@
         forceSSL = false;
         addSSL = true;
         useACMEHost = "tdavis.dev";
+      };
+      "cloud.tdavis.dev" = {
+        forceSSL = false;
+        addSSL = true;
+        useACMEHost = "cloud.tdavis.dev";
       };
     };
   };

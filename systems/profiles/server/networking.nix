@@ -2,7 +2,7 @@
 {
   local = {
     pihole = {
-      enable = true;
+      enable = false;
       adminPassword = "rockman";
     };
 
