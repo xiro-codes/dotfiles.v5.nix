@@ -9,6 +9,7 @@ in
     godot
     eog
     crush
+    prismlauncher
     (symlinkJoin {
       name = "xivlauncher-wrapped";
       paths = [ xivlauncher ];
