@@ -68,15 +68,13 @@
   };
 
   networking.nftables.enable = true;
-  networking.nameservers = lib.mkForce [ "8.8.8.8" ];
 
-
-  # containers.jade = {
-  #   autoStart = true;
-  #   privateNetwork = true;
-  #   macvlans = [ "enp6s0" ];
-  #   path = inputs.self.nixosConfigurations.Jade.config.system.build.toplevel;
-  # };
+  containers.jade = {
+    autoStart = true;
+    privateNetwork = true;
+    macvlans = [ "enp6s0" ];
+    path = inputs.self.nixosConfigurations.Jade.config.system.build.toplevel;
+  };
 
 
 
