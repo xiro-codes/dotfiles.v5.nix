@@ -29,5 +29,6 @@
     tealdeer
     gping
     graphviz
+    geminicommit
   ];
 }

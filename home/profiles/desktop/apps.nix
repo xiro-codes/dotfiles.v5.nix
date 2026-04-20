@@ -18,7 +18,6 @@
     p7zip
 
   ] ++ (with inputs.self.packages.${pkgs.stdenv.hostPlatform.system}; [
-    ai-commit
-    tgpt-auth
+
   ]);
 }
