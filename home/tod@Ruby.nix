@@ -8,8 +8,8 @@ in
   home.packages = with pkgs; [
     godot
     eog
-    crush
     prismlauncher
+    geminicommit
     (symlinkJoin {
       name = "xivlauncher-wrapped";
       paths = [ xivlauncher ];
