@@ -75,9 +75,6 @@ in
           showWifi = false;
         };
         bar.workspaces.shown = 3;
-        bar.scrollAction.brightness = false;
-        bar.scrollAction.volume = false;
-        bar.scrollAction.workspaces = false;
         bar.tray.recolour = true;
         osd.enableBrightness = false;
 
