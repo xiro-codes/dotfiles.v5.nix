@@ -41,6 +41,10 @@ in
           "docs.onix.home"
           "cache.onix.home"
         ];
+        "192.168.1.67" = [
+          "ai.sapphire.home"
+          "ui.sapphire.home"
+        ];
       };
       # Disable the old wpa_supplicant
       wireless.enable = false;
