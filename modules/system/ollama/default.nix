@@ -52,6 +52,7 @@ in
         syncModels = true;
         loadModels = [
           "qwen3"
+          "llama3"
         ];
       };
       hardware.graphics = {

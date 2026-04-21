@@ -11,7 +11,7 @@
   programs = {
     coolercontrol.enable = true;
     gog.games = {
-      one-step-from-eden.enable = false;
+      one-step-from-eden.enable = true;
     };
   };
   boot.enableContainers = true;

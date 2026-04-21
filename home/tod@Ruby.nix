@@ -10,6 +10,7 @@ in
     eog
     prismlauncher
     geminicommit
+    crush
     (symlinkJoin {
       name = "xivlauncher-wrapped";
       paths = [ xivlauncher ];
