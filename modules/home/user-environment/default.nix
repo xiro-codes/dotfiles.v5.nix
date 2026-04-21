@@ -4,7 +4,7 @@ let
   cfg = config.local;
   mkStrOpt = default: lib.mkOption { type = lib.types.str; inherit default; };
   userSops = inputs.self.packages.${pkgs.stdenv.hostPlatform.system}.user-sops;
-  geminiKeyPath = "$HOME/.secrets/gemini/api_key";
+  geminiKeyPath = "$HOME/.secrets/gemini/crush_agent_key";
 in
 {
   options.local = {
