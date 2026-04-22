@@ -10,8 +10,12 @@
   ];
   programs = {
     coolercontrol.enable = true;
-    gog.games = {
-      one-step-from-eden.enable = true;
+    gog = {
+      enable = true;
+      serverUrl = "https://games.onix.home";
+      games = {
+        tyranny-game.enable = true;
+      };
     };
   };
   boot.enableContainers = true;
@@ -19,7 +23,7 @@
 
   local = {
     disks.enable = true;
-    userManager.extraGroups = [ "wheel" "networkmanager" "input" "video" "audio" "docker" "adbusers" ];
+    userManager.extraGroups = [ "wheel" "networkmanager" "input" "video" "audio" "docker" "adbusers" "dialout" ];
     yubikey.enable = true;
     secrets.keys = [
       "gemini/api_key"
