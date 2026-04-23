@@ -1,4 +1,4 @@
-{ config, lib, pkgs, ... }:
+{ config, lib, pkgs, inputs, ... }:
 
 let
   cfg = config.local;
@@ -46,8 +46,8 @@ in
         enable = true;
         image = remoteWallpaper { wallpaper = "Deskmat/1.jpg"; sha256 = "sha256-MDIjJVlhXCLgCMsc9aGEx8A09hgJasjjvWdTTrTVL5c="; };
         cursor = {
-          package = pkgs.bibata-cursors;
-          name = "Bibata-Modern-Ice";
+          package = inputs.self.packages.x86_64-linux.fuchsia-cursor;
+          name = "fuchsia";
           size = 16;
         };
         opacity = {

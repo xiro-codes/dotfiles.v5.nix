@@ -5,19 +5,13 @@ in
   imports = [
     ./profiles/workstation
   ];
-  home.pointerCursor = {
-    gtk.enable = true;
-    package = inputs.self.packages.x86_64-linux.fushsia-cursor;
-    name = "fuchsia";
-    size = 24;
-  };
   home.packages = with pkgs; [
     godot
     eog
     prismlauncher
     geminicommit
     crush
-    google-chrome
+    z-library-desktop
     (symlinkJoin {
       name = "xivlauncher-wrapped";
       paths = [ xivlauncher ];

@@ -140,6 +140,7 @@ in
       formatters_by_ft = {
         nix = [ "nixpkgs_fmt" ];
         rust = [ "rustfmt" ];
+        json = [ "jq" ];
         "_" = [ "trim_whitespace" ];
       };
       format_on_save = {
