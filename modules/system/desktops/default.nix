@@ -77,7 +77,7 @@ in
         tod = pkgs.fetchurl {
           name = "disco.png";
           url = "https://wallpapers.onix.home/Icons/disco.png";
-          sha256 = "";
+          sha256 = "sha256-hy1iIDdnPY6ZPM5EYRbh66yFl7CUgLjbQubuGUvRErw=";
           curlOptsList = [ "-X" "GET" "--insecure" ];
         };
       };

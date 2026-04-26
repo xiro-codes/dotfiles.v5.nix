@@ -36,7 +36,7 @@
           localPath = "/media/Media";
         }
         {
-          shareName = "media";
+          shareName = "storage";
           localPath = "/media/Storage";
         }
         {
