@@ -26,7 +26,7 @@
       usePihole = true;
     };
 
-    kmscon.enable = true;
+    kmscon.enable = false;
     virtualisation.incus = {
       enable = false;
       ui.enable = true;

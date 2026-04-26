@@ -77,7 +77,7 @@
     secretKeyFile = config.sops.secrets."apps/blog_key".path;
   };
   services.nextcloud = {
-    enable = true;
+    enable = false;
     hostName = "cloud.tdavis.dev";
     config = {
       adminuser = "admin";
