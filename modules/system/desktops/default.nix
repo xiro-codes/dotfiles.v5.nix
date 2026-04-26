@@ -73,6 +73,14 @@ in
     programs.silentSDDM = mkIf (cfg.displayManager == "sddm") {
       enable = true;
       theme = "rei";
+      profileIcons = {
+        tod = pkgs.fetchurl {
+          name = "disco.png";
+          url = "https://wallpapers.onix.home/Icons/disco.png";
+          sha256 = "";
+          curlOptsList = [ "-X" "GET" "--insecure" ];
+        };
+      };
       backgrounds = {
         main = pkgs.fetchurl {
           name = "bg.jpg";

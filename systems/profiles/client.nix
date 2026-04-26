@@ -36,10 +36,17 @@
           localPath = "/media/Media";
         }
         {
+          shareName = "media";
+          localPath = "/media/Storage";
+        }
+        {
           shareName = "music";
           localPath = "/media/Music";
         }
-        { shareName = "books"; localPath = "/media/Books"; }
+        {
+          shareName = "books";
+          localPath = "/media/Books";
+        }
         {
           shareName = "porn";
           localPath = "/media/Porn";
