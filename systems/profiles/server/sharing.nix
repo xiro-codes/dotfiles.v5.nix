@@ -14,6 +14,11 @@
           comment = "Media";
           validUsers = [ "tod" ];
         };
+        storage = {
+          path = "/media/storage/";
+          comment = "Storage";
+          validUsers = [ "tod" ];
+        };
         music = {
           path = "${config.local.media.mediaDir}/music";
           comment = "Music";
