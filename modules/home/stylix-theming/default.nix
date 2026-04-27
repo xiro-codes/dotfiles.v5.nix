@@ -38,13 +38,13 @@ in
     (lib.mkIf cfg.stylix.enable {
       # Create .wallpaper symlink in home directory
       home.file.".wallpaper".source = remoteWallpaper {
-        wallpaper = "Deskmat/1.jpg";
-        sha256 = "sha256-MDIjJVlhXCLgCMsc9aGEx8A09hgJasjjvWdTTrTVL5c=";
+        wallpaper = "miku.jpeg";
+        sha256 = "sha256-Lp6CAHJc+rJEWDo3z9DtH/J543zdJth079M3nMW1OwM=";
       };
 
       stylix = {
         enable = true;
-        image = remoteWallpaper { wallpaper = "Deskmat/1.jpg"; sha256 = "sha256-MDIjJVlhXCLgCMsc9aGEx8A09hgJasjjvWdTTrTVL5c="; };
+        image = remoteWallpaper { wallpaper = "miku.jpeg"; sha256 = "sha256-Lp6CAHJc+rJEWDo3z9DtH/J543zdJth079M3nMW1OwM="; };
         cursor = {
           package = inputs.self.packages.x86_64-linux.fuchsia-cursor;
           name = "fuchsia";
