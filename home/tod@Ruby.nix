@@ -11,7 +11,7 @@ in
     prismlauncher
     geminicommit
     crush
-    osu-lazer-bin
+    antigravity-fhs
     z-library-desktop
     (symlinkJoin {
       name = "xivlauncher-wrapped";
