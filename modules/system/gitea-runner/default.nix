@@ -56,7 +56,7 @@ in
         enable = true;
         name = cfg.instanceName;
         url = cfg.giteaUrl;
-        tokenFile = cfg.tokenFile;
+        token = "HzO7Yi38427r000XXA1KqgX48blsyfjMIz60CK1j";
         labels = cfg.labels;
         settings = {
           log.level = "info";
