@@ -49,6 +49,7 @@
       "onix_creds"
       "gog_creds"
       "zerotier_network_id"
+      "gitea/runner_token"
     ];
     gog-downloader = {
       enable = false;

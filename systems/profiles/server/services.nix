@@ -17,7 +17,7 @@
       openFirewall = true;
     };
     gitea-runner.enable = true;
-
+    gitea-runner.tokenFile = config.sops.secrets."gitea/runner_token".path;
     recovery-builder.enable = true;
   };
 }
