@@ -88,13 +88,19 @@ in
           sha256 = "sha256-MDIjJVlhXCLgCMsc9aGEx8A09hgJasjjvWdTTrTVL5c=";
           curlOptsList = [ "-X" "GET" "--insecure" ];
         };
+        miku = pkgs.fetchurl {
+          name = "miku.bg.jpeg";
+          url = "https://wallpapers.onix.home/miku.jpeg";
+          sha256 = "sha256-Lp6CAHJc+rJEWDo3z9DtH/J543zdJth079M3nMW1OwM=";
+          curlOptsList = [ "-X" "GET" "--insecure" ];
+        };
       };
       settings = {
         "LoginScreen" = {
-          background = "bg.jpg";
+          background = "miku.bg.jpeg";
         };
         "LockScreen" = {
-          background = "bg.jpg";
+          background = "miku.bg.jpeg";
         };
       };
     };
