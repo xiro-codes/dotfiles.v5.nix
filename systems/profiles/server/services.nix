@@ -16,8 +16,8 @@
       enable = true;
       openFirewall = true;
     };
-    recovery-builder = {
-      enable = true;
-    };
+    gitea-runner.enable = true;
+
+    recovery-builder.enable = true;
   };
 }
