@@ -27,13 +27,6 @@
       usePihole = true;
     };
 
-    kmscon.enable = false;
-    virtualisation.incus = {
-      enable = false;
-      ui.enable = true;
-      macvlanInterface = "enp6s0";
-      storageSource = "/media/storage/incus";
-    };
     # System settings
     disks.enable = true;
     network-hosts.useAvahi = true;
