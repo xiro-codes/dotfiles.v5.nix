@@ -67,7 +67,7 @@ in
             autoHide = false;
           };
         };
-        launcher.hiddenApps = [ "qt5ct" "qt6ct" "neovim" "ranger" "blueman-manager" "blueman-adapters" "mpv" "nixos-help" ];
+        launcher.hiddenApps = [ "qt5ct" "qt6ct" "neovim" "blueman-manager" "blueman-adapters" "mpv" "nixos-help" ];
         bar.status = {
           showBattery = false;
           showAudio = true;

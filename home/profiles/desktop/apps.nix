@@ -4,7 +4,6 @@
     kitty.enable = true;
     nixvim.enable = true;
     yazi.enable = true;
-    superfile.enable = false;
     mpd.enable = true;
     caelestia-shell.enable = true;
     kdeconnect.enable = true;

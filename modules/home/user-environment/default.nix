@@ -86,7 +86,7 @@ in
       };
       fileManager = lib.mkOption {
         type = lib.types.str;
-        default = "ranger";
+        default = "yazi";
         example = "lf";
         description = "Default terminal file manager";
       };
@@ -125,6 +125,16 @@ in
         default = "hyprpanel";
         example = "waybar";
         description = "Default status bar or panel application";
+      };
+    };
+
+    # Caelestia configuration
+    caelestia = {
+      colorScheme = lib.mkOption {
+        type = lib.types.nullOr lib.types.str;
+        default = null;
+        example = "gruvbox";
+        description = "Color scheme name for Caelestia (e.g., 'gruvbox', 'catppuccin'). If null, uses dynamic wallpaper colors.";
       };
     };
   };
