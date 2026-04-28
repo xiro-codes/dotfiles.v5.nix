@@ -57,6 +57,7 @@
       secretFile = config.sops.secrets."gog_creds".path;
     };
     zerotier.enable = true;
+    containers.Jade.enable = true;
   };
 
   users.users.tod = {
@@ -70,13 +71,6 @@
   };
 
   networking.nftables.enable = true;
-
-  containers.jade = {
-    autoStart = true;
-    privateNetwork = true;
-    macvlans = [ "enp6s0" ];
-    path = inputs.self.nixosConfigurations.Jade.config.system.build.toplevel;
-  };
 
 
 

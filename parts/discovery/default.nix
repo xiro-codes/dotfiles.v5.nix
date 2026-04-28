@@ -60,7 +60,8 @@ in
   flake = {
     nixosModules = discoveredSystemModules;
     homeModules = discoveredHomeModules;
-    nixosConfigurations = nixosLib.mkNixosConfigurations;
+    nixosConfigurations = nixosLib.hosts;
+    nixosContainers = nixosLib.containers;
     homeConfigurations = homeLib.mkHomeConfigurations;
     templates = discoveredTemplates;
     overlays.default = final: prev: packagesLib.mkPackages paths.packages final.stdenv.hostPlatform.system;

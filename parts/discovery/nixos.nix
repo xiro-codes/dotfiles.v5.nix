@@ -18,37 +18,23 @@ let
     ;
   inherit (lib) filterAttrs;
 in
-{
-  # Generate nixosConfigurations for all discovered hosts
-  mkNixosConfigurations =
-    let
-      hosts =
-        if pathExists paths.systems then
-          attrNames
-            (filterAttrs
-              (name: type:
-                type == "directory"
-                && pathExists (paths.systems + "/${name}/configuration.nix")
-                && pathExists (paths.systems + "/${name}/hardware-configuration.nix")
-              )
-              (readDir paths.systems))
-        else
-          [ ];
-    in
+let
+  # Generate nixosConfigurations for all discovered hosts and containers
+  genConfigs = hosts:
     listToAttrs (
       map
-        (name: {
-          inherit name;
+        (host: {
+          name = host.name;
           value = inputs.nixpkgs.lib.nixosSystem {
             specialArgs = {
               inherit inputs;
-              currentHostName = name;
-              currentHostUsers = map (u: u.user) (hostToUsersMap.${name} or [ ]);
+              currentHostName = host.name;
+              currentHostUsers = map (u: u.user) (hostToUsersMap.${host.name} or [ ]);
             };
             modules = globalNixosModules ++ [
-              (paths.systems + "/${name}/configuration.nix")
+              (host.path + "/configuration.nix")
               ({
-                networking.hostName = name;
+                networking.hostName = host.name;
                 local.secrets.enable = true;
                 home-manager = {
                   backupFileExtension = "backup";
@@ -61,7 +47,7 @@ in
                         name = u.user;
                         value = import (paths.home + "/${u.filename}");
                       })
-                      (hostToUsersMap.${name} or [ ])
+                      (hostToUsersMap.${host.name} or [ ])
                   );
 
                 };
@@ -73,4 +59,24 @@ in
         })
         hosts
     );
+
+  findHosts = dir:
+    if pathExists dir then
+      attrNames
+        (filterAttrs
+          (name: type:
+            type == "directory"
+            && pathExists (dir + "/${name}/configuration.nix")
+            && pathExists (dir + "/${name}/hardware-configuration.nix")
+          )
+          (readDir dir))
+    else
+      [ ];
+
+  topLevelHosts = map (name: { inherit name; path = paths.systems + "/${name}"; }) (findHosts paths.systems);
+  containerHosts = map (name: { inherit name; path = paths.systems + "/containers/${name}"; }) (findHosts (paths.systems + "/containers"));
+in
+{
+  hosts = genConfigs topLevelHosts;
+  containers = genConfigs containerHosts;
 }
