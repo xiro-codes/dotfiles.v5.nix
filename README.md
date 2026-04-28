@@ -20,7 +20,8 @@ A declarative, multi-host NixOS configuration built with [Nix Flakes](https://ni
 2. **Partition & Install**:
    ```bash
    # Using Disko (automated)
-   just install <hostname>
+   just install-local <hostname>   # Install via local Gitea mirror
+   just install-remote <hostname>  # Install via Github source
    ```
 
 3. **Manual Install**:
@@ -40,7 +41,7 @@ A declarative, multi-host NixOS configuration built with [Nix Flakes](https://ni
 
 This repository utilizes a modular discovery engine (`parts/discovery/`) that scans the file system to build the flake. This eliminates the need to manually register new files in `flake.nix`.
 
-* **Systems**: Every directory in /systems is automatically converted into a nixosConfiguration.
+* **Systems**: Every directory in `/systems` containing both a `configuration.nix` and `hardware-configuration.nix` is automatically converted into a `nixosConfiguration`.
 * **System Modules**: Found in /modules/system. Any directory with a default.nix is automatically exported as a NixOS module.
 * **Home Modules**: Found in /modules/home. These are automatically exported for use within Home Manager.
 * **Home Configurations**: Standalone Home Manager configurations are generated from user@hostname.nix files in /home.
@@ -54,25 +55,33 @@ This repository utilizes a modular discovery engine (`parts/discovery/`) that sc
 ### [**Onix**](./systems/Onix/configuration.nix)
 
 * **Role**: Home Server
-* **IP**: 10.0.0.65
-* **Bootloader**: UEFI with **systemd-boot**
+* **IP**: 192.168.1.65
+* **Bootloader**: UEFI with **Limine**
 * **Key Features**: Central file server, Gitea instance, media server, and Pi-hole.
 * **Hosted Domains**: `dashboard.onix.home`, `git.onix.home`, `tv.onix.home`, `plex.onix.home`, `ch7.onix.home`, `comics.onix.home`, `audiobooks.onix.home`, `dl.onix.home`, `yt.onix.home`, `pihole.onix.home`, `docs.onix.home`, `cache.onix.home`
 
 ### [**Ruby**](./systems/Ruby/configuration.nix)
 
 * **Role**: Primary Workstation
-* **IP**: 10.0.0.66
+* **IP**: 192.168.1.66
 * **Bootloader**: UEFI with **Limine**
 * **Key Features**: High-performance workstation, local backup management, and comprehensive network share mounts (Music, Books, Backups).
 
 ### [**Sapphire**](./systems/Sapphire/configuration.nix)
 
 * **Role**: AI Services & Secondary Workstation
-* **IP**: 10.0.0.67
+* **IP**: 192.168.1.67
 * **Bootloader**: UEFI with **Limine**
 * **Key Features**: Local LLM and AI services (Ollama, Open WebUI), remote mounts.
 * **Hosted Domains**: `ui.sapphire.home`, `ai.sapphire.home`
+
+
+### [**Jade**](./systems/containers/Jade/configuration.nix)
+
+* **Role**: Web Services Container
+* **Bootloader**: N/A (NixOS Container)
+* **Key Features**: DDNS (Cloudflare), SSL management (ACME), Rocket-Forge blog, and Nginx reverse proxy.
+* **Hosted Domains**: `tdavis.dev`, `cloud.tdavis.dev`
 
 
 ## **🛠️ Key Modules & Features**
@@ -130,7 +139,8 @@ The justfile provides several helpers for system administration:
 
 | Command | Action |
 | :---- | :---- |
-| just install \<host\> | Install a system from scratch using disko |
+| just install-local \<host\> | Install a system from local Gitea mirror |
+| just install-remote \<host\> | Install a system from Github source |
 | just rescue | Quick fix for a borked system (assumes std labels) |
 | just bake-recovery | Burn a new ISO to the recovery partition |
 
