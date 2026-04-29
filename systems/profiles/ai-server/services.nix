@@ -1,4 +1,4 @@
 { ... }:
 {
-  local.kmscon.enable = true;
+  local.kmscon.enable = false;
 }
