@@ -4,7 +4,6 @@
 - [Architecture]()
     - [Network Diagram](network-diagram.md)
     - [Complete Topology](main-diagram.md)
-- [Profiles](profiles.md)
 
 - [System & Custom Modules]()
     - [Backup Manager](backup-manager.md)
