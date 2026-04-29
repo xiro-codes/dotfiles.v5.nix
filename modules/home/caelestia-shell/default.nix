@@ -13,34 +13,10 @@ let
     types
     ;
   cfg = config.local.caelestia-shell;
-  checkAndShutdown = pkgs.writeShellScriptBin "check-and-shutdown" ''
-    # Turn screen back on so the user can see the notification
-    hyprctl dispatch dpms on
-    
-    # Schedule shutdown in 1 minute
-    shutdown +1
-    
-    ACTION=$(${pkgs.libnotify}/bin/notify-send "Auto Shutdown" \
-      "PC has been idle. Shutting down in 60 seconds." \
-      --urgency=critical \
-      --action="abort=Abort Shutdown")
-      
-    if [ "$ACTION" == "abort" ]; then
-      shutdown -c
-      ${pkgs.libnotify}/bin/notify-send "Auto Shutdown" "Shutdown aborted by user."
-      echo "Shutdown aborted by user."
-      exit 0
-    fi
-  '';
 in
 {
   options.local.caelestia-shell = {
     enable = mkEnableOption "Caelestia shell application";
-    idleMinutes = mkOption {
-      type = types.int;
-      default = 120;
-      description = "Minutes of idle";
-    };
   };
 
   config = mkIf cfg.enable {
@@ -50,10 +26,7 @@ in
         pavucontrol
         celluloid
         kdePackages.networkmanager-qt
-      ])
-      ++ [
-        checkAndShutdown
-      ];
+      ]);
     programs.caelestia = {
       enable = true;
       cli.enable = true;
