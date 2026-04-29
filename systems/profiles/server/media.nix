@@ -1,4 +1,4 @@
-{ ... }:
+{ config, ... }:
 {
   local = {
     # Media services
@@ -21,6 +21,11 @@
 
       qbittorrent.enable = true;
       pinchflat.enable = true;
+    };
+    gog-downloader = {
+      enable = true;
+      directory = "/media/Media/games";
+      secretFile = config.sops.secrets."gog_creds".path;
     };
   };
 }
