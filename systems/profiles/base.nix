@@ -2,8 +2,6 @@
 { pkgs, lib, ... }:
 {
   local = {
-    #secrets.enable = lib.mkForce false;
-    #cache.enable = false;
     security.enable = true;
     dotfiles-sync = {
       enable = true;
@@ -32,7 +30,7 @@
     enable = true;
     memoryPercent = 25;
   };
-  
+
   # Common user configuration
   users.users.tod = {
     shell = pkgs.fish;

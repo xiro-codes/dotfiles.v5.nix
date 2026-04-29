@@ -25,7 +25,7 @@
 
   local = {
     network.useNetworkManager = lib.mkForce false;
-    disks.enable = false;
+    disks.enable = lib.mkForce false;
     secrets.keys = [
       "ssh_pub_jade/master"
       "ssh_pub_onix/master"
@@ -102,12 +102,9 @@
     };
   };
   networking.firewall.allowedTCPPorts = [ 80 443 ];
-  users.users.tod = {
-    isNormalUser = true;
-    extraGroups = [ "wheel" ];
-    shell = pkgs.fish;
-    initialPassword = "rockman";
-  };
+
+  # Note: user 'tod' is automatically managed by local.userManager 
+  # which is enabled in profiles/base.nix
 
   system.stateVersion = "25.11";
 }

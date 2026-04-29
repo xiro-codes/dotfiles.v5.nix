@@ -33,8 +33,6 @@
     dotfiles-sync.maintenance.upgradeFlake = "github:xiro-codes/dotfiles.v5.nix";
 
   };
-  # Ruby-specific user
-  # Note: user 'tod' is now defined in profiles/base.nix
 
   hardware.keyboard.qmk.enable = true;
   boot.kernelParams = [ "video=HDMI-A-1:2560x1080@60" "video=DP-3:d" ];
