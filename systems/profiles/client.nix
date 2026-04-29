@@ -2,6 +2,9 @@
 { lib, ... }:
 {
   local = {
+    recovery-builder.enable = true;
+    dotfiles-sync.maintenance.autoUpgrade = true;
+
     backup-manager = {
       enable = true;
       backupLocation = "/media/Backups";
