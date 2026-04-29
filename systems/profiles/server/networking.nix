@@ -1,4 +1,8 @@
-{ config, lib, ... }:
+{
+  config,
+  lib,
+  ...
+}:
 {
   local = {
     pihole = {
@@ -22,7 +26,6 @@
         dashboard.target = "http://localhost:${toString config.local.dashboard.port}";
 
         git.target = "http://localhost:${toString config.local.gitea.port}";
-
 
         tv.target = "http://localhost:${toString config.local.media.jellyfin.port}";
         plex.target = "http://localhost:${toString config.local.media.plex.port}";

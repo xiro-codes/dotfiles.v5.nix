@@ -1,5 +1,9 @@
-{ lib, config, pkgs, ... }:
-
+{
+  lib,
+  config,
+  pkgs,
+  ...
+}:
 {
   imports = [
     ./disko.nix
@@ -20,5 +24,4 @@
   };
 
   system.stateVersion = "25.11";
-
 }

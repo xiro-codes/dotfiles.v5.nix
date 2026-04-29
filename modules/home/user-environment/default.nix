@@ -1,8 +1,29 @@
-{ config, lib, pkgs, inputs, ... }:
-
+{
+  config,
+  lib,
+  pkgs,
+  inputs,
+  ...
+}:
 let
+  inherit (lib)
+    genAttrs
+    getExe
+    literalExpression
+    mapAttrs
+    mkEnableOption
+    mkIf
+    mkMerge
+    mkOption
+    types
+    ;
   cfg = config.local;
-  mkStrOpt = default: lib.mkOption { type = lib.types.str; inherit default; };
+  mkStrOpt =
+    default:
+    mkOption {
+      type = types.str;
+      inherit default;
+    };
   userSops = inputs.self.packages.${pkgs.stdenv.hostPlatform.system}.user-sops;
   geminiKeyPath = "$HOME/.secrets/gemini/crush_agent_key";
 in
@@ -10,16 +31,16 @@ in
   options.local = {
     # Cache configuration
     cache = {
-      enable = lib.mkEnableOption "cache module";
-      watch = lib.mkEnableOption "enable systemd service to watch cache";
-      serverAddress = lib.mkOption {
-        type = lib.types.str;
+      enable = mkEnableOption "cache module";
+      watch = mkEnableOption "enable systemd service to watch cache";
+      serverAddress = mkOption {
+        type = types.str;
         default = "http://${config.osConfig.local.network-hosts.onix or "onix.local"}:8080/main";
         example = "http://cache.example.com:8080/nixos";
         description = "Attic binary cache server URL (automatically uses host from local.network-hosts module)";
       };
-      publicKey = lib.mkOption {
-        type = lib.types.str;
+      publicKey = mkOption {
+        type = types.str;
         default = "main:CqlQUu3twINKw6EvYnbk=";
         example = "cache:AbCdEf1234567890+GhIjKlMnOpQrStUvWxYz==";
         description = "Public key for cache verification";
@@ -28,100 +49,107 @@ in
 
     # SSH configuration
     ssh = {
-      enable = lib.mkEnableOption "configure ssh for user";
-      masterKeyPath = lib.mkOption {
-        type = lib.types.str;
+      enable = mkEnableOption "configure ssh for user";
+      masterKeyPath = mkOption {
+        type = types.str;
         default = "~/.ssh/id_ed25519";
         example = "~/.ssh/id_rsa";
         description = "Path to the SSH master private key file";
       };
-      hosts = lib.mkOption {
-        type = lib.types.attrsOf lib.types.str;
+      hosts = mkOption {
+        type = types.attrsOf types.str;
         default = {
           Sapphire = config.osConfig.local.network-hosts.sapphire or "sapphire.local";
           Ruby = config.osConfig.local.network-hosts.ruby or "ruby.local";
           Onix = config.osConfig.local.network-hosts.onix or "onix.local";
           Jade = config.osConfig.local.network-hosts.jade or "jade.local";
         };
-        example = { Sapphire = "sapphire.local"; Ruby = "ruby.local"; };
+        example = {
+          Sapphire = "sapphire.local";
+          Ruby = "ruby.local";
+        };
         description = "Mapping of SSH host aliases to hostnames or IP addresses (automatically uses hosts from local.network-hosts module)";
       };
     };
 
     # Secrets configuration
     secrets = {
-      enable = lib.mkEnableOption "Use secrets";
-      sopsFile = lib.mkOption {
-        type = lib.types.path;
+      enable = mkEnableOption "Use secrets";
+      sopsFile = mkOption {
+        type = types.path;
         default = ../../../secrets/secrets.yaml;
-        example = lib.literalExpression "../secrets/user-secrets.yaml";
+        example = literalExpression "../secrets/user-secrets.yaml";
         description = "Path to the encrypted yaml file";
       };
-      keys = lib.mkOption {
-        type = lib.types.listOf lib.types.str;
+      keys = mkOption {
+        type = types.listOf types.str;
         default = [ ];
-        example = [ "github/token" "api/openai" "passwords/vpn" ];
+        example = [
+          "github/token"
+          "api/openai"
+          "passwords/vpn"
+        ];
         description = "List sops keys to automatically map to $HOME/.secrets/";
       };
     };
 
     # System variables
     variables = {
-      enable = lib.mkOption {
-        type = lib.types.bool;
+      enable = mkOption {
+        type = types.bool;
         default = true;
         description = "Enable system environment variables for common tools and applications";
       };
-      editor = lib.mkOption {
-        type = lib.types.str;
+      editor = mkOption {
+        type = types.str;
         default = "nvim";
         example = "vim";
         description = "Default terminal text editor";
       };
-      guiEditor = lib.mkOption {
-        type = lib.types.str;
+      guiEditor = mkOption {
+        type = types.str;
         default = "neovide";
         example = "code";
         description = "Default GUI text editor";
       };
-      fileManager = lib.mkOption {
-        type = lib.types.str;
+      fileManager = mkOption {
+        type = types.str;
         default = "yazi";
         example = "lf";
         description = "Default terminal file manager";
       };
-      guiFileManager = lib.mkOption {
-        type = lib.types.str;
+      guiFileManager = mkOption {
+        type = types.str;
         default = "nautilus";
         example = "nautilus";
         description = "Default GUI file manager";
       };
-      terminal = lib.mkOption {
-        type = lib.types.str;
+      terminal = mkOption {
+        type = types.str;
         default = "kitty";
         example = "alacritty";
         description = "Default terminal emulator";
       };
-      launcher = lib.mkOption {
-        type = lib.types.str;
+      launcher = mkOption {
+        type = types.str;
         default = "rofi -show drun";
         example = "wofi --show drun";
         description = "Default application launcher command";
       };
-      wallpaper = lib.mkOption {
-        type = lib.types.str;
+      wallpaper = mkOption {
+        type = types.str;
         default = "hyprpaper";
         example = "swaybg";
         description = "Default wallpaper daemon or manager";
       };
-      browser = lib.mkOption {
-        type = lib.types.str;
+      browser = mkOption {
+        type = types.str;
         default = "firefox";
         example = "chromium";
         description = "Default web browser";
       };
-      statusBar = lib.mkOption {
-        type = lib.types.str;
+      statusBar = mkOption {
+        type = types.str;
         default = "hyprpanel";
         example = "waybar";
         description = "Default status bar or panel application";
@@ -130,8 +158,8 @@ in
 
     # Caelestia configuration
     caelestia = {
-      colorScheme = lib.mkOption {
-        type = lib.types.nullOr lib.types.str;
+      colorScheme = mkOption {
+        type = types.nullOr types.str;
         default = null;
         example = "gruvbox";
         description = "Color scheme name for Caelestia (e.g., 'gruvbox', 'catppuccin'). If null, uses dynamic wallpaper colors.";
@@ -139,18 +167,18 @@ in
     };
   };
 
-  config = lib.mkMerge [
+  config = mkMerge [
     # Cache
-    (lib.mkIf cfg.cache.enable {
+    (mkIf cfg.cache.enable {
       home.packages = with pkgs; [ attic-client ];
-      systemd.user.services.attic-watch = lib.mkIf cfg.cache.watch {
+      systemd.user.services.attic-watch = mkIf cfg.cache.watch {
         Unit = {
           Description = "Watch Nix store and push to Attic cache";
           After = [ "graphical-session.target" ];
           PartOf = [ "graphical-session.target" ];
         };
         Service = {
-          ExecStart = "${lib.getExe' pkgs.attic-client "attic"} watch-store main";
+          ExecStart = "${getExe' pkgs.attic-client "attic"} watch-store main";
           Restart = "always";
           RestartSec = 5;
         };
@@ -161,58 +189,59 @@ in
     })
 
     # SSH
-    (lib.mkIf cfg.ssh.enable {
+    (mkIf cfg.ssh.enable {
       programs.ssh = {
         enable = true;
         enableDefaultConfig = false;
-        matchBlocks = (lib.mapAttrs
-          (alias: host: {
+        matchBlocks =
+          (mapAttrs (alias: host: {
             hostname = host;
             user = config.home.username;
             identityFile = cfg.ssh.masterKeyPath;
             forwardAgent = true;
-          })
-          cfg.ssh.hosts) // {
-          "github.com" = {
-            hostname = "github.com";
-            user = "git";
-            identityFile = "~/.ssh/github";
+          }) cfg.ssh.hosts)
+          // {
+            "github.com" = {
+              hostname = "github.com";
+              user = "git";
+              identityFile = "~/.ssh/github";
+            };
+            "gitea" = {
+              hostname = config.osConfig.local.network-hosts.onix or "onix.local";
+              port = 222;
+              user = "git";
+              identityFile = "~/.ssh/github";
+            };
+            "*" = {
+              user = config.home.username;
+              addKeysToAgent = "yes";
+              controlMaster = "auto";
+              controlPath = "~/.ssh/master-%r@%h:%p";
+              setEnv = {
+                TERM = "xterm-256color";
+              };
+            };
           };
-          "gitea" = {
-            hostname = config.osConfig.local.network-hosts.onix or "onix.local";
-            port = 222;
-            user = "git";
-            identityFile = "~/.ssh/github";
-          };
-          "*" = {
-            user = config.home.username;
-            addKeysToAgent = "yes";
-            controlMaster = "auto";
-            controlPath = "~/.ssh/master-%r@%h:%p";
-            setEnv = { TERM = "xterm-256color"; };
-          };
-        };
       };
     })
 
     # Secrets
-    (lib.mkIf cfg.secrets.enable {
+    (mkIf cfg.secrets.enable {
       home.packages = [
         userSops
       ];
       sops = {
         age.sshKeyPaths = [ "${config.home.homeDirectory}/.ssh/id_sops" ];
         defaultSopsFile = cfg.secrets.sopsFile;
-        secrets = lib.genAttrs cfg.secrets.keys
-          (name: {
-            mode = "0400";
-            path = "${config.home.homeDirectory}/.secrets/${name}";
-          });
+        secrets = genAttrs cfg.secrets.keys (name: {
+          mode = "0400";
+          path = "${config.home.homeDirectory}/.secrets/${name}";
+        });
       };
     })
 
     # Variables
-    (lib.mkIf cfg.variables.enable {
+    (mkIf cfg.variables.enable {
       home.sessionVariables = {
         EDITOR = cfg.variables.editor;
         VISUAL = cfg.variables.editor;

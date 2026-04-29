@@ -1,4 +1,11 @@
-{ pkgs, config, lib, inputs, ... }: {
+{
+  pkgs,
+  config,
+  lib,
+  inputs,
+  ...
+}:
+{
   imports = [
     ./disko.nix
     ./hardware-configuration.nix
@@ -21,11 +28,17 @@
     virtualisation.incus.enable = true;
   };
 
-  users.users.tod.extraGroups = [ "minecraft" "incus-admin" ];
+  users.users.tod.extraGroups = [
+    "minecraft"
+    "incus-admin"
+  ];
 
   boot = {
     swraid.mdadmConf = "MAILADDR root";
-    kernelParams = [ "intel_iommu=on" "iommu=pt" ];
+    kernelParams = [
+      "intel_iommu=on"
+      "iommu=pt"
+    ];
   };
 
   networking.nftables.enable = true;

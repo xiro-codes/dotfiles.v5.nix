@@ -1,20 +1,36 @@
-{ config, lib, pkgs, ... }:
-
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 let
-  inherit (lib) mkIf mkMerge mkOption types;
+  inherit (lib)
+    mkIf
+    mkMerge
+    mkOption
+    types
+    ;
 
   cfg = config.local.bootloader;
 in
 {
   options.local.bootloader = {
     mode = mkOption {
-      type = types.enum [ "uefi" "bios" ];
+      type = types.enum [
+        "uefi"
+        "bios"
+      ];
       default = "uefi";
       description = "Boot mode: UEFI or legacy BIOS";
     };
 
     uefiType = mkOption {
-      type = types.enum [ "systemd-boot" "grub" "limine" ];
+      type = types.enum [
+        "systemd-boot"
+        "grub"
+        "limine"
+      ];
       default = "systemd-boot";
       description = "UEFI bootloader to use";
     };
@@ -59,7 +75,7 @@ in
           maxGenerations = 5;
           extraEntries = mkIf cfg.addRecoveryOption ''
             /Recovery
-              protocol:uefi 
+              protocol:uefi
               path:guid(${cfg.recoveryUUID}):/EFI/BOOT/BOOTX64.EFI
           '';
         };
@@ -80,7 +96,10 @@ in
     ];
 
     boot.plymouth.enable = cfg.enablePlymouth;
-    boot.kernelParams = mkIf cfg.enablePlymouth [ "quiet" "splash" ];
+    boot.kernelParams = mkIf cfg.enablePlymouth [
+      "quiet"
+      "splash"
+    ];
     boot.consoleLogLevel = mkIf cfg.enablePlymouth 0;
     boot.initrd.verbose = mkIf cfg.enablePlymouth false;
   };

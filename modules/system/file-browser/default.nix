@@ -1,11 +1,16 @@
-{ config
-, lib
-, pkgs
-, ...
+{
+  config,
+  lib,
+  pkgs,
+  ...
 }:
-
 let
-  inherit (lib) mkEnableOption mkIf mkOption types;
+  inherit (lib)
+    mkEnableOption
+    mkIf
+    mkOption
+    types
+    ;
 
   cfg = config.local.file-browser;
   urlHelpers = import ../lib/url-helpers.nix { inherit config lib; };
@@ -25,7 +30,6 @@ in
       default = false;
       description = "Open firewall port for File Browser";
     };
-
 
     rootPath = mkOption {
       type = types.str;

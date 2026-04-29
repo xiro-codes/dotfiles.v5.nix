@@ -1,7 +1,18 @@
-{ config, lib, pkgs, inputs, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  inputs,
+  ...
+}:
 let
-
-  inherit (lib) mkDefault mkEnableOption mkIf mkOption types;
+  inherit (lib)
+    mkDefault
+    mkEnableOption
+    mkIf
+    mkOption
+    types
+    ;
   cfg = config.local.ai;
 in
 {
@@ -35,8 +46,8 @@ in
           # If you use a tool server, disable it there too
           "AIOHTTP_CLIENT_SESSION_TOOL_SERVER_SSL" = "False";
 
-          # Recommended: If you've already run Open WebUI, it might have 
-          # cached old settings in its database. This forces it to 
+          # Recommended: If you've already run Open WebUI, it might have
+          # cached old settings in its database. This forces it to
           # respect your Nix config on every boot.
           "ENABLE_PERSISTENT_CONFIG" = "False";
         };
@@ -61,4 +72,3 @@ in
     })
   ];
 }
-

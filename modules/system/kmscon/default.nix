@@ -1,20 +1,28 @@
-{ config, lib, pkgs, ... }:
-
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 let
+  inherit (lib) mkEnableOption mkIf;
   cfg = config.local.kmscon;
-in {
+in
+{
   options.local.kmscon = {
-    enable = lib.mkEnableOption "kmscon terminal emulator for servers";
+    enable = mkEnableOption "kmscon terminal emulator for servers";
   };
 
-  config = lib.mkIf cfg.enable {
+  config = mkIf cfg.enable {
     services.kmscon = {
       enable = true;
       hwRender = true;
-      fonts = [{
-        name = "Cascadia Code";
-        package = pkgs.cascadia-code;
-      }];
+      fonts = [
+        {
+          name = "Cascadia Code";
+          package = pkgs.cascadia-code;
+        }
+      ];
     };
   };
 }

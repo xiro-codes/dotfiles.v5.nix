@@ -1,20 +1,30 @@
-{ config, lib, ... }:
-
+{
+  config,
+  lib,
+  ...
+}:
 let
+  inherit (lib)
+    literalExpression
+    mkEnableOption
+    mkIf
+    mkOption
+    types
+    ;
   cfg = config.local.hyprpaper;
 in
 {
   options.local.hyprpaper = {
-    enable = lib.mkEnableOption "Hyprpaper, the native Hyprland wallpaper daemon";
-    wallpapers = lib.mkOption {
-      type = lib.types.listOf lib.types.path;
+    enable = mkEnableOption "Hyprpaper, the native Hyprland wallpaper daemon";
+    wallpapers = mkOption {
+      type = types.listOf types.path;
       default = [ ];
-      example = lib.literalExpression ''[ ~/.wallpaper ]'';
+      example = literalExpression "[ ~/.wallpaper ]";
       description = "List of wallpaper paths to preload for Hyprpaper";
     };
   };
 
-  config = lib.mkIf cfg.enable {
+  config = mkIf cfg.enable {
     services.hyprpaper = {
       enable = true;
       settings = {

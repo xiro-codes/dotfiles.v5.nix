@@ -1,11 +1,21 @@
-{ config
-, lib
-, pkgs
-, ...
+{
+  config,
+  lib,
+  pkgs,
+  ...
 }:
-
 let
-  inherit (lib) concatStringsSep filter flatten mapAttrsToList mkEnableOption mkIf mkOption optional types;
+  inherit (lib)
+    concatStringsSep
+    filter
+    flatten
+    mapAttrsToList
+    mkEnableOption
+    mkIf
+    mkOption
+    optional
+    types
+    ;
 
   cfg = config.local.dashboard;
   urlHelpers = import ../lib/url-helpers.nix { inherit config lib; };
@@ -35,11 +45,13 @@ in
       description = "Open firewall port for dashboard";
     };
 
-
     allowedHosts = mkOption {
       type = types.listOf types.str;
       default = autoAllowedHosts;
-      example = [ "onix.local" "192.168.1.100" ];
+      example = [
+        "onix.local"
+        "192.168.1.100"
+      ];
       description = "List of allowed hostnames for accessing the dashboard (for reverse proxy). Defaults to hostname, IP, and .local address.";
     };
   };
@@ -60,7 +72,10 @@ in
             style = "row";
             columns = 3;
           };
-          "Shared Folders" = { style = "row"; columns = 3; };
+          "Shared Folders" = {
+            style = "row";
+            columns = 3;
+          };
           Media = {
             style = "row";
             columns = 3;
@@ -77,20 +92,16 @@ in
           useProxy = config.local.reverse-proxy.enable;
           domain = config.local.reverse-proxy.domain;
           # Helper to build service URL
-          serviceUrl = name: port:
-            if useProxy
-            then "http://${name}.${domain}"
-            else "http://${domain}:${toString port}";
+          serviceUrl =
+            name: port: if useProxy then "http://${name}.${domain}" else "http://${domain}:${toString port}";
 
-          sharedFoldersList = mapAttrsToList
-            (subdomain: path: {
-              "${subdomain}" = {
-                icon = "mdi-folder-network";
-                href = if useProxy then "http://${subdomain}.${domain}" else "#";
-                description = "Static files from ${path}";
-              };
-            })
-            (proxyCfg.sharedFolders or { });
+          sharedFoldersList = mapAttrsToList (subdomain: path: {
+            "${subdomain}" = {
+              icon = "mdi-folder-network";
+              href = if useProxy then "http://${subdomain}.${domain}" else "#";
+              description = "Static files from ${path}";
+            };
+          }) (proxyCfg.sharedFolders or { });
 
           # Build service list based on what's enabled
           servicesList = flatten [
@@ -220,7 +231,11 @@ in
           resources = {
             cpu = true;
             memory = true;
-            disk = [ "/" "/media/Media" "/media/Backups" ];
+            disk = [
+              "/"
+              "/media/Media"
+              "/media/Backups"
+            ];
           };
         }
       ];

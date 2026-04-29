@@ -1,5 +1,9 @@
-{ config, lib, pkgs, ... }:
-
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 let
   inherit (lib) mkEnableOption mkIf;
   cfg = config.local.recovery-builder;
@@ -21,7 +25,13 @@ in
         # Use low resources
         MemoryHigh = "2G";
       };
-      path = with pkgs; [ git nix findutils coreutils caligula ];
+      path = with pkgs; [
+        git
+        nix
+        findutils
+        coreutils
+        caligula
+      ];
       script = ''
         PARTITION=$(readlink -f /dev/disk/by-partlabel/disk-main-recovery || true)
         if [ -z "$PARTITION" ] || [ ! -b "$PARTITION" ]; then
@@ -32,10 +42,10 @@ in
         cd /etc/nixos
         echo "Building recovery ISO..."
         nix build .#installer-iso --cores 2 --max-jobs 1
-        
+
         echo "Burning ISO to recovery partition..."
         caligula burn $(find result/iso/ -name "*.iso" | head -n 1) -o "$PARTITION" --interactive never --compression none -f --hash skip
-        
+
         echo "Failsafe ISO updated successfully."
       '';
     };

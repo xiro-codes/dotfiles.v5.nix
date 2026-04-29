@@ -10,14 +10,12 @@ in
       names = fs.getDirs path;
     in
     listToAttrs (
-      map
-        (name: {
-          inherit name;
-          value = {
-            path = path + "/${name}";
-            description = "System templates";
-          };
-        })
-        names
+      map (name: {
+        inherit name;
+        value = {
+          path = path + "/${name}";
+          description = "System templates";
+        };
+      }) names
     );
 }

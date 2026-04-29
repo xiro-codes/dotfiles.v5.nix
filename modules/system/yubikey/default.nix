@@ -1,4 +1,9 @@
-{ pkgs, lib, config, ... }:
+{
+  pkgs,
+  lib,
+  config,
+  ...
+}:
 let
   inherit (lib) mkEnableOption mkIf;
 
@@ -25,7 +30,10 @@ in
       enable = false;
       enableSSHSupport = false;
       pinentryPackage = pkgs.pinentry-all;
-      settings = { default-cache-ttl = 600; max-cache-ttl = 7200; };
+      settings = {
+        default-cache-ttl = 600;
+        max-cache-ttl = 7200;
+      };
     };
     systemd.user.services.yubikey-touch-detector = {
       description = "Detects when your YubiKey is waiting for a touch";

@@ -1,9 +1,13 @@
-{ pkgs, config, lib, ... }:
+{
+  pkgs,
+  config,
+  lib,
+  ...
+}:
 let
   cfg = config.local.nixvim;
 in
 {
-
   vimwiki.enable = true;
 
   codecompanion = {
@@ -13,9 +17,15 @@ in
         gemini = "function() return require('codecompanion.adapters').extend('gemini', { schema = { model = { default = 'gemini-3.1-pro' } } }) end";
       };
       strategies = {
-        chat = { adapter = "gemini"; };
-        inline = { adapter = "gemini"; };
-        agent = { adapter = "gemini"; };
+        chat = {
+          adapter = "gemini";
+        };
+        inline = {
+          adapter = "gemini";
+        };
+        agent = {
+          adapter = "gemini";
+        };
       };
     };
   };
@@ -32,12 +42,20 @@ in
         documentation.auto_show = true;
         menu.draw.columns = [
           [ "kind_icon" ]
-          [ "label" "label_description" ]
+          [
+            "label"
+            "label_description"
+          ]
           [ "source_name" ]
         ];
       };
       sources = {
-        default = [ "lsp" "path" "snippets" "buffer" ];
+        default = [
+          "lsp"
+          "path"
+          "snippets"
+          "buffer"
+        ];
         providers = {
           lsp.score_offset = 100;
           buffer.score_offset = 5;
@@ -45,8 +63,14 @@ in
       };
       keymap = {
         preset = "enter";
-        "<Tab>" = [ "select_next" "fallback" ];
-        "<S-Tab>" = [ "select_prev" "fallback" ];
+        "<Tab>" = [
+          "select_next"
+          "fallback"
+        ];
+        "<S-Tab>" = [
+          "select_prev"
+          "fallback"
+        ];
       };
     };
   };
@@ -131,7 +155,7 @@ in
     enable = true;
     settings = {
       formatters_by_ft = {
-        nix = [ "nixpkgs_fmt" ];
+        nix = [ "nixfmt" ];
         rust = [ "rustfmt" ];
         json = [ "jq" ];
         "_" = [ "trim_whitespace" ];

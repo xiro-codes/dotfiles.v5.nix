@@ -1,12 +1,14 @@
 { pkgs, ... }:
-
 pkgs.stdenv.mkDerivation {
   pname = "tekkit-server";
   version = "3.1.2";
 
   src = ./Tekkit_Server_3.1.2.zip;
 
-  nativeBuildInputs = [ pkgs.unzip pkgs.makeWrapper ];
+  nativeBuildInputs = [
+    pkgs.unzip
+    pkgs.makeWrapper
+  ];
 
   dontBuild = true;
 
@@ -17,7 +19,7 @@ pkgs.stdenv.mkDerivation {
 
   installPhase = ''
         mkdir -p $out/bin
-    
+
         cat > $out/bin/minecraft-server <<EOF
     #!/bin/sh
     export PATH="${pkgs.coreutils}/bin:\$PATH"
@@ -35,4 +37,3 @@ pkgs.stdenv.mkDerivation {
         chmod +x $out/bin/minecraft-server
   '';
 }
-

@@ -1,4 +1,12 @@
-{ pkgs, config, lib, modulesPath, inputs, ... }: {
+{
+  pkgs,
+  config,
+  lib,
+  modulesPath,
+  inputs,
+  ...
+}:
+{
   imports = [
     ../../profiles/base.nix
     ./hardware-configuration.nix
@@ -40,16 +48,16 @@
     enable = true;
     config = {
       settings = [
-        ({
+        {
           provider = "cloudflare";
           domain = "tdavis.dev";
           ttl = 1;
-        })
-        ({
+        }
+        {
           provider = "cloudflare";
           domain = "cloud.tdavis.dev";
           ttl = 1;
-        })
+        }
       ];
     };
   };
@@ -101,9 +109,12 @@
       };
     };
   };
-  networking.firewall.allowedTCPPorts = [ 80 443 ];
+  networking.firewall.allowedTCPPorts = [
+    80
+    443
+  ];
 
-  # Note: user 'tod' is automatically managed by local.userManager 
+  # Note: user 'tod' is automatically managed by local.userManager
   # which is enabled in profiles/base.nix
 
   system.stateVersion = "25.11";

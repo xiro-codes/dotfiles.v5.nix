@@ -1,21 +1,29 @@
-{ lib, config, ... }:
-
+{
+  lib,
+  config,
+  ...
+}:
 let
-  inherit (lib) mkEnableOption mkIf mkOption types;
+  inherit (lib)
+    mkEnableOption
+    mkIf
+    mkOption
+    types
+    ;
 
   cfg = config.local.localization;
 in
 {
   options.local.localization = {
     enable = mkEnableOption "Localization settings (timezone and locale)";
-    
+
     timeZone = mkOption {
       type = types.str;
       default = "America/Chicago";
       example = "Europe/London";
       description = "System timezone (use `timedatectl list-timezones` to see available options)";
     };
-    
+
     locale = mkOption {
       type = types.str;
       default = "en_US.UTF-8";

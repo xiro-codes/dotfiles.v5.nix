@@ -1,31 +1,67 @@
-{ pkgs, config, lib, inputs, ... }:
+{
+  pkgs,
+  config,
+  lib,
+  inputs,
+  ...
+}:
 let
+  inherit (lib)
+    generators
+    getExe
+    mkEnableOption
+    mkIf
+    optionals
+    ;
   cfg = config.local.hyprland;
   variables = config.local.variables;
   hypr-tools = inputs.self.packages.${pkgs.stdenv.hostPlatform.system}.hypr-tools;
-  mkMenu = menu:
+  mkMenu =
+    menu:
     let
-      configFile = pkgs.writeText "config.yaml" (lib.generators.toYAML { } {
-        anchor = "bottom-right";
-        inherit menu;
-      });
+      configFile = pkgs.writeText "config.yaml" (
+        generators.toYAML { } {
+          anchor = "bottom-right";
+          inherit menu;
+        }
+      );
     in
     pkgs.writeShellScriptBin "quick-menu" ''
-      exec ${lib.getExe pkgs.wlr-which-key} ${configFile}
+      exec ${getExe pkgs.wlr-which-key} ${configFile}
     '';
   quick-menu = mkMenu [
-    { key = "w"; desc = "Web Browser"; cmd = "zen"; }
-    { key = "f"; desc = "File Manager"; cmd = "nautilus"; }
-    { key = "v"; desc = "Volume Control"; cmd = "pavucontrol"; }
-    { key = "d"; desc = "Discord"; cmd = "discord"; }
-    { key = "g"; desc = "Big Screen Gaming"; cmd = "hypr-gaming-mode"; }
+    {
+      key = "w";
+      desc = "Web Browser";
+      cmd = "zen";
+    }
+    {
+      key = "f";
+      desc = "File Manager";
+      cmd = "nautilus";
+    }
+    {
+      key = "v";
+      desc = "Volume Control";
+      cmd = "pavucontrol";
+    }
+    {
+      key = "d";
+      desc = "Discord";
+      cmd = "discord";
+    }
+    {
+      key = "g";
+      desc = "Big Screen Gaming";
+      cmd = "hypr-gaming-mode";
+    }
   ];
 in
 {
   options.local.hyprland = {
-    enable = lib.mkEnableOption "Functional Hyprland setup.";
+    enable = mkEnableOption "Functional Hyprland setup.";
   };
-  config = lib.mkIf cfg.enable {
+  config = mkIf cfg.enable {
     home.packages = with pkgs; [
       wl-clipboard
       cliphist
@@ -33,7 +69,6 @@ in
       discord
       hypr-tools
     ];
-
 
     wayland.windowManager.hyprland = {
       enable = true;
@@ -65,7 +100,6 @@ in
           gaps_out = 8;
           border_size = 2;
           layout = "master";
-
         };
         misc = {
           disable_hyprland_logo = true;
@@ -87,7 +121,8 @@ in
           "wl-paste --type text --watch cliphist store"
           "steam -silent"
           "discord --start-minimized"
-        ] ++ lib.optionals config.local.caelestia-shell.enable [
+        ]
+        ++ optionals config.local.caelestia-shell.enable [
           "caelestia wallpaper set $HOME/.wallpaper"
         ];
         "$mod" = "SUPER";
@@ -111,7 +146,7 @@ in
 
           # Application launchers
           "$mod, P, exec, ${variables.launcher} "
-          "$mod, D, exec, ${lib.getExe quick-menu}"
+          "$mod, D, exec, ${getExe quick-menu}"
           "$mod, minus, exec, caelestia shell lock lock"
           "$mod, N, exec, caelestia shell drawers toggle sidebar"
           # Window management
@@ -137,7 +172,6 @@ in
           "$mod,mouse:272, movewindow"
           "$mod,mouse:273, resizewindow"
         ];
-
       };
     };
   };

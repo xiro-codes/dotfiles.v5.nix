@@ -1,24 +1,33 @@
-{ config
-, lib
-, pkgs
-, ...
+{
+  config,
+  lib,
+  pkgs,
+  ...
 }:
-
 let
-  inherit (lib) literalExpression mapAttrs mkEnableOption mkIf mkOption types;
+  inherit (lib)
+    literalExpression
+    mapAttrs
+    mkEnableOption
+    mkIf
+    mkOption
+    types
+    ;
 
   cfg = config.local.reverse-proxy;
-  onixCert = pkgs.runCommand "onix-local-cert"
-    {
-      buildInputs = [ pkgs.openssl ];
-    } ''
-    mkdir -p $out
-    openssl req -x509 -newkey rsa:4096 -sha256 -days 3650 -nodes \
-      -keyout $out/onix.key -out $out/onix.crt \
-      -subj "/CN=${cfg.domain}" \
-      -addext "subjectAltName=DNS:onix.local,DNS:*${cfg.domain}" \
-      -addext "basicConstraints=CA:FALSE"
-  '';
+  onixCert =
+    pkgs.runCommand "onix-local-cert"
+      {
+        buildInputs = [ pkgs.openssl ];
+      }
+      ''
+        mkdir -p $out
+        openssl req -x509 -newkey rsa:4096 -sha256 -days 3650 -nodes \
+          -keyout $out/onix.key -out $out/onix.crt \
+          -subj "/CN=${cfg.domain}" \
+          -addext "subjectAltName=DNS:onix.local,DNS:*${cfg.domain}" \
+          -addext "basicConstraints=CA:FALSE"
+      '';
 in
 {
   options.local.reverse-proxy = {
@@ -59,21 +68,22 @@ in
       description = "Path on disk to serve at files.onix.home";
     };
     services = mkOption {
-      type = types.attrsOf (types.submodule {
-        options = {
+      type = types.attrsOf (
+        types.submodule {
+          options = {
+            target = mkOption {
+              type = types.str;
+              description = "Backend target (e.g., http://localhost:3001)";
+            };
 
-          target = mkOption {
-            type = types.str;
-            description = "Backend target (e.g., http://localhost:3001)";
+            extraConfig = mkOption {
+              type = types.lines;
+              default = "";
+              description = "Extra Nginx configuration for this location";
+            };
           };
-
-          extraConfig = mkOption {
-            type = types.lines;
-            default = "";
-            description = "Extra Nginx configuration for this location";
-          };
-        };
-      });
+        }
+      );
       default = { };
       example = literalExpression ''
         {
@@ -101,8 +111,8 @@ in
       recommendedTlsSettings = true;
       recommendedOptimisation = true;
       recommendedGzipSettings = true;
-      virtualHosts = (mapAttrs
-        (name: service: {
+      virtualHosts =
+        (mapAttrs (name: service: {
           serverName = if name == "dashboard" then cfg.domain else "${name}.${cfg.domain}";
           forceSSL = true;
           sslCertificate = "${onixCert}/onix.crt";
@@ -115,7 +125,7 @@ in
               proxy_set_header X-Real-IP $remote_addr;
               proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
               proxy_set_header X-Forwarded-Proto $scheme;
-            
+
               # WebSocket support for modern apps
               proxy_http_version 1.1;
               proxy_set_header Upgrade $http_upgrade;
@@ -124,11 +134,8 @@ in
               ${service.extraConfig}
             '';
           };
-        })
-        cfg.services)
-      //
-      (mapAttrs
-        (subdomain: path: {
+        }) cfg.services)
+        // (mapAttrs (subdomain: path: {
           serverName = "${subdomain}.${cfg.domain}";
           forceSSL = true;
           sslCertificate = "${onixCert}/onix.crt";
@@ -140,8 +147,7 @@ in
               allow all;
             '';
           };
-        })
-        cfg.sharedFolders);
+        }) cfg.sharedFolders);
     };
 
     # ACME configuration
@@ -151,6 +157,9 @@ in
     };
 
     # Firewall
-    networking.firewall.allowedTCPPorts = mkIf cfg.openFirewall [ 80 443 ];
+    networking.firewall.allowedTCPPorts = mkIf cfg.openFirewall [
+      80
+      443
+    ];
   };
 }

@@ -1,7 +1,11 @@
 { pkgs, ... }:
-
 let
-  deps = with pkgs; [ hyprland jq bash procps ];
+  deps = with pkgs; [
+    hyprland
+    jq
+    bash
+    procps
+  ];
   binPath = pkgs.lib.makeBinPath deps;
   # Scripts logic extracted into discrete writeShellScriptBin calls
   hypr-workspace-set = pkgs.writeShellScriptBin "hypr-workspace-set" ''
@@ -81,7 +85,7 @@ let
   '';
   # New Gaming Mode script for the isolated DP-3 monitor
   hypr-gaming-mode = pkgs.writeShellScriptBin "hypr-gaming-mode" ''
-    
+
     if hyprctl monitors -j | jq -e '.[] | select(.name == "DP-3")' > /dev/null; then
         hyprctl keyword monitor "DP-3, disable"
         hyprctl keyword monitor "HDMI-A-1, 2560x1080@60, 0x0, 1"

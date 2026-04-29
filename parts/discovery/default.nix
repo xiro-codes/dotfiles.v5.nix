@@ -1,4 +1,12 @@
-{ globalNixosModules ? [ ], globalHomeModules ? [ ] }: { inputs, lib, ... }:
+{
+  globalNixosModules ? [ ],
+  globalHomeModules ? [ ],
+}:
+{
+  inputs,
+  lib,
+  ...
+}:
 let
   # Import paths configuration
   paths = import ./paths.nix;
@@ -47,11 +55,14 @@ let
   deployLib = import ./deploy.nix {
     inherit inputs paths;
   };
-
 in
 {
   perSystem =
-    { pkgs, system, ... }:
+    {
+      pkgs,
+      system,
+      ...
+    }:
     {
       packages = packagesLib.mkPackages paths.packages system;
       devShells = shellsLib.mkShells { inherit pkgs inputs; };

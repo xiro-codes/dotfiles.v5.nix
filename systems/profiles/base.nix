@@ -1,5 +1,9 @@
 # Base profile - Common configuration for all systems
-{ pkgs, lib, ... }:
+{
+  pkgs,
+  lib,
+  ...
+}:
 {
   local = {
     security.enable = true;

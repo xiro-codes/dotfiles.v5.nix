@@ -1,7 +1,21 @@
-{ config, lib, pkgs, inputs, currentHostUsers, ... }:
-
+{
+  config,
+  lib,
+  pkgs,
+  inputs,
+  currentHostUsers,
+  ...
+}:
 let
-  inherit (lib) concatMapStringsSep getExe getExe' mkEnableOption mkIf mkOption types;
+  inherit (lib)
+    concatMapStringsSep
+    getExe
+    getExe'
+    mkEnableOption
+    mkIf
+    mkOption
+    types
+    ;
 
   cfg = config.local.dotfiles-sync;
   repoPath = "/etc/nixos";
@@ -107,13 +121,15 @@ in
       allowReboot = false;
     };
 
-    systemd.services.post-upgrade-notify = mkIf (cfg.maintenance.enable && cfg.maintenance.autoUpgrade) {
-      description = "Notify user of system upgrade";
-      serviceConfig.Type = "oneshot";
-      script = ''
-        ${getExe' pkgs.libnotify "notify-send"} "NixOS" "System was successfully upgraded and optimized."
-      '';
-    };
+    systemd.services.post-upgrade-notify =
+      mkIf (cfg.maintenance.enable && cfg.maintenance.autoUpgrade)
+        {
+          description = "Notify user of system upgrade";
+          serviceConfig.Type = "oneshot";
+          script = ''
+            ${getExe' pkgs.libnotify "notify-send"} "NixOS" "System was successfully upgraded and optimized."
+          '';
+        };
 
     # Repository permissions configuration
     system.activationScripts.repoPermissions = mkIf cfg.repo.enable {
@@ -124,25 +140,23 @@ in
     };
 
     system.activationScripts.userFileOwnership = mkIf cfg.repo.enable {
-      text = concatMapStringsSep "\n"
-        (username: ''
-          find /etc/nixos/home -name "${username}@*.nix" -exec chown ${username} {} +
-          find /etc/nixos/home -name "${username}@*.nix" -exec chmod 644 {} +
-        '')
-        currentHostUsers;
+      text = concatMapStringsSep "\n" (username: ''
+        find /etc/nixos/home -name "${username}@*.nix" -exec chown ${username} {} +
+        find /etc/nixos/home -name "${username}@*.nix" -exec chmod 644 {} +
+      '') currentHostUsers;
     };
 
-    system.userActivationScripts = mkIf cfg.repo.enable (builtins.listToAttrs (
-      map
-        (username: {
+    system.userActivationScripts = mkIf cfg.repo.enable (
+      builtins.listToAttrs (
+        map (username: {
           name = "link-repo-${username}";
           value = {
             text = ''
               ln -sfn /etc/nixos /home/${username}/.dotfiles.nix
             '';
           };
-        })
-        currentHostUsers
-    ));
+        }) currentHostUsers
+      )
+    );
   };
 }

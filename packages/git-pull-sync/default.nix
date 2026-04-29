@@ -1,8 +1,12 @@
-{ pkgs, lib, repoPath ? "/etc/nixos", ... }:
-
+{
+  pkgs,
+  lib,
+  repoPath ? "/etc/nixos",
+  ...
+}:
 pkgs.writeShellScriptBin "git-pull-sync" ''
   cd ${repoPath}
-  
+
   # Check if the directory is a git repo
   if [ ! -d .git ]; then
     echo "Not a git repository: ${repoPath}"

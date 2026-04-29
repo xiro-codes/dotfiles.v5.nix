@@ -1,14 +1,19 @@
-{ config, lib, pkgs, ... }:
-
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 let
+  inherit (lib) mkEnableOption mkIf;
   cfg = config.local.kdeconnect;
 in
 {
   options.local.kdeconnect = {
-    enable = lib.mkEnableOption "enable kdeconnect";
+    enable = mkEnableOption "enable kdeconnect";
   };
 
-  config = lib.mkIf cfg.enable {
+  config = mkIf cfg.enable {
     home.packages = with pkgs; [ kdePackages.kdeconnect-kde ];
     services.kdeconnect = {
       enable = true;

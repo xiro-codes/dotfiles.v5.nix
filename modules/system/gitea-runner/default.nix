@@ -1,7 +1,16 @@
-{ config, lib, pkgs, ... }:
-
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 let
-  inherit (lib) mkEnableOption mkIf mkOption types;
+  inherit (lib)
+    mkEnableOption
+    mkIf
+    mkOption
+    types
+    ;
 
   cfg = config.local.gitea-runner;
   giteaCfg = config.local.gitea;
@@ -18,7 +27,8 @@ in
 
     giteaUrl = mkOption {
       type = types.str;
-      default = if giteaCfg.enable then "http://127.0.0.1:${toString giteaCfg.port}" else "http://127.0.0.1:3001";
+      default =
+        if giteaCfg.enable then "http://127.0.0.1:${toString giteaCfg.port}" else "http://127.0.0.1:3001";
       description = "URL of the Gitea instance to connect to";
     };
 

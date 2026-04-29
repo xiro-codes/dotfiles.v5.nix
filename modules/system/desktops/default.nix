@@ -1,5 +1,10 @@
-{ pkgs, config, lib, inputs, ... }:
-
+{
+  pkgs,
+  config,
+  lib,
+  inputs,
+  ...
+}:
 let
   inherit (lib) types;
 
@@ -20,7 +25,13 @@ in
       description = "Enable Wayland environment variables";
     };
     displayManager = mkOption {
-      type = enum [ "sddm" "gdm" "ly" "none" "dms" ];
+      type = enum [
+        "sddm"
+        "gdm"
+        "ly"
+        "none"
+        "dms"
+      ];
       default = "sddm";
       description = "The display manager to use";
     };
@@ -78,7 +89,11 @@ in
           name = "disco.png";
           url = "https://wallpapers.onix.home/Icons/disco.png";
           sha256 = "sha256-hy1iIDdnPY6ZPM5EYRbh66yFl7CUgLjbQubuGUvRErw=";
-          curlOptsList = [ "-X" "GET" "--insecure" ];
+          curlOptsList = [
+            "-X"
+            "GET"
+            "--insecure"
+          ];
         };
       };
       backgrounds = {
@@ -86,13 +101,21 @@ in
           name = "bg.jpg";
           url = "https://wallpapers.onix.home/Deskmat/1.jpg";
           sha256 = "sha256-MDIjJVlhXCLgCMsc9aGEx8A09hgJasjjvWdTTrTVL5c=";
-          curlOptsList = [ "-X" "GET" "--insecure" ];
+          curlOptsList = [
+            "-X"
+            "GET"
+            "--insecure"
+          ];
         };
         miku = pkgs.fetchurl {
           name = "miku.bg.jpeg";
           url = "https://wallpapers.onix.home/miku.jpeg";
           sha256 = "sha256-Lp6CAHJc+rJEWDo3z9DtH/J543zdJth079M3nMW1OwM=";
-          curlOptsList = [ "-X" "GET" "--insecure" ];
+          curlOptsList = [
+            "-X"
+            "GET"
+            "--insecure"
+          ];
         };
       };
       settings = {

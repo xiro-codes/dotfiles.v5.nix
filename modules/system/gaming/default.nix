@@ -1,5 +1,10 @@
-{ config, lib, pkgs, inputs, ... }:
-
+{
+  config,
+  lib,
+  pkgs,
+  inputs,
+  ...
+}:
 let
   inherit (lib) mkEnableOption mkIf;
 
@@ -11,7 +16,6 @@ in
   };
 
   config = mkIf cfg.enable {
-
     # Enable Steam
     programs.steam = {
       enable = true;

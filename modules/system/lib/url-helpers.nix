@@ -1,5 +1,8 @@
-{ config, lib, ... }:
-
+{
+  config,
+  lib,
+  ...
+}:
 let
   inherit (lib) filter optionals unique;
 
@@ -9,32 +12,39 @@ let
 
   hostname = config.networking.hostName or "localhost";
 
-
   # Base domain logic
   baseDomain =
-    if reverseProxyCfg.enable
-    then reverseProxyCfg.domain
-    else if hostsCfg.useAvahi then "${hostname}.local" else hostname;
-
+    if reverseProxyCfg.enable then
+      reverseProxyCfg.domain
+    else if hostsCfg.useAvahi then
+      "${hostname}.local"
+    else
+      hostname;
 in
 {
   inherit hostname baseDomain;
 
   # Build a subdomain URL (e.g., https://dl.onix.local)
-  buildSubdomainUrl = { serviceName, port }:
-    if reverseProxyCfg.enable
-    then "https://${serviceName}.${baseDomain}"
-    else "http://${baseDomain}:${toString port}";
-
+  buildSubdomainUrl =
+    {
+      serviceName,
+      port,
+    }:
+    if reverseProxyCfg.enable then
+      "https://${serviceName}.${baseDomain}"
+    else
+      "http://${baseDomain}:${toString port}";
 
   # Legacy helper updated for safety
-  buildServiceUrl = { port, subPath ? "" }:
+  buildServiceUrl =
+    {
+      port,
+      subPath ? "",
+    }:
     let
       protocol = if reverseProxyCfg.enable then "https" else "http";
 
-      portSuffix =
-        if reverseProxyCfg.enable then "" else ":${toString port}";
-
+      portSuffix = if reverseProxyCfg.enable then "" else ":${toString port}";
     in
     "${protocol}://${baseDomain}${portSuffix}${subPath}";
 
@@ -43,9 +53,10 @@ in
     let
       # Extract service names from the reverse proxy config to allow their subdomains
       serviceSubdomains =
-        if reverseProxyCfg.enable
-        then map (name: "${name}.${baseDomain}") (builtins.attrNames reverseProxyCfg.services)
-        else [ ];
+        if reverseProxyCfg.enable then
+          map (name: "${name}.${baseDomain}") (builtins.attrNames reverseProxyCfg.services)
+        else
+          [ ];
 
       addresses = [
         hostname
@@ -55,9 +66,9 @@ in
         "127.0.0.1"
 
         baseDomain
-      ] ++ optionals (builtins.hasAttr hostname hostsCfg) [ hostsCfg.${hostname} ]
+      ]
+      ++ optionals (builtins.hasAttr hostname hostsCfg) [ hostsCfg.${hostname} ]
       ++ serviceSubdomains;
     in
     unique (filter (x: x != "") addresses);
-
 }

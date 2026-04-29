@@ -1,21 +1,34 @@
-{ config, lib, pkgs, ... }:
-
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 let
+  inherit (lib)
+    mkEnableOption
+    mkIf
+    mkOption
+    types
+    ;
   cfg = config.local.mpd;
 in
 {
   options.local.mpd = {
-    enable = lib.mkEnableOption "MPD (Music Player Daemon) with ncmpcpp client";
-    path = lib.mkOption {
-      type = lib.types.str;
+    enable = mkEnableOption "MPD (Music Player Daemon) with ncmpcpp client";
+    path = mkOption {
+      type = types.str;
       default = "/media/Music";
       example = "/home/user/Music";
       description = "Path to the music directory for MPD to serve";
     };
   };
 
-  config = lib.mkIf cfg.enable {
-    home.packages = [ pkgs.mpc pkgs.ymuse ];
+  config = mkIf cfg.enable {
+    home.packages = [
+      pkgs.mpc
+      pkgs.ymuse
+    ];
     services.mpd-mpris.enable = true;
     services.mpd = {
       enable = true;
@@ -37,10 +50,28 @@ in
       enable = true;
       package = pkgs.ncmpcpp.override { visualizerSupport = true; };
       bindings = [
-        { key = "j"; command = "scroll_down"; }
-        { key = "k"; command = "scroll_up"; }
-        { key = "J"; command = [ "select_item" "scroll_down" ]; }
-        { key = "K"; command = [ "select_item" "scroll_up" ]; }
+        {
+          key = "j";
+          command = "scroll_down";
+        }
+        {
+          key = "k";
+          command = "scroll_up";
+        }
+        {
+          key = "J";
+          command = [
+            "select_item"
+            "scroll_down"
+          ];
+        }
+        {
+          key = "K";
+          command = [
+            "select_item"
+            "scroll_up"
+          ];
+        }
       ];
       settings = {
         execute_on_song_change = ''notify-send -i /tmp/.music_cover.png "Playing" "$(mpc --format '%title% - %album%' current)"'';

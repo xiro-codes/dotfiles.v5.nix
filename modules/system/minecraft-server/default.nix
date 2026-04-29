@@ -1,9 +1,11 @@
-{ config
-, lib
-, pkgs
-, ...
+{
+  config,
+  lib,
+  pkgs,
+  ...
 }:
-with lib; let
+with lib;
+let
   cfg = config.local.minecraft-server;
 
   # We don't allow eula=false anyways
@@ -12,27 +14,23 @@ with lib; let
     eula=true
   '';
 
-  whitelistFile =
-    pkgs.writeText "whitelist.json"
-      (builtins.toJSON
-        (mapAttrsToList
-          (n: v: {
-            name = n;
-            uuid = v;
-          })
-          cfg.whitelist));
+  whitelistFile = pkgs.writeText "whitelist.json" (
+    builtins.toJSON (
+      mapAttrsToList (n: v: {
+        name = n;
+        uuid = v;
+      }) cfg.whitelist
+    )
+  );
 
-  cfgToString = v:
-    if builtins.isBool v
-    then boolToString v
-    else toString v;
+  cfgToString = v: if builtins.isBool v then boolToString v else toString v;
 
-  serverPropertiesFile = pkgs.writeText "server.properties" (''
-    # server.properties managed by NixOS configuration
-  ''
-  + concatStringsSep "\n" (mapAttrsToList
-    (n: v: "${n}=${cfgToString v}")
-    cfg.serverProperties));
+  serverPropertiesFile = pkgs.writeText "server.properties" (
+    ''
+      # server.properties managed by NixOS configuration
+    ''
+    + concatStringsSep "\n" (mapAttrsToList (n: v: "${n}=${cfgToString v}") cfg.serverProperties)
+  );
 
   stopScript = pkgs.writeShellScript "minecraft-server-stop" ''
     echo stop > ${config.systemd.sockets.minecraft-server.socketConfig.ListenFIFO}
@@ -56,37 +54,42 @@ with lib; let
       exit 1
     fi
 
-    ${if cfg.serverProperties.enable-rcon or false then ''
-      # RCON is enabled, use mcrcon
-      echo "Connecting via RCON..."
-      exec ${pkgs.mcrcon}/bin/mcrcon \
-        -H localhost \
-        -P ${toString (cfg.serverProperties."rcon.port" or 25575)} \
-        -p "${cfg.serverProperties."rcon.password" or ""}" \
-        -t
-    '' else ''
-      # RCON not enabled, use FIFO + Journal
-      if [[ ! -p "$FIFO" ]]; then
-        echo "Error: FIFO $FIFO not found. Is the server running correctly?"
-        exit 1
-      fi
+    ${
+      if cfg.serverProperties.enable-rcon or false then
+        ''
+          # RCON is enabled, use mcrcon
+          echo "Connecting via RCON..."
+          exec ${pkgs.mcrcon}/bin/mcrcon \
+            -H localhost \
+            -P ${toString (cfg.serverProperties."rcon.port" or 25575)} \
+            -p "${cfg.serverProperties."rcon.password" or ""}" \
+            -t
+        ''
+      else
+        ''
+          # RCON not enabled, use FIFO + Journal
+          if [[ ! -p "$FIFO" ]]; then
+            echo "Error: FIFO $FIFO not found. Is the server running correctly?"
+            exit 1
+          fi
 
-      echo "Connecting to Minecraft Server Console (Journal + FIFO)..."
-      echo "Type commands and press Enter. Press Ctrl+C to exit."
-      echo "----------------------------------------------------"
+          echo "Connecting to Minecraft Server Console (Journal + FIFO)..."
+          echo "Type commands and press Enter. Press Ctrl+C to exit."
+          echo "----------------------------------------------------"
 
-      # Start journalctl in background
-      ${pkgs.systemd}/bin/journalctl -u "$SERVICE" -f -n 50 &
-      JOURNAL_PID=$!
+          # Start journalctl in background
+          ${pkgs.systemd}/bin/journalctl -u "$SERVICE" -f -n 50 &
+          JOURNAL_PID=$!
 
-      # Trap cleanup
-      trap "kill $JOURNAL_PID 2>/dev/null; echo; exit 0" SIGINT SIGTERM
+          # Trap cleanup
+          trap "kill $JOURNAL_PID 2>/dev/null; echo; exit 0" SIGINT SIGTERM
 
-      # Read input and write to FIFO
-      while IFS= read -r line; do
-        echo "$line" > "$FIFO"
-      done
-    ''}
+          # Read input and write to FIFO
+          while IFS= read -r line; do
+            echo "$line" > "$FIFO"
+          done
+        ''
+    }
   '';
 
   # To be able to open the firewall, we need to read out port values in the
@@ -97,14 +100,16 @@ with lib; let
   serverPort = cfg.serverProperties.server-port or defaultServerPort;
 
   rconPort =
-    if cfg.serverProperties.enable-rcon or false
-    then cfg.serverProperties."rcon.port" or 25575
-    else null;
+    if cfg.serverProperties.enable-rcon or false then
+      cfg.serverProperties."rcon.port" or 25575
+    else
+      null;
 
   queryPort =
-    if cfg.serverProperties.enable-query or false
-    then cfg.serverProperties."query.port" or 25565
-    else null;
+    if cfg.serverProperties.enable-query or false then
+      cfg.serverProperties."query.port" or 25565
+    else
+      null;
 in
 {
   options = {
@@ -162,8 +167,7 @@ in
         type =
           let
             minecraftUUID =
-              types.strMatching
-                "[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}"
+              types.strMatching "[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}"
               // {
                 description = "Minecraft UUID";
               };
@@ -189,7 +193,13 @@ in
       };
 
       serverProperties = mkOption {
-        type = with types; attrsOf (oneOf [ bool int str ]);
+        type =
+          with types;
+          attrsOf (oneOf [
+            bool
+            int
+            str
+          ]);
         default = { };
         example = literalExpression ''
           {
@@ -239,7 +249,10 @@ in
     };
     users.groups.minecraft = { };
 
-    environment.systemPackages = [ mcConsole ] ++ optional (cfg.serverProperties.enable-rcon or false) pkgs.mcrcon;
+    environment.systemPackages = [
+      mcConsole
+    ]
+    ++ optional (cfg.serverProperties.enable-rcon or false) pkgs.mcrcon;
 
     systemd.sockets.minecraft-server = {
       bindsTo = [ "minecraft-server.service" ];
@@ -257,7 +270,10 @@ in
       description = "Minecraft Server Service";
       wantedBy = [ "multi-user.target" ];
       requires = [ "minecraft-server.socket" ];
-      after = [ "network.target" "minecraft-server.socket" ];
+      after = [
+        "network.target"
+        "minecraft-server.socket"
+      ];
       path = [ pkgs.bash ];
       serviceConfig = {
         ExecStart = "${cfg.package}/bin/minecraft-server ${cfg.jvmOpts}";
@@ -285,7 +301,10 @@ in
         ProtectKernelModules = true;
         ProtectKernelTunables = true;
         ProtectProc = "invisible";
-        RestrictAddressFamilies = [ "AF_INET" "AF_INET6" ];
+        RestrictAddressFamilies = [
+          "AF_INET"
+          "AF_INET6"
+        ];
         RestrictNamespaces = true;
         RestrictRealtime = true;
         RestrictSUIDSGID = true;
@@ -293,13 +312,12 @@ in
         UMask = "0077";
       };
 
-      preStart =
-        ''
-          ln -sf ${eulaFile} eula.txt
-        ''
-        + (
-          if cfg.declarative
-          then ''
+      preStart = ''
+        ln -sf ${eulaFile} eula.txt
+      ''
+      + (
+        if cfg.declarative then
+          ''
 
             if [ -e .declarative ]; then
 
@@ -321,27 +339,30 @@ in
 
             fi
           ''
-          else ''
+        else
+          ''
             if [ -e .declarative ]; then
               rm .declarative
             fi
           ''
-        );
+      );
     };
 
     networking.firewall = mkIf cfg.openFirewall (
-      if cfg.declarative
-      then {
-        allowedUDPPorts = [ serverPort ];
-        allowedTCPPorts =
-          [ serverPort ]
+      if cfg.declarative then
+        {
+          allowedUDPPorts = [ serverPort ];
+          allowedTCPPorts = [
+            serverPort
+          ]
           ++ optional (queryPort != null) queryPort
           ++ optional (rconPort != null) rconPort;
-      }
-      else {
-        allowedUDPPorts = [ defaultServerPort ];
-        allowedTCPPorts = [ defaultServerPort ];
-      }
+        }
+      else
+        {
+          allowedUDPPorts = [ defaultServerPort ];
+          allowedTCPPorts = [ defaultServerPort ];
+        }
     );
 
     assertions = [

@@ -1,7 +1,17 @@
-{ config, lib, pkgs, ... }:
-
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 let
-  inherit (lib) mkEnableOption mkOption types mkIf optional;
+  inherit (lib)
+    mkEnableOption
+    mkOption
+    types
+    mkIf
+    optional
+    ;
   cfg = config.local.virtualisation.incus;
 in
 {
@@ -31,8 +41,8 @@ in
     networking.nftables.enable = true;
     networking.firewall.trustedInterfaces = [ "incusbr0" ];
 
-    networking.bridges.incusbr0.interfaces = [];
-    
+    networking.bridges.incusbr0.interfaces = [ ];
+
     networking.macvlans = mkIf (cfg.macvlanInterface != null) {
       macvlan0 = {
         interface = cfg.macvlanInterface;
@@ -56,13 +66,21 @@ in
               "ipv6.address" = "none";
             };
           }
-        ] ++ (if cfg.macvlanInterface != null then [{
-          name = "macvlan0";
-          type = "macvlan";
-          config = {
-            parent = cfg.macvlanInterface;
-          };
-        }] else []);
+        ]
+        ++ (
+          if cfg.macvlanInterface != null then
+            [
+              {
+                name = "macvlan0";
+                type = "macvlan";
+                config = {
+                  parent = cfg.macvlanInterface;
+                };
+              }
+            ]
+          else
+            [ ]
+        );
         profiles = [
           {
             name = "default";

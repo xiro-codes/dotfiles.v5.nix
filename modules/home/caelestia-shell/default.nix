@@ -1,13 +1,24 @@
-{ config, lib, pkgs, inputs, ... }:
-
+{
+  config,
+  lib,
+  pkgs,
+  inputs,
+  ...
+}:
 let
+  inherit (lib)
+    mkEnableOption
+    mkIf
+    mkOption
+    types
+    ;
   cfg = config.local.caelestia-shell;
   checkAndShutdown = pkgs.writeShellScriptBin "check-and-shutdown" ''
     ACTION=$(${pkgs.libnotify}/bin/notify-send "Auto Shutdown" \
       "PC has been idle. Shuting down in 60 secondes." \
       --urgency=critical \
       --action="abort=Abort Shutdown")
-    if [ "$ACTION" == "abort" ]; then 
+    if [ "$ACTION" == "abort" ]; then
       echo "Shutdown aborted by user."
       exit 0
     fi
@@ -17,20 +28,25 @@ let
 in
 {
   options.local.caelestia-shell = {
-    enable = lib.mkEnableOption "Caelestia shell application";
-    idleMinutes = lib.mkOption { type = lib.types.int; default = 120; description = "Minutes of idle"; };
+    enable = mkEnableOption "Caelestia shell application";
+    idleMinutes = mkOption {
+      type = types.int;
+      default = 120;
+      description = "Minutes of idle";
+    };
   };
 
-  config = lib.mkIf cfg.enable {
-
-    home.packages = (with pkgs; [
-      nautilus
-      pavucontrol
-      celluloid
-      kdePackages.networkmanager-qt
-    ]) ++ [
-      checkAndShutdown
-    ];
+  config = mkIf cfg.enable {
+    home.packages =
+      (with pkgs; [
+        nautilus
+        pavucontrol
+        celluloid
+        kdePackages.networkmanager-qt
+      ])
+      ++ [
+        checkAndShutdown
+      ];
     programs.caelestia = {
       enable = true;
       cli.enable = true;
@@ -67,7 +83,15 @@ in
             autoHide = false;
           };
         };
-        launcher.hiddenApps = [ "qt5ct" "qt6ct" "neovim" "blueman-manager" "blueman-adapters" "mpv" "nixos-help" ];
+        launcher.hiddenApps = [
+          "qt5ct"
+          "qt6ct"
+          "neovim"
+          "blueman-manager"
+          "blueman-adapters"
+          "mpv"
+          "nixos-help"
+        ];
         bar.status = {
           showBattery = false;
           showAudio = true;

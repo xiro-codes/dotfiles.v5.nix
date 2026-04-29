@@ -1,11 +1,16 @@
-{ config
-, lib
-, pkgs
-, ...
+{
+  config,
+  lib,
+  pkgs,
+  ...
 }:
-
 let
-  inherit (lib) mkEnableOption mkIf mkOption types;
+  inherit (lib)
+    mkEnableOption
+    mkIf
+    mkOption
+    types
+    ;
 
   cfg = config.local.media;
   urlHelpers = import ../lib/url-helpers.nix { inherit config lib; };
@@ -35,7 +40,6 @@ in
         default = false;
         description = "Open firewall port for Jellyfin";
       };
-
     };
 
     plex = {
@@ -115,7 +119,6 @@ in
       enable = true;
       openFirewall = cfg.plex.openFirewall;
     };
-
 
     services.ersatztv = mkIf cfg.ersatztv.enable {
       enable = true;

@@ -1,29 +1,44 @@
-{ config, lib, pkgs, inputs, ... }:
-
+{
+  config,
+  lib,
+  pkgs,
+  inputs,
+  ...
+}:
 let
+  inherit (lib) mkEnableOption mkIf mkMerge;
   cfg = config.local;
-  remoteWallpaper = { wallpaper, sha256 }: pkgs.fetchurl {
-    url = "https://wallpapers.onix.home/${wallpaper}";
-    inherit sha256;
-    curlOptsList = [ "-X" "GET" "--insecure" ];
-  };
+  remoteWallpaper =
+    {
+      wallpaper,
+      sha256,
+    }:
+    pkgs.fetchurl {
+      url = "https://wallpapers.onix.home/${wallpaper}";
+      inherit sha256;
+      curlOptsList = [
+        "-X"
+        "GET"
+        "--insecure"
+      ];
+    };
 in
 {
   options.local = {
     # Fonts
     fonts = {
-      enable = lib.mkEnableOption "Nerd Fonts collection including Fira Code, Noto fonts, and emoji support";
+      enable = mkEnableOption "Nerd Fonts collection including Fira Code, Noto fonts, and emoji support";
     };
 
     # Stylix theming
     stylix = {
-      enable = lib.mkEnableOption "Stylix automatic theming system based on wallpaper colors";
+      enable = mkEnableOption "Stylix automatic theming system based on wallpaper colors";
     };
   };
 
-  config = lib.mkMerge [
+  config = mkMerge [
     # Fonts
-    (lib.mkIf cfg.fonts.enable {
+    (mkIf cfg.fonts.enable {
       home.packages = with pkgs; [
         nerd-fonts.fira-code
         nerd-fonts.symbols-only
@@ -35,7 +50,7 @@ in
     })
 
     # Stylix
-    (lib.mkIf cfg.stylix.enable {
+    (mkIf cfg.stylix.enable {
       # Create .wallpaper symlink in home directory
       home.file.".wallpaper".source = remoteWallpaper {
         wallpaper = "miku.jpeg";
@@ -44,7 +59,10 @@ in
 
       stylix = {
         enable = true;
-        image = remoteWallpaper { wallpaper = "miku.jpeg"; sha256 = "sha256-Lp6CAHJc+rJEWDo3z9DtH/J543zdJth079M3nMW1OwM="; };
+        image = remoteWallpaper {
+          wallpaper = "miku.jpeg";
+          sha256 = "sha256-Lp6CAHJc+rJEWDo3z9DtH/J543zdJth079M3nMW1OwM=";
+        };
         cursor = {
           package = inputs.self.packages.x86_64-linux.fuchsia-cursor;
           name = "fuchsia";

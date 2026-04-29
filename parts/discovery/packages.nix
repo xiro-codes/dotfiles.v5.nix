@@ -1,4 +1,7 @@
-{ inputs, fs }:
+{
+  inputs,
+  fs,
+}:
 let
   inherit (builtins) listToAttrs map;
 in
@@ -10,14 +13,11 @@ in
       names = fs.getValidSubdirs path;
     in
     listToAttrs (
-      map
-        (name: {
-          inherit name;
-          value = inputs.nixpkgs.legacyPackages.${system}.callPackage (path + "/${name}/default.nix") {
-            inherit inputs;
-          };
-
-        })
-        names
+      map (name: {
+        inherit name;
+        value = inputs.nixpkgs.legacyPackages.${system}.callPackage (path + "/${name}/default.nix") {
+          inherit inputs;
+        };
+      }) names
     );
 }

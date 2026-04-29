@@ -1,11 +1,22 @@
-{ config
-, lib
-, pkgs
-, ...
+{
+  config,
+  lib,
+  pkgs,
+  ...
 }:
-
 let
-  inherit (lib) attrValues concatMap concatStringsSep filterAttrs hasPrefix mkEnableOption mkIf mkOption types unique;
+  inherit (lib)
+    attrValues
+    concatMap
+    concatStringsSep
+    filterAttrs
+    hasPrefix
+    mkEnableOption
+    mkIf
+    mkOption
+    types
+    unique
+    ;
 
   cfg = config.local.backup-manager;
   userSubFolders = [
@@ -15,11 +26,9 @@ let
     "Videos"
     ".ssh"
   ];
-  realUsers = filterAttrs
-    (
-      name: user: user.isNormalUser && user.home != null && (hasPrefix "/home/" user.home)
-    )
-    config.users.users;
+  realUsers = filterAttrs (
+    name: user: user.isNormalUser && user.home != null && (hasPrefix "/home/" user.home)
+  ) config.users.users;
   autoUserPaths = concatMap (user: map (folder: "${user.home}/${folder}") userSubFolders) (
     attrValues realUsers
   );
@@ -37,13 +46,21 @@ in
     paths = mkOption {
       type = types.listOf types.str;
       default = [ ];
-      example = [ "/etc/nixos" "/var/lib/important" ];
+      example = [
+        "/etc/nixos"
+        "/var/lib/important"
+      ];
       description = "Additional paths to backup beyond auto-discovered user folders (Projects, Documents, Pictures, Videos, .ssh)";
     };
     exclude = mkOption {
       type = types.listOf types.str;
       default = [ ];
-      example = [ "*/node_modules" "*/target" "*/.cache" "*.tmp" ];
+      example = [
+        "*/node_modules"
+        "*/target"
+        "*/.cache"
+        "*.tmp"
+      ];
       description = "Glob patterns to exclude from backups";
     };
   };
@@ -69,7 +86,7 @@ in
         weekly = 4;
       };
     };
-    
+
     systemd.services.borgbackup-job-onix-local = {
       unitConfig = {
         ConditionPathIsMountPoint = cfg.backupLocation;
@@ -78,7 +95,7 @@ in
     };
     environment.etc."backup-manifest.txt".text = ''
       # Backup Manifest for ${config.networking.hostName}
-      # Generated: 
+      # Generated:
       ${concatStringsSep "\n" finalPaths}
     '';
   };

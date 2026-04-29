@@ -1,18 +1,29 @@
-{ config, lib, pkgs, ... }:
-
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 let
+  inherit (lib)
+    mkEnableOption
+    mkOption
+    mkIf
+    types
+    ;
   cfg = config.local.zerotier;
-in {
+in
+{
   options.local.zerotier = {
-    enable = lib.mkEnableOption "zerotier virtual network";
-    networkIdSecret = lib.mkOption {
-      type = lib.types.str;
+    enable = mkEnableOption "zerotier virtual network";
+    networkIdSecret = mkOption {
+      type = types.str;
       default = "zerotier_network_id";
       description = "The name of the sops secret containing the ZeroTier network ID.";
     };
   };
 
-  config = lib.mkIf cfg.enable {
+  config = mkIf cfg.enable {
     services.zerotierone.enable = true;
 
     systemd.services.zerotier-join = {

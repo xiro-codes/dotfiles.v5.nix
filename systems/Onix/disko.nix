@@ -34,7 +34,10 @@
                 format = "vfat";
                 mountpoint = "/boot";
                 mountOptions = [ "umask=0077" ];
-                extraArgs = [ "-n" "boot" ];
+                extraArgs = [
+                  "-n"
+                  "boot"
+                ];
               };
             };
             recovery = {
@@ -42,7 +45,10 @@
               content = {
                 type = "filesystem";
                 format = "ext4";
-                extraArgs = [ "-L" "recovery" ];
+                extraArgs = [
+                  "-L"
+                  "recovery"
+                ];
               };
             };
             root = {
@@ -51,7 +57,10 @@
                 type = "filesystem";
                 format = "ext4";
                 mountpoint = "/";
-                extraArgs = [ "-L" "nixos" ];
+                extraArgs = [
+                  "-L"
+                  "nixos"
+                ];
               };
             };
           };
@@ -76,14 +85,35 @@
       ssd1 = {
         type = "disk";
         device = "/dev/nvme1n1";
-        content = { type = "gpt"; partitions = { storage = { size = "100%"; content = { type = "mdraid"; name = "raid0"; }; }; }; };
+        content = {
+          type = "gpt";
+          partitions = {
+            storage = {
+              size = "100%";
+              content = {
+                type = "mdraid";
+                name = "raid0";
+              };
+            };
+          };
+        };
       };
       ssd2 = {
         type = "disk";
         device = "/dev/nvme2n1";
-        content = { type = "gpt"; partitions = { storage = { size = "100%"; content = { type = "mdraid"; name = "raid0"; }; }; }; };
+        content = {
+          type = "gpt";
+          partitions = {
+            storage = {
+              size = "100%";
+              content = {
+                type = "mdraid";
+                name = "raid0";
+              };
+            };
+          };
+        };
       };
-
 
       backup = {
         type = "disk";

@@ -1,4 +1,11 @@
-{ config, pkgs, lib, inputs, ... }: {
+{
+  config,
+  pkgs,
+  lib,
+  inputs,
+  ...
+}:
+{
   imports = [
     inputs.jovian.nixosModules.jovian
   ];
@@ -12,11 +19,13 @@
     devices.steamdeck.enable = false;
     hardware.has.amd.gpu = true;
   };
-  nixpkgs.config.allowUnfreePredicate = pkg: builtins.elem (lib.getName pkg) [
-    "steam"
-    "steam-original"
-    "steam-run"
-    "steam-jupiter-unwrapped"
-    "steamdeck-hw-theme"
-  ];
+  nixpkgs.config.allowUnfreePredicate =
+    pkg:
+    builtins.elem (lib.getName pkg) [
+      "steam"
+      "steam-original"
+      "steam-run"
+      "steam-jupiter-unwrapped"
+      "steamdeck-hw-theme"
+    ];
 }

@@ -1,7 +1,11 @@
-{ config, lib, ... }:
+{
+  config,
+  lib,
+  ...
+}:
 let
+  inherit (lib) mkIf;
   cfg = config.local.nixvim;
-
 in
 {
   globals.mapleader = ";";
@@ -15,7 +19,7 @@ in
     undolevels = 10000;
     termguicolors = false;
   };
-  extraConfigLua = lib.mkIf cfg.smartUndo ''
+  extraConfigLua = mkIf cfg.smartUndo ''
     local function setup_smart_undo()
       local dot_git = vim.fn.finddir(".git", ".;")
       if dot_git ~= "" then
@@ -62,7 +66,7 @@ in
     vim.api.nvim_create_user_command("SmartUndoPlayback", function(opts)
       local speed = tonumber(opts.args) or 150
       local tree = vim.fn.undotree()
-      
+
       -- If at the latest state, try going back to the last file save
       if tree.seq_cur == tree.seq_last then
         pcall(function() vim.cmd("earlier 1f") end)
@@ -72,7 +76,7 @@ in
         local before = vim.fn.undotree().seq_cur
         pcall(function() vim.cmd("redo") end)
         local after = vim.fn.undotree().seq_cur
-        
+
         if before ~= after then
           vim.cmd("redraw")
           vim.defer_fn(step, speed)
@@ -80,7 +84,7 @@ in
           print("Playback complete")
         end
       end
-      
+
       vim.defer_fn(step, speed)
     end, { nargs = "?" })
 

@@ -1,7 +1,16 @@
-{ pkgs, lib, config, ... }:
-
+{
+  pkgs,
+  lib,
+  config,
+  ...
+}:
 let
-  inherit (lib) mkEnableOption mkIf mkOption types;
+  inherit (lib)
+    mkEnableOption
+    mkIf
+    mkOption
+    types
+    ;
 
   cfg = config.local.security;
 in
@@ -17,7 +26,6 @@ in
   };
 
   config = mkIf cfg.enable {
-
     # doas setup (Modern, lightweight alternative to sudo)
     security.doas = {
       enable = true;
@@ -46,7 +54,6 @@ in
       };
     };
 
-
     # Apply keys to root and the admin user
     users.users.root.openssh.authorizedKeys.keyFiles = [
       config.sops.secrets."ssh_pub_ruby/master".path
@@ -63,6 +70,9 @@ in
     ];
 
     # Nix Daemon trust (Crucial for remote deployments)
-    nix.settings.trusted-users = [ "root" cfg.adminUser ];
+    nix.settings.trusted-users = [
+      "root"
+      cfg.adminUser
+    ];
   };
 }

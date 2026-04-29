@@ -1,7 +1,17 @@
-{ config, lib, ... }:
-
+{
+  config,
+  lib,
+  ...
+}:
 let
-  inherit (lib) concatStringsSep filterAttrs flatten foldl mapAttrsToList optional;
+  inherit (lib)
+    concatStringsSep
+    filterAttrs
+    flatten
+    foldl
+    mapAttrsToList
+    optional
+    ;
 
   cfg = config.local;
 
@@ -30,20 +40,22 @@ let
   ];
 
   # Helper to find duplicates
-  checkConflicts = ports:
+  checkConflicts =
+    ports:
     let
-      grouped = foldl (acc: entry:
+      grouped = foldl (
+        acc: entry:
         let
           p = toString entry.port;
-          existing = acc.${p} or [];
+          existing = acc.${p} or [ ];
         in
         acc // { ${p} = existing ++ [ entry.name ]; }
-      ) {} ports;
-      
+      ) { } ports;
+
       conflicts = filterAttrs (port: names: (builtins.length names) > 1) grouped;
-      
-      formatConflict = port: names:
-        "Port ${port} is used by multiple services: ${concatStringsSep ", " names}";
+
+      formatConflict =
+        port: names: "Port ${port} is used by multiple services: ${concatStringsSep ", " names}";
     in
     mapAttrsToList formatConflict conflicts;
 
@@ -53,7 +65,7 @@ in
   config = {
     assertions = [
       {
-        assertion = conflicts == [];
+        assertion = conflicts == [ ];
         message = "Port conflicts detected:\n${concatStringsSep "\n" conflicts}";
       }
     ];

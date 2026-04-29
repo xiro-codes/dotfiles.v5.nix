@@ -1,4 +1,9 @@
-{ pkgs, inputs, ... }: pkgs.mkShell {
+{
+  pkgs,
+  inputs,
+  ...
+}:
+pkgs.mkShell {
   name = "dotfiles-shell";
   nativeBuildInputs = with pkgs; [
     nix
@@ -10,6 +15,7 @@
     nvd
     inputs.deploy-rs.packages.x86_64-linux.deploy-rs
     gitlogue
+    nixfmt-tree
   ];
   packages = with pkgs; [
     caligula

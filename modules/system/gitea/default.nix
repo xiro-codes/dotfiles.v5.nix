@@ -1,24 +1,33 @@
-{ config
-, lib
-, pkgs
-, ...
+{
+  config,
+  lib,
+  pkgs,
+  ...
 }:
-
 let
-  inherit (lib) mkDefault mkEnableOption mkIf mkOption types;
+  inherit (lib)
+    mkDefault
+    mkEnableOption
+    mkIf
+    mkOption
+    types
+    ;
 
   cfg = config.local.gitea;
   urlHelpers = import ../lib/url-helpers.nix { inherit config lib; };
 
-  actualRootUrl = (urlHelpers.buildSubdomainUrl {
-    serviceName = "git";
-    port = cfg.port;
-  }) + "/";
+  actualRootUrl =
+    (urlHelpers.buildSubdomainUrl {
+      serviceName = "git";
+      port = cfg.port;
+    })
+    + "/";
 
   actualDomain =
-    if (config.local.reverse-proxy.enable)
-    then "git.${urlHelpers.baseDomain}"
-    else urlHelpers.baseDomain;
+    if (config.local.reverse-proxy.enable) then
+      "git.${urlHelpers.baseDomain}"
+    else
+      urlHelpers.baseDomain;
 in
 {
   options.local.gitea = {
@@ -61,7 +70,6 @@ in
       default = false;
       description = "Open firewall ports for Gitea";
     };
-
   };
 
   config = mkIf cfg.enable {
@@ -109,7 +117,10 @@ in
     };
 
     networking.firewall = mkIf cfg.openFirewall {
-      allowedTCPPorts = [ cfg.port cfg.sshPort ];
+      allowedTCPPorts = [
+        cfg.port
+        cfg.sshPort
+      ];
     };
   };
 }

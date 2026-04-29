@@ -1,10 +1,18 @@
-{ config, inputs, pkgs, ... }:
+{
+  config,
+  inputs,
+  pkgs,
+  ...
+}:
 {
   local = {
     # Dashboard
     dashboard = {
       enable = true;
-      allowedHosts = [ config.local.reverse-proxy.domain "localhost" ];
+      allowedHosts = [
+        config.local.reverse-proxy.domain
+        "localhost"
+      ];
     };
     harmonia-cache = {
       enable = true;

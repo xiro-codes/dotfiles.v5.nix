@@ -1,6 +1,16 @@
-{ config, pkgs, lib, ... }:
+{
+  config,
+  pkgs,
+  lib,
+  ...
+}:
 let
-  inherit (lib) mkEnableOption mkIf mkOption types;
+  inherit (lib)
+    mkEnableOption
+    mkIf
+    mkOption
+    types
+    ;
 
   cfg = config.local.gog-downloader;
   gogCmd = "${pkgs.lgogdownloader}/bin/lgogdownloader";
@@ -67,6 +77,5 @@ in
         '';
       };
     };
-
   };
 }

@@ -1,14 +1,18 @@
-{ config, lib, ... }:
-
+{
+  config,
+  lib,
+  ...
+}:
 let
+  inherit (lib) mkEnableOption mkIf;
   cfg = config.local.starship;
 in
 {
   options.local.starship = {
-    enable = lib.mkEnableOption "Starship prompt configuration";
+    enable = mkEnableOption "Starship prompt configuration";
   };
 
-  config = lib.mkIf cfg.enable {
+  config = mkIf cfg.enable {
     programs.starship = {
       enable = true;
       enableFishIntegration = true;
@@ -78,4 +82,3 @@ in
     };
   };
 }
-

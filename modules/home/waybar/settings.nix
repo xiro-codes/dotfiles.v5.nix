@@ -1,7 +1,8 @@
 {
   pkgs,
   cfg,
-}: [
+}:
+[
   {
     "layer" = "top";
     "position" = "top";
@@ -17,7 +18,7 @@
       "memory"
       "hyprland/workspaces"
     ];
-    "modules-center" = ["hyprland/window"];
+    "modules-center" = [ "hyprland/window" ];
     "modules-right" = [
       "tray"
 
@@ -75,9 +76,9 @@
       "all-outputs" = false;
       "format" = "{icon}";
       "persistent_workspaces" = {
-        "1" = ["HDMI-A-2"];
-        "2" = ["HDMI-A-2"];
-        "3" = ["HDMI-A-2"];
+        "1" = [ "HDMI-A-2" ];
+        "2" = [ "HDMI-A-2" ];
+        "3" = [ "HDMI-A-2" ];
       };
       "format-icons" = {
         "1" = "一";
@@ -117,9 +118,12 @@
         "phone" = "";
         "portable" = "";
         "car" = "";
-        "default" = ["" "" ""];
+        "default" = [
+          ""
+          ""
+          ""
+        ];
       };
     };
   }
 ]
-

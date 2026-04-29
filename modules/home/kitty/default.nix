@@ -1,14 +1,18 @@
-{ config, lib, ... }:
-
+{
+  config,
+  lib,
+  ...
+}:
 let
+  inherit (lib) mkEnableOption mkIf;
   cfg = config.local.kitty;
 in
 {
   options.local.kitty = {
-    enable = lib.mkEnableOption "Kitty terminal emulator with custom configuration";
+    enable = mkEnableOption "Kitty terminal emulator with custom configuration";
   };
 
-  config = lib.mkIf cfg.enable {
+  config = mkIf cfg.enable {
     local.variables.terminal = "kitty";
     programs.kitty = {
       enable = true;

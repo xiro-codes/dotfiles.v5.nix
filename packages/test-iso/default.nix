@@ -1,11 +1,10 @@
 { pkgs, ... }:
-
 pkgs.writeShellScriptBin "test-iso" ''
   # Find the ISO
   ISO_PATH=$(find result/iso -name "*.iso" | head -n 1)
   DISK_PATH="./test_disk.qcow2"
   VARS_PATH="./OVMF_VARS.fd"
-  
+
   if [ -z "$ISO_PATH" ]; then
     echo "❌ No ISO found! Run 'nix build .#installer-iso' first."
     exit 1

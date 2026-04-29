@@ -15,7 +15,10 @@
                 format = "vfat";
                 mountpoint = "/boot";
                 mountOptions = [ "umask=0077" ];
-                extraArgs = [ "-n" "boot" ];
+                extraArgs = [
+                  "-n"
+                  "boot"
+                ];
               };
             };
             # Failsafe ISO partition
@@ -24,7 +27,10 @@
               content = {
                 type = "filesystem";
                 format = "ext4"; # We use ext4 here just to reserve the space
-                extraArgs = [ "-L" "recovery" ];
+                extraArgs = [
+                  "-L"
+                  "recovery"
+                ];
               };
             };
             root = {
@@ -33,7 +39,10 @@
                 type = "filesystem";
                 format = "ext4";
                 mountpoint = "/";
-                extraArgs = [ "-L" "nixos" ];
+                extraArgs = [
+                  "-L"
+                  "nixos"
+                ];
               };
             };
           };

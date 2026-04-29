@@ -1,11 +1,16 @@
-{ config
-, lib
-, pkgs
-, ...
+{
+  config,
+  lib,
+  pkgs,
+  ...
 }:
-
 let
-  inherit (lib) mkEnableOption mkIf mkOption types;
+  inherit (lib)
+    mkEnableOption
+    mkIf
+    mkOption
+    types
+    ;
 
   cfg = config.local.downloads;
   urlHelpers = import ../lib/url-helpers.nix { inherit config lib; };
@@ -28,7 +33,6 @@ in
         default = 8080;
         description = "Web interface port";
       };
-
 
       openFirewall = mkOption {
         type = types.bool;
@@ -58,10 +62,7 @@ in
         default = false;
         description = "Open firewall port for Pinchflat";
       };
-
     };
-
-
   };
 
   config = mkIf cfg.enable {

@@ -1,7 +1,16 @@
-{ config, lib, ... }:
-
+{
+  config,
+  lib,
+  ...
+}:
 let
-  inherit (lib) mkDefault mkEnableOption mkIf mkOption types;
+  inherit (lib)
+    mkDefault
+    mkEnableOption
+    mkIf
+    mkOption
+    types
+    ;
 
   cfg = config.local.network;
 in
@@ -48,7 +57,10 @@ in
       };
       # Disable the old wpa_supplicant
       wireless.enable = false;
-      firewall.allowedTCPPorts = [ 5201 5202 ];
+      firewall.allowedTCPPorts = [
+        5201
+        5202
+      ];
       # Prioritize Pi-hole if enabled
       # Always enable iwd (it's faster and more modern)
       nameservers = [ "8.8.8.8" ];
@@ -85,6 +97,5 @@ in
     };
     # Optional: Enable systemd-resolved for better DNS handling
     services.resolved.enable = false;
-
   };
 }

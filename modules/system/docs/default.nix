@@ -1,7 +1,17 @@
-{ config, lib, pkgs, inputs, ... }:
-
+{
+  config,
+  lib,
+  pkgs,
+  inputs,
+  ...
+}:
 let
-  inherit (lib) mkEnableOption mkIf mkOption types;
+  inherit (lib)
+    mkEnableOption
+    mkIf
+    mkOption
+    types
+    ;
 in
 {
   options.local.docs = {

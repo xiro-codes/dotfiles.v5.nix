@@ -1,4 +1,9 @@
-{ pkgs, config, lib, ... }:
+{
+  pkgs,
+  config,
+  lib,
+  ...
+}:
 {
   imports = [
     ./disko.nix
@@ -20,9 +25,11 @@
   };
   boot.enableContainers = true;
 
-
   local = {
-    userManager.extraGroups = [ "adbusers" "dialout" ];
+    userManager.extraGroups = [
+      "adbusers"
+      "dialout"
+    ];
     yubikey.enable = true;
     secrets.keys = [
       "gog_creds"
@@ -31,10 +38,12 @@
     bootloader.recoveryUUID = "b0cd9860-736a-45c5-a6d2-e69cdb319f24";
 
     dotfiles-sync.maintenance.upgradeFlake = "github:xiro-codes/dotfiles.v5.nix";
-
   };
 
   hardware.keyboard.qmk.enable = true;
-  boot.kernelParams = [ "video=HDMI-A-1:2560x1080@60" "video=DP-3:d" ];
+  boot.kernelParams = [
+    "video=HDMI-A-1:2560x1080@60"
+    "video=DP-3:d"
+  ];
   system.stateVersion = "25.11";
 }

@@ -1,14 +1,19 @@
-{ config, lib, pkgs, ... }:
-
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 let
+  inherit (lib) mkEnableOption mkIf;
   cfg = config.local.hyprlauncher;
 in
 {
   options.local.hyprlauncher = {
-    enable = lib.mkEnableOption "Hyprlauncher, the native Hyprland application launcher";
+    enable = mkEnableOption "Hyprlauncher, the native Hyprland application launcher";
   };
 
-  config = lib.mkIf cfg.enable {
+  config = mkIf cfg.enable {
     home.packages = with pkgs; [ hyprlauncher ];
     local.variables.launcher = "hyprlauncher";
   };

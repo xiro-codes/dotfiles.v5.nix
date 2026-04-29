@@ -1,4 +1,5 @@
-{ pkgs, ... }: {
+{ pkgs, ... }:
+{
   imports = [ ./hardware-configuration.nix ];
   local = {
     cache.enable = true;
@@ -45,7 +46,6 @@
       };
     };
   };
-
 
   system.stateVersion = "25.11";
 }

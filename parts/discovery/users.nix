@@ -19,24 +19,19 @@ in
     else
       let
         files = attrNames (
-          filterAttrs (n: type: type == "regular" && (match ".*@.*\\.nix" n != null)) (
-            readDir path
-          )
+          filterAttrs (n: type: type == "regular" && (match ".*@.*\\.nix" n != null)) (readDir path)
         );
       in
-      foldl'
-        (
-          acc: filename:
-          let
-            parts = splitString "@" (removeSuffix ".nix" filename);
-            user = elemAt parts 0;
-            host = elemAt parts 1;
-          in
-          acc
-          // {
-            "${host}" = (acc.${host} or [ ]) ++ [{ inherit user filename; }];
-          }
-        )
-        { }
-        files;
+      foldl' (
+        acc: filename:
+        let
+          parts = splitString "@" (removeSuffix ".nix" filename);
+          user = elemAt parts 0;
+          host = elemAt parts 1;
+        in
+        acc
+        // {
+          "${host}" = (acc.${host} or [ ]) ++ [ { inherit user filename; } ];
+        }
+      ) { } files;
 }

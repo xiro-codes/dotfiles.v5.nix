@@ -1,5 +1,9 @@
-{ config, lib, pkgs, ... }:
-
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 let
   inherit (lib) mkEnableOption mkIf;
 
@@ -34,7 +38,14 @@ in
         "bluez5.enable-sbc-xq" = true;
         "bluez5.enable-msbc" = true;
         "bluez5.enable-hw-volume" = true;
-        "bluez5.roles" = [ "a2dp_sink" "a2dp_source" "bap_sink" "bap_source" "hsp_hs" "hfp_ag" ];
+        "bluez5.roles" = [
+          "a2dp_sink"
+          "a2dp_source"
+          "bap_sink"
+          "bap_source"
+          "hsp_hs"
+          "hfp_ag"
+        ];
       };
     };
   };

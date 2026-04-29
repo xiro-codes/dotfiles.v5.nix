@@ -1,14 +1,23 @@
-{ config
-, lib
-, pkgs
-, ...
+{
+  config,
+  lib,
+  pkgs,
+  ...
 }:
-
 let
-  inherit (lib) concatStringsSep literalExpression mapAttrs mapAttrsToList mkEnableOption mkIf mkOption types;
+  inherit (lib)
+    concatStringsSep
+    literalExpression
+    mapAttrs
+    mapAttrsToList
+    mkEnableOption
+    mkIf
+    mkOption
+    types
+    ;
 
   cfg = config.local.file-sharing;
-  
+
   # Convert structured definitions to Samba share format
   structuredSambaShares = mapAttrs (name: share: {
     path = share.path;
@@ -19,27 +28,29 @@ let
     writeable = if share.writeable && !share.readOnly then "yes" else "no";
     "create mask" = share.createMask;
     "directory mask" = share.directoryMask;
-    "valid users" = mkIf (share.validUsers != []) (concatStringsSep " " share.validUsers);
+    "valid users" = mkIf (share.validUsers != [ ]) (concatStringsSep " " share.validUsers);
   }) cfg.definitions;
-  
+
   # Merge manual shares with structured shares
   allSambaShares = cfg.samba.shares // structuredSambaShares;
-  
+
   # Generate NFS exports from structured definitions
   nfsExportsFromDefinitions = concatStringsSep "\n" (
-    mapAttrsToList (name: share:
-      if share.enableNFS
-      then "${share.path} ${share.nfsClients}(${concatStringsSep "," share.nfsOptions})"
-      else ""
+    mapAttrsToList (
+      name: share:
+      if share.enableNFS then
+        "${share.path} ${share.nfsClients}(${concatStringsSep "," share.nfsOptions})"
+      else
+        ""
     ) cfg.definitions
   );
-  
+
   # Combine manual NFS exports with generated ones
   allNFSExports = concatStringsSep "\n" [
     cfg.nfs.exports
     nfsExportsFromDefinitions
   ];
-  
+
   # Get all share directories that need to be created
   shareDirsToCreate = mapAttrsToList (name: share: share.path) cfg.definitions;
 in
@@ -56,7 +67,7 @@ in
 
     nfs = {
       enable = mkEnableOption "NFS server";
-      
+
       exports = mkOption {
         type = types.lines;
         default = "";
@@ -76,7 +87,7 @@ in
 
     samba = {
       enable = mkEnableOption "Samba server";
-      
+
       workgroup = mkOption {
         type = types.str;
         default = "WORKGROUP";
@@ -91,7 +102,7 @@ in
 
       shares = mkOption {
         type = types.attrsOf (types.attrsOf types.unspecified);
-        default = {};
+        default = { };
         example = literalExpression ''
           {
             public = {
@@ -120,83 +131,92 @@ in
 
     # Structured share definitions
     definitions = mkOption {
-      type = types.attrsOf (types.submodule {
-        options = {
-          path = mkOption {
-            type = types.path;
-            description = "Absolute path to the share directory";
-          };
+      type = types.attrsOf (
+        types.submodule {
+          options = {
+            path = mkOption {
+              type = types.path;
+              description = "Absolute path to the share directory";
+            };
 
-          comment = mkOption {
-            type = types.str;
-            default = "";
-            description = "Description of the share";
-          };
+            comment = mkOption {
+              type = types.str;
+              default = "";
+              description = "Description of the share";
+            };
 
-          readOnly = mkOption {
-            type = types.bool;
-            default = false;
-            description = "Whether the share is read-only";
-          };
+            readOnly = mkOption {
+              type = types.bool;
+              default = false;
+              description = "Whether the share is read-only";
+            };
 
-          guestOk = mkOption {
-            type = types.bool;
-            default = false;
-            description = "Allow guest access without authentication";
-          };
+            guestOk = mkOption {
+              type = types.bool;
+              default = false;
+              description = "Allow guest access without authentication";
+            };
 
-          browseable = mkOption {
-            type = types.bool;
-            default = true;
-            description = "Whether the share is visible in browse lists";
-          };
+            browseable = mkOption {
+              type = types.bool;
+              default = true;
+              description = "Whether the share is visible in browse lists";
+            };
 
-          validUsers = mkOption {
-            type = types.listOf types.str;
-            default = [];
-            example = [ "alice" "bob" ];
-            description = "List of users allowed to access (empty = all users)";
-          };
+            validUsers = mkOption {
+              type = types.listOf types.str;
+              default = [ ];
+              example = [
+                "alice"
+                "bob"
+              ];
+              description = "List of users allowed to access (empty = all users)";
+            };
 
-          writeable = mkOption {
-            type = types.bool;
-            default = true;
-            description = "Whether users can write to the share";
-          };
+            writeable = mkOption {
+              type = types.bool;
+              default = true;
+              description = "Whether users can write to the share";
+            };
 
-          createMask = mkOption {
-            type = types.str;
-            default = "0666";
-            description = "Permissions mask for created files";
-          };
+            createMask = mkOption {
+              type = types.str;
+              default = "0666";
+              description = "Permissions mask for created files";
+            };
 
-          directoryMask = mkOption {
-            type = types.str;
-            default = "0777";
-            description = "Permissions mask for created directories";
-          };
+            directoryMask = mkOption {
+              type = types.str;
+              default = "0777";
+              description = "Permissions mask for created directories";
+            };
 
-          enableNFS = mkOption {
-            type = types.bool;
-            default = false;
-            description = "Also export this share via NFS";
-          };
+            enableNFS = mkOption {
+              type = types.bool;
+              default = false;
+              description = "Also export this share via NFS";
+            };
 
-          nfsOptions = mkOption {
-            type = types.listOf types.str;
-            default = [ "rw" "sync" "no_subtree_check" ];
-            description = "NFS export options";
-          };
+            nfsOptions = mkOption {
+              type = types.listOf types.str;
+              default = [
+                "rw"
+                "sync"
+                "no_subtree_check"
+              ];
+              description = "NFS export options";
+            };
 
-          nfsClients = mkOption {
-            type = types.str;
-            default = "192.168.0.0/16";
-            example = "192.168.1.0/24";
-            description = "Network range for NFS access";
+            nfsClients = mkOption {
+              type = types.str;
+              default = "192.168.0.0/16";
+              example = "192.168.1.0/24";
+              description = "Network range for NFS access";
+            };
           };
-        };
-      });
-      default = {};
+        }
+      );
+      default = { };
       example = literalExpression ''
         {
           media = {
@@ -223,13 +243,14 @@ in
       "d ${cfg.shareDir} 0755 root root -"
       "d ${cfg.shareDir}/public 0777 root root -"
       "d ${cfg.shareDir}/private 0750 root root -"
-    ] ++ (map (path: "d ${path} 0777 root root -") shareDirsToCreate);
+    ]
+    ++ (map (path: "d ${path} 0777 root root -") shareDirsToCreate);
 
     # NFS Server
     services.nfs.server = mkIf cfg.nfs.enable {
       enable = true;
       exports = allNFSExports;
-      
+
       # Use NFSv4
       lockdPort = 4001;
       mountdPort = 4002;
@@ -237,15 +258,29 @@ in
     };
 
     networking.firewall = mkIf cfg.nfs.openFirewall {
-      allowedTCPPorts = [ 111 2049 4000 4001 4002 20048 ];
-      allowedUDPPorts = [ 111 2049 4000 4001 4002 20048 ];
+      allowedTCPPorts = [
+        111
+        2049
+        4000
+        4001
+        4002
+        20048
+      ];
+      allowedUDPPorts = [
+        111
+        2049
+        4000
+        4001
+        4002
+        20048
+      ];
     };
 
     # Samba Server
     services.samba = mkIf cfg.samba.enable {
       enable = true;
       openFirewall = cfg.samba.openFirewall;
-      
+
       settings = {
         global = {
           workgroup = cfg.samba.workgroup;
@@ -256,7 +291,7 @@ in
           "hosts deny" = "0.0.0.0/0";
           "guest account" = "nobody";
           "map to guest" = "bad user";
-          
+
           # Performance tuning
           "socket options" = "TCP_NODELAY IPTOS_LOWDELAY SO_RCVBUF=524288 SO_SNDBUF=524288";
           "deadtime" = "30";
@@ -266,7 +301,8 @@ in
           "aio read size" = "16384";
           "aio write size" = "16384";
         };
-      } // allSambaShares;
+      }
+      // allSambaShares;
     };
 
     services.samba-wsdd = mkIf cfg.samba.enable {

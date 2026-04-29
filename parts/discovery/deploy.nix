@@ -1,4 +1,7 @@
-{ inputs, paths }:
+{
+  inputs,
+  paths,
+}:
 let
   inherit (builtins)
     pathExists
@@ -19,7 +22,6 @@ let
       builtins.filter hasDeployConfig systemDirs
     else
       [ ];
-
 in
 {
   # Generate deploy.nodes configuration for deploy-rs
@@ -28,22 +30,21 @@ in
       systems = getDeployableSystems;
     in
     listToAttrs (
-      map
-        (name:
-          let
-            deployConfig = import (paths.systems + "/${name}/deploy.nix");
-          in
-          {
-            inherit name;
-            value = {
-              hostname = deployConfig.hostname;
-              profiles.system = {
-                user = deployConfig.user or "root";
-                path = inputs.deploy-rs.lib.x86_64-linux.activate.nixos inputs.self.nixosConfigurations.${name};
-              };
+      map (
+        name:
+        let
+          deployConfig = import (paths.systems + "/${name}/deploy.nix");
+        in
+        {
+          inherit name;
+          value = {
+            hostname = deployConfig.hostname;
+            profiles.system = {
+              user = deployConfig.user or "root";
+              path = inputs.deploy-rs.lib.x86_64-linux.activate.nixos inputs.self.nixosConfigurations.${name};
             };
-          }
-        )
-        systems
+          };
+        }
+      ) systems
     );
 }

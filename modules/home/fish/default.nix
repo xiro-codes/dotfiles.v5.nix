@@ -1,19 +1,24 @@
-{ config, lib, pkgs, ... }:
-
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 let
+  inherit (lib) mkIf mkOption types;
   cfg = config.local.fish;
   isDefaultShell = (config.osConfig.users.users.${config.home.username}.shell or null) == pkgs.fish;
 in
 {
   options.local.fish = {
-    enable = lib.mkOption {
-      type = lib.types.bool;
+    enable = mkOption {
+      type = types.bool;
       default = isDefaultShell;
       description = "Enable fish config if it is the system shell.";
     };
   };
 
-  config = lib.mkIf cfg.enable {
+  config = mkIf cfg.enable {
     programs.eza.enable = true;
     programs.zoxide.enable = true;
 
@@ -28,7 +33,7 @@ in
         set -g fish_greeting ""
         zoxide init fish | source
         set -g fish_key_bindings fish_vi_key_bindings
-        # cat $HOME/.local/state/caelestia/sequences.txt 2>/dev/null 
+        # cat $HOME/.local/state/caelestia/sequences.txt 2>/dev/null
         fastfetch
       '';
       shellAbbrs = {

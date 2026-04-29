@@ -5,7 +5,11 @@
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
   };
 
-  outputs = { self, nixpkgs }:
+  outputs =
+    {
+      self,
+      nixpkgs,
+    }:
     let
       system = "x86_64-linux";
       pkgs = nixpkgs.legacyPackages.${system};
@@ -31,9 +35,18 @@
         ];
 
         shellHook = ''
-          export LD_LIBRARY_PATH="$LD_LIBRARY_PATH:${pkgs.lib.makeLibraryPath (with pkgs; [
-            udev alsa-lib vulkan-loader libxkbcommon wayland
-          ])}"
+          export LD_LIBRARY_PATH="$LD_LIBRARY_PATH:${
+            pkgs.lib.makeLibraryPath (
+              with pkgs;
+              [
+                udev
+                alsa-lib
+                vulkan-loader
+                libxkbcommon
+                wayland
+              ]
+            )
+          }"
           echo "Bevy 0.17.0 Test Environment Loaded"
         '';
       };
