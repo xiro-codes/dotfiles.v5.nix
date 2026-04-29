@@ -19,7 +19,10 @@
       useNetworkManager = true;
     };
   };
-
+  zramSwap = {
+    enable = true;
+    memoryPercent = 25;
+  };
   # Common user configuration
   users.users.root.shell = pkgs.fish;
 
