@@ -13,13 +13,17 @@ in
       example = [ "wheel" "networkmanager" "input" "video" "audio" "docker" ];
       description = "Groups to assign to all auto-discovered users on this host";
     };
+    defaultGroups = mkOption {
+      readOnly = true;
+      default = [ "wheel" "networkmanager" "input" "video" "audio" ];
+    };
   };
   config = {
     security.sudo.wheelNeedsPassword = false;
 
     users.users = genAttrs currentHostUsers (name: {
       isNormalUser = true;
-      extraGroups = cfg.extraGroups;
+      extraGroups = cfg.extraGroups ++ cfg.defaultGroups;
     });
 
     programs.fish.enable = true;
