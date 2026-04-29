@@ -1,6 +1,12 @@
 { config, ... }:
 let
-  inherit (config.lib.topology) mkInternet mkRouter mkSwitch mkConnection mkDevice;
+  inherit (config.lib.topology)
+    mkInternet
+    mkRouter
+    mkSwitch
+    mkConnection
+    mkDevice
+    ;
 in
 {
   networks.wan = {
@@ -11,7 +17,7 @@ in
     name = "Home Network";
     cidrv4 = "192.168.1.0/24";
   };
-  
+
   networks.zerotier = {
     name = "ZeroTier Virtual Network";
   };
@@ -25,7 +31,7 @@ in
     Ruby.interfaces.eth0.network = "home";
     Jade.interfaces."mv-enp6s0".network = "home";
     Jade.interfaces."mv-enp6s0".physicalConnections = [ (mkConnection "Onix" "enp6s0") ];
-    
+
     # Jade runs as a VM inside Onix
     Jade.parent = "Onix";
     Jade.guestType = "vm";
@@ -46,7 +52,15 @@ in
 
     main-switch = mkSwitch "Main Switch" {
       info = "Network Switch";
-      interfaceGroups = [ [ "eth0" "eth1" "eth2" "eth3" "eth4" ] ];
+      interfaceGroups = [
+        [
+          "eth0"
+          "eth1"
+          "eth2"
+          "eth3"
+          "eth4"
+        ]
+      ];
       interfaces.eth0.network = "home";
       interfaces.eth1.network = "home";
       interfaces.eth2.network = "home";

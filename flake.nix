@@ -11,7 +11,11 @@
     };
   };
   outputs =
-    inputs@{ flake-parts, inputs-nix, ... }:
+    inputs@{
+      flake-parts,
+      inputs-nix,
+      ...
+    }:
     flake-parts.lib.mkFlake { inherit inputs; } {
       systems = [ "x86_64-linux" ];
       imports = [
@@ -24,13 +28,19 @@
           globalHomeModules = [ inputs-nix.homeModules.default ];
         })
       ];
-      perSystem = { config, ... }: {
-        topology.modules = [
-          ./topology.nix
-          ({ config, ... }: {
-            # Base nix-topology configuration
-          })
-        ];
-      };
+      perSystem =
+        { config, pkgs, ... }:
+        {
+          formatter = pkgs.nixfmt-tree;
+          topology.modules = [
+            ./topology.nix
+            (
+              { config, ... }:
+              {
+                # Base nix-topology configuration
+              }
+            )
+          ];
+        };
     };
 }

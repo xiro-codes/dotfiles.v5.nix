@@ -1,4 +1,8 @@
-{ pkgs, inputs, ... }:
+{
+  pkgs,
+  inputs,
+  ...
+}:
 {
   local = {
     kitty.enable = true;
@@ -9,14 +13,15 @@
     kdeconnect.enable = true;
   };
 
-  home.packages = with pkgs; [
-    # Desktop applications
-    discord
-    proton-vpn
-    unzip
-    p7zip
-
-  ] ++ (with inputs.self.packages.${pkgs.stdenv.hostPlatform.system}; [
-
-  ]);
+  home.packages =
+    with pkgs;
+    [
+      # Desktop applications
+      discord
+      proton-vpn
+      unzip
+      p7zip
+    ]
+    ++ (with inputs.self.packages.${pkgs.stdenv.hostPlatform.system}; [
+    ]);
 }
