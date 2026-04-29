@@ -1,5 +1,8 @@
-{ config, lib, ... }:
-
+{
+  config,
+  lib,
+  ...
+}:
 let
   inherit (lib) mkOption types;
 
@@ -26,18 +29,17 @@ let
   };
 
   # Helper to get the address for a host
-  getHost = name:
-    if cfg.useAvahi
-    then hostDefs.${name}.avahi
-    else hostDefs.${name}.ip;
+  getHost = name: if cfg.useAvahi then hostDefs.${name}.avahi else hostDefs.${name}.ip;
 
   # Helper to get address for current or any host
-  getHostAddress = hostname:
-    if builtins.hasAttr hostname hostDefs
-    then getHost hostname
-    else if cfg.useAvahi
-    then "${hostname}.local"
-    else hostname; # fallback to hostname as-is
+  getHostAddress =
+    hostname:
+    if builtins.hasAttr hostname hostDefs then
+      getHost hostname
+    else if cfg.useAvahi then
+      "${hostname}.local"
+    else
+      hostname; # fallback to hostname as-is
 in
 {
   options.local.network-hosts = {
@@ -73,9 +75,21 @@ in
   config = {
     # Add entries to /etc/hosts for better reliability
     networking.hosts = {
-      "${hostDefs.onix.ip}" = [ "onix" "onix.local" "onix.home" ];
-      "${hostDefs.ruby.ip}" = [ "ruby" "ruby.local" "ruby.home" ];
-      "${hostDefs.sapphire.ip}" = [ "sapphire" "sapphire.local" "sapphire.home" ];
+      "${hostDefs.onix.ip}" = [
+        "onix"
+        "onix.local"
+        "onix.home"
+      ];
+      "${hostDefs.ruby.ip}" = [
+        "ruby"
+        "ruby.local"
+        "ruby.home"
+      ];
+      "${hostDefs.sapphire.ip}" = [
+        "sapphire"
+        "sapphire.local"
+        "sapphire.home"
+      ];
     };
   };
 }
