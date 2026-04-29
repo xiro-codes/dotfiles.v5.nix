@@ -73,14 +73,14 @@ in
         general.idle = {
           timeouts = [
             {
-              timeout = 10; # Shortened for testing
+              timeout = 1800; # Shortened for testing
               idleAction = "dpms off";
               returnAction = "dpms on";
             }
             {
-              timeout = 20; # Shortened for testing
-              idleAction = "shutdown +2";
-              returnAction = "shutdown -c";
+              timeout = 5400; # Shortened for testing
+              idleAction = "exec shutdown +1";
+              returnAction = "exec shutdown -c";
             }
           ];
         };
