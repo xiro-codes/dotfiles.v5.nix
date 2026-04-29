@@ -14,16 +14,23 @@ let
     ;
   cfg = config.local.caelestia-shell;
   checkAndShutdown = pkgs.writeShellScriptBin "check-and-shutdown" ''
+    # Turn screen back on so the user can see the notification
+    hyprctl dispatch dpms on
+    
+    # Schedule shutdown in 1 minute
+    shutdown +1
+    
     ACTION=$(${pkgs.libnotify}/bin/notify-send "Auto Shutdown" \
-      "PC has been idle. Shuting down in 60 secondes." \
+      "PC has been idle. Shutting down in 60 seconds." \
       --urgency=critical \
       --action="abort=Abort Shutdown")
+      
     if [ "$ACTION" == "abort" ]; then
+      shutdown -c
+      ${pkgs.libnotify}/bin/notify-send "Auto Shutdown" "Shutdown aborted by user."
       echo "Shutdown aborted by user."
       exit 0
     fi
-    sleep 60
-    systemctl poweroff
   '';
 in
 {
@@ -66,13 +73,14 @@ in
         general.idle = {
           timeouts = [
             {
-              timeout = cfg.idleMinutes * 60;
+              timeout = 10; # Shortened for testing
               idleAction = "dpms off";
               returnAction = "dpms on";
             }
             {
-              timeout = (cfg.idleMinutes * 60) + 60;
-              idleAction = "${checkAndShutdown}/bin/check-and-shutdown";
+              timeout = 20; # Shortened for testing
+              idleAction = "shutdown +2";
+              returnAction = "shutdown -c";
             }
           ];
         };
