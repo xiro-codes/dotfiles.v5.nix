@@ -1,10 +1,9 @@
-{ ... }:
+{ inputs, ... }:
 {
   imports = [
     ../base
     ./tools.nix
   ];
-
   local = {
     nixvim.enable = true;
     yazi.enable = true;
