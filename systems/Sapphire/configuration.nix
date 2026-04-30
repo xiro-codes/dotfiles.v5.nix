@@ -21,6 +21,7 @@
     backup-manager.paths = lib.mkAfter [
       "/etc/nixos/"
     ];
+    zerotier.enable = true;
   };
 
   system.stateVersion = "25.11";
