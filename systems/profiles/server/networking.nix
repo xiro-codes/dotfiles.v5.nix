@@ -5,11 +5,6 @@
 }:
 {
   local = {
-    pihole = {
-      enable = false;
-      adminPassword = "rockman";
-    };
-
     # Reverse proxy with HTTPS
     reverse-proxy = {
       enable = true;

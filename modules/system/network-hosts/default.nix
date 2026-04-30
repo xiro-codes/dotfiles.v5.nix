@@ -29,25 +29,18 @@ let
   };
 
   # Helper to get the address for a host
-  getHost = name: if cfg.useAvahi then hostDefs.${name}.avahi else hostDefs.${name}.ip;
+  getHost = name: hostDefs.${name}.ip;
 
   # Helper to get address for current or any host
   getHostAddress =
     hostname:
     if builtins.hasAttr hostname hostDefs then
       getHost hostname
-    else if cfg.useAvahi then
-      "${hostname}.local"
     else
       hostname; # fallback to hostname as-is
 in
 {
   options.local.network-hosts = {
-    useAvahi = mkOption {
-      type = types.bool;
-      default = false;
-      description = "Whether to use Avahi/mDNS hostnames (.local) instead of raw IP addresses for local network hosts";
-    };
 
     # Expose resolved addresses for other modules to use
     onix = mkOption {

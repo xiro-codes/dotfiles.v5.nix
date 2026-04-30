@@ -22,11 +22,6 @@ in
       default = true;
       description = "Whether to use NetworkManager (for desktops) or just iwd/systemd (minimal).";
     };
-    usePihole = mkOption {
-      type = types.bool;
-      default = true;
-      description = "Whether to prioritize the local Pi-hole (192.168.1.65) for DNS.";
-    };
   };
 
   config = mkIf cfg.enable {
@@ -61,7 +56,6 @@ in
         5201
         5202
       ];
-      # Prioritize Pi-hole if enabled
       # Always enable iwd (it's faster and more modern)
       nameservers = [ "8.8.8.8" ];
       wireless.iwd = {
@@ -85,15 +79,6 @@ in
 
       # Basic Ethernet support (DHCP) for all interfaces starting with 'e'
       useDHCP = mkDefault true;
-    };
-    services.avahi = {
-      enable = false;
-      nssmdns4 = true;
-      publish = {
-        enable = true;
-        addresses = true;
-        workstation = true;
-      };
     };
     # Optional: Enable systemd-resolved for better DNS handling
     services.resolved.enable = false;
