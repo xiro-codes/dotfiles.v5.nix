@@ -84,7 +84,11 @@ in
           config =
             { pkgs, ... }:
             {
+              imports = [
+                inputs.inputs-nix.nixosModules.default
+              ];
               system.stateVersion = "26.05";
+              networking.firewall.enable = false;
               services.nginx = {
                 enable = true;
                 virtualHosts.localhost.locations."/".extraConfig = ''
