@@ -33,6 +33,7 @@
     yubikey.enable = true;
     secrets.keys = [
       "gog_creds"
+      "zerotier_network_id"
     ];
 
     bootloader.recoveryUUID = "b0cd9860-736a-45c5-a6d2-e69cdb319f24";
