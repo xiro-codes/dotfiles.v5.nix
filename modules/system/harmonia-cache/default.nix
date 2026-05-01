@@ -64,7 +64,7 @@ in
         cd ${cfg.prefetch.path}
         # Update the flake lock file
         ${pkgs.nix}/bin/nix flake update
-      
+
         # Build the system toplevel but don't 'switch'
         # This pulls all packages from your substituters (like harmonia or cache.nixos.org)
         ${pkgs.nix}/bin/nix build .#nixosConfigurations.${config.networking.hostname}.config.system.build.toplevel --no-link

@@ -33,11 +33,7 @@ let
 
   # Helper to get address for current or any host
   getHostAddress =
-    hostname:
-    if builtins.hasAttr hostname hostDefs then
-      getHost hostname
-    else
-      hostname; # fallback to hostname as-is
+    hostname: if builtins.hasAttr hostname hostDefs then getHost hostname else hostname; # fallback to hostname as-is
 in
 {
   options.local.network-hosts = {
