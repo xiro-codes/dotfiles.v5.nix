@@ -31,6 +31,7 @@ in
       nixpkgs-fmt
       neovide
       lazygit
+      nixfmt
     ];
     programs.nixvim =
       let
