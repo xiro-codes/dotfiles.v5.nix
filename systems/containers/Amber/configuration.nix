@@ -4,6 +4,7 @@
   lib,
   modulesPath,
   inputs,
+  nodeId,
   ...
 }:
 {
@@ -11,7 +12,6 @@
     ../../profiles/base.nix
     ./hardware-configuration.nix
   ];
-  networking.hostName = "Amber";
   boot.isContainer = true;
 
   networking.useDHCP = false;
@@ -39,7 +39,7 @@
     enable = true;
     virtualHosts.localhost.locations."/index.html".extraConfig = ''
       add_header Content-Type text/plain;
-      return 200 "Container: ${config.networking.hostName}\n";
+      return 200 "Container: ${config.networking.hostName}-${toString nodeId}\n";
     '';
   };
   networking.firewall.allowedTCPPorts = [

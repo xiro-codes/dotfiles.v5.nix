@@ -32,6 +32,8 @@ in
     userManager.extraGroups = [
       "adbusers"
       "dialout"
+      "input"
+      "uinput"
     ];
     yubikey.enable = true;
     secrets.keys = [
@@ -46,7 +48,7 @@ in
     cluster = {
       enable = true;
       size = 10;
-      template = ../containers/Amber/configuration.nix;
+      template = "Amber";
     };
   };
   services.nginx = {
@@ -60,7 +62,7 @@ in
 
     virtualHosts."localhost" = {
       locations."/" = {
-        proxyPass = "http://test_cluster";
+        proxyPass = "http://test_cluster/index.html";
         extraConfig = ''
           default_type text/html; 
           proxy_set_header Host $host;
