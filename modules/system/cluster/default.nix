@@ -10,11 +10,7 @@ let
     mkOption
     mkIf
     types
-    genAttrs
     range
-    last
-    strings
-    splitString
     attrValues
     listToAttrs
     map
@@ -107,22 +103,31 @@ in
   };
 
   config = mkIf cfg.enable {
-    containers = genAttrs
-      (map (i: "${cfg.nameSpace}-${toString i}") (range 1 cfg.size))
-      (name:
-        let
-          idx = strings.toInt (last (splitString "-" name));
-        in
-        {
-          autoStart = true;
-          privateNetwork = true;
-          hostAddress = cfg.hostAddress;
-          localAddress = "${cfg.subnet}.${toString (idx + 1)}";
-          config =
-            if builtins.isFunction cfg.template
-            then cfg.template idx
-            else mkContainerSystem { inherit name idx; templateName = cfg.template; };
-        }
+    containers =
+      let
+        templateLabel =
+          if builtins.isFunction cfg.template
+          then cfg.nameSpace
+          else "${cfg.nameSpace}-${lib.strings.toLower cfg.template}";
+      in
+      listToAttrs (
+        map (idx: {
+          name = "${templateLabel}-${toString idx}";
+          value =
+            let
+              name = "${templateLabel}-${toString idx}";
+            in
+            {
+              autoStart = true;
+              privateNetwork = true;
+              hostAddress = cfg.hostAddress;
+              localAddress = "${cfg.subnet}.${toString (idx + 1)}";
+              config =
+                if builtins.isFunction cfg.template
+                then cfg.template idx
+                else mkContainerSystem { inherit name idx; templateName = cfg.template; };
+            };
+        }) (range 1 cfg.size)
       );
   };
 }
