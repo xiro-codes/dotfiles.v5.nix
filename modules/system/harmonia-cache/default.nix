@@ -79,6 +79,7 @@ in
               gnused
             ];
             text = ''
+              nix --version
               cd ${cfg.prefetch.path}
               # Update the flake lock file
               nix flake update
@@ -94,7 +95,7 @@ in
               TARGET=''${HOSTS[$INDEX]}
 
               echo "Prefetching for $TARGET (Index $INDEX out of ''${#HOSTS[@]} hosts)"
-              nix build .#nixosConfigurations."$TARGET".config.system.build.toplevel --no-link
+              nix build --impure .#nixosConfigurations."$TARGET".config.system.build.toplevel --no-link
             '';
           };
         in
