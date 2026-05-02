@@ -5,6 +5,7 @@
     flake-parts.url = "github:hercules-ci/flake-parts";
     deploy-rs.url = "github:serokell/deploy-rs";
     nix-topology.url = "github:oddlama/nix-topology";
+    determinate.url = "https://flakehub.com/f/DeterminateSystems/determinate/*";
     inputs-nix = {
       url = "github:xiro-codes/inputs.nix";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -22,6 +23,7 @@
         inputs.nix-topology.flakeModule
         (import ./parts/discovery {
           globalNixosModules = [
+            inputs.determinate.nixosModules.default
             inputs-nix.nixosModules.default
             inputs.nix-topology.nixosModules.default
           ];
