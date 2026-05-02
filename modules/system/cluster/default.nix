@@ -33,11 +33,16 @@ let
   # Builds a fully-featured container config for a named template, identical to
   # what genConfigs in parts/discovery/nixos.nix produces for a regular system.
   mkContainerSystem =
-    { name, idx, templateName }:
+    {
+      name,
+      idx,
+      templateName,
+    }:
     let
       templateUsers = hostToUsersMap.${templateName} or [ ];
     in
-    { ... }: {
+    { ... }:
+    {
       imports =
         globalNixosModules
         ++ [
@@ -102,36 +107,38 @@ in
     };
   };
 
-  config = let 
-        templateLabel =
-          if builtins.isFunction cfg.template
-          then cfg.nameSpace
-          else "${cfg.nameSpace}-${lib.strings.toLower cfg.template}";
+  config =
+    let
+      templateLabel =
+        if builtins.isFunction cfg.template then
+          cfg.nameSpace
+        else
+          "${cfg.nameSpace}-${lib.strings.toLower cfg.template}";
 
-  in mkIf cfg.enable {
-    services.nginx = {
-      enable = true;
-      upstreams."${templateLabel}-cluster".servers = listToAttrs(
-        map (i: {
-          name = "${cfg.subnet}.${toString (i + 1)}";
-          value = {};
-        }) (range 1 config.local.cluster.size)
-      );
-      virtualHosts."localhost" = {
-        locations."/" = { 
-          proxyPass = "http://${templateLabel}-cluster/";
-          extraConfig = ''
-            default_type text/html; 
-            proxy_set_header Host $host;
-            proxy_set_header X-Real-IP $remote_addr;
-            proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-            proxy_set_header X-Forwarded-Proto $scheme;
-          '';
+    in
+    mkIf cfg.enable {
+      services.nginx = {
+        enable = true;
+        upstreams."${templateLabel}-cluster".servers = listToAttrs (
+          map (i: {
+            name = "${cfg.subnet}.${toString (i + 1)}";
+            value = { };
+          }) (range 1 config.local.cluster.size)
+        );
+        virtualHosts."localhost" = {
+          locations."/" = {
+            proxyPass = "http://${templateLabel}-cluster/";
+            extraConfig = ''
+              default_type text/html; 
+              proxy_set_header Host $host;
+              proxy_set_header X-Real-IP $remote_addr;
+              proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+              proxy_set_header X-Forwarded-Proto $scheme;
+            '';
           };
+        };
       };
-    };
-    containers =
-      listToAttrs (
+      containers = listToAttrs (
         map (idx: {
           name = "${templateLabel}-${toString idx}";
           value =
@@ -144,11 +151,15 @@ in
               hostAddress = cfg.hostAddress;
               localAddress = "${cfg.subnet}.${toString (idx + 1)}";
               config =
-                if builtins.isFunction cfg.template
-                then cfg.template idx
-                else mkContainerSystem { inherit name idx; templateName = cfg.template; };
+                if builtins.isFunction cfg.template then
+                  cfg.template idx
+                else
+                  mkContainerSystem {
+                    inherit name idx;
+                    templateName = cfg.template;
+                  };
             };
         }) (range 1 cfg.size)
       );
-  };
+    };
 }
