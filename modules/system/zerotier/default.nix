@@ -24,6 +24,7 @@ in
   };
 
   config = mkIf cfg.enable {
+    sops.secrets."${cfg.networkIdSecret}" = { };
     services.zerotierone.enable = true;
 
     systemd.services.zerotier-join = {

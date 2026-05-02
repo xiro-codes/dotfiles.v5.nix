@@ -71,12 +71,6 @@
           formatter = pkgs.nixfmt-tree;
           topology.modules = [
             ./topology.nix
-            (
-              { config, ... }:
-              {
-                # Base nix-topology configuration
-              }
-            )
           ];
         };
     };
