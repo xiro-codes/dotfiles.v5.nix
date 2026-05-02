@@ -16,13 +16,13 @@ in
 
   config = mkIf cfg.enable {
     # Nix configuration
-    nix.settings = {
-      accept-flake-config = true;
-      experimental-features = [
-        "nix-command"
-        "flakes"
-      ];
-    };
+    # nix.settings = {
+    #   accept-flake-config = true;
+    #   experimental-features = [
+    #     "nix-command"
+    #     "flakes"
+    #   ];
+    # };
     nix.extraOptions = ''
       builders-use-substitutes = true
     '';

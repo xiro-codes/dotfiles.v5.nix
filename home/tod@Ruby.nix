@@ -9,6 +9,8 @@ in
   imports = [
     ./profiles/workstation
   ];
+  local.helix.enable = true;
+  local.kakoune.enable = true;
   home.packages = with pkgs; [
     godot
     eog
