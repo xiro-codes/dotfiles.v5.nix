@@ -26,14 +26,8 @@
     zerotier.enable = true;
     containers.Jade.enable = true;
     virtualisation.incus.enable = false;
+    cluster.size = 0;
   };
-
-  services.openssh.listenAddresses = [
-    {
-      addr = "192.168.1.65";
-      port = 22;
-    }
-  ];
 
   users.users.tod.extraGroups = [
     "minecraft"

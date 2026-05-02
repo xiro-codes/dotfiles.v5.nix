@@ -20,7 +20,7 @@
       downloadDir = "/media/Media/downloads";
 
       qbittorrent.enable = true;
-      pinchflat.enable = true;
+      pinchflat.enable = false;
     };
     gog-downloader = {
       enable = false;
