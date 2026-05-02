@@ -13,7 +13,6 @@ let
     ;
 
   cfg = config.local.harmonia-cache;
-  hostsCfg = config.local.hosts;
 in
 {
   options.local.harmonia-cache = {
@@ -46,6 +45,15 @@ in
         default = "03:00";
         description = "In Systemd timer format";
       };
+      hostNames = mkOption {
+        type = types.listOf types.str;
+        default = [
+          "Onix"
+          "Ruby"
+          "Sapphire"
+        ];
+        description = "System Configurations to prefetch";
+      };
     };
   };
 
@@ -60,15 +68,37 @@ in
         Type = "oneshot";
         User = "root";
       };
-      script = ''
-        cd ${cfg.prefetch.path}
-        # Update the flake lock file
-        ${pkgs.nix}/bin/nix flake update
+      script =
+        let
+          prefetchScript = pkgs.writeShellApplication {
+            name = "prefetch";
+            runtimeInputs = with pkgs; [
+              git
+              nix
+              coreutils
+              gnused
+            ];
+            text = ''
+              cd ${cfg.prefetch.path}
+              # Update the flake lock file
+              nix flake update
 
-        # Build the system toplevel but don't 'switch'
-        # This pulls all packages from your substituters (like harmonia or cache.nixos.org)
-        ${pkgs.nix}/bin/nix build .#nixosConfigurations.${config.networking.hostName}.config.system.build.toplevel --no-link
-      '';
+              # To handle each host at a different time/day, we build one host per day based on day of year
+              HOSTS=(${builtins.concatStringsSep " " cfg.prefetch.hostNames})
+
+              # Get current day of year (remove leading zeros)
+              DAY=$(date +%j | sed 's/^0*//')
+
+              # Select host based on modulo
+              INDEX=$(( DAY % ''${#HOSTS[@]} ))
+              TARGET=''${HOSTS[$INDEX]}
+
+              echo "Prefetching for $TARGET (Index $INDEX out of ''${#HOSTS[@]} hosts)"
+              nix build .#nixosConfigurations."$TARGET".config.system.build.toplevel --no-link
+            '';
+          };
+        in
+        "${prefetchScript}/bin/prefetch";
     };
     systemd.timers.nix-prefetch = {
       description = "Timer for Nix pre-fetch";
