@@ -39,7 +39,7 @@
     enable = true;
     virtualHosts.localhost.locations."/index.html".extraConfig = ''
       add_header Content-Type text/plain;
-      return 200 "Container: ${config.networking.hostName}-${toString nodeId}\n";
+      return 200 "Container: ${config.networking.hostName}\n";
     '';
   };
   networking.firewall.allowedTCPPorts = [

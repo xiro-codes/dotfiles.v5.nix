@@ -51,29 +51,8 @@ in
       template = "Amber";
     };
   };
-  services.nginx = {
-    enable = true;
-    upstreams."test_cluster".servers = lib.listToAttrs (
-      map (i: {
-        name = "10.233.0.${toString i}:80";
-        value = { };
-      }) (range 1 config.local.cluster.size)
-    );
+  services.nginx.enable = true;
 
-    virtualHosts."localhost" = {
-      locations."/" = {
-        proxyPass = "http://test_cluster/index.html";
-        extraConfig = ''
-          default_type text/html; 
-          proxy_set_header Host $host;
-          proxy_set_header X-Real-IP $remote_addr;
-          proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-          proxy_set_header X-Forwarded-Proto $scheme;
-
-        '';
-      };
-    };
-  };
   hardware.keyboard.qmk.enable = true;
   boot.kernelParams = [
     "video=HDMI-A-1:2560x1080@60"
