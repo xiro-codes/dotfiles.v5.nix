@@ -21,7 +21,7 @@ in
     listToAttrs (
       map (name: {
         inherit name;
-        value = import (path + "/${name}/default.nix");
+        value = path + "/${name}";
       }) validNames
     );
 }
