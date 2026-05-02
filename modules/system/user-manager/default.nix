@@ -42,6 +42,7 @@ in
     };
     defaultGroups = mkOption {
       readOnly = true;
+      description = "Default groups to assign to all auto-discovered users on this host";
       default = [
         "wheel"
         "networkmanager"
