@@ -70,7 +70,7 @@ in
         ${pkgs.nix}/bin/nix build .#nixosConfigurations.${config.networking.hostName}.config.system.build.toplevel --no-link
       '';
     };
-    systemd.timers.nix-prefetch-assets = {
+    systemd.timers.nix-prefetch = {
       description = "Timer for Nix pre-fetch";
       wantedBy = [ "timers.target" ];
       timerConfig = {
