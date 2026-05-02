@@ -53,11 +53,11 @@
           domain = "tdavis.dev";
           ttl = 1;
         }
-        {
-          provider = "cloudflare";
-          domain = "cloud.tdavis.dev";
-          ttl = 1;
-        }
+        # {
+        #   provider = "cloudflare";
+        #   domain = "cloud.tdavis.dev";
+        #   ttl = 1;
+        # }
       ];
     };
   };
@@ -70,12 +70,12 @@
       environmentFile = "/var/lib/acme/cloudflare.env";
       group = "nginx";
     };
-    certs."cloud.tdavis.dev" = {
-      domain = "cloud.tdavis.dev";
-      dnsProvider = "cloudflare";
-      environmentFile = "/var/lib/acme/cloudflare.env";
-      group = "nginx";
-    };
+    # certs."cloud.tdavis.dev" = {
+    #   domain = "cloud.tdavis.dev";
+    #   dnsProvider = "cloudflare";
+    #   environmentFile = "/var/lib/acme/cloudflare.env";
+    #   group = "nginx";
+    # };
   };
   services.rocket-forge = {
     enable = true;
@@ -102,11 +102,11 @@
         addSSL = true;
         useACMEHost = "tdavis.dev";
       };
-      "cloud.tdavis.dev" = {
-        forceSSL = false;
-        addSSL = true;
-        useACMEHost = "cloud.tdavis.dev";
-      };
+      # "cloud.tdavis.dev" = {
+      #   forceSSL = false;
+      #   addSSL = true;
+      #   useACMEHost = "cloud.tdavis.dev";
+      # };
     };
   };
   networking.firewall.allowedTCPPorts = [
