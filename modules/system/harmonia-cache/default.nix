@@ -84,18 +84,12 @@ in
               # Update the flake lock file
               nix flake update
 
-              # To handle each host at a different time/day, we build one host per day based on day of year
               HOSTS=(${builtins.concatStringsSep " " cfg.prefetch.hostNames})
 
-              # Get current day of year (remove leading zeros)
-              DAY=$(date +%j | sed 's/^0*//')
-
-              # Select host based on modulo
-              INDEX=$(( DAY % ''${#HOSTS[@]} ))
-              TARGET=''${HOSTS[$INDEX]}
-
-              echo "Prefetching for $TARGET (Index $INDEX out of ''${#HOSTS[@]} hosts)"
-              nix build --impure .#nixosConfigurations."$TARGET".config.system.build.toplevel --no-link
+              for TARGET in "''${HOSTS[@]}"; do
+                echo "Prefetching for $TARGET..."
+                nix build --impure .#nixosConfigurations."$TARGET".config.system.build.toplevel --no-link
+              done
             '';
           };
         in
