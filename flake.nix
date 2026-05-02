@@ -1,5 +1,6 @@
 {
-  description = "";
+  description = "NixOS Dotfiles (v5) with automated discovery engine";
+
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
     flake-parts.url = "github:hercules-ci/flake-parts";
@@ -12,6 +13,7 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
   };
+
   outputs =
     inputs@{
       flake-parts,

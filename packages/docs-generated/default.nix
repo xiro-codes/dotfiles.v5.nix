@@ -34,6 +34,48 @@ let
     else
       pkgs.nixosOptionsDoc {
         options = localOptions;
+        transformOptions =
+          opt:
+          let
+            flakeRoot = toString inputs.self;
+            cleanStr =
+              str:
+              if builtins.isString str && lib.hasPrefix flakeRoot str then
+                "flake:" + lib.removePrefix flakeRoot str
+              else
+                str;
+          in
+          opt
+          // {
+            declarations = map (
+              decl:
+              let
+                pathStr = toString decl;
+              in
+              if lib.hasPrefix flakeRoot pathStr then
+                {
+                  name = "flake:" + lib.removePrefix flakeRoot pathStr;
+                  url = "flake:" + lib.removePrefix flakeRoot pathStr;
+                }
+              else
+                decl
+            ) opt.declarations;
+            default =
+              if opt ? default && opt.default != null && opt.default ? text then
+                opt.default // { text = cleanStr opt.default.text; }
+              else if opt ? default then
+                cleanStr opt.default
+              else
+                null;
+            example =
+              if opt ? example && opt.example != null && opt.example ? text then
+                opt.example // { text = cleanStr opt.example.text; }
+              else if opt ? example then
+                cleanStr opt.example
+              else
+                null;
+            description = if opt ? description then cleanStr opt.description else null;
+          };
       };
 
   # Generate documentation for home modules
@@ -61,6 +103,48 @@ let
     else
       pkgs.nixosOptionsDoc {
         options = localOptions;
+        transformOptions =
+          opt:
+          let
+            flakeRoot = toString inputs.self;
+            cleanStr =
+              str:
+              if builtins.isString str && lib.hasPrefix flakeRoot str then
+                "flake:" + lib.removePrefix flakeRoot str
+              else
+                str;
+          in
+          opt
+          // {
+            declarations = map (
+              decl:
+              let
+                pathStr = toString decl;
+              in
+              if lib.hasPrefix flakeRoot pathStr then
+                {
+                  name = "flake:" + lib.removePrefix flakeRoot pathStr;
+                  url = "flake:" + lib.removePrefix flakeRoot pathStr;
+                }
+              else
+                decl
+            ) opt.declarations;
+            default =
+              if opt ? default && opt.default != null && opt.default ? text then
+                opt.default // { text = cleanStr opt.default.text; }
+              else if opt ? default then
+                cleanStr opt.default
+              else
+                null;
+            example =
+              if opt ? example && opt.example != null && opt.example ? text then
+                opt.example // { text = cleanStr opt.example.text; }
+              else if opt ? example then
+                cleanStr opt.example
+              else
+                null;
+            description = if opt ? description then cleanStr opt.description else null;
+          };
       };
 in
 # Combine into a single documentation package
