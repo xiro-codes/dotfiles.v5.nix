@@ -31,14 +31,13 @@ in
       enable = true;
       defaultEditor = false;
       settings = {
-        theme = "default";
         editor = {
           line-number = "relative";
           cursorline = true;
           color-modes = true;
           idle-timeout = 50;
           true-color = false; # termguicolors = false in nixvim
-          
+
           indent-guides = {
             render = true;
             character = "▏";
@@ -50,9 +49,20 @@ in
           };
 
           statusline = {
-            left = ["mode" "spinner" "file-name"];
-            center = [];
-            right = ["diagnostics" "selections" "position" "file-encoding" "file-line-ending" "file-type"];
+            left = [
+              "mode"
+              "spinner"
+              "file-name"
+            ];
+            center = [ ];
+            right = [
+              "diagnostics"
+              "selections"
+              "position"
+              "file-encoding"
+              "file-line-ending"
+              "file-type"
+            ];
             mode = {
               normal = "NORMAL";
               insert = "INSERT";
@@ -76,14 +86,19 @@ in
         };
         language-server.gdscript = {
           command = "nc";
-          args = [ "127.0.0.1" "6005" ];
+          args = [
+            "127.0.0.1"
+            "6005"
+          ];
         };
 
         language = [
           {
             name = "nix";
             auto-format = true;
-            formatter = { command = "nixfmt"; };
+            formatter = {
+              command = "nixfmt";
+            };
             language-servers = [ "nixd" ];
           }
           {
@@ -94,12 +109,17 @@ in
           {
             name = "json";
             auto-format = true;
-            formatter = { command = "jq"; };
+            formatter = {
+              command = "jq";
+            };
           }
           {
             name = "gdscript";
             language-servers = [ "gdscript" ];
-            indent = { tab-width = 4; unit = "\t"; };
+            indent = {
+              tab-width = 4;
+              unit = "\t";
+            };
           }
         ];
       };

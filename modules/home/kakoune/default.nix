@@ -22,7 +22,7 @@ in
       lazygit
       kakoune-lsp
       nixd
-      nixfmt-rfc-style
+      nixfmt
       ripgrep
       fd
       jq
@@ -70,19 +70,19 @@ in
         ];
       };
       extraConfig = ''
-        eval %sh{kak-lsp --kakoune -s $kak_session}
-        
+        eval %sh{kakoune-lsp --kakoune -s $kak_session}
+
         map global user g ': terminal lazygit<ret>' -docstring 'Open LazyGit'
-        
+
         # Format on save using lsp
         hook global BufWritePre .* lsp-formatting-sync
       '';
       plugins = with pkgs.kakounePlugins; [
-        kak-lsp
+        kakoune-lsp
       ];
     };
-    
-    xdg.configFile."kak-lsp/kak-lsp.toml".text = ''
+
+    xdg.configFile."kakoune-lsp/kakoune-lsp.toml".text = ''
       [language_server.nixd]
       filetypes = ["nix"]
       roots = ["flake.nix", "default.nix"]
