@@ -74,7 +74,7 @@ in
             name = "prefetch";
             runtimeInputs = with pkgs; [
               git
-              nix
+              config.nix.package
               coreutils
               gnused
             ];

@@ -27,24 +27,40 @@
           nixosModules = flake-schemas.schemas.nixosModules // {
             inventory = output: {
               children = builtins.mapAttrs (name: value: {
-                what = "NixOS module" + (
-                  let metaFile = ./modules/system + "/${name}/meta.nix";
-                  in if builtins.pathExists metaFile then
-                    let meta = import metaFile; in if meta ? description then ": ${meta.description}" else ""
-                  else ""
-                );
+                what =
+                  "NixOS module"
+                  + (
+                    let
+                      metaFile = ./modules/system + "/${name}/meta.nix";
+                    in
+                    if builtins.pathExists metaFile then
+                      let
+                        meta = import metaFile;
+                      in
+                      if meta ? description then ": ${meta.description}" else ""
+                    else
+                      ""
+                  );
               }) output;
             };
           };
           homeModules = flake-schemas.schemas.homeModules // {
             inventory = output: {
               children = builtins.mapAttrs (name: value: {
-                what = "Home Manager module" + (
-                  let metaFile = ./modules/home + "/${name}/meta.nix";
-                  in if builtins.pathExists metaFile then
-                    let meta = import metaFile; in if meta ? description then ": ${meta.description}" else ""
-                  else ""
-                );
+                what =
+                  "Home Manager module"
+                  + (
+                    let
+                      metaFile = ./modules/home + "/${name}/meta.nix";
+                    in
+                    if builtins.pathExists metaFile then
+                      let
+                        meta = import metaFile;
+                      in
+                      if meta ? description then ": ${meta.description}" else ""
+                    else
+                      ""
+                  );
               }) output;
             };
           };
