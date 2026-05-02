@@ -9,8 +9,6 @@ in
   imports = [
     ./profiles/workstation
   ];
-  local.helix.enable = true;
-  local.kakoune.enable = true;
   home.packages = with pkgs; [
     godot
     eog
@@ -31,7 +29,13 @@ in
   services.espanso = {
     enable = true;
     package = pkgs.espanso-wayland;
-    matches.base.matches = [ ];
+    matches.base.matches = [
+      {
+        trigger = "dto";
+        replace = "dot";
+        word = true;
+      }
+    ];
   };
   home.stateVersion = "25.11";
 }
