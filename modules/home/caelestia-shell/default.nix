@@ -20,13 +20,15 @@ in
   };
 
   config = mkIf cfg.enable {
-    home.packages =
-      (with pkgs; [
+    home.packages = (
+      with pkgs;
+      [
         nautilus
         pavucontrol
-        celluloid
+        #celluloid
         kdePackages.networkmanager-qt
-      ]);
+      ]
+    );
     programs.caelestia = {
       enable = true;
       cli.enable = true;

@@ -28,17 +28,6 @@
     virtualisation.incus.enable = false;
   };
 
-  networking = {
-    interfaces.enp5s0.ipv4.addresses = [
-      {
-        address = "192.168.1.65";
-        prefixLength = 24;
-      }
-    ];
-    # Keep enp6s0 on DHCP for containers, but don't use it for the default gateway if possible
-    # though keeping it as is for now since user says containers go out on it.
-  };
-
   services.openssh.listenAddresses = [
     {
       addr = "192.168.1.65";
