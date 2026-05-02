@@ -25,7 +25,7 @@
     ];
     zerotier.enable = true;
     containers.Jade.enable = true;
-    virtualisation.incus.enable = true;
+    virtualisation.incus.enable = false;
   };
 
   networking = {
