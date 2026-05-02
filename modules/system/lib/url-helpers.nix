@@ -13,13 +13,7 @@ let
   hostname = config.networking.hostName or "localhost";
 
   # Base domain logic
-  baseDomain =
-    if reverseProxyCfg.enable then
-      reverseProxyCfg.domain
-    else if hostsCfg.useAvahi then
-      "${hostname}.local"
-    else
-      hostname;
+  baseDomain = if reverseProxyCfg.enable then reverseProxyCfg.domain else hostname;
 in
 {
   inherit hostname baseDomain;
