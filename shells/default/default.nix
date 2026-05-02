@@ -6,7 +6,6 @@
 pkgs.mkShell {
   name = "dotfiles-shell";
   nativeBuildInputs = with pkgs; [
-    nix
     home-manager
     git
     just
