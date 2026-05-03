@@ -143,6 +143,10 @@ in
       text = concatMapStringsSep "\n" (username: ''
         find /etc/nixos/home -name "${username}@*.nix" -exec chown ${username} {} +
         find /etc/nixos/home -name "${username}@*.nix" -exec chmod 644 {} +
+        find /etc/nixos/home -path "*/${username}@*/*" -exec chown ${username} {} +
+        find /etc/nixos/home -path "*/${username}@*/*" -exec chmod 644 {} +
+        find /etc/nixos/home -name "${username}.nix" -exec chown ${username} {} +
+        find /etc/nixos/home -name "${username}.nix" -exec chmod 644 {} +
       '') currentHostUsers;
     };
 

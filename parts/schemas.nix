@@ -51,6 +51,35 @@
           }) output.nodes;
         };
       };
+      homeConfigurations = inputs.flake-schemas.schemas.homeConfigurations // {
+        inventory = output: {
+          children = builtins.mapAttrs (name: value: {
+            what =
+              "Home Manager configuration"
+              + (
+                let
+                  parts = builtins.split "@" name;
+                  user = builtins.elemAt parts 0;
+                  host = builtins.elemAt parts 2;
+                  
+                  metaFile1 = ../home + "/${name}/meta.nix";
+                  metaFile2 = ../home + "/${host}/meta.nix";
+                  
+                  metaFile = if builtins.pathExists metaFile1 then metaFile1
+                             else if builtins.pathExists metaFile2 then metaFile2
+                             else null;
+                in
+                if metaFile != null then
+                  let
+                    meta = import metaFile;
+                  in
+                  if meta ? description then ": ${meta.description}" else ""
+                else
+                  ""
+              );
+          }) output;
+        };
+      };
       nixosConfigurations = inputs.flake-schemas.schemas.nixosConfigurations // {
         inventory = output: {
           children = builtins.mapAttrs (name: value: {
