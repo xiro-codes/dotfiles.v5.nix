@@ -64,9 +64,14 @@ let
       attrNames (
         filterAttrs (
           name: type:
+          let
+            metaFile = dir + "/${name}/meta.nix";
+            meta = if pathExists metaFile then import metaFile else { broken = false; };
+          in
           type == "directory"
           && pathExists (dir + "/${name}/configuration.nix")
           && pathExists (dir + "/${name}/hardware-configuration.nix")
+          && !meta.broken
         ) (readDir dir)
       )
     else
