@@ -2,6 +2,7 @@
   config,
   lib,
   pkgs,
+  inputs,
   ...
 }:
 let
@@ -70,30 +71,9 @@ in
       };
       script =
         let
-          prefetchScript = pkgs.writeShellApplication {
-            name = "prefetch";
-            runtimeInputs = with pkgs; [
-              git
-              config.nix.package
-              coreutils
-              gnused
-            ];
-            text = ''
-              nix --version
-              cd ${cfg.prefetch.path}
-              # Update the flake lock file
-              nix flake update
-
-              HOSTS=(${builtins.concatStringsSep " " cfg.prefetch.hostNames})
-
-              for TARGET in "''${HOSTS[@]}"; do
-                echo "Prefetching for $TARGET..."
-                nix build --impure .#nixosConfigurations."$TARGET".config.system.build.toplevel --no-link
-              done
-            '';
-          };
+          prefetchScript = inputs.self.packages.${pkgs.stdenv.hostPlatform.system}.harmonia-prefetch;
         in
-        "${prefetchScript}/bin/prefetch";
+        "${prefetchScript}/bin/prefetch ${cfg.prefetch.path} ${builtins.concatStringsSep " " cfg.prefetch.hostNames}";
     };
     systemd.timers.nix-prefetch = {
       description = "Timer for Nix pre-fetch";

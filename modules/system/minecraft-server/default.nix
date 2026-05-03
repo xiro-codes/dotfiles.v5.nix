@@ -2,6 +2,7 @@
   config,
   lib,
   pkgs,
+  inputs,
   ...
 }:
 with lib;
@@ -32,78 +33,9 @@ let
     + concatStringsSep "\n" (mapAttrsToList (n: v: "${n}=${cfgToString v}") cfg.serverProperties)
   );
 
-  stopScript = pkgs.writeShellScript "minecraft-server-stop" ''
-    echo stop > ${config.systemd.sockets.minecraft-server.socketConfig.ListenFIFO}
-
-    # Wait for the PID of the minecraft server to disappear before
-    # returning, so systemd doesn't attempt to SIGKILL it.
-    while kill -0 "$1" 2> /dev/null; do
-      sleep 1s
-    done
-  '';
-
-  mcConsole = pkgs.writeShellScriptBin "mc-console" ''
-    set -euo pipefail
-
-    FIFO="/run/minecraft-server.stdin"
-    SERVICE="minecraft-server.service"
-
-    # Check if server is running
-    if ! systemctl is-active --quiet "$SERVICE"; then
-      echo "Error: Minecraft server is not running."
-      exit 1
-    fi
-
-    ${
-      if cfg.serverProperties.enable-rcon or false then
-        ''
-          # RCON is enabled, use mcrcon
-          echo "Connecting via RCON..."
-          exec ${pkgs.mcrcon}/bin/mcrcon \
-            -H localhost \
-            -P ${toString (cfg.serverProperties."rcon.port" or 25575)} \
-            -p "${cfg.serverProperties."rcon.password" or ""}" \
-            -t
-        ''
-      else
-        ''
-          # RCON not enabled, use FIFO + Journal
-          if [[ ! -p "$FIFO" ]]; then
-            echo "Error: FIFO $FIFO not found. Is the server running correctly?"
-            exit 1
-          fi
-
-          echo "Connecting to Minecraft Server Console (Journal + FIFO)..."
-          echo "Type commands and press Enter. Press Ctrl+C to exit."
-          echo "----------------------------------------------------"
-
-          # Start journalctl in background
-          ${pkgs.systemd}/bin/journalctl -u "$SERVICE" -f -n 50 &
-          JOURNAL_PID=$!
-
-          # Trap cleanup
-          trap "kill $JOURNAL_PID 2>/dev/null; echo; exit 0" SIGINT SIGTERM
-
-          # Read input and write to FIFO
-          while IFS= read -r line; do
-            echo "$line" > "$FIFO"
-          done
-        ''
-    }
-  '';
-
-  # To be able to open the firewall, we need to read out port values in the
-  # server properties, but fall back to the defaults when those don't exist.
-  # These defaults are from https://minecraft.gamepedia.com/Server.properties#Java_Edition_3
-  defaultServerPort = 25565;
-
-  serverPort = cfg.serverProperties.server-port or defaultServerPort;
-
-  rconPort =
-    if cfg.serverProperties.enable-rcon or false then
-      cfg.serverProperties."rcon.port" or 25575
-    else
-      null;
+  stopScript = "${
+    inputs.self.packages.${pkgs.stdenv.hostPlatform.system}.minecraft-server-stop
+  }/bin/minecraft-server-stop";
 
   queryPort =
     if cfg.serverProperties.enable-query or false then
@@ -250,7 +182,7 @@ in
     users.groups.minecraft = { };
 
     environment.systemPackages = [
-      mcConsole
+      inputs.self.packages.${pkgs.stdenv.hostPlatform.system}.mc-console
     ]
     ++ optional (cfg.serverProperties.enable-rcon or false) pkgs.mcrcon;
 
@@ -277,7 +209,7 @@ in
       path = [ pkgs.bash ];
       serviceConfig = {
         ExecStart = "${cfg.package}/bin/minecraft-server ${cfg.jvmOpts}";
-        ExecStop = "${stopScript} $MAINPID";
+        ExecStop = "${stopScript} ${config.systemd.sockets.minecraft-server.socketConfig.ListenFIFO} $MAINPID";
         Restart = "always";
         User = "minecraft";
         WorkingDirectory = cfg.dataDir;

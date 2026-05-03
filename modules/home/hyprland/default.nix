@@ -16,46 +16,7 @@ let
   cfg = config.local.hyprland;
   variables = config.local.variables;
   hypr-tools = inputs.self.packages.${pkgs.stdenv.hostPlatform.system}.hypr-tools;
-  mkMenu =
-    menu:
-    let
-      configFile = pkgs.writeText "config.yaml" (
-        generators.toYAML { } {
-          anchor = "bottom-right";
-          inherit menu;
-        }
-      );
-    in
-    pkgs.writeShellScriptBin "quick-menu" ''
-      exec ${getExe pkgs.wlr-which-key} ${configFile}
-    '';
-  quick-menu = mkMenu [
-    {
-      key = "w";
-      desc = "Web Browser";
-      cmd = "zen";
-    }
-    {
-      key = "f";
-      desc = "File Manager";
-      cmd = "nautilus";
-    }
-    {
-      key = "v";
-      desc = "Volume Control";
-      cmd = "pavucontrol";
-    }
-    {
-      key = "d";
-      desc = "Discord";
-      cmd = "discord";
-    }
-    {
-      key = "g";
-      desc = "Big Screen Gaming";
-      cmd = "hypr-gaming-mode";
-    }
-  ];
+  quick-menu = inputs.self.packages.${pkgs.stdenv.hostPlatform.system}.quick-menu;
 in
 {
   options.local.hyprland = {

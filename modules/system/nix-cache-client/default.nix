@@ -2,6 +2,7 @@
   config,
   lib,
   pkgs,
+  inputs,
   ...
 }:
 let
@@ -13,15 +14,6 @@ let
     ;
 
   cfg = config.local.nix-cache-client;
-  uploadScript = pkgs.writeShellScript "upload-to-onix" ''
-    set -eu
-    # $OUT_PATHS contains a space-separated list of store paths just built
-    if [ -n "$OUT_PATHS" ]; then
-      echo "Uploading to Onix cache: $OUT_PATHS"
-      # Use -i to specify the path to an SSH key if needed
-      ${pkgs.nix}/bin/nix copy --to http://192.168.1.65:5000 $OUT_PATHS || true
-    fi
-  '';
 in
 {
   options.local.nix-cache-client = {
@@ -43,7 +35,9 @@ in
   config = mkIf cfg.enable {
     environment.systemPackages = with pkgs; [ ];
     nix.settings = {
-      post-build-hook = "${uploadScript}";
+      post-build-hook = "${
+        inputs.self.packages.${pkgs.stdenv.hostPlatform.system}.upload-to-onix
+      }/bin/upload-to-onix";
       trusted-users = [ "@wheel" ];
       substituters = [
         cfg.serverAddress

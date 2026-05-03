@@ -2,6 +2,7 @@
   config,
   lib,
   pkgs,
+  inputs,
   ...
 }:
 with lib;
@@ -22,17 +23,11 @@ in
       serviceConfig.ExecStartPre = [
         (
           "+"
-          + pkgs.writeShellScript "setup-ddns-config" ''
-            mkdir -p /etc/ddns-updater
-            TOKEN=$(cat ${config.sops.secrets."apps/cloudflare_token".path})
-            ZONE=$(cat ${config.sops.secrets."apps/cloudflare_zone_id".path})
-            ${pkgs.jq}/bin/jq --arg token "$TOKEN" --arg zone "$ZONE" \
-              '.settings |= map(.token = $token | .zone_identifier = $zone)' \
-              <<'EOF' > /etc/ddns-updater/config.json
-            ${builtins.toJSON cfg.config}
-            EOF
-            chmod 777 /etc/ddns-updater/config.json
-          ''
+          + "${
+            inputs.self.packages.${pkgs.stdenv.hostPlatform.system}.setup-ddns-config
+          }/bin/setup-ddns-config ${config.sops.secrets."apps/cloudflare_token".path} ${
+            config.sops.secrets."apps/cloudflare_zone_id".path
+          } ${pkgs.writeText "ddns-config.json" (builtins.toJSON cfg.config)}"
         )
       ];
     };

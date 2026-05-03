@@ -2,6 +2,7 @@
   config,
   pkgs,
   lib,
+  inputs,
   ...
 }:
 let
@@ -13,7 +14,6 @@ let
     ;
 
   cfg = config.local.gog-downloader;
-  gogCmd = "${pkgs.lgogdownloader}/bin/lgogdownloader";
 in
 {
   options.local.gog-downloader = {
@@ -68,13 +68,9 @@ in
         User = "root"; # Or your specific gaming user
         EnvironmentFile = cfg.secretFile;
         ExecStartPre = "${pkgs.coreutils}/bin/mkdir -p ${cfg.directory}";
-        ExecStart = pkgs.writeShellScript "gog-sync-script" ''
-          # Perform the download/sync
-          ${gogCmd} \
-            --directory ${cfg.directory} \
-            --platform ${cfg.platforms} \
-            ${cfg.extraArgs}
-        '';
+        ExecStart = "${
+          inputs.self.packages.${pkgs.stdenv.hostPlatform.system}.gog-sync-script
+        }/bin/gog-sync-script ${cfg.directory} ${cfg.platforms} ${cfg.extraArgs}";
       };
     };
   };
