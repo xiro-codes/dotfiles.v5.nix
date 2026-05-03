@@ -5,7 +5,7 @@
 }:
 {
   imports = [
-    ./profiles/server
+    ../profiles/server
   ];
   systemd.user.enable = true;
 

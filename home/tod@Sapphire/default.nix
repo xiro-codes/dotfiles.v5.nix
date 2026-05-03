@@ -5,7 +5,7 @@
 }:
 {
   imports = [
-    ./profiles/server
+    ../profiles/server
   ];
   local.secrets.keys = [ "gemini/api_key" ];
 

@@ -7,7 +7,7 @@ let
 in
 {
   imports = [
-    ./profiles/workstation
+    ../profiles/workstation
   ];
   home.packages = with pkgs; [
     godot
