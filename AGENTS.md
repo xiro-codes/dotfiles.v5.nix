@@ -9,14 +9,16 @@ This repository uses a **custom automated discovery engine** (`parts/discovery/`
 When you create a new module, package, or system, place it in the correct directory, and it will be automatically discovered and integrated into the flake outputs.
 
 ### Repository Structure
-- `systems/<hostname>/`: Host-specific configurations (e.g., Onix, Ruby, Sapphire, Jade). Any directory here with a `configuration.nix` and `hardware-configuration.nix` becomes a `nixosConfiguration`.
-- `modules/system/<module-name>/`: Reusable NixOS modules. Must contain a `default.nix`.
-- `modules/home/<module-name>/`: Reusable Home Manager modules.
+- `systems/<hostname>/`: Host-specific configurations (e.g., Onix, Ruby, Sapphire). Any directory here with a `configuration.nix` and `hardware-configuration.nix` becomes a `nixosConfiguration`.
+- `systems/containers/<container-name>/`: Container configurations (e.g., Amber, Jade). Handled via NixOS containers.
+- `modules/system/<module-name>/`: Reusable NixOS modules. Must contain a `default.nix`. A `meta.nix` file is used to provide descriptions for the flake schemas and auto-generated docs.
+- `modules/home/<module-name>/`: Reusable Home Manager modules. Also supports `meta.nix`.
 - `home/<user>@<hostname>.nix`: Standalone Home Manager user configurations.
 - `packages/<package-name>/`: Custom Nix packages.
 - `shells/<shell-name>/`: Development shells (accessible via `nix develop .#<name>`).
 - `templates/<template-name>/`: Flake templates.
-- `secrets/`: SOPS-encrypted secrets.
+- `secrets/`: SOPS-encrypted secrets (`secrets.yaml`).
+- `parts/discovery/`: The automated discovery engine logic.
 
 *Note: The `systems/profiles/` and `home/profiles/` folders are used as imports for reusable configurations, they are not auto-discovered as standalone systems/users.*
 
@@ -33,7 +35,7 @@ This project uses `just` as its command runner. **Always use `just` commands whe
 - `just deploy <host>`: Deploy to a remote node using `deploy-rs`.
 - `just deploy-all`: Deploy all nodes.
 - `just gc <host>`: Trigger nix store garbage collection on a remote node.
-- **DO NOT RUN** `just check`: Checking flake evaluation is forbidden.
+- **DO NOT RUN** `just check`: Checking flake evaluation can be problematic/forbidden.
 
 ### Development & Testing
 - `just run-test`: Build and launch the custom Installer ISO in a QEMU VM. Very useful for testing configurations safely.
@@ -45,13 +47,12 @@ This project uses `just` as its command runner. **Always use `just` commands whe
 - `just edit-secrets`: Edit the SOPS-encrypted secrets file (`secrets/secrets.yaml`).
 - `just update-keys`: Update system keys for SOPS.
 
-### Documentation Workflow
+### Documentation & Visualization
 - `just gen-docs`: Generate/update module documentation to the `docs/` folder.
-- `just gen-mod-doc <modname>`: Use AI (`tgpt-auth`) to generate docs for a specific module and open a diff.
 - `just build-docs`: Build the static mdBook documentation site.
 - `just serve-docs`: Serve the docs locally and open in a browser.
 - `just view-docs`: View the documentation directly in the terminal.
-- `just gen-network`: Generate a network diagram from `network.dot`.
+- `nix-topology`: The flake integrates with `nix-topology` (see `topology.nix`) to map network architecture.
 
 ### Backups (Borg)
 - `just init-backup`: Initialize local borg backups.
@@ -69,11 +70,12 @@ This project uses `just` as its command runner. **Always use `just` commands whe
 
 ## 📝 Conventions & Patterns
 
-1. **Modules**: System and Home modules typically have a `default.nix` and an optional `meta.nix` (or similar) describing options. 
+1. **Modules**: System and Home modules typically have a `default.nix` and an optional `meta.nix` describing options. The descriptions in `meta.nix` are surfaced in the flake schemas and the auto-generated documentation.
 2. **Secrets**: Never hardcode secrets in Nix files. Use `sops-nix` and reference the secrets configured in `secrets/secrets.yaml`. 
 3. **Deployments**: Systems with a `deploy.nix` file inside their host directory are automatically added to `deploy-rs` configuration.
 4. **Purity**: Many commands (like `nixos-rebuild` and `deploy`) use the `--impure` flag by default.
 5. **System Discovery**: System definitions are automatically loaded if the folder contains both `configuration.nix` and `hardware-configuration.nix`.
+6. **Topology**: Network structures are tracked with `nix-topology`. Check `topology.nix` for definitions.
 
 ## ⚠️ Gotchas & Important Notes
 
