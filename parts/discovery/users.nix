@@ -9,6 +9,7 @@ let
     elemAt
     ;
   inherit (lib) filterAttrs splitString removeSuffix mapAttrsToList concatMap;
+  metaLib = import ./meta.nix { };
 in
 {
   # Parse user configs to create a host -> users mapping
@@ -62,9 +63,8 @@ in
             metaFile = if pathExists metaFile1 then metaFile1
                        else if pathExists metaFile2 then metaFile2
                        else null;
-            meta = if metaFile != null then import metaFile else { broken = false; };
           in
-          !(meta.broken or false)
+          !(metaLib.isBroken metaFile)
         ) allPairs;
       in
       foldl' (

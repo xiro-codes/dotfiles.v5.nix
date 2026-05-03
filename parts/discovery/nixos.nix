@@ -21,6 +21,8 @@ let
 in
 let
   # Generate nixosConfigurations for all discovered hosts and containers
+  metaLib = import ./meta.nix { };
+
   genConfigs =
     hosts:
     listToAttrs (
@@ -64,14 +66,10 @@ let
       attrNames (
         filterAttrs (
           name: type:
-          let
-            metaFile = dir + "/${name}/meta.nix";
-            meta = if pathExists metaFile then import metaFile else { broken = false; };
-          in
           type == "directory"
           && pathExists (dir + "/${name}/configuration.nix")
           && pathExists (dir + "/${name}/hardware-configuration.nix")
-          && !meta.broken
+          && !(metaLib.isBroken (dir + "/${name}/meta.nix"))
         ) (readDir dir)
       )
     else

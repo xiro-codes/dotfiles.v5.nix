@@ -1,6 +1,7 @@
 { fs }:
 let
   inherit (builtins) listToAttrs map;
+  metaLib = import ./meta.nix { };
 in
 {
   # Build module attribute set from discovered directories
@@ -11,11 +12,7 @@ in
       # Filter out broken modules based on meta.nix
       validNames = builtins.filter (
         name:
-        let
-          metaFile = path + "/${name}/meta.nix";
-          meta = if builtins.pathExists metaFile then import metaFile else { broken = false; };
-        in
-        !meta.broken
+        !(metaLib.isBroken (path + "/${name}/meta.nix"))
       ) names;
     in
     listToAttrs (
