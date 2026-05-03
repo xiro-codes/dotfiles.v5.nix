@@ -1,18 +1,18 @@
 { inputs, ... }:
 let
-  metaLib = import ./discovery/meta.nix { };
+  metaLib = import (inputs.inputs-nix.outPath + "/discovery/meta.nix") { };
 in
 {
   flake = {
-    schemas = inputs.flake-schemas.schemas // {
-      nixosModules = inputs.flake-schemas.schemas.nixosModules // {
+    schemas = inputs.inputs-nix.inputs.flake-schemas.schemas // {
+      nixosModules = inputs.inputs-nix.inputs.flake-schemas.schemas.nixosModules // {
         inventory = output: {
           children = builtins.mapAttrs (name: value: {
             what = metaLib.getWhatWithDescription "NixOS module" (../modules/system + "/${name}/meta.nix");
           }) output;
         };
       };
-      homeModules = inputs.flake-schemas.schemas.homeModules // {
+      homeModules = inputs.inputs-nix.inputs.flake-schemas.schemas.homeModules // {
         inventory = output: {
           children = builtins.mapAttrs (name: value: {
             what = metaLib.getWhatWithDescription "Home Manager module" (../modules/home + "/${name}/meta.nix");
@@ -28,7 +28,7 @@ in
           }) output.nodes;
         };
       };
-      homeConfigurations = inputs.flake-schemas.schemas.homeConfigurations // {
+      homeConfigurations = inputs.inputs-nix.inputs.flake-schemas.schemas.homeConfigurations // {
         inventory = output: {
           children = builtins.mapAttrs (name: value: {
             what =
@@ -48,7 +48,7 @@ in
           }) output;
         };
       };
-      nixosConfigurations = inputs.flake-schemas.schemas.nixosConfigurations // {
+      nixosConfigurations = inputs.inputs-nix.inputs.flake-schemas.schemas.nixosConfigurations // {
         inventory = output: {
           children = builtins.mapAttrs (name: value: {
             what = metaLib.getWhatWithDescription "NixOS configuration" (../systems + "/${name}/meta.nix");
