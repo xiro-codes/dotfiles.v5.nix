@@ -1,6 +1,6 @@
 {
   broken = false;
-  description = "Automated management of container clusters";
+  description = "Automated management of container clusters.";
   tags = [
     "cluster"
     "system"

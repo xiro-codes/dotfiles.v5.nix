@@ -1,6 +1,6 @@
 {
   broken = false;
-  description = "Configures the Starship cross-shell prompt";
+  description = "Configures the Starship cross-shell prompt.";
   tags = [
     "shell"
     "prompt"
