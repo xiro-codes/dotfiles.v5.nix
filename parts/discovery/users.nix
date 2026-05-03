@@ -54,11 +54,23 @@ in
         ) (attrNames hostDirs);
 
         allPairs = pairs1 ++ pairs2 ++ pairs3;
+
+        validPairs = builtins.filter (entry:
+          let
+            metaFile1 = path + "/${entry.user}@${entry.host}/meta.nix";
+            metaFile2 = path + "/${entry.host}/meta.nix";
+            metaFile = if pathExists metaFile1 then metaFile1
+                       else if pathExists metaFile2 then metaFile2
+                       else null;
+            meta = if metaFile != null then import metaFile else { broken = false; };
+          in
+          !(meta.broken or false)
+        ) allPairs;
       in
       foldl' (
         acc: entry:
         acc // {
           "${entry.host}" = (acc.${entry.host} or [ ]) ++ [ { inherit (entry) user filename; } ];
         }
-      ) { } allPairs;
+      ) { } validPairs;
 }
