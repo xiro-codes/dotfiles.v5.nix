@@ -19,6 +19,7 @@ in
     # Enable Steam
     programs.steam = {
       enable = true;
+      package = inputs.millennium.packages.x86_64-linux.default;
       remotePlay.openFirewall = true;
       dedicatedServer.openFirewall = true;
     };
