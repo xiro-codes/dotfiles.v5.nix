@@ -29,6 +29,7 @@ in
   boot.enableContainers = true;
 
   local = {
+    registry.enable = true;
     userManager.extraGroups = [
       "adbusers"
       "dialout"
