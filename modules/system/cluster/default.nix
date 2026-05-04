@@ -21,8 +21,8 @@ let
   cfg = config.local.cluster;
 
   # Re-use the discovery utilities rather than duplicating them.
-  paths = import ../../../parts/discovery/paths.nix;
-  usersLib = import ../../../parts/discovery/users.nix { inherit lib; };
+  paths = import (inputs-nix.outPath + "/discovery/paths.nix") self.outPath;
+  usersLib = import (inputs-nix.outPath + "/discovery/users.nix") { inherit lib; };
   hostToUsersMap = usersLib.getUserHostMap paths.home;
 
   # Mirrors flake.nix globals.
@@ -152,6 +152,7 @@ in
               privateNetwork = true;
               hostAddress = cfg.hostAddress;
               localAddress = "${cfg.subnet}.${toString (idx + 1)}";
+              specialArgs = { inherit self inputs inputs-nix; };
               config =
                 if builtins.isFunction cfg.template then
                   cfg.template idx

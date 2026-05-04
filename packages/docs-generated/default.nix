@@ -7,9 +7,9 @@
 }:
 let
   # This discovery logic is now self-contained within the package
-  paths = import ../../parts/discovery/paths.nix;
-  fs = import ../../parts/discovery/fs.nix { inherit lib; };
-  modulesLib = import ../../parts/discovery/modules.nix { inherit fs; };
+  paths = import (inputs.inputs-nix.outPath + "/discovery/paths.nix") self.outPath;
+  fs = import (inputs.inputs-nix.outPath + "/discovery/fs.nix") { inherit lib; };
+  modulesLib = import (inputs.inputs-nix.outPath + "/discovery/modules.nix") { inherit fs; };
 
   discoveredSystemModules = modulesLib.mkModules paths.systemModules;
   discoveredHomeModules = modulesLib.mkModules paths.homeModules;

@@ -3,6 +3,7 @@
   lib,
   pkgs,
   inputs,
+  self,
   ...
 }:
 let
@@ -59,7 +60,7 @@ in
       enable = mkEnableOption "Use secrets";
       sopsFile = mkOption {
         type = types.path;
-        default = ../../../secrets/secrets.yaml;
+        default = "${self}/secrets/secrets.yaml";
         example = literalExpression "../secrets/user-secrets.yaml";
         description = "Path to the encrypted yaml file";
       };

@@ -2,6 +2,7 @@
   config,
   lib,
   inputs,
+  self,
   ...
 }:
 let
