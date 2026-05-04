@@ -16,7 +16,7 @@ This module defines the following options under the `local.gaming` namespace:
 
 Enables or disables all gaming optimizations and features provided by this module. When enabled, the following configurations are applied:
 
-*   Steam is enabled with firewall rules for Remote Play and dedicated servers.
+*   Steam is enabled (using the Millennium custom Steam client) with firewall rules for Remote Play and dedicated servers.
 *   Kernel parameters are adjusted to optimize Bluetooth latency for controllers.
 *   GameMode is enabled to allow games to request temporary system optimizations.
 *   Drivers and services for Xbox and DualSense controllers are enabled.
@@ -27,7 +27,7 @@ Enables or disables all gaming optimizations and features provided by this modul
 When `local.gaming.enable` is set to `true`, the following changes are applied to the system configuration:
 
 *   **Steam:**
-    *   `programs.steam.enable = true;` enables Steam.
+    *   `programs.steam.enable = true;` enables Steam using the Millennium custom Steam client package.
     *   `programs.steam.remotePlay.openFirewall = true;` opens the firewall for Steam Remote Play.
     *   `programs.steam.dedicatedServer.openFirewall = true;` opens the firewall for Steam dedicated servers.
 *   **Bluetooth Optimization:**
