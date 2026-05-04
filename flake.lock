@@ -727,11 +727,11 @@
         "zen-browser": "zen-browser"
       },
       "locked": {
-        "lastModified": 1777853546,
-        "narHash": "sha256-6Jq5Z9oSDq1f669nfmUuyw/mtVnlBtZq9WBckGyMbaA=",
+        "lastModified": 1777855125,
+        "narHash": "sha256-82Lg23k9cOZTFrIs30BG2dK1LuLEiGSN/B1bzELGHXY=",
         "ref": "refs/heads/master",
-        "rev": "762ec042556d7653a36706293ed14e4c6a14d614",
-        "revCount": 67,
+        "rev": "35d6a12ea78e305e3de0be88ff58391b6328c064",
+        "revCount": 68,
         "type": "git",
         "url": "file:///home/tod/Projects/inputs.nix"
       },

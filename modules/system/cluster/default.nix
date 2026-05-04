@@ -119,27 +119,7 @@ in
 
     in
     mkIf cfg.enable {
-      services.nginx = {
-        enable = true;
-        upstreams."${templateLabel}-cluster".servers = listToAttrs (
-          map (i: {
-            name = "${cfg.subnet}.${toString (i + 1)}";
-            value = { };
-          }) (range 1 config.local.cluster.size)
-        );
-        virtualHosts."localhost" = {
-          locations."/" = {
-            proxyPass = "http://${templateLabel}-cluster/";
-            extraConfig = ''
-              default_type text/html; 
-              proxy_set_header Host $host;
-              proxy_set_header X-Real-IP $remote_addr;
-              proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-              proxy_set_header X-Forwarded-Proto $scheme;
-            '';
-          };
-        };
-      };
+      local.cluster-proxy.enable = true;
       containers = listToAttrs (
         map (idx: {
           name = "${templateLabel}-${toString idx}";
