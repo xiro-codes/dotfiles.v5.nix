@@ -9,6 +9,7 @@ pkgs.writeShellApplication {
     PLATFORMS=$2
     EXTRA_ARGS=''${*:3}
 
+    # shellcheck disable=SC2086
     ${gogCmd} \
       --directory "$DIR" \
       --platform "$PLATFORMS" \

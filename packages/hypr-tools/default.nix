@@ -13,11 +13,11 @@ let
     text = ''
       current=$(hyprctl activeworkspace -j | jq -r '.id')
 
-      if [ $current -ge 1 ] && [ $current -le 3 ]; then
+      if [ "$current" -ge 1 ] && [ "$current" -le 3 ]; then
         current_set=0
-      elif [ $current -ge 4 ] && [ $current -le 6 ]; then
+      elif [ "$current" -ge 4 ] && [ "$current" -le 6 ]; then
         current_set=3
-      elif [ $current -ge 7 ] && [ $current -le 9 ]; then
+      elif [ "$current" -ge 7 ] && [ "$current" -le 9 ]; then
         current_set=6
       else
         current_set=0
@@ -40,11 +40,11 @@ let
     text = ''
       current=$(hyprctl activeworkspace -j | jq -r '.id')
 
-      if [ $current -ge 1 ] && [ $current -le 3 ]; then
+      if [ "$current" -ge 1 ] && [ "$current" -le 3 ]; then
         current_set=0
-      elif [ $current -ge 4 ] && [ $current -le 6 ]; then
+      elif [ "$current" -ge 4 ] && [ "$current" -le 6 ]; then
         current_set=3
-      elif [ $current -ge 7 ] && [ $current -le 9 ]; then
+      elif [ "$current" -ge 7 ] && [ "$current" -le 9 ]; then
         current_set=6
       else
         current_set=0
@@ -67,19 +67,19 @@ let
     text = ''
       current=$(hyprctl activeworkspace -j | jq -r '.id')
 
-      if [ $current -ge 1 ] && [ $current -le 3 ]; then
+      if [ "$current" -ge 1 ] && [ "$current" -le 3 ]; then
         case "$1" in
           next) target=$((current + 3)) ;;
           prev) target=$((current + 6)) ;;
           *) exit 1 ;;
         esac
-      elif [ $current -ge 4 ] && [ $current -le 6 ]; then
+      elif [ "$current" -ge 4 ] && [ "$current" -le 6 ]; then
         case "$1" in
           next) target=$((current + 3)) ;;
           prev) target=$((current - 3)) ;;
           *) exit 1 ;;
         esac
-      elif [ $current -ge 7 ] && [ $current -le 9 ]; then
+      elif [ "$current" -ge 7 ] && [ "$current" -le 9 ]; then
         case "$1" in
           next) target=$((current - 6)) ;;
           prev) target=$((current - 3)) ;;

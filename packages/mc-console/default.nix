@@ -35,6 +35,7 @@ pkgs.writeShellApplication {
       ${pkgs.systemd}/bin/journalctl -u "$SERVICE" -f -n 50 &
       JOURNAL_PID=$!
 
+      # shellcheck disable=SC2064
       trap "kill $JOURNAL_PID 2>/dev/null; echo; exit 0" SIGINT SIGTERM
 
       while IFS= read -r line; do
