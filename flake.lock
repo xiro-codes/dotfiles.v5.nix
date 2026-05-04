@@ -729,15 +729,15 @@
       "locked": {
         "lastModified": 1777855125,
         "narHash": "sha256-82Lg23k9cOZTFrIs30BG2dK1LuLEiGSN/B1bzELGHXY=",
-        "ref": "refs/heads/master",
+        "owner": "xiro-codes",
+        "repo": "inputs.nix",
         "rev": "35d6a12ea78e305e3de0be88ff58391b6328c064",
-        "revCount": 68,
-        "type": "git",
-        "url": "file:///home/tod/Projects/inputs.nix"
+        "type": "github"
       },
       "original": {
-        "type": "git",
-        "url": "file:///home/tod/Projects/inputs.nix"
+        "owner": "xiro-codes",
+        "repo": "inputs.nix",
+        "type": "github"
       }
     },
     "ixx": {
