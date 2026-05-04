@@ -80,6 +80,5 @@
     - [Yazi](yazi.md)
 
 - [Reference]()
-    - [All Modules](modules.md)
     - [System Modules](system-modules.md)
     - [Home Modules](home-modules.md)

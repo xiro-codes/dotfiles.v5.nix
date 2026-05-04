@@ -42,13 +42,13 @@ A declarative, multi-host NixOS configuration built with [Nix Flakes](https://ni
 This repository utilizes a modular discovery engine (`parts/discovery/`) that scans the file system to build the flake. This eliminates the need to manually register new files in `flake.nix`.
 
 * **Systems**: Every directory in `/systems` containing both a `configuration.nix` and `hardware-configuration.nix` is automatically converted into a `nixosConfiguration`.
-* **System Modules**: Found in /modules/system. Any directory with a default.nix is automatically exported as a NixOS module.
-* **Home Modules**: Found in /modules/home. These are automatically exported for use within Home Manager.
-* **Home Configurations**: Standalone Home Manager configurations are generated from user@hostname.nix files in /home.
-* **Packages**: Custom packages in /packages are automatically built for the current system.
-* **Dev Shells**: Every directory in /shells is automatically exported as a devShell (accessible via `nix develop .#<name>`).
-* **Deploy Nodes**: Systems with a deploy.nix file are automatically added to deploy-rs configuration.
-* **Templates**: Project templates in /templates are automatically exported.
+* **System Modules**: Found in `/modules/system`. Any directory with a `default.nix` is automatically exported as a NixOS module. Metadata and descriptions can be provided via a `meta.nix` file.
+* **Home Modules**: Found in `/modules/home`. These are automatically exported for use within Home Manager. Can also use `meta.nix`.
+* **Home Configurations**: Standalone Home Manager configurations are generated from `user@hostname.nix`, `user@hostname/default.nix`, or `hostname/user.nix` configurations in `/home`.
+* **Packages**: Custom packages in `/packages` are automatically built for the current system. Inline scripts have been extracted here as well.
+* **Dev Shells**: Every directory in `/shells` is automatically exported as a devShell (accessible via `nix develop .#<name>`).
+* **Deploy Nodes**: Systems with a `deploy.nix` file are automatically added to `deploy-rs` configuration.
+* **Templates**: Project templates in `/templates` are automatically exported (e.g., Rust CLI, Python, Flutter, Bevy, ESP32 Rust).
 
 ## **💻 Managed Systems**
 
@@ -164,11 +164,10 @@ The justfile provides several helpers for system administration:
 
 ## **📚 Module Documentation**
 
-All custom modules are documented with auto-generated option references:
+All custom modules are documented with auto-generated option references embedded directly into their respective documentation pages.
 
-* [**Module Reference**](./docs/modules.md) - Complete documentation of all custom options
-* [**System Modules**](./docs/system-modules.md) - NixOS system module options
-* [**Home Modules**](./docs/home-modules.md) - Home Manager module options
+* [**System Modules**](./docs/system-modules.md) - Orphaned NixOS system module options
+* [**Home Modules**](./docs/home-modules.md) - Orphaned Home Manager module options
 
 To regenerate documentation: `just gen-docs`
 
