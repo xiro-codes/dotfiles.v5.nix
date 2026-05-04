@@ -5,11 +5,23 @@
   ...
 }:
 let
-  cfg = config.local.TEMPLATE_NAME;
+  cfg = config.local.my-module;
 in
 {
-  options.local.TEMPLATE_NAME = {
-    enable = lib.mkEnableOption "TEMPLATE_NAME module";
+  # 1. Define your module options here
+  options.local.my-module = {
+    enable = lib.mkEnableOption "my custom system module";
+    
+    # Example string option:
+    # mySetting = lib.mkOption {
+    #   type = lib.types.str;
+    #   default = "value";
+    #   description = "An example setting";
+    # };
   };
-  config = lib.mkIf cfg.enable { };
+
+  # 2. Add the actual configuration that gets applied when enabled
+  config = lib.mkIf cfg.enable {
+    # e.g., environment.systemPackages = [ pkgs.hello ];
+  };
 }

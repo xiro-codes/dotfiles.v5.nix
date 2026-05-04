@@ -5,11 +5,23 @@
   ...
 }:
 let
-  cfg = config.local.TEMPLATE_NAME;
+  cfg = config.local.my-home-module;
 in
 {
-  options.local.TEMPLATE_NAME = {
-    enable = lib.mkEnableOption "TEMPLATE_NAME module";
+  # 1. Define your home-manager module options here
+  options.local.my-home-module = {
+    enable = lib.mkEnableOption "my custom home module";
+    
+    # Example option:
+    # package = lib.mkOption {
+    #   type = lib.types.package;
+    #   default = pkgs.hello;
+    #   description = "Package to install";
+    # };
   };
-  config = lib.mkIf cfg.enable { };
+
+  # 2. Add the actual configuration that gets applied when enabled
+  config = lib.mkIf cfg.enable {
+    # e.g., home.packages = [ cfg.package ];
+  };
 }
