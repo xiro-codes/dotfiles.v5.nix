@@ -7,8 +7,16 @@
     rust-overlay.url = "github:oxalica/rust-overlay";
   };
 
-  outputs = { self, nixpkgs, flake-utils, rust-overlay, ... }:
-    flake-utils.lib.eachDefaultSystem (system:
+  outputs =
+    {
+      self,
+      nixpkgs,
+      flake-utils,
+      rust-overlay,
+      ...
+    }:
+    flake-utils.lib.eachDefaultSystem (
+      system:
       let
         overlays = [ (import rust-overlay) ];
         pkgs = import nixpkgs { inherit system overlays; };
@@ -25,9 +33,12 @@
           libxi
           libxrandr
         ];
-        
+
         rustToolchain = pkgs.rust-bin.stable.latest.default.override {
-          extensions = [ "rust-src" "rust-analyzer" ];
+          extensions = [
+            "rust-src"
+            "rust-analyzer"
+          ];
         };
       in
       {
@@ -35,7 +46,9 @@
           pname = "bevy-app";
           version = "0.1.0";
           src = ./.;
-          cargoLock = { lockFile = ./Cargo.lock; };
+          cargoLock = {
+            lockFile = ./Cargo.lock;
+          };
 
           inherit nativeBuildInputs buildInputs;
 
@@ -49,7 +62,7 @@
           nativeBuildInputs = nativeBuildInputs ++ [ rustToolchain ];
           inherit buildInputs;
           LD_LIBRARY_PATH = pkgs.lib.makeLibraryPath buildInputs;
-          
+
           shellHook = ''
             echo "🎮 Bevy Dev Environment Loaded"
             if [ ! -f Cargo.toml ]; then

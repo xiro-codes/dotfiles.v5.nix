@@ -11,7 +11,7 @@ in
   # 1. Define your module options here
   options.local.my-module = {
     enable = lib.mkEnableOption "my custom system module";
-    
+
     # Example string option:
     # mySetting = lib.mkOption {
     #   type = lib.types.str;

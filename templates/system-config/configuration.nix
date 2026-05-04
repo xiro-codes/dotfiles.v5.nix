@@ -17,7 +17,10 @@
 
   users.users.tod = {
     isNormalUser = true;
-    extraGroups = [ "networkmanager" "wheel" ];
+    extraGroups = [
+      "networkmanager"
+      "wheel"
+    ];
     initialPassword = "password";
   };
 

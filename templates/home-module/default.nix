@@ -11,7 +11,7 @@ in
   # 1. Define your home-manager module options here
   options.local.my-home-module = {
     enable = lib.mkEnableOption "my custom home module";
-    
+
     # Example option:
     # package = lib.mkOption {
     #   type = lib.types.package;

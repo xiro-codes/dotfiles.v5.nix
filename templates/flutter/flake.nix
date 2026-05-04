@@ -6,27 +6,36 @@
     flake-utils.url = "github:numtide/flake-utils";
   };
 
-  outputs = { self, nixpkgs, flake-utils }:
-    flake-utils.lib.eachDefaultSystem (system:
+  outputs =
+    {
+      self,
+      nixpkgs,
+      flake-utils,
+    }:
+    flake-utils.lib.eachDefaultSystem (
+      system:
       let
         pkgs = import nixpkgs {
           inherit system;
-          config = { allowUnfree = true; };
+          config = {
+            allowUnfree = true;
+          };
         };
 
         fhs = pkgs.buildFHSEnv {
           name = "flutter-env";
-          targetPkgs = pkgs: with pkgs; [
-            flutter
-            dart
-            jdk17
-            android-tools
-            cacert
-            zlib
-            ncurses5
-            stdenv.cc.cc.lib
-            curl
-          ];
+          targetPkgs =
+            pkgs: with pkgs; [
+              flutter
+              dart
+              jdk17
+              android-tools
+              cacert
+              zlib
+              ncurses5
+              stdenv.cc.cc.lib
+              curl
+            ];
           profile = ''
             export NIX_SSL_CERT_FILE="${pkgs.cacert}/etc/ssl/certs/ca-bundle.crt"
             export SSL_CERT_FILE="${pkgs.cacert}/etc/ssl/certs/ca-bundle.crt"
