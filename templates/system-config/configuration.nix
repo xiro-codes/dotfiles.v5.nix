@@ -1,51 +1,32 @@
-{ pkgs, ... }:
+{ config, pkgs, ... }:
+
 {
-  imports = [ ./hardware-configuration.nix ];
-  local = {
-    cache.enable = true;
-    bootloader = {
-      mode = "TEMPLATE_BOOT_MODE";
-      uefiType = "TEMPLATE_UEFI_TYPE";
-      device = "TEMPLATE_DISK";
-    };
-    maintenance = {
-      enable = true;
-      autoUpgrade = true;
-    };
-    audio.enable = true;
-    bluetooth.enable = true;
-    gaming.enable = true;
-    userManager.enable = true;
-    repoManager.enable = true;
-    gitSync.enable = true;
-    settings.enable = true;
-    network = {
-      enable = true;
-      useNetworkManager = true;
-    };
-    desktops = {
-      enable = true;
-      enableEnv = true;
-      hyprland = true;
-    };
+  imports = [
+    ./hardware-configuration.nix
+    ./disko.nix
+  ];
+
+  # Basic bootloader configuration
+  boot.loader.systemd-boot.enable = true;
+  boot.loader.efi.canTouchEfiVariables = true;
+
+  networking.hostName = "nixos"; # Define your hostname.
+  networking.networkmanager.enable = true;
+
+  time.timeZone = "UTC";
+
+  users.users.tod = {
+    isNormalUser = true;
+    extraGroups = [ "networkmanager" "wheel" ];
+    initialPassword = "password";
   };
 
-  users.users.TEMPLATE_USER = {
-    shell = pkgs.fish;
-    initialPassword = "TEMPLATE_PASS";
-  };
+  # Enable the OpenSSH daemon.
+  services.openssh.enable = true;
 
-  services.sshd.enable = true;
-  programs = {
-    firefox.enable = true;
-    gpu-screen-recorder.enable = true;
-    git = {
-      enable = true;
-      config = {
-        safe.directory = "/etc/nixos";
-      };
-    };
-  };
-
+  # This value determines the NixOS release from which the default
+  # settings for stateful data, like file locations and database versions
+  # on your system were taken. It‘s perfectly fine and recommended to leave
+  # this value at the release version of the first install of this system.
   system.stateVersion = "25.11";
 }
