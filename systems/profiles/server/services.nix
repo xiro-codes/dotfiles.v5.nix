@@ -31,7 +31,7 @@
       openFirewall = true;
       declarative = true;
       jvmOpts = "-Xms6G -Xmx6G";
-      package = inputs.self.packages.${pkgs.system}.tekkit-server;
+      package = self.packages.${pkgs.system}.tekkit-server;
       serverProperties = {
         server-port = 25565;
         difficulty = 1;

@@ -2,6 +2,7 @@
   pkgs,
   lib,
   inputs,
+  self,
   ...
 }:
 let
@@ -37,7 +38,7 @@ let
         transformOptions =
           opt:
           let
-            flakeRoot = toString inputs.self;
+            flakeRoot = toString self;
             cleanStr =
               str:
               if builtins.isString str && lib.hasPrefix flakeRoot str then
@@ -106,7 +107,7 @@ let
         transformOptions =
           opt:
           let
-            flakeRoot = toString inputs.self;
+            flakeRoot = toString self;
             cleanStr =
               str:
               if builtins.isString str && lib.hasPrefix flakeRoot str then

@@ -1,6 +1,7 @@
 {
   pkgs,
   inputs,
+  self,
   ...
 }:
 let
@@ -12,7 +13,7 @@ pkgs.runCommand "dotfiles-docs-site"
       pkgs.mdbook
       pkgs.graphviz
       pkgs.python3
-      inputs.self.packages.${system}.docs-generated
+      self.packages.${system}.docs-generated
     ];
   }
   ''
@@ -24,7 +25,7 @@ pkgs.runCommand "dotfiles-docs-site"
     chmod -R +w tmp_book/src
 
     # Copy generated docs
-    cp -r ${inputs.self.packages.${system}.docs-generated}/* tmp_book/src/
+    cp -r ${self.packages.${system}.docs-generated}/* tmp_book/src/
 
     # Append generated options to handwritten docs
     cat << 'EOF' > merge.py

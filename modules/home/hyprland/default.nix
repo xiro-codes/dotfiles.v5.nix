@@ -15,8 +15,8 @@ let
     ;
   cfg = config.local.hyprland;
   variables = config.local.variables;
-  hypr-tools = inputs.self.packages.${pkgs.stdenv.hostPlatform.system}.hypr-tools;
-  quick-menu = inputs.self.packages.${pkgs.stdenv.hostPlatform.system}.quick-menu;
+  hypr-tools = self.packages.${pkgs.stdenv.hostPlatform.system}.hypr-tools;
+  quick-menu = self.packages.${pkgs.stdenv.hostPlatform.system}.quick-menu;
 in
 {
   options.local.hyprland = {

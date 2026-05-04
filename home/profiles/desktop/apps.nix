@@ -22,6 +22,6 @@
       unzip
       p7zip
     ]
-    ++ (with inputs.self.packages.${pkgs.stdenv.hostPlatform.system}; [
+    ++ (with self.packages.${pkgs.stdenv.hostPlatform.system}; [
     ]);
 }

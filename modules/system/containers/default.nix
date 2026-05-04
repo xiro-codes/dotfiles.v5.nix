@@ -53,7 +53,7 @@ in
           autoStart = cfg.${name}.autoStart;
           privateNetwork = cfg.${name}.privateNetwork;
           macvlans = cfg.${name}.macvlans;
-          path = inputs.self.nixosContainers.${name}.config.system.build.toplevel;
+          path = self.nixosContainers.${name}.config.system.build.toplevel;
         };
       }) containerNames
     );

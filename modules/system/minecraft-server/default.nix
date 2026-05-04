@@ -34,7 +34,7 @@ let
   );
 
   stopScript = "${
-    inputs.self.packages.${pkgs.stdenv.hostPlatform.system}.minecraft-server-stop
+    self.packages.${pkgs.stdenv.hostPlatform.system}.minecraft-server-stop
   }/bin/minecraft-server-stop";
 
   queryPort =
@@ -182,7 +182,7 @@ in
     users.groups.minecraft = { };
 
     environment.systemPackages = [
-      inputs.self.packages.${pkgs.stdenv.hostPlatform.system}.mc-console
+      self.packages.${pkgs.stdenv.hostPlatform.system}.mc-console
     ]
     ++ optional (cfg.serverProperties.enable-rcon or false) pkgs.mcrcon;
 

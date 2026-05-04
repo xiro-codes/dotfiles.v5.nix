@@ -69,7 +69,7 @@ in
         EnvironmentFile = cfg.secretFile;
         ExecStartPre = "${pkgs.coreutils}/bin/mkdir -p ${cfg.directory}";
         ExecStart = "${
-          inputs.self.packages.${pkgs.stdenv.hostPlatform.system}.gog-sync-script
+          self.packages.${pkgs.stdenv.hostPlatform.system}.gog-sync-script
         }/bin/gog-sync-script ${cfg.directory} ${cfg.platforms} ${cfg.extraArgs}";
       };
     };

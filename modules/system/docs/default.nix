@@ -23,7 +23,7 @@ in
     };
     package = mkOption {
       type = types.package;
-      default = inputs.self.packages.x86_64-linux.docs-site;
+      default = self.packages.x86_64-linux.docs-site;
       description = "The documentation package to serve.";
     };
   };

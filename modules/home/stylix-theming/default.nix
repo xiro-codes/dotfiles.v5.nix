@@ -64,7 +64,7 @@ in
           sha256 = "sha256-Lp6CAHJc+rJEWDo3z9DtH/J543zdJth079M3nMW1OwM=";
         };
         cursor = {
-          package = inputs.self.packages.x86_64-linux.fuchsia-cursor;
+          package = self.packages.x86_64-linux.fuchsia-cursor;
           name = "fuchsia";
           size = 16;
         };

@@ -71,7 +71,7 @@ in
       };
       script =
         let
-          prefetchScript = inputs.self.packages.${pkgs.stdenv.hostPlatform.system}.harmonia-prefetch;
+          prefetchScript = self.packages.${pkgs.stdenv.hostPlatform.system}.harmonia-prefetch;
         in
         "${prefetchScript}/bin/prefetch ${cfg.prefetch.path} ${builtins.concatStringsSep " " cfg.prefetch.hostNames}";
     };

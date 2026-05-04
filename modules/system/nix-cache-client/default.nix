@@ -36,7 +36,7 @@ in
     environment.systemPackages = with pkgs; [ ];
     nix.settings = {
       post-build-hook = "${
-        inputs.self.packages.${pkgs.stdenv.hostPlatform.system}.upload-to-onix
+        self.packages.${pkgs.stdenv.hostPlatform.system}.upload-to-onix
       }/bin/upload-to-onix";
       trusted-users = [ "@wheel" ];
       substituters = [
