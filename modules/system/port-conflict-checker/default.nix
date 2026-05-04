@@ -21,7 +21,6 @@ let
   # Collect all configured ports
   configuredPorts = flatten [
     (optional (cfg.dashboard.enable) (mkPort "Dashboard" cfg.dashboard.port))
-    (optional (cfg.docs.enable) (mkPort "Docs" cfg.docs.port))
     (optional (cfg.gitea.enable) (mkPort "Gitea Web" cfg.gitea.port))
     (optional (cfg.gitea.enable) (mkPort "Gitea SSH" (cfg.gitea.sshPort or 2222)))
     (optional (cfg.file-browser.enable) (mkPort "File Browser" cfg.file-browser.port))

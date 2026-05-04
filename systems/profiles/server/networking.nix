@@ -36,7 +36,6 @@
 
         pihole.target = "http://localhost:8053";
         # files.target = "http://localhost:${toString config.local.file-browser.port}";
-        docs.target = "http://localhost:3088";
         cache.target = "http://localhost:5000";
       };
     };

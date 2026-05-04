@@ -105,15 +105,6 @@ in
 
           # Build service list based on what's enabled
           servicesList = flatten [
-            # Documentation
-            (optional (config.local.docs.enable) {
-              Docs = {
-                icon = "mdi-book-information";
-                href = serviceUrl "docs" config.local.docs.port;
-                description = "Dotfiles Documentation";
-              };
-            })
-
             # Services section
             [
               {

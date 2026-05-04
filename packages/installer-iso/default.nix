@@ -6,7 +6,7 @@
 }:
 (inputs.nixpkgs.lib.nixosSystem {
   system = "x86_64-linux";
-  specialArgs = { inherit inputs self inputs-nix; };
+  specialArgs = { inherit inputs self inputs-nix; currentHostUsers = []; };
   modules = [
     #self.nixosModules.cache
     self.nixosModules.network-hosts

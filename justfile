@@ -32,33 +32,6 @@ clear-undos:
         echo "🧹 Local .undo_dir files cleared for this repository."; \
     fi
 
-# Generate module documentation
-[group('docs')]
-gen-docs:
-    @echo "📚 Generating module documentation..."
-    nix build .#docs-generated
-    mkdir -p docs
-    cp -f result/README.md docs/modules.md
-    cp -f result/system-modules.md docs/system-modules.md
-    cp -f result/home-modules.md docs/home-modules.md
-    @echo "✅ Documentation generated in docs/"
-
-# Serve docs locally and open in browser
-[group('docs')]
-serve-docs:
-    nix run .#serve-docs
-
-# Build the static documentation site
-[group('docs')]
-build-docs:
-    nix build .#docs-site
-    @echo "✅ Static site built in ./result"
-
-# View docs in terminal
-[group('docs')]
-view-docs:
-    nix run .#view-docs
-
 # Edit system secrets
 [group('secrets')]
 edit-secrets:
