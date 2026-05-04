@@ -1,11 +1,11 @@
-{ inputs, self, ... }:
+{ inputs, self, inputs-nix, ... }:
 (inputs.nixpkgs.lib.nixosSystem {
   system = "x86_64-linux";
-  specialArgs = { inherit inputs self; };
+  specialArgs = { inherit inputs self inputs-nix; };
   modules = [
     #self.nixosModules.cache
     self.nixosModules.network-hosts
-    self.nixosModules.nix-core-settings
+    inputs-nix.nixosModules.default
     {
       local = {
         #cache.enable = true;

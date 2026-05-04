@@ -20,7 +20,7 @@
       systems = [ "x86_64-linux" ];
 
       imports = [
-        ./parts/schemas.nix
+        (inputs-nix.schemaBuilder inputs.self.outPath)
         inputs-nix.inputs.nix-topology.flakeModule
         (inputs-nix.discovery {
           globalNixosModules = [

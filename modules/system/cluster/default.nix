@@ -2,6 +2,7 @@
   config,
   lib,
   inputs,
+  inputs-nix,
   self,
   ...
 }:
@@ -26,10 +27,10 @@ let
 
   # Mirrors flake.nix globals.
   globalNixosModules = [
-    inputs.nixosModules.default
+    inputs-nix.nixosModules.default
     inputs.nix-topology.nixosModules.default
   ];
-  globalHomeModules = [ inputs.homeModules.default ];
+  globalHomeModules = [ inputs-nix.homeModules.default ];
 
   # Builds a fully-featured container config for a named template, identical to
   # what genConfigs in parts/discovery/nixos.nix produces for a regular system.
@@ -54,7 +55,7 @@ let
             home-manager = {
               backupFileExtension = "backup";
               backupCommand = "${inputs.nixpkgs.legacyPackages.x86_64-linux.trash-cli}/bin/trash";
-              extraSpecialArgs = { inherit self inputs; };
+              extraSpecialArgs = { inherit self inputs inputs-nix; };
               sharedModules = (attrValues self.homeModules) ++ globalHomeModules;
               users = listToAttrs (
                 map (u: {
@@ -67,7 +68,7 @@ let
         ]
         ++ (attrValues self.nixosModules);
       _module.args = {
-        inherit self inputs;
+        inherit self inputs inputs-nix;
         currentHostName = name;
         currentHostUsers = map (u: u.user) templateUsers;
         nodeId = idx;
