@@ -48,6 +48,10 @@ in
         cfg.publicKey
         "cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY="
       ];
+      connect-timeout = 3;
+      stalled-download-timeout = 15;
+      download-attempts = 2;
+
     };
   };
 }

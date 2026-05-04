@@ -99,15 +99,27 @@ gc host:
 rebuild:
     sudo nixos-rebuild switch --flake . --impure
 
+[group('life')]
+rebuild-no-cache:
+    sudo nixos-rebuild switch --flake . --impure --option substituters "https://cache.nixos.org/"
+
 # Switch local system configuration using nh
 [group('life')]
 switch:
     nh os switch . -- --impure
 
+[group('life')]
+switch-no-cache:
+    nh os switch . -- --impure --option substituters "https://cache.nixos.org/"
+
 # Set next boot generation using nh
 [group('life')]
 boot:
     nh os boot . -- --impure
+
+[group('life')]
+boot-no-cache:
+    nh os boot . -- --impure --option substituters "https://cache.nixos.org/"
 
 # Install a system from scratch using disko
 [group('install')]
