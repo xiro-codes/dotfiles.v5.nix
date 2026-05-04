@@ -3,74 +3,82 @@
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
-    flake-utils.url = "github:numtide/flake-utils";
-    rust-overlay.url = "github:oxalica/rust-overlay";
+    flake-parts = {
+      url = "github:hercules-ci/flake-parts";
+      inputs.nixpkgs-lib.follows = "nixpkgs";
+    };
+    rust-overlay = {
+      url = "github:oxalica/rust-overlay";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs =
-    {
-      self,
-      nixpkgs,
-      flake-utils,
-      rust-overlay,
-      ...
-    }:
-    flake-utils.lib.eachDefaultSystem (
-      system:
-      let
-        overlays = [ (import rust-overlay) ];
-        pkgs = import nixpkgs { inherit system overlays; };
+    inputs@{ flake-parts, rust-overlay, ... }:
+    flake-parts.lib.mkFlake { inherit inputs; } {
+      systems = [
+        "x86_64-linux"
+        "aarch64-linux"
+        "x86_64-darwin"
+        "aarch64-darwin"
+      ];
+      perSystem =
+        { pkgs, system, ... }:
+        let
+          overlays = [ (import rust-overlay) ];
+          pkgsWithRust = import inputs.nixpkgs { inherit system overlays; };
 
-        nativeBuildInputs = with pkgs; [ pkg-config ];
-        buildInputs = with pkgs; [
-          udev
-          alsa-lib
-          vulkan-loader
-          libxkbcommon
-          wayland
-          libx11
-          libxcursor
-          libxi
-          libxrandr
-        ];
-
-        rustToolchain = pkgs.rust-bin.stable.latest.default.override {
-          extensions = [
-            "rust-src"
-            "rust-analyzer"
+          nativeBuildInputs = with pkgsWithRust; [ pkg-config ];
+          buildInputs = with pkgsWithRust; [
+            udev
+            alsa-lib
+            vulkan-loader
+            libxkbcommon
+            wayland
+            libx11
+            libxcursor
+            libxi
+            libxrandr
           ];
-        };
-      in
-      {
-        packages.default = pkgs.rustPlatform.buildRustPackage {
-          pname = "bevy-app";
-          version = "0.1.0";
-          src = ./.;
-          cargoLock = {
-            lockFile = ./Cargo.lock;
+
+          rustToolchain = pkgsWithRust.rust-bin.stable.latest.default.override {
+            extensions = [
+              "rust-src"
+              "rust-analyzer"
+            ];
+          };
+        in
+        {
+          formatter = pkgs.nixfmt;
+          packages.default = pkgsWithRust.rustPlatform.buildRustPackage {
+            pname = "bevy-app";
+            version = "0.1.0";
+            src = ./.;
+            cargoLock = {
+              lockFile = ./Cargo.lock;
+            };
+
+            inherit nativeBuildInputs buildInputs;
+
+            postInstall = ''
+              ${pkgsWithRust.wrapProgram}/bin/wrapProgram $out/bin/my_bevy_game \
+                --prefix LD_LIBRARY_PATH : "${pkgsWithRust.lib.makeLibraryPath buildInputs}"
+            '';
           };
 
-          inherit nativeBuildInputs buildInputs;
+          devShells.default = pkgsWithRust.mkShell {
+            nativeBuildInputs = nativeBuildInputs ++ [ rustToolchain ];
+            inherit buildInputs;
+            LD_LIBRARY_PATH = pkgsWithRust.lib.makeLibraryPath buildInputs;
 
-          postInstall = ''
-            ${pkgs.wrapProgram}/bin/wrapProgram $out/bin/my_bevy_game \
-              --prefix LD_LIBRARY_PATH : "${pkgs.lib.makeLibraryPath buildInputs}"
-          '';
+            shellHook = ''
+              echo "🎮 Bevy Dev Environment Loaded"
+              if [ ! -f Cargo.toml ]; then
+                echo "=> No Cargo.toml found. Run 'cargo init' and 'cargo add bevy' to start."
+              fi
+              echo "Run 'direnv allow' to automatically load this environment."
+            '';
+          };
         };
-
-        devShells.default = pkgs.mkShell {
-          nativeBuildInputs = nativeBuildInputs ++ [ rustToolchain ];
-          inherit buildInputs;
-          LD_LIBRARY_PATH = pkgs.lib.makeLibraryPath buildInputs;
-
-          shellHook = ''
-            echo "🎮 Bevy Dev Environment Loaded"
-            if [ ! -f Cargo.toml ]; then
-              echo "=> No Cargo.toml found. Run 'cargo init' and 'cargo add bevy' to start."
-            fi
-            echo "Run 'direnv allow' to automatically load this environment."
-          '';
-        };
-      }
-    );
+    };
 }
