@@ -33,6 +33,9 @@ let
     }
   );
 in
-pkgs.writeShellScriptBin "quick-menu" ''
-  exec ${lib.getExe pkgs.wlr-which-key} ${configFile}
-''
+pkgs.writeShellApplication {
+  name = "quick-menu";
+  text = ''
+    exec ${lib.getExe pkgs.wlr-which-key} ${configFile}
+  '';
+}
