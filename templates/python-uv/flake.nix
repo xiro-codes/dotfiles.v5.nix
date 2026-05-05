@@ -2,9 +2,9 @@
   description = "Python development environment with uv";
 
   inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
+    nixpkgs.url = "github:NixOS/nixpkgs/15f4ee454b1dce334612fa6843b3e05cf546efab";
     flake-parts = {
-      url = "github:hercules-ci/flake-parts";
+      url = "github:hercules-ci/flake-parts/71a3a77326609675e9f8b51084cf23d5d1945899";
       inputs.nixpkgs-lib.follows = "nixpkgs";
     };
   };

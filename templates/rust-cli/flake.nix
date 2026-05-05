@@ -2,13 +2,13 @@
   description = "A standard Rust CLI application";
 
   inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
+    nixpkgs.url = "github:NixOS/nixpkgs/15f4ee454b1dce334612fa6843b3e05cf546efab";
     flake-parts = {
-      url = "github:hercules-ci/flake-parts";
+      url = "github:hercules-ci/flake-parts/71a3a77326609675e9f8b51084cf23d5d1945899";
       inputs.nixpkgs-lib.follows = "nixpkgs";
     };
     rust-overlay = {
-      url = "github:oxalica/rust-overlay";
+      url = "github:oxalica/rust-overlay/366ea19e0e55b768f74b7a0b2a20f847e7ae828d";
       inputs.nixpkgs.follows = "nixpkgs";
     };
   };
