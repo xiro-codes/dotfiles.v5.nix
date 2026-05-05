@@ -2,6 +2,7 @@
   config,
   lib,
   pkgs,
+  inputs,
   ...
 }:
 let
@@ -93,6 +94,7 @@ in
     };
     services.qbittorrent = mkIf cfg.qbittorrent.enable {
       enable = true;
+      package = inputs.nixos-stable.legacyPackages.${pkgs.system}.qbittorrent-nox;
       openFirewall = cfg.qbittorrent.openFirewall;
       webuiPort = cfg.qbittorrent.port;
     };
