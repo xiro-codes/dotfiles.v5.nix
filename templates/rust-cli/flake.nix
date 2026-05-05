@@ -11,10 +11,6 @@
       url = "github:oxalica/rust-overlay/366ea19e0e55b768f74b7a0b2a20f847e7ae828d";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    nvim-nix = {
-      url = "path:/home/tod/Projects/nvim.nix";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
   };
 
   outputs =
@@ -54,7 +50,6 @@
             nativeBuildInputs = with pkgsWithRust; [
               rustToolchain
               pkg-config
-              inputs.nvim-nix.packages.${system}.python-rust
             ];
             buildInputs = with pkgsWithRust; [ ];
 

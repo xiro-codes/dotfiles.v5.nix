@@ -8,7 +8,7 @@
       inputs.nixpkgs-lib.follows = "nixpkgs";
     };
     nvim-nix = {
-      url = "path:/home/tod/Projects/nvim.nix";
+      url = "github:xiro-codes/nvim.nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
   };
