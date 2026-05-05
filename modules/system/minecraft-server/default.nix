@@ -169,6 +169,13 @@ in
           + "-XX:MinHeapFreeRatio=5 -XX:MaxHeapFreeRatio=10";
         description = "JVM options for the Minecraft server.";
       };
+
+      bootDelay = mkOption {
+        type = types.str;
+        default = "";
+        example = "5m";
+        description = "Delay the startup of the Minecraft server after boot (systemd time span format). If empty, no delay is applied.";
+      };
     };
   };
 
@@ -201,7 +208,7 @@ in
 
     systemd.services.minecraft-server = {
       description = "Minecraft Server Service";
-      wantedBy = [ "multi-user.target" ];
+      wantedBy = mkIf (cfg.bootDelay == "") [ "multi-user.target" ];
       requires = [ "minecraft-server.socket" ];
       after = [
         "network.target"
@@ -279,6 +286,15 @@ in
             fi
           ''
       );
+    };
+
+    systemd.timers.minecraft-server = mkIf (cfg.bootDelay != "") {
+      description = "Timer for Minecraft Server";
+      wantedBy = [ "timers.target" ];
+      timerConfig = {
+        OnBootSec = cfg.bootDelay;
+        Unit = "minecraft-server.service";
+      };
     };
 
     networking.firewall = mkIf cfg.openFirewall (

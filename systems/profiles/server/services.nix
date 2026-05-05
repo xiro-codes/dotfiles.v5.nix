@@ -28,6 +28,7 @@
     };
     minecraft-server = {
       enable = true;
+      bootDelay = "5m";
       eula = true;
       openFirewall = true;
       declarative = true;
