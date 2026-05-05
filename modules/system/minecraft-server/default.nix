@@ -284,12 +284,14 @@ in
     networking.firewall = mkIf cfg.openFirewall (
       if cfg.declarative then
         {
-          allowedUDPPorts = [ serverPort ];
+          allowedUDPPorts = [
+            # serverPort
+          ];
           allowedTCPPorts = [
-            serverPort
+            # serverPort
           ]
-          ++ optional (queryPort != null) queryPort
-          ++ optional (rconPort != null) rconPort;
+          ++ optional (queryPort != null) queryPort;
+          # ++ optional (rconPort != null) rconPort;
         }
       else
         {
