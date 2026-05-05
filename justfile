@@ -76,18 +76,18 @@ list-backups:
 # Deploy specific host using deploy-rs
 [group('deploy')]
 deploy host=HOST:
-    deploy .#{{host}} -- --impure
+    deploy -s .#{{host}} -- --impure
 
 # Deploy all nodes in the flake
 [group('deploy')]
 deploy-all:
-    deploy . -- --impure
+    deploy -s . -- --impure
 
 # Safety check before deploying (eval and dry-run)
 [group('deploy')]
 check:
     nix flake check --impure
-    deploy . --dry-activate -- --impure
+    deploy -s . --dry-activate -- --impure
 
 # Garbage collect a remote node to save space
 [group('deploy')]
