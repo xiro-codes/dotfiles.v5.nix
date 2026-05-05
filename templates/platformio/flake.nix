@@ -7,6 +7,10 @@
       url = "github:hercules-ci/flake-parts/71a3a77326609675e9f8b51084cf23d5d1945899";
       inputs.nixpkgs-lib.follows = "nixpkgs";
     };
+    nvim-nix = {
+      url = "path:/home/tod/Projects/nvim.nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs =
@@ -19,7 +23,7 @@
         "aarch64-darwin"
       ];
       perSystem =
-        { pkgs, ... }:
+        { pkgs, system, ... }:
         {
           formatter = pkgs.nixfmt;
           devShells.default = pkgs.mkShell {
@@ -29,6 +33,7 @@
               python3Packages.pyserial
               clang-tools
               cppcheck
+              inputs.nvim-nix.packages.${system}.python
             ];
 
             shellHook = ''

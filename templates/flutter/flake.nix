@@ -7,6 +7,10 @@
       url = "github:hercules-ci/flake-parts/71a3a77326609675e9f8b51084cf23d5d1945899";
       inputs.nixpkgs-lib.follows = "nixpkgs";
     };
+    nvim-nix = {
+      url = "path:/home/tod/Projects/nvim.nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs =
@@ -41,6 +45,7 @@
                 ncurses5
                 stdenv.cc.cc.lib
                 curl
+                inputs.nvim-nix.packages.${system}.default
               ];
             profile = ''
               export NIX_SSL_CERT_FILE="${pkgs.cacert}/etc/ssl/certs/ca-bundle.crt"

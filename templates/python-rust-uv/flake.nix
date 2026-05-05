@@ -1,5 +1,5 @@
 {
-  description = "Python development environment with uv";
+  description = "Python and Rust development environment with uv and maturin";
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/15f4ee454b1dce334612fa6843b3e05cf546efab";
@@ -27,19 +27,52 @@
         {
           formatter = pkgs.nixfmt;
           packages.default = pkgs.writeShellApplication {
-            name = "python-app";
-            runtimeInputs = with pkgs; [ python313 ];
+            name = "python-rust-app";
+            runtimeInputs = with pkgs; [
+              python3
+              uv
+              maturin
+              rustc
+              cargo
+              pkg-config
+              openssl
+              stdenv.cc
+            ];
             text = ''
-              python ${./app/main.py}
+              if [ ! -d ".venv" ]; then
+                # Use uv to create venv if available, otherwise python -m venv
+                if command -v uv > /dev/null; then
+                  uv venv
+                else
+                  python -m venv .venv
+                fi
+              fi
+              # shellcheck disable=SC1091
+              source .venv/bin/activate
+              maturin develop
+              python app/main.py
             '';
           };
           devShells.default = pkgs.mkShell {
             nativeBuildInputs = with pkgs; [
+              # Python Tooling
               uv
               python313
               ruff
               basedpyright
-              inputs.nvim-nix.packages.${system}.python
+
+              # Rust Tooling
+              rustc
+              cargo
+              rust-analyzer
+              rustfmt
+              clippy
+              maturin
+              pkg-config
+              openssl
+
+              # Custom Editor
+              inputs.nvim-nix.packages.${system}.python-rust
             ];
 
             shellHook = ''
@@ -52,10 +85,10 @@
 
               source .venv/bin/activate
 
-              echo "🐍 Python Dev Shell Active (uv)"
-              echo "Python: $(python --version) | uv: $(uv --version)"
+              echo "🐍🦀 Python-Rust Dev Shell Active (uv + maturin)"
+              echo "Python: $(python --version) | Rust: $(rustc --version) | uv: $(uv --version)"
               if [ ! -f pyproject.toml ]; then
-                echo "=> No pyproject.toml found. Run 'uv init' to initialize the project."
+                echo "=> No pyproject.toml found. Run 'maturin init' to initialize the project."
               fi
               echo "Run 'direnv allow' to automatically load this environment."
             '';
