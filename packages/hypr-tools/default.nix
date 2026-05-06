@@ -106,6 +106,19 @@ let
       fi
     '';
   };
+
+  hypr-layout-toggle = pkgs.writeShellApplication {
+    name = "hypr-layout-toggle";
+    text = ''
+      current_layout=$(hyprctl getoption general:layout -j | jq -r '.str')
+
+      if [ "$current_layout" = "scrolling" ]; then
+        hyprctl keyword general:layout "master"
+      else
+        hyprctl keyword general:layout "scrolling"
+      fi
+    '';
+  };
 in
 pkgs.symlinkJoin {
   name = "hypr-tools";
@@ -114,5 +127,6 @@ pkgs.symlinkJoin {
     hypr-move-to-set
     hypr-switch-set
     hypr-gaming-mode
+    hypr-layout-toggle
   ];
 }

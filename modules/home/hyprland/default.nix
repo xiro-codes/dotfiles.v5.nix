@@ -114,6 +114,7 @@ in
           # Window management
           "$mod, C, togglespecialworkspace, chromeos"
           "$mod, Space, layoutmsg, swapwithmaster master"
+          "$mod, M, exec, hypr-layout-toggle"
           "$mod_SHIFT, Q, killactive"
           "$mod, F, fullscreen"
           "$mod_SHIFT, F, togglefloating"
