@@ -9,20 +9,6 @@
 let
   inherit (lib) mkEnableOption mkIf mkMerge;
   cfg = config.local;
-  remoteWallpaper =
-    {
-      wallpaper,
-      sha256,
-    }:
-    pkgs.fetchurl {
-      url = "https://wallpapers.onix.home/${wallpaper}";
-      inherit sha256;
-      curlOptsList = [
-        "-X"
-        "GET"
-        "--insecure"
-      ];
-    };
 in
 {
   options.local = {
@@ -52,21 +38,17 @@ in
 
     # Stylix
     (mkIf cfg.stylix.enable {
-      # Create .wallpaper symlink in home directory
-      home.file.".wallpaper".source = remoteWallpaper {
-        wallpaper = "miku.jpeg";
-        sha256 = "sha256-Lp6CAHJc+rJEWDo3z9DtH/J543zdJth079M3nMW1OwM=";
+      local.wallpapers.enable = true;
+
+      programs.fuchsia-cursor = {
+        enable = true;
+        stylixIntegration.enable = true;
       };
 
       stylix = {
         enable = true;
-        image = remoteWallpaper {
-          wallpaper = "miku.jpeg";
-          sha256 = "sha256-Lp6CAHJc+rJEWDo3z9DtH/J543zdJth079M3nMW1OwM=";
-        };
+        image = config.local.wallpapers.path;
         cursor = {
-          package = self.packages.x86_64-linux.fuchsia-cursor;
-          name = "fuchsia";
           size = 16;
         };
         opacity = {

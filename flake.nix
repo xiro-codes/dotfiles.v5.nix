@@ -9,6 +9,7 @@
       url = "github:xiro-codes/inputs.nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    fuchsia-cursor.url = "git+file:///home/tod/Projects/fuchsia-cursor";
   };
 
   outputs =
@@ -30,7 +31,10 @@
             inputs-nix.nixosModules.default
             inputs-nix.inputs.nix-topology.nixosModules.default
           ];
-          globalHomeModules = [ inputs-nix.homeModules.default ];
+          globalHomeModules = [
+            inputs-nix.homeModules.default
+            inputs.fuchsia-cursor.homeModules.default
+          ];
         })
       ];
       perSystem =

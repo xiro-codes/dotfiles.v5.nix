@@ -26,6 +26,10 @@ in
       '';
     })
   ];
+  programs.fuchsia-cursor = {
+    enable = true;
+    stylixIntegration.enable = true;
+  };
   services.espanso = {
     enable = true;
     package = pkgs.espanso-wayland;
