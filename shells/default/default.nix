@@ -15,6 +15,7 @@ pkgs.mkShell {
     inputs.inputs-nix.inputs.deploy-rs.packages.x86_64-linux.deploy-rs
     gitlogue
     nixfmt-tree
+    gource
   ];
   packages = with pkgs; [
     caligula
