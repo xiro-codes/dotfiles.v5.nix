@@ -1,0 +1,21 @@
+/target
+.direnv
+result
+
+# Application logs
+output.log
+
+# Sea-ORM automation temporary files
+models/custom_code_backup.json
+models/src.backup/
+
+# Python cache files
+scripts/__pycache__/
+
+# Docker volume backups
+backups/
+
+# Test scripts (temporary)
+test-docker-backup.sh
+.tmp
+**/target

@@ -38,7 +38,7 @@
       perSystem =
         { config, pkgs, ... }:
         {
-          formatter = pkgs.nixfmt;
+          formatter = pkgs.nixfmt-tree;
           topology.modules = [
             ./topology.nix
           ];

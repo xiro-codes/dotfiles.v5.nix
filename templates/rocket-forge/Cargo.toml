@@ -1,0 +1,72 @@
+[package]
+name = "app"
+version = "0.1.0"
+edition = "2021"
+
+[lib]
+name = "app"
+path = "src/lib.rs"
+
+[[bin]]
+name = "app"
+path = "src/main.rs"
+
+
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+aes-gcm = "0.10.3"
+async-trait = "0.1.74"
+base64 = "0.22.1"
+clap = { version = "4.0", features = ["derive"] }
+fern = "0.7.1"
+humantime = "2.2.0"
+lipsum = "0.9.1"
+log = "0.4.27"
+markdown = "1.0.0"
+migrations = {path = "./migrations" }
+mime_guess = "2.0.5"
+models = { path = "./models" }
+query_builder_macro = { path = "./query_builder_macro" }
+pwhash = "1.0.0"
+rand = "0.8.1"
+rand_mt = "5.0.0"
+reqwest = { version = "0.11.22", features = ["json"] }
+
+sea-orm-rocket = "0.5.5"
+serde_json = "1.0"
+slug = "0.1.6"
+tokio = { version = "1.0", features = ["full"] }
+redis = { version = "1.1.0", features = ["tokio-comp"] }
+
+[dependencies.rocket]
+version = "0.5"
+features = [ "http2", "json", "uuid", "secrets"]
+
+[dependencies.rocket_dyn_templates]
+version = "0.2"
+features = ["minijinja"]
+
+[dependencies.sea-orm]
+version = "1.1.1"
+features = [ "sqlx-postgres", "sqlx-sqlite", "runtime-tokio-rustls", "macros", "mock"]
+
+[dependencies.chrono]
+version = "0.4.31"
+features = ["serde"]
+
+[dependencies.chrono-tz]
+version = "0.10.0"
+features = ["serde"]
+
+[dependencies.uuid]
+version = "1.4.1"
+features = ["v4", "serde"]
+
+[dev-dependencies]
+# Using only basic test features that don't require external downloads
+tokio = { version = "1.0", features = ["test-util"] }
+
+[workspace]
+members = ["migrations", "models", "query_builder_macro"]

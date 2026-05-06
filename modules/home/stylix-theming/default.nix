@@ -40,7 +40,6 @@ in
     (mkIf cfg.stylix.enable {
       local.wallpapers.enable = true;
 
-
       programs.fuchsia-cursor = {
         enable = true;
         name = "Stylix-fuchsia";

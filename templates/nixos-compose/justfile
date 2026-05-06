@@ -1,0 +1,17 @@
+up vm="test-vm":
+    nixos-compose up {{vm}}
+
+down:
+    nixos-compose down
+
+ssh vm="test-vm":
+    nixos-compose ssh {{vm}}
+
+status:
+    nixos-compose status
+
+list:
+    nixos-compose list
+
+ip vm="test-vm":
+    nixos-compose ip {{vm}}
