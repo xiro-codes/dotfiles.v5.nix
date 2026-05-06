@@ -1,11 +1,12 @@
 {
   inputs,
   pkgs,
+  inputs-nix,
   ...
 }:
 {
   environment.systemPackages = [
-    inputs.zen-browser.packages.${pkgs.stdenv.hostPlatform.system}.default
+    inputs-nix.inputs.zen-browser.packages.${pkgs.stdenv.hostPlatform.system}.default
   ];
   programs.kdeconnect.enable = true;
 }
