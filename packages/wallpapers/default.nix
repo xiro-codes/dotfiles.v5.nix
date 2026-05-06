@@ -37,11 +37,11 @@ pkgs.linkFarm "wallpapers" [
     };
   }
   {
-    name = "disco.png";
+    name = "deskmat-2.jpg";
     path = fetchWallpaper {
-      name = "disco.png";
-      url = "https://wallpapers.onix.home/Icons/disco.png";
-      sha256 = "sha256-hy1iIDdnPY6ZPM5EYRbh66yFl7CUgLjbQubuGUvRErw=";
+      name = "deskmat-2.jpg";
+      url = "https://wallpapers.onix.home/Deskmat/2.jpg";
+      sha256 = "sha256-tTo3IwJMansdNaFJvMAWYMcFtrHqPx3fY7ixpA4hv+A=";
     };
   }
 ]

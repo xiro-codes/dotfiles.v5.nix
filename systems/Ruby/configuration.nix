@@ -47,7 +47,7 @@ in
     dotfiles-sync.maintenance.upgradeFlake = "github:xiro-codes/dotfiles.v5.nix";
     zerotier.enable = true;
     cluster = {
-      enable = true;
+      enable = false;
       size = 10;
       template = "Amber";
     };

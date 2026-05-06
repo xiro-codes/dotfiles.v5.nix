@@ -26,9 +26,8 @@ in
       '';
     })
   ];
-  programs.fuchsia-cursor = {
-    enable = true;
-    stylixIntegration.enable = true;
+  local.wallpapers = {
+    name = "deskmat-2.jpg";
   };
   services.espanso = {
     enable = true;

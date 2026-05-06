@@ -42,6 +42,7 @@ in
 
       programs.fuchsia-cursor = {
         enable = true;
+        name = "Stylix-fuchsia";
         stylixIntegration.enable = true;
       };
 

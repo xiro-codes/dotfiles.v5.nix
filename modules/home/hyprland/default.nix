@@ -85,7 +85,7 @@ in
           "discord --start-minimized"
         ]
         ++ optionals config.local.caelestia-shell.enable [
-          "caelestia wallpaper set $HOME/.wallpaper"
+          "caelestia wallpaper -f $HOME/.wallpaper"
         ];
         "$mod" = "SUPER";
 
