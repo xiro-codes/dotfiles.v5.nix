@@ -125,20 +125,35 @@
             { config, pkgs, ... }:
             {
               imports = [ self.nixosModules.default ];
-              system.stateVersion = "23.11";
+              system.stateVersion = "24.11";
+
+              # Minimal configuration for the VM
+              users.users.testuser = {
+                isNormalUser = true;
+                extraGroups = [ "wheel" ];
+                password = "test";
+              };
+
+              # Allow password auth for testing if needed
+              services.openssh.enable = true;
+              services.openssh.settings.PasswordAuthentication = true;
+
               fileSystems."/" = {
                 device = "/dev/vda1";
                 fsType = "ext4";
               };
               boot.loader.grub.device = "/dev/vda";
+
               services.rocket-forge = {
                 enable = true;
                 manageDatabase = true;
-                secretKeyFile = pkgs.writeText "dummy-secret-key" "12345678901234567890123456789012345678901234567890123456789012345";
+                secretKeyFile = ./.r;
               };
+
               networking.firewall.allowedTCPPorts = [
                 80
                 8000
+                22
               ];
             }
           )

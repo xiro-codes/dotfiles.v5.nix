@@ -126,25 +126,30 @@ dev: run
 
 # Start the test VM
 [group('VM')]
-vm-up vm="test-vm":
+up vm="test-vm":
 	nixos-compose up {{vm}}
 
 # Stop the test VM
 [group('VM')]
-vm-down:
+down:
 	nixos-compose down
 
 # SSH into the test VM
 [group('VM')]
-vm-ssh vm="test-vm":
+ssh vm="test-vm":
 	nixos-compose ssh {{vm}}
 
 # View status of VMs
 [group('VM')]
-vm-status:
+status:
 	nixos-compose status
+
+# List available VMs/configurations
+[group('VM')]
+list:
+	nixos-compose list
 
 # Get IP of VM
 [group('VM')]
-vm-ip vm="test-vm":
+ip vm="test-vm":
 	nixos-compose ip {{vm}}

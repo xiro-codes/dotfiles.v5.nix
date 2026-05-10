@@ -1,8 +1,9 @@
 use app::{
-    controllers::index,
+    controllers::{index, auth},
     create_base_rocket_with_database,
     database::DatabaseConfig,
     template_config,
+    services::AuthService,
 };
 use rocket::{
     catch, catchers,
@@ -54,20 +55,24 @@ async fn rocket() -> Rocket<Build> {
     log::info!("Starting Rocket Web Application...");
 
     // Basic database configuration setup
-    let db_config = DatabaseConfig::default();
+    let db_config = DatabaseConfig::default_with_fallback();
     log::info!("Database configuration: {:?}", db_config);
 
     // Build the base rocket instance with database auto-detection
     log::info!("Building Rocket instance and configuring database...");
-    let rocket = create_base_rocket_with_database(db_config)
+    let mut rocket = create_base_rocket_with_database(db_config)
         .await
         .register("/", catchers![catch_default, catch_unauthorized])
         .attach(template_config::create_template_fairing())
+        .attach(app::middleware::Seeding::new(None))
         .attach(CORS);
+
+    rocket = rocket.manage(AuthService::new());
 
     log::info!("Attaching controllers and static file server");
 
     rocket
-        .mount("/", rocket::routes![index::index])
+        .attach(index::Controller::new("/".to_owned()))
+        .attach(auth::Controller::new("/auth".to_owned()))
         .mount("/static", FileServer::from("./static/"))
 }

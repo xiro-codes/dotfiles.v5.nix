@@ -2,5 +2,10 @@
 
 {% block content %}
     <h2>Welcome to Rocket</h2>
-    <p>This is a blank framework template.</p>
+    {% if username %}
+        <p>Hello, <strong>{{ username }}</strong>!</p>
+        <p><a href="/auth/logout">Logout</a></p>
+    {% else %}
+        <p>Hello! Please <a href="/auth">Login</a> or <a href="/auth/register">Register</a>.</p>
+    {% endif %}
 {% endblock %}

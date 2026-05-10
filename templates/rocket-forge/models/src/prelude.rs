@@ -1,1 +1,1 @@
-// Empty models prelude
+pub use super::account::Entity as Account;

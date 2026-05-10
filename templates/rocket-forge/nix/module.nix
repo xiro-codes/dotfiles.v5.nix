@@ -107,12 +107,12 @@ in
       '';
     };
 
-    services.redis.servers."".enable = true;
+    services.redis.enable = true;
 
     systemd.services.rocket-forge = {
       description = "Rocket Forge Unified Service";
       wantedBy = [ "multi-user.target" ];
-      after = [ "network.target" ] ++ (if cfg.manageDatabase then [ "postgresql.service" ] else [ ]);
+      after = [ "network.target" "redis.service" ] ++ (if cfg.manageDatabase then [ "postgresql.service" ] else [ ]);
       environment = {
         ROCKET_PROFILE = cfg.rocketProfile;
         ROCKET_PORT = toString cfg.port;

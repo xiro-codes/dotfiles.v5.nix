@@ -61,8 +61,17 @@ pub mod database;
 /// HTTP route handlers and request/response processing
 pub mod controllers;
 
+/// Data Transfer Objects and Form structures
+pub mod dto;
+
+/// Application middleware and fairings
+pub mod middleware;
+
 /// Database connection pool management
 pub mod pool;
+
+/// Business logic and database services
+pub mod services;
 
 /// Template configuration with custom filters
 pub mod template_config;
