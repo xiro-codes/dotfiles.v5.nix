@@ -27,7 +27,7 @@ in
     })
   ];
   local.wallpapers = {
-    name = "deskmat-2.jpg";
+    name = "miku.jpeg";
   };
   services.espanso = {
     enable = true;
