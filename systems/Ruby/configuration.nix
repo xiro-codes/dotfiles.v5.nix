@@ -27,7 +27,7 @@ in
     };
   };
   boot.enableContainers = true;
-
+  nxc.compose.dev.enable = false;
   local = {
     registry.enable = true;
     userManager.extraGroups = [
