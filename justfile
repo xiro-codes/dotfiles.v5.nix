@@ -143,11 +143,11 @@ rescue:
     mount /dev/disk/by-label/boot /mnt/boot
     nixos-enter
 
-# Burn a new ISO to the recovery partition
+# Burn a new ISO to a disk or the recovery partition
 [group('install')]
-bake-recovery:
+bake-recovery disk="":
     @echo "Building recovery ISO ..."
     nix build .#installer-iso
-    @echo "Burning ISO to recovery partition ..."
-    sudo caligula burn $(find result/iso/ -name "*.iso" | head -n 1) -o $(readlink -f /dev/disk/by-partlabel/disk-main-recovery) --interactive never --compression none -f --hash skip
+    @echo "Burning ISO to {{ if disk == "" { "recovery partition" } else { disk } }} ..."
+    sudo caligula burn $(find result/iso/ -name "*.iso" | head -n 1) -o {{ if disk == "" { "$(readlink -f /dev/disk/by-partlabel/disk-main-recovery)" } else { disk } }} --interactive never --compression none -f --hash skip
     @echo "Failsafe ISO updated successfully."

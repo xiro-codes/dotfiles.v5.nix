@@ -22,6 +22,7 @@
       imports = [
         "${inputs.nixpkgs}/nixos/modules/installer/cd-dvd/installation-cd-minimal.nix"
       ];
+      boot.zfs.forceImportRoot = false;
       users.motd = ''
 
         ╔═══════════════════════════════════════════════════════════════╗
@@ -66,7 +67,32 @@
       };
       nixpkgs.config.allowUnfree = true;
 
+      services.openssh = {
+        enable = true;
+        settings.PasswordAuthentication = true;
+        settings.PermitRootLogin = "yes";
+      };
+      users.mutableUsers = true;
+      users.users.nixos = {
+        password = "installer";
+        isNormalUser = true;
+        extraGroups = [ "wheel" ];
+      };
+      users.users.root.password = "installer";
+
       networking.hostName = "installer";
+
+      # Show IP in MOTD
+      systemd.services.update-motd = {
+        description = "Update MOTD with IP address";
+        wantedBy = [ "multi-user.target" ];
+        after = [ "network.target" ];
+        serviceConfig.Type = "oneshot";
+        script = ''
+          IP=$(ip -4 addr show | grep -oP '(?<=inet\s)\d+(\.\d+){3}' | grep -v '127.0.0.1' | head -n 1 || echo "unknown")
+          sed -i "s/🚀 NixOS Custom Installer Environment 🚀/🚀 NixOS Installer ($IP) 🚀/" /etc/motd
+        '';
+      };
     }
   ];
 }).config.system.build.isoImage

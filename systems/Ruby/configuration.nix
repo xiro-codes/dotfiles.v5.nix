@@ -27,7 +27,6 @@ in
     };
   };
   boot.enableContainers = true;
-  nxc.compose.dev.enable = false;
   local = {
     registry.enable = true;
     userManager.extraGroups = [
@@ -46,13 +45,7 @@ in
 
     dotfiles-sync.maintenance.upgradeFlake = "github:xiro-codes/dotfiles.v5.nix";
     zerotier.enable = true;
-    cluster = {
-      enable = false;
-      size = 10;
-      template = "Amber";
-    };
   };
-  services.nginx.enable = true;
 
   hardware.keyboard.qmk.enable = true;
   boot.kernelParams = [
