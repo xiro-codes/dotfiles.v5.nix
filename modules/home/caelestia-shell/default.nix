@@ -25,7 +25,7 @@ in
       [
         nautilus
         pavucontrol
-        #celluloid
+        celluloid
         kdePackages.networkmanager-qt
       ]
     );
