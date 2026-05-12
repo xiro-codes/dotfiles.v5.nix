@@ -16,9 +16,11 @@
       user = "tod";
       desktopSession = "hyprland";
     };
-    devices.steamdeck.enable = false;
+    devices.steamdeck.enable = lib.mkDefault true;
     hardware.has.amd.gpu = true;
   };
+
+  # Handle unfree packages for Steam
   nixpkgs.config.allowUnfreePredicate =
     pkg:
     builtins.elem (lib.getName pkg) [

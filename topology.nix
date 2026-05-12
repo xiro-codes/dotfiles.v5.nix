@@ -29,6 +29,8 @@ in
     Sapphire.interfaces.eth0.network = "home";
     Sapphire.interfaces.zt0.network = "zerotier";
     Ruby.interfaces.eth0.network = "home";
+    Slate.interfaces.wlan0.network = "home";
+    Slate.interfaces.zt0.network = "zerotier";
     Jade.interfaces."mv-enp6s0".network = "home";
     Jade.interfaces."mv-enp6s0".physicalConnections = [ (mkConnection "Onix" "enp6s0") ];
 
@@ -70,6 +72,7 @@ in
       connections.eth1 = mkConnection "Onix" "enp6s0";
       connections.eth2 = mkConnection "Sapphire" "eth0";
       connections.eth3 = mkConnection "Ruby" "eth0";
+      connections.eth4 = mkConnection "SteamDeck" "wlan0";
     };
 
     pihole = mkDevice "Pi-hole" {
