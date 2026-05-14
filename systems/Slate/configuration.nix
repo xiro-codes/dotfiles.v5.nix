@@ -8,10 +8,10 @@
   imports = [
     ./disko.nix
     ./hardware-configuration.nix
-    ../../profiles/base.nix
-    ../../profiles/limine-uefi.nix
-    ../../profiles/workstation
-    ../../profiles/workstation/jovian.nix
+    ../profiles/base.nix
+    ../profiles/limine-uefi.nix
+    ../profiles/workstation
+    ../profiles/workstation/jovian.nix
   ];
 
   local = {
