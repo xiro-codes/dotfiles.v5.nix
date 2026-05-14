@@ -14,6 +14,7 @@
     #self.nixosModules.cache
     self.nixosModules.network-hosts
     inputs-nix.nixosModules.default
+    inputs-nix.inputs.determinate.nixosModules.default
     {
       local = {
         #cache.enable = true;
@@ -23,32 +24,8 @@
         "${inputs.nixpkgs}/nixos/modules/installer/cd-dvd/installation-cd-minimal.nix"
       ];
       boot.zfs.forceImportRoot = false;
-      users.motd = ''
-
-        ╔═══════════════════════════════════════════════════════════════╗
-        ║                                                               ║
-        ║           🚀 NixOS Custom Installer Environment 🚀            ║
-        ║                                                               ║
-        ╚═══════════════════════════════════════════════════════════════╝
-
-        📦 Auto-Setup:
-        ────────────────────────────────────────────────────────────────
-
-        The dotfiles repository will be automatically cloned and
-        the nix development shell will be launched.
-
-        Once inside, you can install the system:
-            just install <HOSTNAME>
-
-        ────────────────────────────────────────────────────────────────
-        💡 Tips:
-           • Run 'fastfetch' to see system info
-           • Available hosts: Ruby, Sapphire
-           • Use 'just rescue' for emergency system recovery
-        ────────────────────────────────────────────────────────────────
-
-      '';
-
+      boot.tmp.tmpfsSize = "8G";
+      fileSystems."/".options = [ "size=8G" ];
       environment.systemPackages = [
         inputs.nixpkgs.legacyPackages.x86_64-linux.python3
         inputs.nixpkgs.legacyPackages.x86_64-linux.git
@@ -72,27 +49,9 @@
         settings.PasswordAuthentication = true;
         settings.PermitRootLogin = "yes";
       };
-      users.mutableUsers = true;
-      users.users.nixos = {
-        password = "installer";
-        isNormalUser = true;
-        extraGroups = [ "wheel" ];
-      };
-      users.users.root.password = "installer";
 
       networking.hostName = "installer";
 
-      # Show IP in MOTD
-      systemd.services.update-motd = {
-        description = "Update MOTD with IP address";
-        wantedBy = [ "multi-user.target" ];
-        after = [ "network.target" ];
-        serviceConfig.Type = "oneshot";
-        script = ''
-          IP=$(ip -4 addr show | grep -oP '(?<=inet\s)\d+(\.\d+){3}' | grep -v '127.0.0.1' | head -n 1 || echo "unknown")
-          sed -i "s/🚀 NixOS Custom Installer Environment 🚀/🚀 NixOS Installer ($IP) 🚀/" /etc/motd
-        '';
-      };
     }
   ];
 }).config.system.build.isoImage

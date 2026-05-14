@@ -7,7 +7,7 @@
 }:
 {
   imports = [
-    inputs.jovian.nixosModules.jovian
+    inputs-nix.inputs.jovian.nixosModules.jovian
   ];
   jovian = {
     steam = {
