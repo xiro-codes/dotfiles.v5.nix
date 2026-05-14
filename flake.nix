@@ -26,7 +26,6 @@
         (inputs-nix.discovery {
           globalNixosModules = [
             { _module.args.flake-inputs = inputs; }
-            inputs-nix.inputs.determinate.nixosModules.default
             inputs-nix.nixosModules.default
             inputs-nix.inputs.nix-topology.nixosModules.default
           ];

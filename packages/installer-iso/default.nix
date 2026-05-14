@@ -14,7 +14,6 @@
     #self.nixosModules.cache
     self.nixosModules.network-hosts
     inputs-nix.nixosModules.default
-    inputs-nix.inputs.determinate.nixosModules.default
     {
       local = {
         #cache.enable = true;
