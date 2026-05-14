@@ -27,6 +27,7 @@
       "steam"
       "steam-original"
       "steam-run"
+      "steam-unwrapped"
       "steam-jupiter-unwrapped"
       "steamdeck-hw-theme"
     ];
