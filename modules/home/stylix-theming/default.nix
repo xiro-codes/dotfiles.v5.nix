@@ -40,18 +40,18 @@ in
     (mkIf cfg.stylix.enable {
       local.wallpapers.enable = true;
 
-      programs.fuchsia-cursor = {
-        enable = true;
-        name = "Stylix-fuchsia";
-        stylixIntegration.enable = true;
-      };
+      #programs.fuchsia-cursor = {
+      #  enable = true;
+      #  name = "Stylix-fuchsia";
+      #  stylixIntegration.enable = true;
+      #};
 
       stylix = {
         enable = true;
         image = config.local.wallpapers.path;
-        cursor = {
-          size = 16;
-        };
+        # cursor = {
+        #   size = 16;
+        # };
         opacity = {
           applications = 1.0;
           terminal = 0.95;
