@@ -34,7 +34,7 @@
 
         yt.target = "http://localhost:${toString config.local.downloads.pinchflat.port}";
 
-        pihole.target = "http://localhost:8053";
+        pihole.target = "http://localhost:2938";
         # files.target = "http://localhost:${toString config.local.file-browser.port}";
         cache.target = "http://localhost:5000";
       };
