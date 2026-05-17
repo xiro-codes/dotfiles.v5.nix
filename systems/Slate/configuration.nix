@@ -7,6 +7,7 @@
 {
   imports = [
     ./disko.nix
+    ./btrfs-rollback.nix
     ./hardware-configuration.nix
     ../profiles/base.nix
     ../profiles/limine-uefi.nix
@@ -18,15 +19,18 @@
     # System settings
     bootloader.recoveryUUID = "deck-recovery-placeholder"; # TODO: Update after first install
 
-    impermanence= {
+    impermanence = {
       enable = true;
       persistentStoragePath = "/persist";
       directories = [
         "/var/lib/sops-nix"
         "/etc/ssh"
+        "/var/lib/nixos"
+        { directory = "/home/tod/.local/share/Steam"; user = "tod"; group = "users"; }
+        { directory = "/home/tod/.steam"; user = "tod"; group = "users"; }
       ];
       files = [
-        { file = "/etc/machine-id"; inInitrd = true;}
+        "/etc/machine-id"
       ];
     };
 
@@ -38,9 +42,12 @@
     security.enable = lib.mkForce false;
 
     gaming.enable = true;
+    desktops.enable = true;
+    desktops.displayManager = "sddm";
+    desktops.hyprland = true;
   };
 
-
-
   system.stateVersion = "25.11";
+
+  fileSystems."/persist".neededForBoot = true;
 }
