@@ -25,70 +25,17 @@
     ];
     zerotier.enable = true;
     containers.Jade.enable = true;
-    virtualisation.incus.enable = false;
-    cluster.size = 0;
+    virtualisation.incus.enable = true;
+    metrics = {
+      enable = true;
+      domain = "pihole.onix.home";
+    };
   };
 
   users.users.tod.extraGroups = [
     "minecraft"
     "incus-admin"
   ];
-  services.prometheus.exporters.node = {
-    enable = true;
-    port = 9100;
-    enabledCollectors = [
-      "systemd"
-      "tcpstat"
-      "diskstats"
-    ];
-  };
-  services.prometheus = {
-    enable = true;
-    port = 9090;
-
-    globalConfig = {
-      scrape_interval = "15s";
-    };
-
-    # Tell Prometheus exactly where to pull metrics from
-    scrapeConfigs = [
-      {
-        job_name = "nixos-node";
-        static_configs = [
-          {
-            targets = [ "127.0.0.1:${toString config.services.prometheus.exporters.node.port}" ];
-          }
-        ];
-      }
-      {
-        job_name = "harmonia-cache";
-        static_configs = [
-          {
-            # Harmonia exposes standard prometheus metrics natively at /metrics
-            targets = [ "127.0.0.1:5000" ];
-          }
-        ];
-      }
-    ];
-
-    # Optional: Increase data retention beyond the default 15 days
-    extraFlags = [
-      "--storage.tsdb.retention.time=30d"
-    ];
-  };
-  services.grafana = {
-    enable = true;
-    settings = {
-      server = {
-        http_addr = "127.0.0.1";
-        http_port = 2938;
-        enforce_domain = false;
-        enable_gzip = true;
-        domain = "pihole.onix.home";
-      };
-      security.secret_key = "SW2YcwTIb9zpOOhoPsMm";
-    };
-  };
   boot = {
     swraid.mdadmConf = "MAILADDR root";
     kernelParams = [
