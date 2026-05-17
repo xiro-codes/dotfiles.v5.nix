@@ -2,6 +2,7 @@
   config,
   lib,
   pkgs,
+  self,
   ...
 }:
 
@@ -37,11 +38,6 @@ in
       description = "Domain for Grafana";
     };
 
-    secretKey = mkOption {
-      type = types.str;
-      default = "SW2YcwTIb9zpOOhoPsMm"; # Can be moved to sops-nix later
-      description = "Secret key for Grafana security";
-    };
   };
 
   config = mkIf cfg.enable {
@@ -61,28 +57,10 @@ in
 
     systemd.services.nix-metrics-collector = {
       description = "Collect Nix metrics for Prometheus";
-      script = ''
-        mkdir -p /var/lib/prometheus-node-exporter-text-files
-        TMP_FILE=$(mktemp)
-
-        # Number of derivations currently building (approximation by checking nix processes)
-        BUILDING=$(ps -eo comm | grep -c "^nix-daemon$")
-        echo "nix_derivations_building $BUILDING" >> $TMP_FILE
-
-        # Size of the Nix store in bytes
-        STORE_SIZE=$(du -sb /nix/store | awk '{print $1}')
-        echo "nix_store_size_bytes $STORE_SIZE" >> $TMP_FILE
-
-        # Number of files that will get garbage collected (approx by finding dead store paths)
-        # This can be slow, so we just run a quick GC dry-run
-        GC_DRY=$(nix-store --gc --print-dead 2>/dev/null | wc -l)
-        echo "nix_dead_store_paths $GC_DRY" >> $TMP_FILE
-
-        mv $TMP_FILE /var/lib/prometheus-node-exporter-text-files/nix-metrics.prom
-      '';
       serviceConfig = {
         Type = "oneshot";
         User = "root";
+        ExecStart = "${self.packages.${pkgs.stdenv.hostPlatform.system}.nix-metrics-collector}/bin/nix-metrics-collector";
       };
     };
 
@@ -141,7 +119,6 @@ in
           enable_gzip = true;
           domain = cfg.domain;
         };
-        security.secret_key = cfg.secretKey;
       };
 
       provision = {

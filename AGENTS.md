@@ -34,7 +34,7 @@ Always use `just` commands when available to ensure consistent application of fl
 ## 📝 Conventions & Patterns
 
 ### 1. Technical Patterns
-- **Inherit Pattern**: Prefer `inherit (lib) ...` over using `lib.` directly within modules.
+- **Inherit Pattern**: NEVER use `lib.<function>` directly. ALWAYS use `inherit (lib) ...` at the top of the file/block.
 - **Option Namespace**: All custom options must reside under the `local` namespace (e.g., `options.local.minecraft-server`). This applies to both system and home modules.
 - **Internal Package Referencing**: Reference internal packages using `self.packages.${pkgs.stdenv.hostPlatform.system}.<package-name>`.
 - **Discovery Pattern**: Use `builtins.readDir` to automate module/container loading. See `modules/system/containers/default.nix` for a reference implementation.
@@ -54,9 +54,13 @@ Always use `just` commands when available to ensure consistent application of fl
 - **Service Hardening**: Standard `systemd` hardening should be applied to all services. Common options include `CapabilityBoundingSet`, `PrivateDevices`, `ProtectHome`, and `RestrictAddressFamilies`.
 
 ### 3. Negative Patterns (What NOT to do)
-- **DO NOT** use `lib.<function>` (e.g., `lib.mkIf`) directly in the `config` or `options` blocks if `inherit` is possible.
+- **DO NOT** use `lib.<function>` (e.g., `lib.mkIf`) directly anywhere in the code. ALWAYS use `inherit (lib) mkIf;`.
 - **DO NOT** manually register new systems, modules, or packages in `flake.nix`.
 - **DO NOT** hardcode paths to wallpapers, icons, or remote URLs. Use the centralized management modules.
+- **DO NOT** hardcode secrets, API keys, or passwords in Nix files. Always use `sops-nix` or the `local.secrets` module.
+- **DO NOT** put inline shell scripts directly in files (like `systemd.services.*.script`). ALWAYS create a standalone package in the `packages/` directory using `pkgs.writeShellApplication` and declare runtime dependencies explicitly.
+- **DO NOT** omit the `...` in Nix module argument lists (e.g. `{ pkgs, config, ... }:`). Always include it for forward compatibility.
+- **DO NOT** change `system.stateVersion` or `home.stateVersion` on existing systems unless explicitly requested.
 - **DO NOT** run `just check`.
 - **DO NOT** assume service data is declarative by default. Check if the module provides a `declarative` option.
 - **DO NOT** add a new host without updating `topology.nix`.
