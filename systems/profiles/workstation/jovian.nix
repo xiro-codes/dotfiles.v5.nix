@@ -3,6 +3,7 @@
   pkgs,
   lib,
   inputs,
+  inputs-nix,
   ...
 }:
 {
