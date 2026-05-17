@@ -40,7 +40,6 @@ let
 in
 {
   imports = [
-    inputs-nix.inputs.preserviation
   ];
 
   options.local.impermanence = {
@@ -63,12 +62,10 @@ in
   };
 
   config = mkIf cfg.enable {
-    preservation = {
-      enable = true;
-      preserveAt."${cfg.persistentStoragePath}" = { 
-        directories = finalDirectories; 
-        files = cfg.files; 
-      };
+    environment.persistence."${cfg.persistentStoragePath}" = {
+      hideMounts = true;
+      directories = finalDirectories;
+      files = cfg.files;
     };
   };
 }
