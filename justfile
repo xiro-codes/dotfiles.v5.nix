@@ -73,6 +73,11 @@ check-timer:
 list-backups:
     sudo borg-job-onix-local list
 
+# Build a specific host's configuration
+[group('build')]
+build host:
+    nix build .#nixosConfigurations.{{host}}.config.system.build.toplevel --impure
+
 # Deploy specific host using deploy-rs
 [group('deploy')]
 deploy host=HOST:
