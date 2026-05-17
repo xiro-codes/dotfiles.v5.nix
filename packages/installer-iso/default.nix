@@ -11,7 +11,8 @@
     currentHostUsers = [ ];
   };
   modules = [
-    #self.nixosModules.cache
+    self.nixosModules.nix-cache-client
+
     self.nixosModules.network-hosts
     inputs-nix.nixosModules.default
     {
@@ -19,6 +20,7 @@
         #cache.enable = true;
         nix-core-settings.enable = true;
         nix-cache-client.enable = true;
+
       };
       imports = [
         "${inputs.nixpkgs}/nixos/modules/installer/cd-dvd/installation-cd-minimal.nix"
