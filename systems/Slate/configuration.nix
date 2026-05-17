@@ -43,9 +43,11 @@
 
     gaming.enable = true;
     desktops.enable = true;
-    desktops.displayManager = "sddm";
-    desktops.hyprland = true;
+    desktops.hyprland.enable = lib.mkForce false;
+    desktops.displayManager = "none";
+    desktops.plasma6.enable = true;
   };
+  services.displayManager.sddm.enable = true;
 
   system.stateVersion = "25.11";
 
