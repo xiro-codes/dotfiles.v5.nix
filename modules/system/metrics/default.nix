@@ -52,11 +52,48 @@ in
         "systemd"
         "tcpstat"
         "diskstats"
+        "textfile"
+      ];
+      extraFlags = [
+        "--collector.textfile.directory=/var/lib/prometheus-node-exporter-text-files"
       ];
     };
 
-    services.prometheus.exporters.nix = {
-      enable = true;
+    systemd.services.nix-metrics-collector = {
+      description = "Collect Nix metrics for Prometheus";
+      script = ''
+        mkdir -p /var/lib/prometheus-node-exporter-text-files
+        TMP_FILE=$(mktemp)
+
+        # Number of derivations currently building (approximation by checking nix processes)
+        BUILDING=$(ps -eo comm | grep -c "^nix-daemon$")
+        echo "nix_derivations_building $BUILDING" >> $TMP_FILE
+
+        # Size of the Nix store in bytes
+        STORE_SIZE=$(du -sb /nix/store | awk '{print $1}')
+        echo "nix_store_size_bytes $STORE_SIZE" >> $TMP_FILE
+
+        # Number of files that will get garbage collected (approx by finding dead store paths)
+        # This can be slow, so we just run a quick GC dry-run
+        GC_DRY=$(nix-store --gc --print-dead 2>/dev/null | wc -l)
+        echo "nix_dead_store_paths $GC_DRY" >> $TMP_FILE
+
+        mv $TMP_FILE /var/lib/prometheus-node-exporter-text-files/nix-metrics.prom
+      '';
+      serviceConfig = {
+        Type = "oneshot";
+        User = "root";
+      };
+    };
+
+    systemd.timers.nix-metrics-collector = {
+      description = "Run Nix metrics collector every 5 minutes";
+      wantedBy = [ "timers.target" ];
+      timerConfig = {
+        OnBootSec = "5m";
+        OnUnitActiveSec = "5m";
+        Unit = "nix-metrics-collector.service";
+      };
     };
 
     services.prometheus = {
@@ -74,14 +111,6 @@ in
           static_configs = [
             {
               targets = [ "127.0.0.1:${toString config.services.prometheus.exporters.node.port}" ];
-            }
-          ];
-        }
-        {
-          job_name = "nixos-nix-exporter";
-          static_configs = [
-            {
-              targets = [ "127.0.0.1:${toString config.services.prometheus.exporters.nix.port}" ];
             }
           ];
         }
