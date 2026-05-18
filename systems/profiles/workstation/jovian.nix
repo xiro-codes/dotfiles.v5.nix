@@ -15,7 +15,7 @@
       enable = true;
       autoStart = true;
       user = "tod";
-      desktopSession = "hyprland";
+      desktopSession = "plasma";
     };
     devices.steamdeck.enable = lib.mkDefault true;
     hardware.has.amd.gpu = true;
