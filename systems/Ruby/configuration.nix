@@ -5,7 +5,7 @@
   ...
 }:
 let
-  inherit (lib) range;
+  inherit (lib) range mkForce;
 in
 {
   imports = [
@@ -16,6 +16,11 @@ in
     ../profiles/client.nix
     ../profiles/workstation
   ];
+  services.openssh.settings = {
+    PasswordAuthentication = mkForce true;
+    PermitRootLogin = mkForce "yes";
+  };
+
   programs = {
     coolercontrol.enable = true;
     gog = {
