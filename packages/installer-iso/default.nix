@@ -52,23 +52,35 @@
           enable = true;
           settings.PasswordAuthentication = true;
           settings.PermitRootLogin = "yes";
+          settings.PermitEmptyPasswords = "yes";
+        };
+
+        environment.etc."ssh/id_rsa_builder" = {
+          text = ''
+            -----BEGIN OPENSSH PRIVATE KEY-----
+            b3BlbnNzaC1rZXktdjEAAAAABG5vbmUAAAAEbm9uZQAAAAAAAAABAAAAMwAAAAtzc2gtZW
+            QyNTUxOQAAACCO9t9TmsKPnCHFlNthtKn1oeTe+69J3l5dGUk1i0M/nwAAAJjx/trs8f7a
+            7AAAAAtzc2gtZWQyNTUxOQAAACCO9t9TmsKPnCHFlNthtKn1oeTe+69J3l5dGUk1i0M/nw
+            AAAEASAb0ZSYeo1GJtsMSGkMJW8QAJ2c8mDHEIRlOUND+8Wo7231Oawo+cIcWU22G0qfWh
+            5N77r0neXl0ZSTWLQz+fAAAAE2J1aWxkQGluc3RhbGxlci1pc28BAg==
+            -----END OPENSSH PRIVATE KEY-----
+          '';
+          mode = "0600";
         };
 
         users.motd = ''
           =======================================================================
           Welcome to the NixOS Installer!
 
-          To use the 'ruby' remote builder for fast builds:
-          Run this command on the ruby host to copy its key over to this ISO:
-          `scp /root/.ssh/id_ed25519 root@<ISO_IP>:/root/.ssh/id_rsa_builder`
-          (Find this ISO's IP by running `ip a`)
+          The 'sapphire' remote builder is fully configured and trusted out of the box!
+          Nix will automatically offload builds to sapphire.
 
-          The remote builder will then be automatically used for Nix commands!
+          Happy building!
           =======================================================================
         '';
 
         programs.ssh.extraConfig = ''
-          Host ${config.local.network-hosts.ruby} ruby
+          Host ${config.local.network-hosts.sapphire} sapphire
             StrictHostKeyChecking no
             UserKnownHostsFile /dev/null
         '';
@@ -77,12 +89,12 @@
           distributedBuilds = true;
           buildMachines = [
             {
-              hostName = config.local.network-hosts.ruby;
+              hostName = config.local.network-hosts.sapphire;
               system = "x86_64-linux";
               protocol = "ssh-ng";
               maxJobs = 8;
-              sshKey = "/root/.ssh/id_rsa_builder";
-              sshUser = "root";
+              sshKey = "/etc/ssh/id_rsa_builder";
+              sshUser = "build";
               supportedFeatures = [
                 "nixos-test"
                 "benchmark"
