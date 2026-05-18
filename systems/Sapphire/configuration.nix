@@ -11,7 +11,6 @@
     ../profiles/base.nix
     ../profiles/limine-uefi.nix
     ../profiles/client.nix
-    ../profiles/ai-server
   ];
 
   # Sapphire-specific configuration
