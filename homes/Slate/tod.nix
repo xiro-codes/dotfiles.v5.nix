@@ -7,7 +7,6 @@ let
 in
 {
   imports = [
-    ../profiles/workstation
   ];
   home.packages = with pkgs; [
     (symlinkJoin {
