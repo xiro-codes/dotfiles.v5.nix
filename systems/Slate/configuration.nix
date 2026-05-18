@@ -26,8 +26,16 @@
         "/var/lib/sops-nix"
         "/etc/ssh"
         "/var/lib/nixos"
-        { directory = "/home/tod/.local/share/Steam"; user = "tod"; group = "users"; }
-        { directory = "/home/tod/.steam"; user = "tod"; group = "users"; }
+        {
+          directory = "/home/tod/.local/share/Steam";
+          user = "tod";
+          group = "users";
+        }
+        {
+          directory = "/home/tod/.steam";
+          user = "tod";
+          group = "users";
+        }
       ];
       files = [
         "/etc/machine-id"
@@ -43,9 +51,9 @@
 
     gaming.enable = true;
     desktops.enable = true;
-    desktops.hyprland.enable = lib.mkForce false;
+    desktops.hyprland = lib.mkForce false;
     desktops.displayManager = "none";
-    desktops.plasma6.enable = true;
+    desktops.plasma6 = true;
   };
   services.displayManager.sddm.enable = true;
 
