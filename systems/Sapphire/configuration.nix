@@ -27,7 +27,7 @@
     isNormalUser = true;
     description = "Nix remote build user";
     openssh.authorizedKeys.keys = [
-      "command=\"${config.nix.package.out}/bin/nix-store --serve --stdio\",no-agent-forwarding,no-port-forwarding,no-pty,no-user-rc,no-X11-forwarding ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAII7231Oawo+cIcWU22G0qfWh5N77r0neXl0ZSTWLQz+f build@installer-iso"
+      "command=\"${config.nix.package.out}/bin/nix-store --serve --write\",no-agent-forwarding,no-port-forwarding,no-pty,no-user-rc,no-X11-forwarding ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAII7231Oawo+cIcWU22G0qfWh5N77r0neXl0ZSTWLQz+f build@installer-iso"
     ];
   };
 
