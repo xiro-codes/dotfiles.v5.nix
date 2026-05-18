@@ -2,7 +2,6 @@
   config,
   lib,
   pkgs,
-  self,
   ...
 }:
 
@@ -38,6 +37,11 @@ in
       description = "Domain for Grafana";
     };
 
+    secretKey = mkOption {
+      type = types.str;
+      default = "SW2YcwTIb9zpOOhoPsMm"; # Can be moved to sops-nix later
+      description = "Secret key for Grafana security";
+    };
   };
 
   config = mkIf cfg.enable {
@@ -48,30 +52,7 @@ in
         "systemd"
         "tcpstat"
         "diskstats"
-        "textfile"
       ];
-      extraFlags = [
-        "--collector.textfile.directory=/var/lib/prometheus-node-exporter-text-files"
-      ];
-    };
-
-    systemd.services.nix-metrics-collector = {
-      description = "Collect Nix metrics for Prometheus";
-      serviceConfig = {
-        Type = "oneshot";
-        User = "root";
-        ExecStart = "${self.packages.${pkgs.stdenv.hostPlatform.system}.nix-metrics-collector}/bin/nix-metrics-collector";
-      };
-    };
-
-    systemd.timers.nix-metrics-collector = {
-      description = "Run Nix metrics collector every 5 minutes";
-      wantedBy = [ "timers.target" ];
-      timerConfig = {
-        OnBootSec = "5m";
-        OnUnitActiveSec = "5m";
-        Unit = "nix-metrics-collector.service";
-      };
     };
 
     services.prometheus = {
@@ -119,6 +100,7 @@ in
           enable_gzip = true;
           domain = cfg.domain;
         };
+        security.secret_key = cfg.secretKey;
       };
 
       provision = {
