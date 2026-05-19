@@ -1,12 +1,14 @@
 {
   config,
   lib,
+  inputs,
   ...
 }:
 let
   inherit (lib)
     mkEnableOption
     mkIf
+    mkMerge
     mkOption
     types
     ;
@@ -14,6 +16,10 @@ let
   cfg = config.local.impermanence;
 in
 {
+  imports = [
+    (inputs.impermanence + "/home-manager.nix")
+  ];
+
   options.local.impermanence = {
     enable = mkEnableOption "Enable home impermanence (persistence)";
     persistentStoragePath = mkOption {
@@ -38,11 +44,14 @@ in
     };
   };
 
-  config = mkIf cfg.enable {
-    home.persistence."${cfg.persistentStoragePath}" = {
-      allowOther = cfg.allowOther;
-      directories = cfg.directories;
-      files = cfg.files;
-    };
-  };
+  config = mkMerge [
+    { home._nixosModuleImported = true; }
+    (mkIf cfg.enable {
+      home.persistence."${cfg.persistentStoragePath}" = {
+        allowOther = cfg.allowOther;
+        directories = cfg.directories;
+        files = cfg.files;
+      };
+    })
+  ];
 }
