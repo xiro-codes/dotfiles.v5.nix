@@ -26,6 +26,7 @@
         "/var/lib/sops-nix"
         "/etc/ssh"
         "/var/lib/nixos"
+        "/var/lib/NetworkManager"
         {
           directory = "/home/tod/.local/share/Steam";
           user = "tod";
@@ -56,6 +57,13 @@
     desktops.plasma6 = true;
   };
   services.displayManager.sddm.enable = true;
+  services.openssh = {
+    enable = true;
+    settings = {
+      PasswordAuthentication = lib.mkForce true;
+      PermitRootLogin = lib.mkForce "yes";
+    };
+  };
 
   system.stateVersion = "25.11";
 
