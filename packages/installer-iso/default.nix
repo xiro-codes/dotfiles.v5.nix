@@ -37,6 +37,7 @@
           inputs.nixpkgs.legacyPackages.x86_64-linux.parted
           inputs.nixpkgs.legacyPackages.x86_64-linux.util-linux
           inputs.nixpkgs.legacyPackages.x86_64-linux.fastfetch
+          inputs.nixpkgs.legacyPackages.x86_64-linux.nix-output-monitor
         ];
 
         fonts = {
@@ -81,19 +82,21 @@
 
         programs.ssh.extraConfig = ''
           Host ${config.local.network-hosts.sapphire} sapphire
-            User build
+            User builder
             IdentityFile /etc/ssh/id_rsa_builder
             StrictHostKeyChecking no
             UserKnownHostsFile /dev/null
 
           Host ${config.local.network-hosts.ruby} ruby
-            User build
+            User builder
             IdentityFile /etc/ssh/id_rsa_builder
             StrictHostKeyChecking no
             UserKnownHostsFile /dev/null
         '';
 
         nix = {
+          settings.max-jobs = 0;
+          ignore-prefer-local-build = true;
           distributedBuilds = true;
           buildMachines = [
             {
@@ -102,7 +105,7 @@
               protocol = "ssh-ng";
               maxJobs = 8;
               sshKey = "/etc/ssh/id_rsa_builder";
-              sshUser = "build";
+              sshUser = "builder";
               supportedFeatures = [
                 "nixos-test"
                 "benchmark"
@@ -116,7 +119,7 @@
               protocol = "ssh-ng";
               maxJobs = 24;
               sshKey = "/etc/ssh/id_rsa_builder";
-              sshUser = "build";
+              sshUser = "builder";
               supportedFeatures = [
                 "nixos-test"
                 "benchmark"
