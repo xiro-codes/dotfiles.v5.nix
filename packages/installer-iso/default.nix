@@ -95,8 +95,6 @@
         '';
 
         nix = {
-          settings.max-jobs = 0;
-          ignore-prefer-local-build = true;
           distributedBuilds = true;
           buildMachines = [
             {
@@ -104,6 +102,7 @@
               system = "x86_64-linux";
               protocol = "ssh-ng";
               maxJobs = 8;
+              speedFactor = 2;
               sshKey = "/etc/ssh/id_rsa_builder";
               sshUser = "build";
               supportedFeatures = [
@@ -118,6 +117,7 @@
               system = "x86_64-linux";
               protocol = "ssh-ng";
               maxJobs = 24;
+              speedFactor = 8;
               sshKey = "/etc/ssh/id_rsa_builder";
               sshUser = "build";
               supportedFeatures = [
