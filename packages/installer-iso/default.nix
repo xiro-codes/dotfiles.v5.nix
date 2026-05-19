@@ -52,7 +52,6 @@
           enable = true;
           settings.PasswordAuthentication = true;
           settings.PermitRootLogin = "yes";
-          settings.PermitEmptyPasswords = "yes";
         };
 
         environment.etc."ssh/id_rsa_builder" = {
