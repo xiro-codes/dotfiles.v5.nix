@@ -46,6 +46,7 @@ in
           Ruby = config.osConfig.local.network-hosts.ruby or "ruby.local";
           Onix = config.osConfig.local.network-hosts.onix or "onix.local";
           Jade = config.osConfig.local.network-hosts.jade or "jade.local";
+          Slate = config.osConfig.local.network-hosts.slate or "slate.local";
         };
         example = {
           Sapphire = "sapphire.local";
