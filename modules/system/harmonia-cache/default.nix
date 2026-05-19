@@ -64,6 +64,9 @@ in
       enable = true;
       signKeyPaths = cfg.signKeyPaths;
     };
+    systemd.services.harmonia.environment = {
+      RUST_LOG = "info";
+    };
     systemd.services.nix-prefetch = mkIf cfg.prefetch.enable {
       description = "Pre fetch flake updates and store paths";
       serviceConfig = {
