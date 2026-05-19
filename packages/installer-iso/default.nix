@@ -82,13 +82,13 @@
 
         programs.ssh.extraConfig = ''
           Host ${config.local.network-hosts.sapphire} sapphire
-            User builder
+            User build
             IdentityFile /etc/ssh/id_rsa_builder
             StrictHostKeyChecking no
             UserKnownHostsFile /dev/null
 
           Host ${config.local.network-hosts.ruby} ruby
-            User builder
+            User build
             IdentityFile /etc/ssh/id_rsa_builder
             StrictHostKeyChecking no
             UserKnownHostsFile /dev/null
@@ -105,7 +105,7 @@
               protocol = "ssh-ng";
               maxJobs = 8;
               sshKey = "/etc/ssh/id_rsa_builder";
-              sshUser = "builder";
+              sshUser = "build";
               supportedFeatures = [
                 "nixos-test"
                 "benchmark"
@@ -119,7 +119,7 @@
               protocol = "ssh-ng";
               maxJobs = 24;
               sshKey = "/etc/ssh/id_rsa_builder";
-              sshUser = "builder";
+              sshUser = "build";
               supportedFeatures = [
                 "nixos-test"
                 "benchmark"
