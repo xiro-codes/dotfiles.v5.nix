@@ -139,7 +139,7 @@ install-remote host:
     nix run github:nix-community/disko -- --mode disko --flake .#{{host}}
     mkdir -p /mnt/etc/nixos
     git clone https://github.com/xiro-codes/dotfiles.v5.nix /mnt/etc/nixos
-    nixos-install --flake .#{{host}} --impure
+    NIXPKGS_ALLOW_UNFREE=1 nixos-install --flake .#{{host}} --impure
 
 # Quick fix for a borked system (assumes standard labels)
 [group('install')]
