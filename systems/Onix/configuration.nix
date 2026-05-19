@@ -24,7 +24,7 @@
       "gitea/runner_token"
     ];
     zerotier.enable = true;
-    containers.Jade.enable = true;
+    containers.Jade.enable = false;
     virtualisation.incus.enable = false;
     metrics = {
       enable = true;
