@@ -21,11 +21,12 @@
                 ];
               };
             };
+            # Failsafe ISO partition
             recovery = {
-              size = "8G";
+              size = "4G";
               content = {
                 type = "filesystem";
-                format = "ext4";
+                format = "ext4"; # We use ext4 here just to reserve the space
                 extraArgs = [
                   "-L"
                   "recovery"
@@ -35,34 +36,13 @@
             root = {
               size = "100%";
               content = {
-                type = "btrfs";
+                type = "filesystem";
+                format = "ext4";
+                mountpoint = "/";
                 extraArgs = [
                   "-L"
                   "nixos"
                 ];
-                subvolumes = {
-                  "/root" = {
-                    mountpoint = "/";
-                    mountOptions = [
-                      "compress=zstd"
-                      "noatime"
-                    ];
-                  };
-                  "/nix" = {
-                    mountpoint = "/nix";
-                    mountOptions = [
-                      "compress=zstd"
-                      "noatime"
-                    ];
-                  };
-                  "/persist" = {
-                    mountpoint = "/persist";
-                    mountOptions = [
-                      "compress=zstd"
-                      "noatime"
-                    ];
-                  };
-                };
               };
             };
           };

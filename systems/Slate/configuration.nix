@@ -19,30 +19,6 @@
     # System settings
     bootloader.recoveryUUID = "deck-recovery-placeholder"; # TODO: Update after first install
 
-    impermanence = {
-      enable = true;
-      persistentStoragePath = "/persist";
-      directories = [
-        "/var/lib/sops-nix"
-        "/etc/ssh"
-        "/var/lib/nixos"
-        "/var/lib/NetworkManager"
-        {
-          directory = "/home/tod/.local/share/Steam";
-          user = "tod";
-          group = "users";
-        }
-        {
-          directory = "/home/tod/.steam";
-          user = "tod";
-          group = "users";
-        }
-      ];
-      files = [
-        "/etc/machine-id"
-      ];
-    };
-
     secrets.keys = [
       "ssh_pub_deck/master"
     ];
@@ -66,6 +42,4 @@
   };
 
   system.stateVersion = "25.11";
-
-  fileSystems."/persist".neededForBoot = true;
 }
