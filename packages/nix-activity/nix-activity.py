@@ -2,7 +2,6 @@
 import os
 import sys
 import re
-import ast
 import time
 import json
 import shlex
@@ -29,7 +28,6 @@ LOG_PATTERN = re.compile(
     r'\s+(?P<status>\d{3})'                              # HTTP Status
 )
 
-write_re = re.compile(r'^write\(\d+,\s*"((?:[^"\\]|\\.)*)",\s*\d+\)\s*=\s*\d+')
 
 # Colors
 C_RESET = "\033[0m"
@@ -61,7 +59,7 @@ def extract_hash_from_path(path):
 def resolve_hashes_remote(hashes):
     if not hashes:
         return {}
-    
+
     # Python script to run on Onix
     py_code = f"""
 import os, glob, urllib.request, json
@@ -116,7 +114,7 @@ def hash_resolver_worker():
                 h = item.get('hash')
                 if h and h not in RESOLVED_HASHES:
                     unresolved.add(h)
-        
+
         if unresolved:
             resolved = resolve_hashes_remote(unresolved)
             if resolved:
@@ -127,7 +125,7 @@ def hash_resolver_worker():
                         h = item.get('hash')
                         if h in RESOLVED_HASHES:
                             item['name'] = RESOLVED_HASHES[h]
-        
+
         time.sleep(1.0)
 
 def parse_log_line(line):
@@ -137,7 +135,7 @@ def parse_log_line(line):
         method = match.group('method')
         path = match.group('path')
         status = int(match.group('status'))
-        
+
         # Try to parse timestamp from Nginx format: [dd/MMM/yyyy:HH:MM:SS +zzzz]
         # or fallback to journalctl format: YYYY-MM-DDTHH:MM:SS
         timestamp = ""
@@ -154,9 +152,9 @@ def parse_log_line(line):
                 timestamp = time_part
             else:
                 timestamp = time.strftime("%H:%M:%S")
-            
+
         h, h_type = extract_hash_from_path(path)
-        
+
         # Build entry
         entry = {
             "timestamp": timestamp,
@@ -192,36 +190,50 @@ def onix_log_streamer():
             time.sleep(2.0)
 
 def query_builder(host):
+    # Returns a dict: {"builds": [...names...], "connections": N, "error": str|None}
     sh_script = """
+# Active compilations: processes with NIX_BUILD_TOP in their environment
+builds=""
 for env_file in /proc/*/environ; do
   if [ -f "$env_file" ] && grep -q -a "NIX_BUILD_TOP=" "$env_file" 2>/dev/null; then
-    tr '\\0' '\\n' < "$env_file" | grep -a '^name=' | cut -d= -f2-
+    name=$(tr '\0' '\n' < "$env_file" | grep -a '^name=' | cut -d= -f2-)
+    [ -n "$name" ] && builds="$builds$name\n"
   fi
-done 2>/dev/null | sort -u
+done 2>/dev/null
+printf '%s' "$builds" | sort -u | sed 's/^/build:/'
+
+# Active nix-daemon --stdio connections (eval/fetch/copy phase)
+conn=$(ps aux | awk '/[n]ix-daemon --stdio/{n++} END{print n+0}')
+echo "conn:$conn"
 """
     cmd = [
-        "ssh", "-o", "ConnectTimeout=2", "-o", "StrictHostKeyChecking=no", "-F", "/dev/null",
+        "ssh", "-o", "ConnectTimeout=1", "-o", "StrictHostKeyChecking=no", "-F", "/dev/null",
         f"root@{host}", "sh"
     ]
     try:
         proc = subprocess.run(cmd, input=sh_script, capture_output=True, text=True, timeout=3)
         if proc.returncode != 0 and not proc.stdout.strip():
             err = proc.stderr.strip()
-            if err:
-                return [f"Error ({err[:30]})"]
-        
+            return {"builds": [], "connections": 0, "error": err[:40] if err else "SSH error"}
+
         builds = []
+        connections = 0
         for line in proc.stdout.split('\n'):
             line = line.strip()
-            if line:
-                builds.append(line)
-        return builds
+            if line.startswith('build:'):
+                name = line[6:].strip()
+                if name:
+                    builds.append(name)
+            elif line.startswith('conn:'):
+                try:
+                    connections = int(line[5:].strip())
+                except ValueError:
+                    pass
+        return {"builds": builds, "connections": connections, "error": None}
     except subprocess.TimeoutExpired:
-        return ["Timeout"]
+        return {"builds": [], "connections": 0, "error": "Timeout"}
     except Exception as e:
-        return [f"Offline ({str(e)[:30]})"]
-    except Exception as e:
-        return [f"Offline ({str(e)[:30]})"]
+        return {"builds": [], "connections": 0, "error": str(e)[:40]}
 
 
 def query_builders_loop():
@@ -230,15 +242,14 @@ def query_builders_loop():
         with concurrent.futures.ThreadPoolExecutor(max_workers=2) as executor:
             future_ruby = executor.submit(query_builder, "ruby")
             future_sapphire = executor.submit(query_builder, "sapphire")
-            
             ruby_res = future_ruby.result()
             sapphire_res = future_sapphire.result()
-            
+
         with STATE_LOCK:
             ACTIVE_BUILDS["ruby"] = ruby_res
             ACTIVE_BUILDS["sapphire"] = sapphire_res
-            
-        time.sleep(2.0)
+
+        time.sleep(0.5)
 
 def get_onix_summary():
     # Helper to get quick status of Harmonia on Onix
@@ -249,58 +260,64 @@ def get_onix_summary():
     except Exception:
         return "offline"
 
+def _render_host_panel(host, data):
+    """Render a builder host panel from a query_builder result dict."""
+    if not isinstance(data, dict):
+        return [f"  {C_RED}● {host} (unexpected data){C_RESET}"], []
+
+    err    = data.get("error")
+    builds = data.get("builds", [])
+    conns  = data.get("connections", 0)
+
+    if err:
+        return [f"  {C_RED}● {host}  ✗ {err}{C_RESET}"], []
+
+    build_count = len(builds)
+    if build_count > 0:
+        dot_color = C_GREEN
+    elif conns > 0:
+        dot_color = C_YELLOW
+    else:
+        dot_color = C_GRAY
+
+    conn_str = f"  {C_DIM}{conns} connected{C_RESET}" if conns > 0 else ""
+    header = (
+        f"  {dot_color}● {host}{C_RESET}"
+        f" {C_GRAY}({build_count} building){C_RESET}"
+        f"{conn_str}"
+    )
+
+    if build_count > 0:
+        details = [f"    {C_DIM}└─{C_RESET} {C_GREEN}{b}{C_RESET}" for b in builds]
+    elif conns > 0:
+        details = [f"    {C_DIM}└─ evaluating / fetching…{C_RESET}"]
+    else:
+        details = [f"    {C_DIM}└─ idle{C_RESET}"]
+
+    return [header], details
+
 def draw_dashboard(term_width, term_height):
     with STATE_LOCK:
-        ruby_builds = list(ACTIVE_BUILDS["ruby"])
-        sapphire_builds = list(ACTIVE_BUILDS["sapphire"])
+        ruby_data     = ACTIVE_BUILDS["ruby"]
+        sapphire_data = ACTIVE_BUILDS["sapphire"]
         pulls = list(PARSED_PULLS)
-        
+
     lines = []
-    
+
     # Header
     title = " 󱄅 Nix Activity Monitor "
     border_len = max(10, term_width - len(title) - 2)
     left_border = "─" * (border_len // 2)
     right_border = "─" * (border_len - len(left_border))
     lines.append(f"{C_CYAN}{left_border}{C_BOLD}{C_YELLOW}{title}{C_RESET}{C_CYAN}{right_border}{C_RESET}")
-    
-    # Active Builds
-    lines.append(f"\n{C_BOLD}🛠️  ACTIVE BUILDS{C_RESET}")
-    
-    # Ruby Panel
-    ruby_count = len(ruby_builds) if (ruby_builds and "Offline" not in ruby_builds[0]) else 0
-    if ruby_builds and ("Offline" in ruby_builds[0] or "Timeout" in ruby_builds[0]):
-        ruby_header = f"  {C_RED}ruby (Offline){C_RESET}"
-        ruby_details = []
-    elif ruby_builds and "Error" in ruby_builds[0]:
-        ruby_header = f"  {C_RED}ruby ({ruby_builds[0]}){C_RESET}"
-        ruby_details = []
-    else:
-        status_color = C_GREEN if ruby_builds else C_GRAY
-        ruby_header = f"  {status_color}● ruby{C_RESET} {C_GRAY}({ruby_count} building){C_RESET}"
-        ruby_details = [f"    {C_DIM}└─{C_RESET} {b}" for b in ruby_builds] if ruby_builds else [f"    {C_DIM}No active builds{C_RESET}"]
-        
-    lines.append(ruby_header)
-    for rd in ruby_details:
-        lines.append(rd)
-        
-    # Sapphire Panel
-    sapphire_count = len(sapphire_builds) if (sapphire_builds and "Offline" not in sapphire_builds[0]) else 0
-    if sapphire_builds and ("Offline" in sapphire_builds[0] or "Timeout" in sapphire_builds[0]):
-        sapphire_header = f"  {C_RED}sapphire (Offline){C_RESET}"
-        sapphire_details = []
-    elif sapphire_builds and "Error" in sapphire_builds[0]:
-        sapphire_header = f"  {C_RED}sapphire ({sapphire_builds[0]}){C_RESET}"
-        sapphire_details = []
-    else:
-        status_color = C_GREEN if sapphire_builds else C_GRAY
-        sapphire_header = f"  {status_color}● sapphire{C_RESET} {C_GRAY}({sapphire_count} building){C_RESET}"
-        sapphire_details = [f"    {C_DIM}└─{C_RESET} {b}" for b in sapphire_builds] if sapphire_builds else [f"    {C_DIM}No active builds{C_RESET}"]
-        
-    lines.append(sapphire_header)
-    for sd in sapphire_details:
-        lines.append(sd)
-        
+
+    lines.append(f"\n{C_BOLD}🛠️  BUILDERS{C_RESET}")
+
+    for host, data in [("ruby", ruby_data), ("sapphire", sapphire_data)]:
+        header_lines, detail_lines = _render_host_panel(host, data)
+        lines.extend(header_lines)
+        lines.extend(detail_lines)
+
     # Onix Cache Activity
     lines.append(f"\n{C_BOLD}📦 ONIX CACHE LOGS (Harmonia){C_RESET}")
     if not pulls:
@@ -311,190 +328,58 @@ def draw_dashboard(term_width, term_height):
         for p in recent_pulls:
             status_color = C_GREEN if p['status'] == 200 else C_RED
             status_text = "HIT " if p['status'] == 200 else "MISS"
-            
+
             # Icon depending on type
             type_icon = "📄" if p['type'] == 'narinfo' else "📦"
-            
+
             name = p['name']
             # Truncate name to fit terminal width
             max_name_len = term_width - 32
             if len(name) > max_name_len:
                 name = name[:max_name_len-3] + "..."
-                
+
             line = f"  {C_GRAY}{p['timestamp']}{C_RESET} {C_BOLD}{C_CYAN}{p['ip']:15}{C_RESET} {status_color}{status_text}{C_RESET} {type_icon} {name}"
             lines.append(line)
-            
+
     # Footer
-    lines.append("\n" + f"{C_GRAY}Press Ctrl+C to exit. Updates every 1s. Support '--stdio' to stream logs.{C_RESET}")
-    
+    lines.append("\n" + f"{C_GRAY}Press Ctrl+C to exit. Updates every 1s. Run 'nix-build-log' to stream live build output.{C_RESET}")
+
     # Render
     sys.stdout.write("\033[H\033[2J") # Clear screen
     sys.stdout.write("\n".join(lines) + "\n")
     sys.stdout.flush()
 
-def find_active_build(host):
-    sh_script = """
-for fd_file in /proc/*/fd/*; do
-  target=$(readlink "$fd_file" 2>/dev/null)
-  case "$target" in
-    *.drv.bz2)
-      pid=$(echo "$fd_file" | cut -d/ -f3)
-      echo "$pid|$(basename "$target")"
-      break
-      ;;
-  esac
-done 2>/dev/null
-"""
-    cmd = [
-        "ssh", "-o", "ConnectTimeout=2", "-o", "StrictHostKeyChecking=no", "-F", "/dev/null",
-        f"root@{host}", "sh"
-    ]
-    try:
-        proc = subprocess.run(cmd, input=sh_script, capture_output=True, text=True, timeout=3)
-        if proc.returncode == 0 and proc.stdout.strip():
-            parts = proc.stdout.strip().split('|')
-            if len(parts) == 2:
-                return parts[0], parts[1]
-    except Exception:
-        pass
-    return None
-
-def parse_strace_line(line):
-    m = write_re.match(line)
-    if not m:
-        return None
-    try:
-        raw_str = m.group(1)
-        truncated = False
-        if raw_str.endswith('...'):
-            raw_str = raw_str[:-3]
-            truncated = True
-        
-        decoded = ast.literal_eval('"' + raw_str + '"')
-        decoded_stripped = decoded.strip()
-        
-        if decoded_stripped.startswith('{') and (decoded_stripped.endswith('}') or truncated):
-            try:
-                data = json.loads(decoded_stripped)
-                if "fields" in data:
-                    return data["fields"]
-                elif "msg" in data:
-                    return [data["msg"]]
-            except Exception:
-                fields_match = re.search(r'"fields"\s*:\s*\[\s*"([^"]+)"', decoded_stripped)
-                if fields_match:
-                    return [fields_match.group(1)]
-                msg_match = re.search(r'"msg"\s*:\s*"([^"]+)"', decoded_stripped)
-                if msg_match:
-                    return [msg_match.group(1)]
-        else:
-            if decoded_stripped and not decoded_stripped.startswith('TLSR'):
-                return [decoded_stripped]
-    except Exception:
-        pass
-    return None
-
-def stream_build_logs(host):
-    res = find_active_build(host)
-    if not res:
-        print(f"{C_RED}No active build found on {host}.{C_RESET}")
-        return
-    pid, drv_name = res
-    print(f"{C_BOLD}{C_GREEN}Streaming logs for {drv_name} on {host} (PID {pid}):{C_RESET}")
-    print(f"{C_GRAY}Press Ctrl+C to stop streaming.{C_RESET}\n")
-    
-    cmd = [
-        "ssh", "-o", "ConnectTimeout=2", "-o", "StrictHostKeyChecking=no", "-F", "/dev/null",
-        f"root@{host}",
-        f"strace -p {pid} -s 8192 -e write"
-    ]
-    try:
-        proc = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
-        for line in proc.stderr:
-            line = line.strip()
-            if not line:
-                continue
-            fields = parse_strace_line(line)
-            if fields:
-                for f in fields:
-                    if isinstance(f, str):
-                        sys.stdout.write(f + "\n")
-                        sys.stdout.flush()
-    except KeyboardInterrupt:
-        print(f"\n{C_YELLOW}Streaming stopped.{C_RESET}")
-    except Exception as e:
-        print(f"\n{C_RED}Error: {e}{C_RESET}")
 
 def main():
     global RUNNING
-    
-    # One-shot mode option
     one_shot = len(sys.argv) > 1 and sys.argv[1] in ("--one-shot", "-o")
-    stream_mode = len(sys.argv) > 1 and sys.argv[1] in ("--stdio", "--stream", "--logs", "-s")
-    
-    if stream_mode:
-        target_host = sys.argv[2] if len(sys.argv) > 2 else None
-        if target_host:
-            if target_host not in ("ruby", "sapphire"):
-                print(f"{C_RED}Error: Host must be 'ruby' or 'sapphire'.{C_RESET}")
-                return
-            stream_build_logs(target_host)
-        else:
-            print(f"{C_BOLD}{C_CYAN}Waiting for active builds on ruby or sapphire...{C_RESET}")
-            print(f"{C_GRAY}Press Ctrl+C to exit.{C_RESET}\n")
-            try:
-                while True:
-                    res = find_active_build("sapphire")
-                    if res:
-                        stream_build_logs("sapphire")
-                        break
-                    res = find_active_build("ruby")
-                    if res:
-                        stream_build_logs("ruby")
-                        break
-                    time.sleep(2.0)
-            except KeyboardInterrupt:
-                print(f"\n{C_YELLOW}Exiting.{C_RESET}")
-        return
 
     if one_shot:
         print(f"{C_BOLD}{C_CYAN}Querying Nix build and cache status...{C_RESET}\n")
-        
+
         # Parallel query
         with concurrent.futures.ThreadPoolExecutor(max_workers=3) as executor:
             future_onix = executor.submit(get_onix_summary)
             future_ruby = executor.submit(query_builder, "ruby")
             future_sapphire = executor.submit(query_builder, "sapphire")
-            
+
             onix_status = future_onix.result()
             ruby_builds = future_ruby.result()
             sapphire_builds = future_sapphire.result()
-            
-        print(f"{C_BOLD}🛠️  Active Builds:{C_RESET}")
-        
-        # Print Ruby
-        if ruby_builds and ("Offline" in ruby_builds[0] or "Timeout" in ruby_builds[0]):
-            print(f"  {C_RED}ruby (Offline){C_RESET}")
-        else:
-            status_color = C_GREEN if ruby_builds else C_GRAY
-            print(f"  {status_color}● ruby{C_RESET} ({len(ruby_builds)} building):")
-            for b in ruby_builds:
-                print(f"    - {b}")
-                
-        # Print Sapphire
-        if sapphire_builds and ("Offline" in sapphire_builds[0] or "Timeout" in sapphire_builds[0]):
-            print(f"  {C_RED}sapphire (Offline){C_RESET}")
-        else:
-            status_color = C_GREEN if sapphire_builds else C_GRAY
-            print(f"  {status_color}● sapphire{C_RESET} ({len(sapphire_builds)} building):")
-            for b in sapphire_builds:
-                print(f"    - {b}")
-                
+
+        print(f"{C_BOLD}🛠️  Builders:{C_RESET}")
+
+        for host, data in [("ruby", ruby_builds), ("sapphire", sapphire_builds)]:
+            header_lines, detail_lines = _render_host_panel(host, data)
+            for l in header_lines + detail_lines:
+                # Strip ANSI for plain one-shot output clarity
+                print(l)
+
         # Print Onix Cache
         print(f"\n{C_BOLD}📦 Onix Binary Cache Status:{C_RESET}")
         onix_color = C_GREEN if onix_status == "active" else C_RED
         print(f"  Harmonia service is: {onix_color}{onix_status}{C_RESET}")
-        
+
         # Fetch last 15 logs from Onix and resolve them
         print("\nRecent cache logs:")
         cmd = ["ssh", "-o", "ConnectTimeout=2", "-o", "StrictHostKeyChecking=no", "-F", "/dev/null", "root@onix", "tail -n 25 /var/log/nginx/harmonia.access.log 2>/dev/null || true"]
@@ -510,7 +395,7 @@ def main():
                         parsed_items.append(entry)
                         if entry['hash']:
                             hashes_to_resolve.add(entry['hash'])
-                            
+
                 # Resolve hashes
                 resolved = resolve_hashes_remote(hashes_to_resolve)
                 for entry in parsed_items:
@@ -533,21 +418,21 @@ def main():
         threading.Thread(target=hash_resolver_worker, daemon=True),
         threading.Thread(target=query_builders_loop, daemon=True)
     ]
-    
+
     for t in threads:
         t.start()
-        
+
     try:
         # Hide cursor
         sys.stdout.write("\033[?25l")
         sys.stdout.flush()
-        
+
         while RUNNING:
             try:
                 term_width, term_height = os.get_terminal_size()
             except Exception:
                 term_width, term_height = 80, 24
-                
+
             draw_dashboard(term_width, term_height)
             time.sleep(1.0)
     except KeyboardInterrupt:
