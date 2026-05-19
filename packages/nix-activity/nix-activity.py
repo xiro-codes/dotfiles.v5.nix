@@ -2,6 +2,7 @@
 import os
 import sys
 import re
+import ast
 import time
 import json
 import shlex
@@ -27,6 +28,8 @@ LOG_PATTERN = re.compile(
     r'"(?P<method>[A-Z]+)\s+(?P<path>/[^\s"]+)\s+[^"]*"'  # "GET /path HTTP/1.1"
     r'\s+(?P<status>\d{3})'                              # HTTP Status
 )
+
+write_re = re.compile(r'^write\(\d+,\s*"((?:[^"\\]|\\.)*)",\s*\d+\)\s*=\s*\d+')
 
 # Colors
 C_RESET = "\033[0m"
@@ -189,35 +192,34 @@ def onix_log_streamer():
             time.sleep(2.0)
 
 def query_builder(host):
+    sh_script = """
+for env_file in /proc/*/environ; do
+  if [ -f "$env_file" ] && grep -q -a "NIX_BUILD_TOP=" "$env_file" 2>/dev/null; then
+    tr '\\0' '\\n' < "$env_file" | grep -a '^name=' | cut -d= -f2-
+  fi
+done 2>/dev/null | sort -u
+"""
     cmd = [
         "ssh", "-o", "ConnectTimeout=2", "-o", "StrictHostKeyChecking=no", "-F", "/dev/null",
-        f"root@{host}",
-        "find /proc -maxdepth 2 -name cwd -lname '/tmp/nix-build-*' -exec readlink {} \\; 2>/dev/null"
+        f"root@{host}", "sh"
     ]
     try:
-        proc = subprocess.run(cmd, capture_output=True, text=True, timeout=3)
+        proc = subprocess.run(cmd, input=sh_script, capture_output=True, text=True, timeout=3)
         if proc.returncode != 0 and not proc.stdout.strip():
             err = proc.stderr.strip()
             if err:
                 return [f"Error ({err[:30]})"]
         
-        builds = set()
+        builds = []
         for line in proc.stdout.split('\n'):
             line = line.strip()
-            if not line:
-                continue
-            for part in line.split('/'):
-                if part.startswith('nix-build-'):
-                    name = part[len('nix-build-'):]
-                    if '.drv-' in name:
-                        name = name.split('.drv-')[0]
-                    elif name.endswith('.drv'):
-                        name = name[:-4]
-                    builds.add(name)
-                    break
-        return list(builds)
+            if line:
+                builds.append(line)
+        return builds
     except subprocess.TimeoutExpired:
         return ["Timeout"]
+    except Exception as e:
+        return [f"Offline ({str(e)[:30]})"]
     except Exception as e:
         return [f"Offline ({str(e)[:30]})"]
 
@@ -323,19 +325,138 @@ def draw_dashboard(term_width, term_height):
             lines.append(line)
             
     # Footer
-    lines.append("\n" + f"{C_GRAY}Press Ctrl+C to exit. Updates every 1s.{C_RESET}")
+    lines.append("\n" + f"{C_GRAY}Press Ctrl+C to exit. Updates every 1s. Support '--stdio' to stream logs.{C_RESET}")
     
     # Render
     sys.stdout.write("\033[H\033[2J") # Clear screen
     sys.stdout.write("\n".join(lines) + "\n")
     sys.stdout.flush()
 
+def find_active_build(host):
+    sh_script = """
+for fd_file in /proc/*/fd/*; do
+  target=$(readlink "$fd_file" 2>/dev/null)
+  case "$target" in
+    *.drv.bz2)
+      pid=$(echo "$fd_file" | cut -d/ -f3)
+      echo "$pid|$(basename "$target")"
+      break
+      ;;
+  esac
+done 2>/dev/null
+"""
+    cmd = [
+        "ssh", "-o", "ConnectTimeout=2", "-o", "StrictHostKeyChecking=no", "-F", "/dev/null",
+        f"root@{host}", "sh"
+    ]
+    try:
+        proc = subprocess.run(cmd, input=sh_script, capture_output=True, text=True, timeout=3)
+        if proc.returncode == 0 and proc.stdout.strip():
+            parts = proc.stdout.strip().split('|')
+            if len(parts) == 2:
+                return parts[0], parts[1]
+    except Exception:
+        pass
+    return None
+
+def parse_strace_line(line):
+    m = write_re.match(line)
+    if not m:
+        return None
+    try:
+        raw_str = m.group(1)
+        truncated = False
+        if raw_str.endswith('...'):
+            raw_str = raw_str[:-3]
+            truncated = True
+        
+        decoded = ast.literal_eval('"' + raw_str + '"')
+        decoded_stripped = decoded.strip()
+        
+        if decoded_stripped.startswith('{') and (decoded_stripped.endswith('}') or truncated):
+            try:
+                data = json.loads(decoded_stripped)
+                if "fields" in data:
+                    return data["fields"]
+                elif "msg" in data:
+                    return [data["msg"]]
+            except Exception:
+                fields_match = re.search(r'"fields"\s*:\s*\[\s*"([^"]+)"', decoded_stripped)
+                if fields_match:
+                    return [fields_match.group(1)]
+                msg_match = re.search(r'"msg"\s*:\s*"([^"]+)"', decoded_stripped)
+                if msg_match:
+                    return [msg_match.group(1)]
+        else:
+            if decoded_stripped and not decoded_stripped.startswith('TLSR'):
+                return [decoded_stripped]
+    except Exception:
+        pass
+    return None
+
+def stream_build_logs(host):
+    res = find_active_build(host)
+    if not res:
+        print(f"{C_RED}No active build found on {host}.{C_RESET}")
+        return
+    pid, drv_name = res
+    print(f"{C_BOLD}{C_GREEN}Streaming logs for {drv_name} on {host} (PID {pid}):{C_RESET}")
+    print(f"{C_GRAY}Press Ctrl+C to stop streaming.{C_RESET}\n")
+    
+    cmd = [
+        "ssh", "-o", "ConnectTimeout=2", "-o", "StrictHostKeyChecking=no", "-F", "/dev/null",
+        f"root@{host}",
+        f"strace -p {pid} -s 8192 -e write"
+    ]
+    try:
+        proc = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
+        for line in proc.stderr:
+            line = line.strip()
+            if not line:
+                continue
+            fields = parse_strace_line(line)
+            if fields:
+                for f in fields:
+                    if isinstance(f, str):
+                        sys.stdout.write(f + "\n")
+                        sys.stdout.flush()
+    except KeyboardInterrupt:
+        print(f"\n{C_YELLOW}Streaming stopped.{C_RESET}")
+    except Exception as e:
+        print(f"\n{C_RED}Error: {e}{C_RESET}")
+
 def main():
     global RUNNING
     
     # One-shot mode option
     one_shot = len(sys.argv) > 1 and sys.argv[1] in ("--one-shot", "-o")
+    stream_mode = len(sys.argv) > 1 and sys.argv[1] in ("--stdio", "--stream", "--logs", "-s")
     
+    if stream_mode:
+        target_host = sys.argv[2] if len(sys.argv) > 2 else None
+        if target_host:
+            if target_host not in ("ruby", "sapphire"):
+                print(f"{C_RED}Error: Host must be 'ruby' or 'sapphire'.{C_RESET}")
+                return
+            stream_build_logs(target_host)
+        else:
+            print(f"{C_BOLD}{C_CYAN}Waiting for active builds on ruby or sapphire...{C_RESET}")
+            print(f"{C_GRAY}Press Ctrl+C to exit.{C_RESET}\n")
+            try:
+                while True:
+                    res = find_active_build("sapphire")
+                    if res:
+                        stream_build_logs("sapphire")
+                        break
+                    res = find_active_build("ruby")
+                    if res:
+                        stream_build_logs("ruby")
+                        break
+                    time.sleep(2.0)
+            except KeyboardInterrupt:
+                print(f"\n{C_YELLOW}Exiting.{C_RESET}")
+        return
+
     if one_shot:
         print(f"{C_BOLD}{C_CYAN}Querying Nix build and cache status...{C_RESET}\n")
         

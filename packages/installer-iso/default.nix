@@ -81,10 +81,14 @@
 
         programs.ssh.extraConfig = ''
           Host ${config.local.network-hosts.sapphire} sapphire
+            User build
+            IdentityFile /etc/ssh/id_rsa_builder
             StrictHostKeyChecking no
             UserKnownHostsFile /dev/null
 
           Host ${config.local.network-hosts.ruby} ruby
+            User build
+            IdentityFile /etc/ssh/id_rsa_builder
             StrictHostKeyChecking no
             UserKnownHostsFile /dev/null
         '';
