@@ -1,13 +1,23 @@
 {
   pkgs,
   inputs,
+  lib,
   ...
 }:
 let
+  inherit (lib) mkForce;
 in
 {
   imports = [
+    ../profiles/workstation
   ];
+
+  local = {
+    caelestia-shell.enable = mkForce false;
+    hyprland.enable = mkForce false;
+    mpd.enable = mkForce false;
+  };
+
   home.packages = with pkgs; [
     (symlinkJoin {
       name = "xivlauncher-wrapped";
