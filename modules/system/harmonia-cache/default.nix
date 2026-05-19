@@ -63,6 +63,27 @@ in
     services.harmonia.cache = {
       enable = true;
       signKeyPaths = cfg.signKeyPaths;
+      settings = {
+        bind = "127.0.0.1:5001";
+      };
+    };
+    services.nginx = {
+      enable = true;
+      virtualHosts."harmonia-proxy" = {
+        listen = [ { addr = "0.0.0.0"; port = cfg.port; extraParameters = [ "default_server" ]; } ];
+        extraConfig = ''
+          access_log /var/log/nginx/harmonia.access.log;
+        '';
+        locations."/" = {
+          proxyPass = "http://127.0.0.1:5001";
+          extraConfig = ''
+            proxy_set_header Host $host;
+            proxy_set_header X-Real-IP $remote_addr;
+            proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+            proxy_set_header X-Forwarded-Proto $scheme;
+          '';
+        };
+      };
     };
     systemd.services.harmonia.environment = {
       RUST_LOG = "info";

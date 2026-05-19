@@ -74,7 +74,7 @@ for h in hashes:
     # 2. Try querying Harmonia for narinfo metadata
     if len(h) == 32:
         try:
-            req = urllib.request.Request(f'http://127.0.0.1:5000/{{h}}.narinfo')
+            req = urllib.request.Request(f'http://127.0.0.1:5001/{{h}}.narinfo')
             with urllib.request.urlopen(req, timeout=1.0) as res:
                 content = res.read().decode('utf-8')
                 store_path = None
@@ -135,18 +135,22 @@ def parse_log_line(line):
         path = match.group('path')
         status = int(match.group('status'))
         
-        # Try to parse timestamp from the beginning of line
-        # E.g. '2026-05-19T09:55:00.123456Z ...'
+        # Try to parse timestamp from Nginx format: [dd/MMM/yyyy:HH:MM:SS +zzzz]
+        # or fallback to journalctl format: YYYY-MM-DDTHH:MM:SS
         timestamp = ""
-        ts_match = re.match(r'^([\d\-T\:\.Z]+)', line)
-        if ts_match:
-            # Format nicely: HH:MM:SS
-            raw_ts = ts_match.group(1)
-            # Extract HH:MM:SS
-            time_part = raw_ts.split('T')[-1].split('.')[0].rstrip('Z')
-            timestamp = time_part
+        nginx_ts_match = re.search(r'\[\d{2}/\w{3}/\d{4}:(?P<time>\d{2}:\d{2}:\d{2}) [+-]\d{4}\]', line)
+        if nginx_ts_match:
+            timestamp = nginx_ts_match.group('time')
         else:
-            timestamp = time.strftime("%H:%M:%S")
+            ts_match = re.match(r'^([\d\-T\:\.Z]+)', line)
+            if ts_match:
+                # Format nicely: HH:MM:SS
+                raw_ts = ts_match.group(1)
+                # Extract HH:MM:SS
+                time_part = raw_ts.split('T')[-1].split('.')[0].rstrip('Z')
+                timestamp = time_part
+            else:
+                timestamp = time.strftime("%H:%M:%S")
             
         h, h_type = extract_hash_from_path(path)
         
@@ -166,8 +170,8 @@ def parse_log_line(line):
 
 def onix_log_streamer():
     global RUNNING
-    # Stream logs continuously using SSH journalctl -f
-    cmd = ["ssh", "-o", "ConnectTimeout=2", "-o", "StrictHostKeyChecking=no", "-F", "/dev/null", "root@onix", "journalctl -u harmonia.service -f -n 100 -o cat"]
+    # Stream logs continuously using SSH tail -F on Nginx harmonia access log
+    cmd = ["ssh", "-o", "ConnectTimeout=2", "-o", "StrictHostKeyChecking=no", "-F", "/dev/null", "root@onix", "tail -F -n 100 /var/log/nginx/harmonia.access.log"]
     while RUNNING:
         try:
             proc = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.DEVNULL, text=True)
@@ -372,7 +376,7 @@ def main():
         
         # Fetch last 15 logs from Onix and resolve them
         print("\nRecent cache logs:")
-        cmd = ["ssh", "-o", "ConnectTimeout=2", "-o", "StrictHostKeyChecking=no", "-F", "/dev/null", "root@onix", "journalctl -u harmonia.service -n 25 -o cat --no-pager"]
+        cmd = ["ssh", "-o", "ConnectTimeout=2", "-o", "StrictHostKeyChecking=no", "-F", "/dev/null", "root@onix", "tail -n 25 /var/log/nginx/harmonia.access.log 2>/dev/null || true"]
         try:
             proc = subprocess.run(cmd, capture_output=True, text=True, timeout=4)
             if proc.returncode == 0:
