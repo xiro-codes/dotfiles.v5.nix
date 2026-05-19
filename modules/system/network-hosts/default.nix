@@ -22,6 +22,10 @@ let
       ip = "192.168.1.67";
       avahi = "sapphire.local";
     };
+    slate = {
+      ip = "192.168.1.73";
+      avahi = "slate.local";
+    };
     jade = {
       ip = "192.168.1.68";
       avahi = "jade.local";
@@ -59,6 +63,13 @@ in
       readOnly = true;
       description = "Address for Sapphire host";
     };
+    slate = mkOption {
+      type = types.str;
+      default = getHost "slate";
+      readOnly = true;
+      description = "Address for Slate host";
+    };
+
   };
 
   config = {
@@ -78,6 +89,11 @@ in
         "sapphire"
         "sapphire.local"
         "sapphire.home"
+      ];
+      "${hostDefs.slate.ip}" = [
+        "slate"
+        "slate.local"
+        "slate.home"
       ];
     };
   };
