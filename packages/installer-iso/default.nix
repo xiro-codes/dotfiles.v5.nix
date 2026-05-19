@@ -71,8 +71,8 @@
           =======================================================================
           Welcome to the NixOS Installer!
 
-          The 'sapphire' remote builder is fully configured and trusted out of the box!
-          Nix will automatically offload builds to sapphire.
+          The 'sapphire' and 'ruby' remote builders are fully configured and trusted out of the box!
+          Nix will automatically offload builds to sapphire and ruby.
 
           Happy building!
           =======================================================================
@@ -80,6 +80,10 @@
 
         programs.ssh.extraConfig = ''
           Host ${config.local.network-hosts.sapphire} sapphire
+            StrictHostKeyChecking no
+            UserKnownHostsFile /dev/null
+
+          Host ${config.local.network-hosts.ruby} ruby
             StrictHostKeyChecking no
             UserKnownHostsFile /dev/null
         '';
@@ -92,6 +96,20 @@
               system = "x86_64-linux";
               protocol = "ssh-ng";
               maxJobs = 8;
+              sshKey = "/etc/ssh/id_rsa_builder";
+              sshUser = "build";
+              supportedFeatures = [
+                "nixos-test"
+                "benchmark"
+                "big-parallel"
+                "kvm"
+              ];
+            }
+            {
+              hostName = config.local.network-hosts.ruby;
+              system = "x86_64-linux";
+              protocol = "ssh-ng";
+              maxJobs = 24;
               sshKey = "/etc/ssh/id_rsa_builder";
               sshUser = "build";
               supportedFeatures = [
