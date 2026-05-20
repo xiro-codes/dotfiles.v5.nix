@@ -15,12 +15,7 @@ in
     ../profiles/limine-uefi.nix
     ../profiles/client.nix
     ../profiles/workstation
-    ../profiles/remote-builder.nix
   ];
-  services.openssh.settings = {
-    PasswordAuthentication = mkForce true;
-    PermitRootLogin = mkForce "yes";
-  };
 
   programs = {
     coolercontrol.enable = true;

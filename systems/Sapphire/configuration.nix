@@ -16,7 +16,6 @@ in
     ../profiles/client.nix
     ../profiles/workstation
     ../profiles/workstation/jovian.nix
-    ../profiles/remote-builder.nix
   ];
 
   # Sapphire-specific configuration
