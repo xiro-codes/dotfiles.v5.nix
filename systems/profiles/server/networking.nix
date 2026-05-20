@@ -3,6 +3,9 @@
   lib,
   ...
 }:
+let
+  inherit (lib.strings) toLower;
+in
 {
   local = {
     # Reverse proxy with HTTPS
@@ -10,7 +13,7 @@
       enable = true;
       # Domain auto-configured from Avahi: hostname.local
       useACME = false; # Self-signed for .local domains
-      domain = "${lib.strings.toLower config.networking.hostName}.home";
+      domain = "${toLower config.networking.hostName}.home";
       sharedFolders = {
         files = "/media/Media/games";
         wallpapers = "/media/Media/wallpapers";

@@ -7,6 +7,9 @@
   nodeId,
   ...
 }:
+let
+  inherit (lib) mkForce;
+in
 {
   imports = [
     ../../profiles/base.nix
@@ -21,8 +24,8 @@
   services.openssh.settings.PermitRootLogin = "prohibit-password";
 
   local = {
-    network.useNetworkManager = lib.mkForce false;
-    disks.enable = lib.mkForce false;
+    network.useNetworkManager = mkForce false;
+    disks.enable = mkForce false;
     secrets.keys = [
       "ssh_pub_jade/master"
       "ssh_pub_onix/master"

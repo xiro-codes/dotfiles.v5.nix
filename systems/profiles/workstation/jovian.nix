@@ -6,10 +6,21 @@
   inputs-nix,
   ...
 }:
+let
+  inherit (lib) mkForce mkDefault getName;
+in
 {
   imports = [
     inputs-nix.inputs.jovian.nixosModules.jovian
   ];
+
+  local.desktops = {
+    hyprland = mkForce false;
+    displayManager = "none";
+    plasma6 = true;
+  };
+  services.displayManager.sddm.enable = true;
+
   jovian = {
     steam = {
       enable = true;
@@ -17,14 +28,14 @@
       user = "tod";
       desktopSession = "plasma";
     };
-    devices.steamdeck.enable = lib.mkDefault true;
+    devices.steamdeck.enable = mkDefault true;
     hardware.has.amd.gpu = true;
   };
 
   # Handle unfree packages for Steam
   nixpkgs.config.allowUnfreePredicate =
     pkg:
-    builtins.elem (lib.getName pkg) [
+    builtins.elem (getName pkg) [
       "steam"
       "steam-original"
       "steam-run"

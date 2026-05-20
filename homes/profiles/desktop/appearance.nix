@@ -3,6 +3,9 @@
   lib,
   ...
 }:
+let
+  inherit (lib) mkForce;
+in
 {
   local = {
     stylix.enable = true;
@@ -10,7 +13,7 @@
   };
 
   gtk = {
-    enable = lib.mkForce true;
+    enable = mkForce true;
     gtk4.theme = null;
     iconTheme = {
       name = "Papirus-Dark";
