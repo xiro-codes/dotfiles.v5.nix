@@ -11,6 +11,8 @@
     ../profiles/base.nix
     ../profiles/limine-uefi.nix
     ../profiles/client.nix
+    ../profiles/workstation
+    ../profiles/workstation/jovian.nix
   ];
 
   # Sapphire-specific configuration
@@ -21,6 +23,11 @@
       "/etc/nixos/"
     ];
     zerotier.enable = true;
+    gaming.enable = true;
+    desktops.enable = true;
+    desktops.hyprland = mkForce false;
+    desktops.displayManager = "none";
+    desktops.plasma6 = true;
   };
 
   users.users.build = {
