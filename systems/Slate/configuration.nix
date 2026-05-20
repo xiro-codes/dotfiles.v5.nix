@@ -15,24 +15,29 @@ in
     ../profiles/limine-uefi.nix
     ../profiles/workstation
     ../profiles/workstation/jovian.nix
+    ../profiles/client.nix
   ];
 
   local = {
-    # System settings
+    registry.enable = true;
+    userManager.extraGroups = [
+      "input"
+      "uinput"
+    ];
+    yubikey.enable = true;
     bootloader.recoveryUUID = "deck-recovery-placeholder"; # TODO: Update after first install
 
     secrets.keys = [
-      "ssh_pub_deck/master"
+      "gog_creds"
+      "zerotier_network_id"
     ];
-
-    secrets.enable = mkForce false;
-    security.enable = mkForce false;
 
     gaming.enable = true;
     desktops.enable = true;
     desktops.hyprland = mkForce false;
     desktops.displayManager = "none";
     desktops.plasma6 = true;
+    zerotier.enable = true;
   };
   services.displayManager.sddm.enable = true;
   services.openssh = {
