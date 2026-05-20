@@ -23,25 +23,6 @@ in
   };
 
   nodes = {
-    # Define dummy interfaces for NixOS hosts so we can connect to them
-    Onix.interfaces.enp6s0.network = "home";
-    Onix.interfaces.zt0.network = "zerotier";
-    Sapphire.interfaces.eth0.network = "home";
-    Sapphire.interfaces.zt0.network = "zerotier";
-    Ruby.interfaces.eth0.network = "home";
-    Slate.interfaces.wlan0.network = "home";
-    Slate.interfaces.zt0.network = "zerotier";
-    Jade.interfaces."mv-enp6s0".network = "home";
-    Jade.interfaces."mv-enp6s0".physicalConnections = [ (mkConnection "Onix" "enp6s0") ];
-
-    # Jade runs as a VM inside Onix
-    Jade.deviceType = "device";
-    Jade.parent = "Onix";
-    Jade.guestType = "vm";
-    Jade.name = "Jade (Web/DDNS)";
-    Jade.interfaces.wan.network = "wan";
-    Jade.interfaces.wan.physicalConnections = [ (mkConnection "internet" "*") ];
-
     internet = mkInternet {
       connections = mkConnection "att-router" "wan";
     };
@@ -74,14 +55,6 @@ in
       connections.eth2 = mkConnection "Sapphire" "eth0";
       connections.eth3 = mkConnection "Ruby" "eth0";
       connections.eth4 = mkConnection "Slate" "wlan0";
-    };
-
-    pihole = mkDevice "Pi-hole" {
-      info = "DNS Server (used by all hosts)";
-      deviceType = "device";
-      parent = "Onix";
-      guestType = "container";
-      interfaces.eth0.network = "home";
     };
 
     phone = mkDevice "Mobile Phone" {

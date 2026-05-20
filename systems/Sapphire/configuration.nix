@@ -4,6 +4,9 @@
   pkgs,
   ...
 }:
+let
+  inherit (lib) mkForce;
+in
 {
   imports = [
     ./disko.nix
@@ -41,4 +44,9 @@
   nix.settings.trusted-users = [ "build" ];
 
   system.stateVersion = "25.11";
+
+  topology.self.interfaces = {
+    eth0.network = "home";
+    zt0.network = "zerotier";
+  };
 }

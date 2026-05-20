@@ -44,4 +44,9 @@ in
   };
 
   system.stateVersion = "25.11";
+
+  topology.self.interfaces = {
+    wlan0.network = "home";
+    zt0.network = "zerotier";
+  };
 }
