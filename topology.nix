@@ -35,6 +35,7 @@ in
     Jade.interfaces."mv-enp6s0".physicalConnections = [ (mkConnection "Onix" "enp6s0") ];
 
     # Jade runs as a VM inside Onix
+    Jade.deviceType = "device";
     Jade.parent = "Onix";
     Jade.guestType = "vm";
     Jade.name = "Jade (Web/DDNS)";
@@ -72,7 +73,7 @@ in
       connections.eth1 = mkConnection "Onix" "enp6s0";
       connections.eth2 = mkConnection "Sapphire" "eth0";
       connections.eth3 = mkConnection "Ruby" "eth0";
-      connections.eth4 = mkConnection "SteamDeck" "wlan0";
+      connections.eth4 = mkConnection "Slate" "wlan0";
     };
 
     pihole = mkDevice "Pi-hole" {

@@ -4,10 +4,12 @@
   pkgs,
   ...
 }:
+let
+  inherit (lib) mkForce;
+in
 {
   imports = [
     ./disko.nix
-    ./btrfs-rollback.nix
     ./hardware-configuration.nix
     ../profiles/base.nix
     ../profiles/limine-uefi.nix
@@ -23,12 +25,12 @@
       "ssh_pub_deck/master"
     ];
 
-    secrets.enable = lib.mkForce false;
-    security.enable = lib.mkForce false;
+    secrets.enable = mkForce false;
+    security.enable = mkForce false;
 
     gaming.enable = true;
     desktops.enable = true;
-    desktops.hyprland = lib.mkForce false;
+    desktops.hyprland = mkForce false;
     desktops.displayManager = "none";
     desktops.plasma6 = true;
   };
@@ -36,8 +38,8 @@
   services.openssh = {
     enable = true;
     settings = {
-      PasswordAuthentication = lib.mkForce true;
-      PermitRootLogin = lib.mkForce "yes";
+      PasswordAuthentication = mkForce true;
+      PermitRootLogin = mkForce "yes";
     };
   };
 
