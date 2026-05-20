@@ -101,8 +101,8 @@ let
           hyprctl keyword monitor "DP-3, disable"
           hyprctl keyword monitor "HDMI-A-1, 2560x1080@60, 0x0, 1"
       else
-          hyprctl keyword monitor "DP-3, 1920x1080@60, 320x0, 1"
-          hyprctl keyword monitor "HDMI-A-1, 2560x1080@60, 0x1080, 1"
+          hyprctl keyword monitor "DP-3, 1920x1080@60, 0x0, 1"
+          hyprctl keyword monitor "HDMI-A-1, disable"
       fi
     '';
   };
