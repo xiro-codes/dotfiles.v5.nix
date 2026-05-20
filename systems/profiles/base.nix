@@ -6,7 +6,7 @@
 }:
 {
   local = {
-    security.enable = false;
+    security.enable = true;
     dotfiles-sync = {
       enable = true;
       maintenance.enable = true;
