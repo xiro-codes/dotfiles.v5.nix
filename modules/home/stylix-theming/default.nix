@@ -63,7 +63,7 @@ in
           nixvim.fonts.enable = true;
           kitty.fonts.enable = true;
           kitty.colors.enable = false; # Let caelestia handle colors
-          hyprland.enable = false; # Let caelestia handle hyprland colors
+          hyprland.enable = true;
           firefox.enable = false;
           zen-browser.enable = true;
           zen-browser.profileNames = [ "default" ];
