@@ -32,21 +32,9 @@ in
       "zerotier_network_id"
     ];
 
-    gaming.enable = true;
-    desktops.enable = true;
-    desktops.hyprland = mkForce false;
-    desktops.displayManager = "none";
-    desktops.plasma6 = true;
     zerotier.enable = true;
   };
   services.displayManager.sddm.enable = true;
-  services.openssh = {
-    enable = true;
-    settings = {
-      PasswordAuthentication = mkForce true;
-      PermitRootLogin = mkForce "yes";
-    };
-  };
 
   system.stateVersion = "25.11";
 
