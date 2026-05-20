@@ -42,6 +42,76 @@ edit-secrets:
 update-keys:
     @user-sops updatekeys secrets/secrets.yaml
 
+# Generate host SSH keys for user and root, and output their public/age keys for registration
+[group('secrets')]
+gen-keys host=HOST:
+    #!/usr/bin/env bash
+    set -euo pipefail
+    host_lower=$(echo "{{host}}" | tr '[:upper:]' '[:lower:]')
+    echo "================================================================================"
+    echo "⚡ 1. Generating SSH keys on {{host}}..."
+    echo "================================================================================"
+    mkdir -p ~/.ssh
+    chmod 700 ~/.ssh
+    if [ ! -f ~/.ssh/id_ed25519 ]; then
+        ssh-keygen -t ed25519 -C "tod@{{host}}" -f ~/.ssh/id_ed25519 -N ""
+    else
+        echo "✅ ~/.ssh/id_ed25519 already exists"
+    fi
+    if [ ! -f ~/.ssh/github ]; then
+        ssh-keygen -t ed25519 -C "github@tdavis.dev" -f ~/.ssh/github -N ""
+    else
+        echo "✅ ~/.ssh/github already exists"
+    fi
+    if [ ! -f ~/.ssh/id_sops ]; then
+        ssh-keygen -t ed25519 -C "tod@{{host}}" -f ~/.ssh/id_sops -N ""
+    else
+        echo "✅ ~/.ssh/id_sops already exists"
+    fi
+    sudo mkdir -p /root/.ssh
+    sudo chmod 700 /root/.ssh
+    if sudo [ ! -f /root/.ssh/id_ed25519 ]; then
+        sudo ssh-keygen -t ed25519 -C "root@{{host}}" -f /root/.ssh/id_ed25519 -N ""
+    else
+        echo "✅ /root/.ssh/id_ed25519 already exists"
+    fi
+    if sudo [ ! -f /root/.ssh/github ]; then
+        sudo ssh-keygen -t ed25519 -C "github@tdavis.dev" -f /root/.ssh/github -N ""
+    else
+        echo "✅ /root/.ssh/github already exists"
+    fi
+    echo ""
+    echo "================================================================================"
+    echo "🔑 2. PUBLIC KEYS FOR secrets/secrets.yaml"
+    echo "================================================================================"
+    echo "ssh_pub_${host_lower}:"
+    echo "    master: $(cat ~/.ssh/id_ed25519.pub)"
+    echo "    github: $(cat ~/.ssh/github.pub)"
+    echo "    sops: $(cat ~/.ssh/id_sops.pub)"
+    echo "ssh_root_${host_lower}:"
+    echo "    master: $(sudo cat /root/.ssh/id_ed25519.pub)"
+    echo "    github: $(sudo cat /root/.ssh/github.pub)"
+    echo ""
+    echo "================================================================================"
+    echo "🔒 3. AGE KEYS FOR .sops.yaml"
+    echo "================================================================================"
+    echo "# Host age key (from /etc/ssh/ssh_host_ed25519_key.pub):"
+    if [ -f /etc/ssh/ssh_host_ed25519_key.pub ]; then
+        echo "  - &${host_lower} $(nix shell nixpkgs#ssh-to-age -c ssh-to-age < /etc/ssh/ssh_host_ed25519_key.pub)"
+    else
+        echo "  - &${host_lower} <Error: /etc/ssh/ssh_host_ed25519_key.pub not found>"
+    fi
+    echo "# User SOPS age key (from ~/.ssh/id_sops.pub):"
+    echo "  - &tod_${host_lower} $(nix shell nixpkgs#ssh-to-age -c ssh-to-age < ~/.ssh/id_sops.pub)"
+    echo ""
+    echo "================================================================================"
+    echo "👉 4. Next steps:"
+    echo "================================================================================"
+    echo "1. Copy the AGE keys above to the 'keys:' list and 'creation_rules' in .sops.yaml"
+    echo "2. Copy the PUBLIC KEYS YAML above into secrets/secrets.yaml (use 'just edit-secrets')"
+    echo "3. Run 'just update-keys' to re-encrypt the secrets file with the new keys"
+    echo "================================================================================"
+
 # Initialize backups
 [group('backups')]
 init-backup:

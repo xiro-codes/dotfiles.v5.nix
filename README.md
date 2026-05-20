@@ -142,48 +142,19 @@ just update-keys
 
 ### **Generating & Registering SSH Keys for a New Host**
 
-When provisioning a new host (e.g., `<hostname>`), you need to generate a set of SSH keys for both the normal user (`tod`) and `root` to enable master identity tracking, GitHub synchronization, and local SOPS decryption. Once generated, these public keys must be registered in the secrets database (`secrets/secrets.yaml`).
+When provisioning a new host (e.g., `<hostname>`), you need to generate a set of SSH keys for both the normal user (`tod`) and `root` to enable master identity tracking, GitHub synchronization, and local SOPS decryption. 
 
-#### **1. Generate User Keys (as user `tod`)**
-Run the following commands on the new machine:
+You can automate this generation and format the output for configuration files by running:
 ```bash
-# 1. User Master Key (general SSH access)
-ssh-keygen -t ed25519 -C "tod@<hostname>" -f ~/.ssh/id_ed25519 -N ""
-
-# 2. User GitHub Key (Git pushing/pulling)
-ssh-keygen -t ed25519 -C "github@tdavis.dev" -f ~/.ssh/github -N ""
-
-# 3. User SOPS Key (used by user-sops to decrypt local secrets)
-ssh-keygen -t ed25519 -C "tod@<hostname>" -f ~/.ssh/id_sops -N ""
+just gen-keys <hostname>
 ```
+*(If `<hostname>` is omitted, it defaults to the current machine's hostname).*
 
-#### **2. Generate Root Keys (as `root` or using `sudo`)**
-Run the following commands on the new machine:
-```bash
-# 1. Root Master Key (administrative access)
-sudo ssh-keygen -t ed25519 -C "root@<hostname>" -f /root/.ssh/id_ed25519 -N ""
-
-# 2. Root GitHub Key (root-level Git operations)
-sudo ssh-keygen -t ed25519 -C "github@tdavis.dev" -f /root/.ssh/github -N ""
-```
-
-#### **3. Register the Public Keys in `secrets/secrets.yaml`**
-1. On an already authorized machine, open the encrypted secrets file:
-   ```bash
-   just edit-secrets
-   ```
-2. Add the public keys for the new host under the corresponding keys structure:
-   ```yaml
-   ssh_pub_<hostname>:
-     master: <contents of ~/.ssh/id_ed25519.pub>
-     github: <contents of ~/.ssh/github.pub>
-     sops: <contents of ~/.ssh/id_sops.pub>
-
-   ssh_root_<hostname>:
-     master: <contents of /root/.ssh/id_ed25519.pub>
-     github: <contents of /root/.ssh/github.pub>
-   ```
-3. Save and exit the editor. SOPS will automatically encrypt the new public keys into `secrets/secrets.yaml`.
+This command will:
+1. Generate the required user keys (`~/.ssh/id_ed25519`, `~/.ssh/github`, `~/.ssh/id_sops`) and root keys (`/root/.ssh/id_ed25519`, `/root/.ssh/github`) if they do not already exist.
+2. Print the formatted public keys YAML block ready to be copied into `secrets/secrets.yaml` (edit using `just edit-secrets`).
+3. Print the formatted Age keys ready to be added to `.sops.yaml`.
+4. Provide prompt instructions on the remaining steps to re-encrypt secrets.
 
 
 ## **⌨️ Command Reference (just)**
@@ -217,6 +188,7 @@ The justfile provides several helpers for system administration:
 | :---- | :---- |
 | just edit-secrets | Edit encrypted SOPS secrets |
 | just update-keys | Update system keys |
+| just gen-keys \<host\> | Generate host/user SSH keys and print public/age keys |
 
 ### **Backups**
 
