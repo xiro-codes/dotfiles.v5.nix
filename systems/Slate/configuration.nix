@@ -25,7 +25,7 @@ in
       "uinput"
     ];
     yubikey.enable = true;
-    bootloader.recoveryUUID = "deck-recovery-placeholder"; # TODO: Update after first install
+    bootloader.recoveryUUID = "2b4c50f4-bc58-41ec-bf86-dc0b57a9a130";
 
     secrets.keys = [
       "gog_creds"
