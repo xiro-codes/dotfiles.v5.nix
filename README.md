@@ -92,6 +92,54 @@ This repository utilizes a modular discovery engine (`parts/discovery/`) that sc
 * **User Manager**: Simplifies user creation and shell (Fish) configuration.
 * **Share Manager**: Centralized logic for mounting network storage across nodes.
 
+## **🔒 Secrets Management Guide**
+
+This repository uses `sops-nix` to manage sensitive configuration details like SSH private keys, passwords, and API tokens. All secrets are encrypted and stored in `secrets/secrets.yaml`.
+
+To decrypt secrets, each host uses its SSH host private key (`/etc/ssh/ssh_host_ed25519_key`), and users use their local SOPS SSH key (`~/.ssh/id_sops`).
+
+### **How to Add a Key to SOPS**
+
+To allow a new system host or user to decrypt the repository's secrets, their public key must be converted to age format and added to `.sops.yaml`.
+
+#### **1. Convert the SSH Public Key to Age**
+SOPS uses the Age encryption format. Convert the target public SSH key using `ssh-to-age`:
+* **For a new host**:
+  ```bash
+  ssh-to-age < /etc/ssh/ssh_host_ed25519_key.pub
+  ```
+* **For a user**:
+  ```bash
+  ssh-to-age < ~/.ssh/id_sops.pub
+  ```
+
+#### **2. Add the Age Key to `.sops.yaml`**
+1. Open the `.sops.yaml` file in the root of the repository.
+2. Under `keys:`, define a new YAML anchor for the key (using the `age1...` string generated in step 1):
+   ```yaml
+   keys:
+     - &myhost age1gnsqhrf20kx55jpxewp5g9h3u8hffh8tlvstwwett57rp5letu3sndsh9k
+   ```
+3. Add the anchor alias (`*myhost`) under `creation_rules` -> `key_groups` -> `age`:
+   ```yaml
+   creation_rules:
+     - path_regex: secrets/secrets.yaml
+       key_groups:
+         - pgp: []
+           age:
+             - *ruby
+             - *sapphire
+             # ...
+             - *myhost
+   ```
+
+#### **3. Re-encrypt the Secrets File**
+After modifying `.sops.yaml`, you must update the secrets file so that it is re-encrypted using the new set of keys:
+```bash
+just update-keys
+```
+*(This automatically runs `user-sops updatekeys secrets/secrets.yaml` under the hood).*
+
 ## **⌨️ Command Reference (just)**
 
 The justfile provides several helpers for system administration:
