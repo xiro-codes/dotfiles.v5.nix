@@ -12,6 +12,7 @@
   };
   modules = [
     self.nixosModules.nix-cache-client
+    self.nixosModules.nix-builders
 
     self.nixosModules.network-hosts
     inputs-nix.nixosModules.default
@@ -22,7 +23,7 @@
           #cache.enable = true;
           nix-core-settings.enable = true;
           nix-cache-client.enable = true;
-
+          nix-builders.enable = true;
         };
         determinate.enable = true;
         imports = [
@@ -56,19 +57,6 @@
           settings.PermitRootLogin = "yes";
         };
 
-        environment.etc."ssh/id_rsa_builder" = {
-          text = ''
-            -----BEGIN OPENSSH PRIVATE KEY-----
-            b3BlbnNzaC1rZXktdjEAAAAABG5vbmUAAAAEbm9uZQAAAAAAAAABAAAAMwAAAAtzc2gtZW
-            QyNTUxOQAAACCO9t9TmsKPnCHFlNthtKn1oeTe+69J3l5dGUk1i0M/nwAAAJjx/trs8f7a
-            7AAAAAtzc2gtZWQyNTUxOQAAACCO9t9TmsKPnCHFlNthtKn1oeTe+69J3l5dGUk1i0M/nw
-            AAAEASAb0ZSYeo1GJtsMSGkMJW8QAJ2c8mDHEIRlOUND+8Wo7231Oawo+cIcWU22G0qfWh
-            5N77r0neXl0ZSTWLQz+fAAAAE2J1aWxkQGluc3RhbGxlci1pc28BAg==
-            -----END OPENSSH PRIVATE KEY-----
-          '';
-          mode = "0600";
-        };
-
         users.motd = ''
           =======================================================================
           Welcome to the NixOS Installer!
@@ -79,56 +67,6 @@
           Happy building!
           =======================================================================
         '';
-
-        programs.ssh.extraConfig = ''
-          Host ${config.local.network-hosts.sapphire} sapphire
-            User build
-            IdentityFile /etc/ssh/id_rsa_builder
-            StrictHostKeyChecking no
-            UserKnownHostsFile /dev/null
-
-          Host ${config.local.network-hosts.ruby} ruby
-            User build
-            IdentityFile /etc/ssh/id_rsa_builder
-            StrictHostKeyChecking no
-            UserKnownHostsFile /dev/null
-        '';
-
-        nix = {
-          distributedBuilds = true;
-          buildMachines = [
-            {
-              hostName = config.local.network-hosts.sapphire;
-              system = "x86_64-linux";
-              protocol = "ssh-ng";
-              maxJobs = 8;
-              speedFactor = 2;
-              sshKey = "/etc/ssh/id_rsa_builder";
-              sshUser = "build";
-              supportedFeatures = [
-                "nixos-test"
-                "benchmark"
-                "big-parallel"
-                "kvm"
-              ];
-            }
-            {
-              hostName = config.local.network-hosts.ruby;
-              system = "x86_64-linux";
-              protocol = "ssh-ng";
-              maxJobs = 24;
-              speedFactor = 8;
-              sshKey = "/etc/ssh/id_rsa_builder";
-              sshUser = "build";
-              supportedFeatures = [
-                "nixos-test"
-                "benchmark"
-                "big-parallel"
-                "kvm"
-              ];
-            }
-          ];
-        };
 
         networking.hostName = "installer";
 
