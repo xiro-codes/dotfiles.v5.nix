@@ -15,6 +15,7 @@ in
     ../profiles/limine-uefi.nix
     ../profiles/client.nix
     ../profiles/workstation
+    ../profiles/remote-builder.nix
   ];
   services.openssh.settings = {
     PasswordAuthentication = mkForce true;
@@ -56,16 +57,6 @@ in
   boot.kernelParams = [
     "video=HDMI-A-1:2560x1080@60"
   ];
-
-  users.users.build = {
-    isNormalUser = true;
-    description = "Nix remote build user";
-    openssh.authorizedKeys.keys = [
-      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAII7231Oawo+cIcWU22G0qfWh5N77r0neXl0ZSTWLQz+f build@installer-iso"
-    ];
-  };
-
-  nix.settings.trusted-users = [ "build" ];
 
   system.stateVersion = "25.11";
 
