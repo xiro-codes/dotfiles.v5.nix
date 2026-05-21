@@ -62,9 +62,7 @@ in
         general = {
           gaps_in = 5;
           gaps_out = 8;
-          border_size = 2;
-          "col.active_border" = mkForce "rgb(ff00ff) rgb(00ffff) 45deg";
-          "col.inactive_border" = mkForce "rgba(595959aa)";
+          border_size = 6;
           layout = "master";
         };
         misc = {
@@ -113,8 +111,8 @@ in
           # Application launchers
           "$mod, P, exec, ${variables.launcher} "
           "$mod, D, exec, ${getExe quick-menu}"
-          "$mod, minus, exec, hypr-screenshot"
-          "$mod_SHIFT, minus, exec, hypr-screenshot full"
+          "$mod, minus, exec, hypr-screenshot full"
+          "$mod_SHIFT, minus, exec, hypr-screenshot area"
           "$mod, N, exec, caelestia shell drawers toggle sidebar"
           # Window management
           "$mod, C, togglespecialworkspace, chromeos"
