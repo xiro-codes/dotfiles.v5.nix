@@ -2,19 +2,24 @@
   pkgs,
   config,
   lib,
+  self,
   ...
 }:
 let
   inherit (lib) range mkForce;
 in
 {
-  imports = [
+  imports = with self.nixosModules; [
     ./disko.nix
     ./hardware-configuration.nix
     ../profiles/base.nix
     ../profiles/limine-uefi.nix
     ../profiles/client.nix
     ../profiles/workstation
+    
+    registry
+    yubikey
+    zerotier
   ];
 
   programs = {
@@ -29,14 +34,12 @@ in
   };
   boot.enableContainers = true;
   local = {
-    registry.enable = true;
     userManager.extraGroups = [
       "adbusers"
       "dialout"
       "input"
       "uinput"
     ];
-    yubikey.enable = true;
     secrets.keys = [
       "gog_creds"
       "zerotier_network_id"
@@ -45,7 +48,6 @@ in
     bootloader.recoveryUUID = "b0cd9860-736a-45c5-a6d2-e69cdb319f24";
 
     dotfiles-sync.maintenance.upgradeFlake = "github:xiro-codes/dotfiles.v5.nix";
-    zerotier.enable = true;
   };
 
   hardware.keyboard.qmk.enable = true;

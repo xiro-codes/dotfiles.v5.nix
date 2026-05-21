@@ -2,13 +2,14 @@
   lib,
   config,
   pkgs,
+  self,
   ...
 }:
 let
   inherit (lib) mkForce;
 in
 {
-  imports = [
+  imports = with self.nixosModules; [
     ./disko.nix
     ./hardware-configuration.nix
     ../profiles/base.nix
@@ -16,15 +17,17 @@ in
     ../profiles/workstation
     ../profiles/workstation/jovian.nix
     ../profiles/client.nix
+    
+    registry
+    yubikey
+    zerotier
   ];
 
   local = {
-    registry.enable = true;
     userManager.extraGroups = [
       "input"
       "uinput"
     ];
-    yubikey.enable = true;
     bootloader.recoveryUUID = "2b4c50f4-bc58-41ec-bf86-dc0b57a9a130";
 
     secrets.keys = [
@@ -32,9 +35,8 @@ in
       "zerotier_network_id"
     ];
 
-    zerotier.enable = true;
+    desktops.displayManager = "std-sddm";
   };
-  services.displayManager.sddm.enable = true;
 
   system.stateVersion = "25.11";
 

@@ -2,10 +2,17 @@
 {
   pkgs,
   lib,
+  self,
   ...
 }:
 {
+  imports = with self.nixosModules; [
+    dotfiles-sync
+    nix-builders
+    zerotier
+  ];
   local = {
+    zerotier.enable = true;
     security.enable = true;
     dotfiles-sync = {
       enable = true;

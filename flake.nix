@@ -22,12 +22,10 @@
 
       imports = [
         (inputs-nix.schemaBuilder inputs.self.outPath)
-        inputs-nix.inputs.nix-topology.flakeModule
         (inputs-nix.discovery {
           globalNixosModules = [
             { _module.args.flake-inputs = inputs; }
             inputs-nix.nixosModules.default
-            inputs-nix.inputs.nix-topology.nixosModules.default
           ];
           globalHomeModules = [
             inputs-nix.homeModules.default
@@ -38,9 +36,9 @@
         { config, pkgs, ... }:
         {
           formatter = pkgs.nixfmt-tree;
-          topology.modules = [
-            ./topology.nix
-          ];
+          # topology.modules = [
+          #   ./topology.nix
+          # ];
         };
     };
 }

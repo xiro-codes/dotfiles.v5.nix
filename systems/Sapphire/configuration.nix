@@ -2,13 +2,14 @@
   lib,
   config,
   pkgs,
+  self,
   ...
 }:
 let
   inherit (lib) mkForce mkAfter;
 in
 {
-  imports = [
+  imports = with self.nixosModules; [
     ./disko.nix
     ./hardware-configuration.nix
     ../profiles/base.nix
@@ -16,6 +17,9 @@ in
     ../profiles/client.nix
     ../profiles/workstation
     ../profiles/workstation/jovian.nix
+    
+    backup-manager
+    zerotier
   ];
 
   # Sapphire-specific configuration
@@ -25,7 +29,6 @@ in
     backup-manager.paths = mkAfter [
       "/etc/nixos/"
     ];
-    zerotier.enable = true;
   };
 
   system.stateVersion = "25.11";

@@ -52,21 +52,8 @@ let
           {
             networking.hostName = name;
             local.secrets.enable = true;
-            home-manager = {
-              backupFileExtension = "backup";
-              backupCommand = "${inputs.nixpkgs.legacyPackages.x86_64-linux.trash-cli}/bin/trash";
-              extraSpecialArgs = { inherit self inputs inputs-nix; };
-              sharedModules = (attrValues self.homeModules) ++ globalHomeModules;
-              users = listToAttrs (
-                map (u: {
-                  name = u.user;
-                  value = import (paths.home + "/${u.filename}");
-                }) templateUsers
-              );
-            };
           }
-        ]
-        ++ (attrValues self.nixosModules);
+        ];
       _module.args = {
         inherit self inputs inputs-nix;
         currentHostName = name;

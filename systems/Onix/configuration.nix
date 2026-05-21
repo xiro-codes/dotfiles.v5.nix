@@ -3,15 +3,21 @@
   config,
   lib,
   inputs,
+  self,
   ...
 }:
 {
-  imports = [
+  imports = with self.nixosModules; [
     ./disko.nix
     ./hardware-configuration.nix
     ../profiles/base.nix
     ../profiles/limine-uefi.nix
     ../profiles/server
+
+    zerotier
+    containers
+    incus
+    metrics
   ];
   local = {
     # System settings
@@ -23,11 +29,9 @@
       "zerotier_network_id"
       "gitea/runner_token"
     ];
-    zerotier.enable = true;
     containers.Jade.enable = false;
     virtualisation.incus.enable = false;
     metrics = {
-      enable = true;
       domain = "pihole.onix.home";
     };
   };
@@ -48,8 +52,8 @@
 
   system.stateVersion = "25.11";
 
-  topology.self.interfaces = {
-    enp6s0.network = "home";
-    zt0.network = "zerotier";
-  };
+  # topology.self.interfaces = {
+  #   enp6s0.network = "home";
+  #   zt0.network = "zerotier";
+  # };
 }
