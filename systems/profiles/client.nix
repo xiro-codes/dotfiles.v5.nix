@@ -1,6 +1,11 @@
 # Onix client profile - For systems connecting to Onix NAS
-{ lib, ... }:
+{ lib, self, ... }:
 {
+  imports = with self.nixosModules; [
+    backup-manager
+    network-mounts
+    recovery-builder
+  ];
   local = {
     recovery-builder.enable = true;
     dotfiles-sync.maintenance.autoUpgrade = true;

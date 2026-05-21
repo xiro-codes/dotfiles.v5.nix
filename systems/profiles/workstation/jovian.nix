@@ -19,7 +19,6 @@ in
     displayManager = "none";
     plasma6 = true;
   };
-  services.displayManager.sddm.enable = true;
 
   jovian = {
     steam = {

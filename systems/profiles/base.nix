@@ -10,6 +10,7 @@
     dotfiles-sync
     nix-builders
     zerotier
+    network-hosts
   ];
   local = {
     zerotier.enable = true;

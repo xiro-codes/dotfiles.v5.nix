@@ -7,6 +7,12 @@
     
     registry
     yubikey
+    bluetooth
+    pipewire-audio
+    gaming
+    flatpak
+    desktops
+    nix-cache-client
   ];
   local = {
     nix-cache-client.enable = true;

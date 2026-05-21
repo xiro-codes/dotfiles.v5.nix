@@ -157,7 +157,7 @@ in
       programs.ssh = {
         enable = true;
         enableDefaultConfig = false;
-        matchBlocks =
+        settings =
           (mapAttrs (alias: host: {
             hostname = host;
             user = config.home.username;
@@ -181,9 +181,7 @@ in
               addKeysToAgent = "yes";
               controlMaster = "auto";
               controlPath = "~/.ssh/master-%r@%h:%p";
-              setEnv = {
-                TERM = "xterm-256color";
-              };
+              setEnv = "TERM=xterm-256color";
             };
           };
       };

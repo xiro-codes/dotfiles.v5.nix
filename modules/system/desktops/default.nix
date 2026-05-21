@@ -80,7 +80,7 @@ in
     services.displayManager = mkIf (cfg.displayManager != "none") {
       ly.enable = cfg.displayManager == "ly";
       gdm.enable = cfg.displayManager == "gdm";
-      sddm.enable = cfg.displayManager == "std-sddm";
+      sddm.enable = mkIf (cfg.displayManager == "std-sddm") true;
     };
 
     programs.silentSDDM = mkIf (cfg.displayManager == "sddm") {
