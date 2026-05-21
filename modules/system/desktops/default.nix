@@ -27,6 +27,7 @@ in
     displayManager = mkOption {
       type = enum [
         "sddm"
+        "std-sddm"
         "gdm"
         "ly"
         "none"
@@ -79,6 +80,7 @@ in
     services.displayManager = mkIf (cfg.displayManager != "none") {
       ly.enable = cfg.displayManager == "ly";
       gdm.enable = cfg.displayManager == "gdm";
+      sddm.enable = cfg.displayManager == "std-sddm";
     };
 
     programs.silentSDDM = mkIf (cfg.displayManager == "sddm") {
