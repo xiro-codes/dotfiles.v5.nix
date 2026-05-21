@@ -119,6 +119,9 @@ let
       fi
     '';
   };
+
+  hypr-screenshot = import ../hypr-screenshot { inherit pkgs; };
+  tgpt-auth = import ../tgpt-auth { inherit pkgs; };
 in
 pkgs.symlinkJoin {
   name = "hypr-tools";
@@ -128,5 +131,7 @@ pkgs.symlinkJoin {
     hypr-switch-set
     hypr-gaming-mode
     hypr-layout-toggle
+    hypr-screenshot
+    tgpt-auth
   ];
 }
