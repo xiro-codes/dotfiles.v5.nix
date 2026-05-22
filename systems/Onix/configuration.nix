@@ -13,11 +13,6 @@
     ../profiles/base.nix
     ../profiles/limine-uefi.nix
     ../profiles/server
-
-    zerotier
-    containers
-    incus
-    metrics
   ];
   local = {
     # System settings

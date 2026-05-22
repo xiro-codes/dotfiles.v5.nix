@@ -17,9 +17,6 @@ in
     ../profiles/client.nix
     ../profiles/workstation
     ../profiles/workstation/jovian.nix
-    
-    backup-manager
-    zerotier
   ];
 
   # Sapphire-specific configuration

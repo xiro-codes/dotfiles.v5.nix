@@ -10,6 +10,7 @@
     dashboard
     gitea
     media
+    gog-downloader
     downloads
     file-browser
     harmonia-cache
@@ -19,6 +20,7 @@
     containers
     incus
     metrics
+    pihole
   ];
 
   local.metrics.enable = true;

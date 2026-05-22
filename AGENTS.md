@@ -56,6 +56,7 @@ Always use `just` commands when available to ensure consistent application of fl
 ### 3. Negative Patterns (What NOT to do)
 - **DO NOT** use `lib.<function>` (e.g., `lib.mkIf`) directly anywhere in the code. ALWAYS use `inherit (lib) mkIf;`.
 - **DO NOT** manually register new systems, modules, or packages in `flake.nix`.
+- **DO NOT** import a module directly in host configurations. ONLY import profiles. Profiles will import the modules they need.
 - **DO NOT** hardcode paths to wallpapers, icons, or remote URLs. Use the centralized management modules.
 - **DO NOT** hardcode secrets, API keys, or passwords in Nix files. Always use `sops-nix` or the `local.secrets` module.
 - **DO NOT** put inline shell scripts directly in files (like `systemd.services.*.script`). ALWAYS create a standalone package in the `packages/` directory using `pkgs.writeShellApplication` and declare runtime dependencies explicitly.

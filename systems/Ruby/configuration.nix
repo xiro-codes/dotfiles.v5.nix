@@ -16,10 +16,6 @@ in
     ../profiles/limine-uefi.nix
     ../profiles/client.nix
     ../profiles/workstation
-    
-    registry
-    yubikey
-    zerotier
   ];
 
   programs = {
