@@ -17,10 +17,6 @@ in
     ../profiles/workstation
     ../profiles/workstation/jovian.nix
     ../profiles/client.nix
-    
-    registry
-    yubikey
-    zerotier
   ];
 
   local = {
@@ -35,7 +31,7 @@ in
       "zerotier_network_id"
     ];
 
-    desktops.displayManager = "std-sddm";
+    desktops.displayManager = mkForce "std-sddm";
   };
 
   system.stateVersion = "25.11";
