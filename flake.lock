@@ -740,11 +740,11 @@
         "zen-browser": "zen-browser"
       },
       "locked": {
-        "lastModified": 1779359909,
-        "narHash": "sha256-xCKVZsqVZJFxTYaas/8wQAwjaZQ/4dsfPkbAaR9OU7k=",
+        "lastModified": 1779536877,
+        "narHash": "sha256-WlKk7KkeSSU3Zl47UOcjJNZFZv9MOo0xNX6SVHVokAA=",
         "owner": "xiro-codes",
         "repo": "inputs.nix",
-        "rev": "224749bf59e89dfb919b65b80db105a25a2fb63b",
+        "rev": "c40a343dd49d613aece3c293e72cfb55de25520b",
         "type": "github"
       },
       "original": {
