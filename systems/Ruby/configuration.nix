@@ -50,8 +50,6 @@ in
   boot.kernelParams = [
     "video=HDMI-A-1:2560x1080@60"
   ];
-
   system.stateVersion = "25.11";
-
 
 }
