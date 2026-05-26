@@ -2,7 +2,7 @@
   description = "NixOS Dotfiles (v5) with automated discovery engine";
 
   inputs = {
-    nixpkgs.url = "github:xiro-codes/nixpkgs/master";
+    nixpkgs.url = "github:nixos/nixpkgs/nixos-26.05";
     nixos-stable.url = "github:nixos/nixpkgs/nixos-25.11";
     flake-parts.url = "github:hercules-ci/flake-parts";
     inputs-nix = {
