@@ -21,13 +21,13 @@ in
     enable = mkEnableOption "cache module";
     serverAddress = mkOption {
       type = types.str;
-      default = "http://192.168.1.65:5000/?priority=1";
+      default = "http://192.168.1.67:5000/?priority=1";
       example = "http://cache.example.com:8080/nixos?priority=10";
       description = "Attic binary cache server URL with optional priority parameter";
     };
     publicKey = mkOption {
       type = types.str;
-      default = "cache.onix.home-1:/M1y/hGaD/dB8+mDfZmMdtXaWjq7XtLc1GMycddoNIE=";
+      default = "cache.sapphire.home-1:/M1y/hGaD/dB8+mDfZmMdtXaWjq7XtLc1GMycddoNIE=";
       example = "cache:AbCdEf1234567890+GhIjKlMnOpQrStUvWxYz==";
       description = "Public key for cache verification";
     };

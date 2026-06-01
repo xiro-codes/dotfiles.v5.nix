@@ -1,4 +1,4 @@
-# Onix client profile - For systems connecting to Onix NAS
+# Sapphire client profile - For systems connecting to Sapphire NAS
 { lib, self, ... }:
 {
   imports = with self.nixosModules; [

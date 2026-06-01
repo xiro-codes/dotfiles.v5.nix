@@ -53,7 +53,7 @@ let
 in
 {
   options.local.network-mounts = {
-    enable = mkEnableOption "Samba mounts from Onix";
+    enable = mkEnableOption "Samba mounts from Sapphire";
     noAuth = mkOption {
       type = types.bool;
       default = false;
@@ -67,7 +67,7 @@ in
     };
     serverIp = mkOption {
       type = types.str;
-      default = config.local.network-hosts.onix;
+      default = config.local.network-hosts.sapphire;
       example = "192.168.1.100";
       description = "IP address or hostname of SMB/CIFS server";
     };

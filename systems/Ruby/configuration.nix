@@ -14,7 +14,6 @@ in
     ./hardware-configuration.nix
     ../profiles/base.nix
     ../profiles/limine-uefi.nix
-    ../profiles/client.nix
     ../profiles/workstation
   ];
 

@@ -24,10 +24,30 @@ in
   local = {
     bootloader.recoveryUUID = "0d9dddd8-9511-4101-9177-0a80cfbeb047";
 
+    secrets.keys = [
+      "harmonia_key"
+      "gog_creds"
+      "zerotier_network_id"
+      "gitea/runner_token"
+    ];
+
+    containers.Jade.enable = false;
+    virtualisation.incus.enable = false;
+
+    metrics.domain = "pihole.sapphire.home";
+
+    # Disable network-mounts since Sapphire is now the server
+    network-mounts.enable = mkForce false;
+
     backup-manager.paths = mkAfter [
       "/etc/nixos/"
     ];
   };
+
+  users.users.tod.extraGroups = [
+    "minecraft"
+    "incus-admin"
+  ];
 
   system.stateVersion = "25.11";
 

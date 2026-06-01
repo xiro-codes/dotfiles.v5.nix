@@ -16,7 +16,7 @@
       ];
     };
     harmonia-cache = {
-      enable = true;
+      enable = false;
       signKeyPaths = [ config.sops.secrets."harmonia_key".path ];
       openFirewall = true;
       prefetch.enable = true;

@@ -171,7 +171,7 @@ in
               identityFile = "~/.ssh/github";
             };
             "gitea" = {
-              hostname = config.osConfig.local.network-hosts.onix or "onix.local";
+              hostname = config.osConfig.local.network-hosts.sapphire or "sapphire.local";
               port = 222;
               user = "git";
               identityFile = "~/.ssh/github";

@@ -47,7 +47,7 @@ in
       };
       upgradeFlake = mkOption {
         type = types.str;
-        default = "git+http://${config.local.network-hosts.onix}:3002/xiro/dotfiles.nix.git";
+        default = "git+http://${config.local.network-hosts.sapphire}:3002/xiro/dotfiles.nix.git";
         example = "github:user/dotfiles";
         description = "Flake URL for system auto-upgrade";
       };
@@ -75,7 +75,7 @@ in
           IdentityFile /root/.ssh/github
 
         Host gitea
-          HostName ${config.local.network-hosts.onix}
+          HostName ${config.local.network-hosts.sapphire}
           User git
           Port 2222
           IdentityFile /root/.ssh/github

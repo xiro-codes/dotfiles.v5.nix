@@ -48,6 +48,41 @@
           };
         };
       };
+      backup = {
+        type = "disk";
+        device = "/dev/sda";
+        content = {
+          type = "gpt";
+          partitions = {
+            storage = {
+              size = "100%";
+              content = {
+                type = "filesystem";
+                format = "ext4";
+                mountpoint = "/media/Backups";
+              };
+            };
+          };
+        };
+      };
+
+      media = {
+        type = "disk";
+        device = "/dev/sdb";
+        content = {
+          type = "gpt";
+          partitions = {
+            storage = {
+              size = "100%";
+              content = {
+                type = "filesystem";
+                format = "ext4";
+                mountpoint = "/media/Media";
+              };
+            };
+          };
+        };
+      };
     };
   };
 }
