@@ -27,6 +27,10 @@ in
         tyranny-game.enable = true;
       };
     };
+    nixbit = {
+      enable = true;
+      repository = "github:xiro-codes/dotfiles.v5.nix";
+    };
   };
   boot.enableContainers = true;
   local = {
@@ -50,6 +54,11 @@ in
   boot.kernelParams = [
     "video=HDMI-A-1:2560x1080@60"
   ];
-  system.stateVersion = "25.11";
 
+  nxc.daemon = {
+    enable = true;
+    socketGroup = "wheel";
+  };
+
+  system.stateVersion = "25.11";
 }
