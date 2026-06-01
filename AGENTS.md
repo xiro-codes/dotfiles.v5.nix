@@ -65,6 +65,7 @@ Always use `just` commands when available to ensure consistent application of fl
 - **DO NOT** run `just check`.
 - **DO NOT** assume service data is declarative by default. Check if the module provides a `declarative` option.
 - **DO NOT** add a new host without updating `topology.nix`.
+- **DO NOT** change flake input URLs to local path overrides (e.g., `path:/home/tod/...`) in `flake.nix`. Always use the remote repository URLs. If you need to test local versions of dependency flakes, instruct the user to use `--override-input` on the command line.
 
 ## ⚠️ Gotchas & Important Notes
 - Many commands use the `--impure` flag by default.
