@@ -17,6 +17,7 @@ in
     ../profiles/client.nix
     ../profiles/workstation
     ../profiles/workstation/jovian.nix
+    ../profiles/server
   ];
 
   # Sapphire-specific configuration
