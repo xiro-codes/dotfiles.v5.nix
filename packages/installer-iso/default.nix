@@ -22,7 +22,7 @@
         local = {
           #cache.enable = true;
           nix-core-settings.enable = true;
-          nix-cache-client.enable = true;
+          nix-cache-client.enable = false;
           nix-builders.enable = true;
         };
         determinate.enable = true;
