@@ -89,7 +89,7 @@ in
       profileIcons = {
         tod = pkgs.fetchurl {
           name = "disco.png";
-          url = "https://wallpapers.onix.home/Icons/disco.png";
+          url = "https://wallpapers.sapphire.home/Icons/disco.png";
           sha256 = "sha256-hy1iIDdnPY6ZPM5EYRbh66yFl7CUgLjbQubuGUvRErw=";
           curlOptsList = [
             "-X"
@@ -101,7 +101,7 @@ in
       backgrounds = {
         main = pkgs.fetchurl {
           name = "bg.jpg";
-          url = "https://wallpapers.onix.home/Deskmat/1.jpg";
+          url = "https://wallpapers.sapphire.home/Deskmat/1.jpg";
           sha256 = "sha256-MDIjJVlhXCLgCMsc9aGEx8A09hgJasjjvWdTTrTVL5c=";
           curlOptsList = [
             "-X"
@@ -111,7 +111,7 @@ in
         };
         miku = pkgs.fetchurl {
           name = "miku.bg.jpeg";
-          url = "https://wallpapers.onix.home/miku.jpeg";
+          url = "https://wallpapers.sapphire.home/miku.jpeg";
           sha256 = "sha256-Lp6CAHJc+rJEWDo3z9DtH/J543zdJth079M3nMW1OwM=";
           curlOptsList = [
             "-X"
