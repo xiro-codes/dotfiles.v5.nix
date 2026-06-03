@@ -15,7 +15,7 @@
     nix-cache-client
   ];
   local = {
-    nix-cache-client.enable = true;
+    nix-cache-client.enable = false;
     registry.enable = true;
     yubikey.enable = true;
   };
