@@ -43,6 +43,7 @@ in
       {
         enable = true;
         defaultEditor = true;
+        nixpkgs.source = pkgs.path;
         #colorscheme = lib.mkForce null;
         inherit (baseOptions) globals opts extraConfigLua;
         inherit keymaps;
