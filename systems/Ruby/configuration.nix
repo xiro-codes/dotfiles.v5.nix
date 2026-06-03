@@ -28,7 +28,7 @@ in
     };
     nixbit = {
       enable = true;
-      repository = "github:xiro-codes/dotfiles.v5.nix";
+      repository = "https://github.com/xiro-codes/dotfiles.v5.nix";
     };
   };
   boot.enableContainers = true;
