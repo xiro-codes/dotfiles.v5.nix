@@ -15,8 +15,8 @@ in
     ../profiles/base.nix
     ../profiles/limine-uefi.nix
     ../profiles/client.nix
-    ../profiles/workstation
-    ../profiles/workstation/jovian.nix
+    # ../profiles/workstation
+    # ../profiles/workstation/jovian.nix
     ../profiles/server
   ];
 
