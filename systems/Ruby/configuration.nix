@@ -15,6 +15,7 @@ in
     ../profiles/base.nix
     ../profiles/limine-uefi.nix
     ../profiles/workstation
+    ../profiles/client.nix
   ];
 
   programs = {
