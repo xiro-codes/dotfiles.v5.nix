@@ -28,7 +28,7 @@ in
     })
   ];
   local.wallpapers = {
-    name = "miku.jpeg";
+    name = "13054947.png";
   };
   services.espanso = {
     enable = true;
