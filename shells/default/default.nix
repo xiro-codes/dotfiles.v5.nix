@@ -12,7 +12,7 @@ pkgs.mkShell {
     nh
     nix-output-monitor
     nvd
-    inputs.inputs-nix.inputs.deploy-rs.packages.x86_64-linux.deploy-rs
+    inputs.deploy-rs.packages.x86_64-linux.deploy-rs
     gitlogue
     nixfmt-tree
     gource

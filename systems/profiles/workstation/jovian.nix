@@ -3,7 +3,6 @@
   pkgs,
   lib,
   inputs,
-  inputs-nix,
   ...
 }:
 let
@@ -11,7 +10,7 @@ let
 in
 {
   imports = [
-    inputs-nix.inputs.jovian.nixosModules.jovian
+    inputs.jovian.nixosModules.jovian
   ];
 
   local.desktops = {

@@ -2,7 +2,6 @@
   config,
   lib,
   inputs,
-  inputs-nix,
   self,
   ...
 }:
@@ -21,16 +20,48 @@ let
   cfg = config.local.cluster;
 
   # Re-use the discovery utilities rather than duplicating them.
-  paths = import (inputs-nix.outPath + "/discovery/paths.nix") self.outPath;
-  usersLib = import (inputs-nix.outPath + "/discovery/users.nix") { inherit lib; };
+  paths = import (self.outPath + "/discovery/paths.nix") self.outPath;
+  usersLib = import (self.outPath + "/discovery/users.nix") { inherit lib; };
   hostToUsersMap = usersLib.getUserHostMap paths.home;
 
   # Mirrors flake.nix globals.
   globalNixosModules = [
-    inputs-nix.nixosModules.default
-    inputs.nix-topology.nixosModules.default
+    {
+      imports = [
+        (self.outPath + "/modules/system/bootloader")
+        (self.outPath + "/modules/system/disks")
+        (self.outPath + "/modules/system/network")
+        (self.outPath + "/modules/system/nix-core-settings")
+        (self.outPath + "/modules/system/secrets")
+        (self.outPath + "/modules/system/security")
+        (self.outPath + "/modules/system/user-manager")
+        (self.outPath + "/modules/system/localization")
+        inputs.disko.nixosModules.disko
+        inputs.sops-nix.nixosModules.sops
+        inputs.home-manager.nixosModules.home-manager
+        inputs.nix-flatpak.nixosModules.nix-flatpak
+        inputs.gog-nix.nixosModules.gog
+        inputs.rocket-blog.nixosModules.default
+        inputs.silentsddm.nixosModules.default
+        inputs.harmonia.nixosModules.harmonia
+        inputs.impermanence.nixosModules.impermanence
+        inputs.determinate.nixosModules.default
+        inputs.nix-topology.nixosModules.default
+        inputs.nix-compose.nixosModules.daemon
+      ];
+    }
   ];
-  globalHomeModules = [ inputs-nix.homeModules.default ];
+  globalHomeModules = [
+    {
+      imports = [
+        inputs.fuchsia-nix.homeModules.default
+        inputs.sops-nix.homeModules.sops
+        inputs.caelestia-shell.homeManagerModules.default
+        inputs.nixvim.homeModules.nixvim
+        inputs.stylix.homeModules.stylix
+      ];
+    }
+  ];
 
   # Builds a fully-featured container config for a named template, identical to
   # what genConfigs in parts/discovery/nixos.nix produces for a regular system.
@@ -55,7 +86,7 @@ let
           }
         ];
       _module.args = {
-        inherit self inputs inputs-nix;
+        inherit self inputs;
         currentHostName = name;
         currentHostUsers = map (u: u.user) templateUsers;
         nodeId = idx;
@@ -119,7 +150,7 @@ in
               privateNetwork = true;
               hostAddress = cfg.hostAddress;
               localAddress = "${cfg.subnet}.${toString (idx + 1)}";
-              specialArgs = { inherit self inputs inputs-nix; };
+              specialArgs = { inherit self inputs; };
               config =
                 if builtins.isFunction cfg.template then
                   cfg.template idx
