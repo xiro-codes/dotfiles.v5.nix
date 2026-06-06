@@ -25,17 +25,22 @@ in
 
         git.target = "http://localhost:${toString config.local.gitea.port}";
 
-        tv.target = "http://localhost:${toString config.local.media.jellyfin.port}";
-        plex.target = "http://localhost:${toString config.local.media.plex.port}";
+        # Media servers (nixarr defaults)
+        tv.target = "http://localhost:8096"; # Jellyfin
+        plex.target = "http://localhost:32400";
 
-        ch7.target = "http://localhost:${toString config.local.media.ersatztv.port}";
+        comics.target = "http://localhost:25600"; # Komga
+        audiobooks.target = "http://localhost:13378"; # Audiobookshelf
 
-        comics.target = "http://localhost:${toString config.local.media.komga.port}";
-        audiobooks.target = "http://localhost:${toString config.local.media.audiobookshelf.port}";
+        # Download client (nixarr qBittorrent default)
+        dl.target = "http://localhost:5252";
 
-        dl.target = "http://localhost:${toString config.local.downloads.qbittorrent.port}";
-
-        yt.target = "http://localhost:${toString config.local.downloads.pinchflat.port}";
+        # *Arr services
+        sonarr.target = "http://localhost:8989";
+        radarr.target = "http://localhost:7878";
+        lidarr.target = "http://localhost:8686";
+        prowlarr.target = "http://localhost:9696";
+        bazarr.target = "http://localhost:6767";
 
         # files.target = "http://localhost:${toString config.local.file-browser.port}";
         cache.target = "http://localhost:5000";

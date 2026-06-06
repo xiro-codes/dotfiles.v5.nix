@@ -1,27 +1,17 @@
 { config, ... }:
 {
   local = {
-    # Media services
-    media = {
-      enable = true;
-      mediaDir = "/media/Media/";
+    # Old media/downloads modules disabled — replaced by nixarr-stack
+    media.enable = false;
+    downloads.enable = false;
 
-      jellyfin.enable = false;
-      plex.enable = true;
-      plex.openFirewall = true;
-      ersatztv.enable = false;
-      audiobookshelf.enable = true;
-      komga.enable = true;
+    # New nixarr-based media stack
+    nixarr-stack = {
+      enable = true;
+      mediaDir = "/media/Media";
+      vpn.enable = true;
     };
 
-    # Download services
-    downloads = {
-      enable = true;
-      downloadDir = "/media/Media/downloads";
-
-      qbittorrent.enable = true;
-      pinchflat.enable = false;
-    };
     gog-downloader = {
       enable = false;
       directory = "/media/Media/games";

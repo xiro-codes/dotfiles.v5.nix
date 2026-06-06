@@ -29,6 +29,7 @@ in
       "gog_creds"
       "zerotier_network_id"
       "gitea/runner_token"
+      "protonvpn_wg_conf"
     ];
 
     containers.Jade.enable = false;

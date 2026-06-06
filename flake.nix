@@ -3,6 +3,7 @@
 
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-26.05";
+    nixarr.url = "github:nix-media-server/nixarr";
     flake-parts.url = "github:hercules-ci/flake-parts";
     nix-flatpak.url = "github:gmodena/nix-flatpak";
     rocket-blog.url = "github:xiro-codes/rocket_blog";
@@ -109,6 +110,7 @@
                 inputs.determinate.nixosModules.default
                 inputs.nix-topology.nixosModules.default
                 inputs.nix-compose.nixosModules.daemon
+                inputs.nixarr.nixosModules.default
               ];
             }
           ];

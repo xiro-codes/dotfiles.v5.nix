@@ -5,7 +5,7 @@
     ./media.nix
     ./services.nix
     ./sharing.nix
-    
+
     reverse-proxy
     dashboard
     gitea
@@ -21,6 +21,7 @@
     incus
     metrics
     pihole
+    nixarr-stack
   ];
 
   local.metrics.enable = true;
