@@ -14,7 +14,7 @@ in
 
   gtk = {
     enable = mkForce true;
-    gtk4.theme = null;
+    gtk4.theme = mkForce null;
     iconTheme = {
       name = "Papirus-Dark";
       package = pkgs.papirus-icon-theme;
