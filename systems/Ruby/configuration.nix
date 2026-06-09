@@ -24,7 +24,7 @@ in
     coolercontrol.enable = true;
     gog = {
       enable = false;
-      serverUrl = "https://games.onix.home";
+      serverUrl = "https://games.${config.local.network-hosts.primary}.home";
       games = {
         tyranny-game.enable = true;
       };

@@ -35,7 +35,7 @@ in
     containers.Jade.enable = false;
     virtualisation.incus.enable = false;
 
-    metrics.domain = "pihole.sapphire.home";
+    metrics.domain = "pihole.${config.local.network-hosts.primary}.home";
 
     # Disable network-mounts since Sapphire is now the server
     network-mounts.enable = mkForce false;
