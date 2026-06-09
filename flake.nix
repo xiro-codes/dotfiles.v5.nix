@@ -9,6 +9,7 @@
     rocket-blog.url = "github:xiro-codes/rocket_blog";
     nvim-nix.url = "github:xiro-codes/nvim.nix";
     harmonia.url = "github:nix-community/harmonia";
+    tierfs.url = "github:xiro-codes/tierfs";
     fuchsia-nix = {
       url = "github:xiro-codes/fuchsia.nix";
       inputs.nixpkgs.follows = "nixpkgs";

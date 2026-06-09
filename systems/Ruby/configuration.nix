@@ -3,19 +3,21 @@
   config,
   lib,
   self,
+  inputs,
   ...
 }:
 let
   inherit (lib) range mkForce;
 in
 {
-  imports = with self.nixosModules; [
+  imports = [
     ./disko.nix
     ./hardware-configuration.nix
     ../profiles/base.nix
     ../profiles/limine-uefi.nix
     ../profiles/workstation
     ../profiles/client.nix
+    inputs.tierfs.nixosModules.test
   ];
 
   programs = {
@@ -54,7 +56,8 @@ in
   boot.kernelParams = [
     "video=HDMI-A-1:2560x1080@60"
   ];
-
+  services.tierfs-test.enable = true;
+  services.tierfs.package = inputs.tierfs.packages.x86_64-linux.default;
   nxc.daemon = {
     enable = true;
     socketGroup = "wheel";
