@@ -16,14 +16,14 @@
     self.nixosModules.network-hosts
     {
       imports = [
-        (self.outPath + "/modules/system/bootloader")
-        (self.outPath + "/modules/system/disks")
-        (self.outPath + "/modules/system/network")
-        (self.outPath + "/modules/system/nix-core-settings")
-        (self.outPath + "/modules/system/secrets")
-        (self.outPath + "/modules/system/security")
-        (self.outPath + "/modules/system/user-manager")
-        (self.outPath + "/modules/system/localization")
+        (self.outPath + "/modules/system/osHub/bootloader")
+        (self.outPath + "/modules/system/osHub/disks")
+        (self.outPath + "/modules/system/networkHub/network")
+        (self.outPath + "/modules/system/osHub/nix-core-settings")
+        (self.outPath + "/modules/system/osHub/secrets")
+        (self.outPath + "/modules/system/osHub/security")
+        (self.outPath + "/modules/system/osHub/user-manager")
+        (self.outPath + "/modules/system/osHub/localization")
         inputs.disko.nixosModules.disko
         inputs.sops-nix.nixosModules.sops
         inputs.home-manager.nixosModules.home-manager
