@@ -4,7 +4,7 @@ Welcome to the NixOS Dotfiles (v5) repository. This document provides critical i
 
 ## 🏗️ Architecture & Discovery Engine
 
-This repository uses an **external automated discovery engine** via the `inputs-nix` flake. You **do not need to manually register new files or modules in `flake.nix`**.
+This repository uses a custom **automated discovery engine** located in the `discovery/` directory. You **do not need to manually register new files or modules in `flake.nix`**.
 
 When you create a new module, package, or system, place it in the correct directory, and it will be automatically discovered and integrated into the flake outputs.
 
@@ -40,6 +40,10 @@ Always use `just` commands when available to ensure consistent application of fl
 - **Discovery Pattern**: Use `builtins.readDir` to automate module/container loading. See `modules/system/containers/default.nix` for a reference implementation.
 
 ### 2. Specific Systems
+- **Onboarding Mode (`local.onboarding`)**:
+    - During initial system install (`nixos-install`), set the `NIXOS_ONBOARDING=1` environment variable.
+    - This mode temporarily bypasses system security, forces open SSH access (`PermitRootLogin yes`, password auth), disables secrets (SOPS), ZeroTier, and the internal Nix cache client.
+    - Used automatically via `just install-remote`.
 - **Secrets Management**:
     - Use `local.secrets.keys` to map SOPS secrets to `$HOME/.secrets/<key>`.
     - User secrets are managed via `user-sops` and mapped automatically to the user's home.
@@ -66,7 +70,9 @@ Always use `just` commands when available to ensure consistent application of fl
 - **DO NOT** assume service data is declarative by default. Check if the module provides a `declarative` option.
 - **DO NOT** add a new host without updating `topology.nix`.
 - **DO NOT** change flake input URLs to local path overrides (e.g., `path:/home/tod/...`) in `flake.nix`. Always use the remote repository URLs. If you need to test local versions of dependency flakes, instruct the user to use `--override-input` on the command line.
-- DO NOT Use modules options in other modules
+- **DO NOT** assume commands/tools are installed on the system (e.g., node, python, grep). ALWAYS use `nix shell nixpkgs#<package> -c <command>` or `nix run nixpkgs#<package>` to run tools ephemerally.
+- **DO NOT** use module options in other modules.
+- **DO NOT** delete modules, systems, or packages. If they are no longer needed or currently broken, mark them as `broken = true;` in their `meta.nix` file instead.
 ## ⚠️ Gotchas & Important Notes
 - Many commands use the `--impure` flag by default.
 - The project relies heavily on `sops-nix`.
