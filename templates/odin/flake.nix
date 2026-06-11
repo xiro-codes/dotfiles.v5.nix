@@ -20,6 +20,29 @@
         {
           formatter = pkgs.nixfmt-rfc-style;
 
+          packages.default = pkgs.stdenv.mkDerivation {
+            pname = "odin-app";
+            version = "0.1.0";
+            src = ./.;
+
+            nativeBuildInputs = [ pkgs.odin ];
+
+            buildPhase = ''
+              runHook preBuild
+              # Set HOME because Odin sometimes needs it for cache
+              export HOME=$(pwd)
+              odin build src -out:bin/main -strict-style
+              runHook postBuild
+            '';
+
+            installPhase = ''
+              runHook preInstall
+              mkdir -p $out/bin
+              cp bin/main $out/bin/
+              runHook postInstall
+            '';
+          };
+
           devShells.default = pkgs.mkShell {
             nativeBuildInputs = with pkgs; [
               odin
