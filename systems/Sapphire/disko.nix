@@ -165,6 +165,7 @@
       nix_raid = {
         type = "mdadm";
         level = 0;
+        metadata = "1.0";
         content = {
           type = "filesystem";
           format = "ext4";
@@ -175,6 +176,7 @@
       backup_raid = {
         type = "mdadm";
         level = 5;
+        metadata = "1.0";
         content = {
           type = "filesystem";
           format = "ext4";
@@ -185,6 +187,7 @@
       ssd_raid = {
         type = "mdadm";
         level = 0;
+        metadata = "1.0";
         content = {
           type = "filesystem";
           format = "ext4";
