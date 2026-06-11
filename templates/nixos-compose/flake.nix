@@ -2,7 +2,7 @@
   description = "garnix-io nixos-compose setup";
 
   inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-26.05";
     nixos-compose = {
       url = "github:garnix-io/nixos-compose";
       inputs.nixpkgs.follows = "nixpkgs";
