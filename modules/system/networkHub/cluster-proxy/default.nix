@@ -6,15 +6,17 @@ let
     listToAttrs
     map
     range
+    types
     ;
-  clusterCfg = config.local.cluster;
+  inherit (lib) toLower;
   cfg = config.local.cluster-proxy;
+  sharedClusterCfg = config.local.shared.cluster;
 
   templateLabel =
-    if builtins.isFunction clusterCfg.template then
-      clusterCfg.nameSpace
+    if builtins.isFunction sharedClusterCfg.template then
+      sharedClusterCfg.nameSpace
     else
-      "${clusterCfg.nameSpace}-${lib.strings.toLower clusterCfg.template}";
+      "${sharedClusterCfg.nameSpace}-${toLower sharedClusterCfg.template}";
 in
 {
   options.local.cluster-proxy = {
@@ -27,14 +29,18 @@ in
         assertion = !config.local.reverse-proxy.enable;
         message = "local.cluster-proxy and local.reverse-proxy cannot be enabled at the same time";
       }
+      {
+        assertion = config.local.shared ? cluster;
+        message = "local.cluster-proxy requires local.shared.cluster to be populated by the cluster module";
+      }
     ];
     services.nginx = {
       enable = true;
       upstreams."${templateLabel}-cluster".servers = listToAttrs (
         map (i: {
-          name = "${clusterCfg.subnet}.${toString (i + 1)}";
+          name = "${sharedClusterCfg.subnet}.${toString (i + 1)}";
           value = { };
-        }) (range 1 clusterCfg.size)
+        }) (range 1 sharedClusterCfg.size)
       );
       virtualHosts."localhost" = {
         locations."/" = {

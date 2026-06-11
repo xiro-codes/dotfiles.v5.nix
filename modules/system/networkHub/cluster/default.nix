@@ -16,6 +16,7 @@ let
     listToAttrs
     map
     ;
+  inherit (lib) toLower;
 
   cfg = config.local.cluster;
 
@@ -133,11 +134,11 @@ in
         if builtins.isFunction cfg.template then
           cfg.nameSpace
         else
-          "${cfg.nameSpace}-${lib.strings.toLower cfg.template}";
+          "${cfg.nameSpace}-${toLower cfg.template}";
 
     in
     mkIf cfg.enable {
-      local.cluster-proxy.enable = true;
+      local.shared.cluster = cfg;
       containers = listToAttrs (
         map (idx: {
           name = "${templateLabel}-${toString idx}";
