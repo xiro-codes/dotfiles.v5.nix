@@ -31,6 +31,7 @@
               runHook preBuild
               # Set HOME because Odin sometimes needs it for cache
               export HOME=$(pwd)
+              mkdir -p bin
               odin build src -out:bin/main -strict-style
               runHook postBuild
             '';
