@@ -68,7 +68,7 @@ let
     [group('new')]
     new-rust-bevy dir:
         mkdir -p {{dir}}
-        cd {{dir}} && nix flake init -t ~/.dotfiles.nix#rust-bevy
+        cd {{dir}} && nix flake init -t ~/.dotfiles.nix#templates.rust-bevy
         cd {{dir}} && git init && git add .
         cd {{dir}} && nix build . || true
         cd {{dir}} && git commit -m "init commit"
@@ -76,7 +76,7 @@ let
     [group('new')]
     new-esp32-rust dir:
         mkdir -p {{dir}}
-        cd {{dir}} && nix flake init -t ~/.dotfiles.nix#esp32-rust
+        cd {{dir}} && nix flake init -t ~/.dotfiles.nix#templates.esp32-rust
         cd {{dir}} && git init && git add .
         cd {{dir}} && nix build . || true
         cd {{dir}} && git commit -m "init commit"
@@ -84,7 +84,7 @@ let
     [group('new')]
     new-odin dir:
         mkdir -p {{dir}}
-        cd {{dir}} && nix flake init -t ~/.dotfiles.nix#odin
+        cd {{dir}} && nix flake init -t ~/.dotfiles.nix#templates.odin
         cd {{dir}} && git init && git add .
         cd {{dir}} && nix build . || true
         cd {{dir}} && git commit -m "init commit"
@@ -92,7 +92,7 @@ let
     [group('new')]
     new-flutter dir:
         mkdir -p {{dir}}
-        cd {{dir}} && nix flake init -t ~/.dotfiles.nix#flutter
+        cd {{dir}} && nix flake init -t ~/.dotfiles.nix#templates.flutter
         cd {{dir}} && git init && git add .
         cd {{dir}} && nix build . || true
         cd {{dir}} && git commit -m "init commit"
@@ -100,7 +100,7 @@ let
     [group('new')]
     new-nixos-compose dir:
         mkdir -p {{dir}}
-        cd {{dir}} && nix flake init -t ~/.dotfiles.nix#nixos-compose
+        cd {{dir}} && nix flake init -t ~/.dotfiles.nix#templates.nixos-compose
         cd {{dir}} && git init && git add .
         cd {{dir}} && nix build . || true
         cd {{dir}} && git commit -m "init commit"
@@ -108,7 +108,7 @@ let
     [group('new')]
     new-rust-cli dir:
         mkdir -p {{dir}}
-        cd {{dir}} && nix flake init -t ~/.dotfiles.nix#rust-cli
+        cd {{dir}} && nix flake init -t ~/.dotfiles.nix#templates.rust-cli
         cd {{dir}} && git init && git add .
         cd {{dir}} && nix build . || true
         cd {{dir}} && git commit -m "init commit"
@@ -116,7 +116,7 @@ let
     [group('new')]
     new-platformio dir:
         mkdir -p {{dir}}
-        cd {{dir}} && nix flake init -t ~/.dotfiles.nix#platformio
+        cd {{dir}} && nix flake init -t ~/.dotfiles.nix#templates.platformio
         cd {{dir}} && git init && git add .
         cd {{dir}} && nix build . || true
         cd {{dir}} && git commit -m "init commit"
@@ -124,7 +124,7 @@ let
     [group('new')]
     new-rocket-forge dir:
         mkdir -p {{dir}}
-        cd {{dir}} && nix flake init -t ~/.dotfiles.nix#rocket-forge
+        cd {{dir}} && nix flake init -t ~/.dotfiles.nix#templates.rocket-forge
         cd {{dir}} && git init && git add .
         cd {{dir}} && nix build . || true
         cd {{dir}} && git commit -m "init commit"
@@ -132,7 +132,7 @@ let
     [group('new')]
     new-python-uv dir:
         mkdir -p {{dir}}
-        cd {{dir}} && nix flake init -t ~/.dotfiles.nix#python-uv
+        cd {{dir}} && nix flake init -t ~/.dotfiles.nix#templates.python-uv
         cd {{dir}} && git init && git add .
         cd {{dir}} && nix build . || true
         cd {{dir}} && git commit -m "init commit"
@@ -140,42 +140,11 @@ let
     [group('new')]
     new-python-rust-uv dir:
         mkdir -p {{dir}}
-        cd {{dir}} && nix flake init -t ~/.dotfiles.nix#python-rust-uv
+        cd {{dir}} && nix flake init -t ~/.dotfiles.nix#templates.python-rust-uv
         cd {{dir}} && git init && git add .
         cd {{dir}} && nix build . || true
         cd {{dir}} && git commit -m "init commit"
 
-    [group('new')]
-    new-system-module dir:
-        mkdir -p {{dir}}
-        cd {{dir}} && nix flake init -t ~/.dotfiles.nix#system-module
-        cd {{dir}} && git init && git add .
-        cd {{dir}} && nix build . || true
-        cd {{dir}} && git commit -m "init commit"
-
-    [group('new')]
-    new-home-module dir:
-        mkdir -p {{dir}}
-        cd {{dir}} && nix flake init -t ~/.dotfiles.nix#home-module
-        cd {{dir}} && git init && git add .
-        cd {{dir}} && nix build . || true
-        cd {{dir}} && git commit -m "init commit"
-
-    [group('new')]
-    new-system-config dir:
-        mkdir -p {{dir}}
-        cd {{dir}} && nix flake init -t ~/.dotfiles.nix#system-config
-        cd {{dir}} && git init && git add .
-        cd {{dir}} && nix build . || true
-        cd {{dir}} && git commit -m "init commit"
-
-    [group('new')]
-    new-home-config dir:
-        mkdir -p {{dir}}
-        cd {{dir}} && nix flake init -t ~/.dotfiles.nix#home-config
-        cd {{dir}} && git init && git add .
-        cd {{dir}} && nix build . || true
-        cd {{dir}} && git commit -m "init commit"
   '';
 in
 pkgs.writeShellApplication {
