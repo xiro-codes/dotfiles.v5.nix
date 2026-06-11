@@ -1,6 +1,6 @@
 {
-  description = "Home server system configuration.";
-  broken = false;
+  description = "Home server system configuration. the og";
+  broken = true;
   tags = [
     "server"
     "home"
