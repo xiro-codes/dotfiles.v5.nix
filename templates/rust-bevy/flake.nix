@@ -33,7 +33,7 @@
           pkgsWithRust = import inputs.nixpkgs { inherit system overlays; };
           inherit (pkgsWithRust.lib) makeLibraryPath;
 
-          nativeBuildInputs = with pkgsWithRust; [ pkg-config ];
+          nativeBuildInputs = with pkgsWithRust; [ pkg-config makeWrapper ];
           buildInputs = with pkgsWithRust; [
             udev
             alsa-lib
@@ -66,7 +66,7 @@
             inherit nativeBuildInputs buildInputs;
 
             postInstall = ''
-              ${pkgsWithRust.wrapProgram}/bin/wrapProgram $out/bin/my_bevy_game \
+              wrapProgram $out/bin/bevy-app \
                 --prefix LD_LIBRARY_PATH : "${makeLibraryPath buildInputs}"
             '';
           };
