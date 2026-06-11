@@ -1,7 +1,2 @@
 /bin
 /.direnv
-/target
-Cargo.lock
-Cargo.toml
-*.rs
-*.odin
