@@ -6,4 +6,5 @@ base: {
   packages = base + "/packages";
   templates = base + "/templates";
   shells = base + "/shells";
+  overlays = base + "/overlays";
 }

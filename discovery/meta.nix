@@ -1,6 +1,9 @@
 { }:
 let
   inherit (builtins) pathExists;
+  esc = builtins.fromJSON ''"\u001b"'';
+  strikethrough = "${esc}[9m";
+  reset = "${esc}[0m";
 in
 rec {
   readMeta = file: 
@@ -12,9 +15,12 @@ rec {
   getDescription = file: 
     (readMeta file).description or null;
 
-  getWhatWithDescription = what: file:
+  formatWhat = what: desc: broken:
     let
-      desc = getDescription file;
+      baseText = if desc != null then "${what}: ${desc}" else what;
     in
-    if desc != null then "${what}: ${desc}" else what;
+    if broken then "${strikethrough}${baseText}${reset} (RIP)" else baseText;
+
+  getWhatWithDescription = what: file:
+    formatWhat what (getDescription file) (isBroken file);
 }

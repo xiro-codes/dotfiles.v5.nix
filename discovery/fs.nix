@@ -20,21 +20,14 @@ let
     else
       [ ];
 
-  # Get directories that contain all specified files and aren't broken
+  # Get directories that contain all specified files
   getDirsWith = path: requiredFiles:
-    let
-      # Use our native builtin if available
-      dirs = if builtins ? getDirsWithCached
-             then builtins.getDirsWithCached path requiredFiles
-             else filter (name:
-               let dir = path + "/${name}";
-               in all (f: pathExists (dir + "/${f}")) requiredFiles
-             ) (getDirs path);
-    in
-    filter (name:
+    if builtins ? getDirsWithCached
+    then builtins.getDirsWithCached path requiredFiles
+    else filter (name:
       let dir = path + "/${name}";
-      in !(metaLib.isBroken (dir + "/meta.nix"))
-    ) dirs;
+      in all (f: pathExists (dir + "/${f}")) requiredFiles
+    ) (getDirs path);
 in
 {
   inherit getDirs getDirsWith;

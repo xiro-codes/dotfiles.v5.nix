@@ -18,12 +18,16 @@ let
   templatesLib = import ./templates.nix { inherit fs; };
   usersLib = import ./users.nix { inherit lib; };
   shellsLib = import ./shells.nix { inherit lib fs paths; };
+  overlaysLib = import ./overlays.nix { inherit fs lib paths; };
 
   # Discover all components
   hostToUsersMap = usersLib.getUserHostMap paths.home;
   discoveredSystemModules = modulesLib.mkModules paths.systemModules;
   discoveredHomeModules = modulesLib.mkModules paths.homeModules;
   discoveredTemplates = templatesLib.mkTemplates paths.templates;
+  discoveredOverlays = {
+    default = final: prev: packagesLib.mkPackages paths.packages final.stdenv.hostPlatform.system;
+  } // overlaysLib.mkOverlays;
 
   # Import nixos configuration generator
   nixosLib = import ./nixos.nix {
@@ -37,6 +41,7 @@ let
       discoveredHomeModules
       globalNixosModules
       globalHomeModules
+      discoveredOverlays
       ;
   };
 
@@ -49,6 +54,7 @@ let
       hostToUsersMap
       discoveredHomeModules
       globalHomeModules
+      discoveredOverlays
       ;
   };
 
@@ -76,8 +82,7 @@ in
     nixosContainers = nixosLib.containers;
     homeConfigurations = homeLib.mkHomeConfigurations;
     templates = discoveredTemplates;
-    overlays.default =
-      final: prev: packagesLib.mkPackages paths.packages final.stdenv.hostPlatform.system;
+    overlays = discoveredOverlays;
     deploy.nodes = deployLib.mkDeployNodes;
   };
 }

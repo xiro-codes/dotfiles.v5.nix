@@ -25,7 +25,7 @@ in
         doc = "deploy-rs deployment configurations";
         inventory = output: {
           children = builtins.mapAttrs (name: value: {
-            what = "deployment node";
+            what = metaLib.getWhatWithDescription "deployment node" (baseStr + "/systems/${name}/meta.nix");
           }) output.nodes;
         };
       };
@@ -45,7 +45,7 @@ in
                            else if builtins.pathExists metaFile2 then metaFile2
                            else null;
               in
-              metaLib.getWhatWithDescription "Home Manager configuration" metaFile;
+              metaLib.formatWhat "Home Manager configuration" (metaLib.getDescription metaFile) ((metaLib.isBroken metaFile) || (metaLib.isBroken (baseStr + "/systems/${host}/meta.nix")));
           }) output;
         };
       };
