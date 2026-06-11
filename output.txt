@@ -1,0 +1,154 @@
+[1mgit+file:///etc/nixos[0m
+[32;1m├───[0m[1mapps[0m
+[32;1m│   └───[0m[1mx86_64-linux[0m
+[32;1m├───[0m[1mchecks[0m
+[32;1m│   └───[0m[1mx86_64-linux[0m
+[32;1m├───[0m[1mdeploy[0m
+[32;1m│   ├───[0m[1mOnix[0m: [9mdeployment node: Home server system configuration. the og[0m (RIP)
+[32;1m│   ├───[0m[1mRuby[0m: deployment node: Workstation and client system configuration.
+[32;1m│   ├───[0m[1mSapphire[0m: deployment node: AI server system configuration.
+[32;1m│   └───[0m[1mSlate[0m: deployment node: Steam Deck workstation with impermanence
+[32;1m├───[0m[1mdevShells[0m
+[32;1m│   └───[0m[1mx86_64-linux[0m
+[32;1m│       └───[0m[1mdefault[0m: development environment
+[32;1m├───[0m[1mformatter[0m
+[32;1m│   └───[0m[1mx86_64-linux[0m: formatter
+[32;1m├───[0m[1mhomeConfigurations[0m
+[32;1m│   ├───[0m[1mtod@Amber[0m: Home Manager configuration
+[32;1m│   ├───[0m[1mtod@Jade[0m: Home Manager configuration
+[32;1m│   ├───[0m[1mtod@Onix[0m: [9mHome Manager configuration[0m (RIP)
+[32;1m│   ├───[0m[1mtod@Ruby[0m: Home Manager configuration
+[32;1m│   ├───[0m[1mtod@Sapphire[0m: Home Manager configuration
+[32;1m│   └───[0m[1mtod@Slate[0m: Home Manager configuration
+[32;1m├───[0m[1mhomeModules[0m
+[32;1m│   ├───[0m[1mcaelestia-shell[0m: Home Manager module: Configures the Caelestia shell and desktop environment.
+[32;1m│   ├───[0m[1mfish[0m: Home Manager module: Fish shell configuration with VI keybindings, zoxide, and eza abbreviations.
+[32;1m│   ├───[0m[1mhelix[0m: Home Manager module: Helix editor configuration mirroring Nixvim.
+[32;1m│   ├───[0m[1mhyprland[0m: Home Manager module: Configures the Hyprland Wayland compositor, including keybindings, window rules, and general settings.
+[32;1m│   ├───[0m[1mhyprlauncher[0m: Home Manager module: Hyprlauncher configuration for Hyprland.
+[32;1m│   ├───[0m[1mhyprpaper[0m: Home Manager module: Hyprpaper wallpaper daemon configuration for Hyprland.
+[32;1m│   ├───[0m[1mimpermanence[0m: Home Manager module
+[32;1m│   ├───[0m[1mkakoune[0m: Home Manager module: Kakoune editor configuration mirroring Nixvim.
+[32;1m│   ├───[0m[1mkdeconnect[0m: Home Manager module: KDE Connect configuration for desktop-phone integration.
+[32;1m│   ├───[0m[1mkitty[0m: Home Manager module: Kitty terminal emulator configuration.
+[32;1m│   ├───[0m[1mmako[0m: Home Manager module: Mako notification daemon configuration for Wayland.
+[32;1m│   ├───[0m[1mmpd[0m: Home Manager module: Music Player Daemon (MPD) and ncmpcpp client configuration.
+[32;1m│   ├───[0m[1mnixvim[0m: Home Manager module: A Nixvim configuration for Neovim, managing plugins, keymaps, and editor settings.
+[32;1m│   ├───[0m[1mstarship[0m: Home Manager module: Configures the Starship cross-shell prompt.
+[32;1m│   ├───[0m[1mstylix-theming[0m: Home Manager module: Manages the visual appearance of the desktop, including fonts, theming, and wallpaper.
+[32;1m│   ├───[0m[1muser-environment[0m: Home Manager module: Manages system-level user configurations, including caching, SSH, secrets management, and environment variables.
+[32;1m│   ├───[0m[1mwallpapers[0m: Home Manager module: Centralized wallpaper management and selection.
+[32;1m│   ├───[0m[1mwaybar[0m: Home Manager module: Configures the Waybar status bar, setting up modules for displaying system information.
+[32;1m│   └───[0m[1myazi[0m: Home Manager module: Yazi terminal file manager configuration.
+[32;1m├───[0m[1mlegacyPackages[0m
+[32;1m│   └───[0m[1mx86_64-linux[0m [35;1momitted[0m (use '--legacy' to show)
+[32;1m├───[0m[1mnixosConfigurations[0m
+[32;1m│   ├───[0m[1mOnix[0m: [9mNixOS configuration: Home server system configuration. the og[0m (RIP)
+[32;1m│   ├───[0m[1mRuby[0m: NixOS configuration: Workstation and client system configuration.
+[32;1m│   ├───[0m[1mSapphire[0m: NixOS configuration: AI server system configuration.
+[32;1m│   └───[0m[1mSlate[0m: NixOS configuration: Steam Deck workstation with impermanence
+[32;1m├───[0m[1mnixosContainers[0m
+[32;1m│   ├───[0m[1mAmber[0m: NixOS container: Template and testing container configuration.
+[32;1m│   └───[0m[1mJade[0m: NixOS container: Web services container hosting Nextcloud and personal blog.
+[32;1m├───[0m[1mnixosModules[0m
+[32;1m│   ├───[0m[1mbackup-manager[0m: NixOS module
+[32;1m│   ├───[0m[1mbluetooth[0m: NixOS module
+[32;1m│   ├───[0m[1mbootloader[0m: NixOS module
+[32;1m│   ├───[0m[1mcluster[0m: NixOS module
+[32;1m│   ├───[0m[1mcluster-proxy[0m: NixOS module
+[32;1m│   ├───[0m[1mcontainers[0m: NixOS module
+[32;1m│   ├───[0m[1mdashboard[0m: NixOS module
+[32;1m│   ├───[0m[1mddns-updater[0m: NixOS module
+[32;1m│   ├───[0m[1mdesktops[0m: NixOS module
+[32;1m│   ├───[0m[1mdisks[0m: NixOS module
+[32;1m│   ├───[0m[1mdotfiles-sync[0m: NixOS module
+[32;1m│   ├───[0m[1mdownloads[0m: NixOS module
+[32;1m│   ├───[0m[1mfile-browser[0m: NixOS module
+[32;1m│   ├───[0m[1mfile-sharing[0m: NixOS module
+[32;1m│   ├───[0m[1mflatpak[0m: NixOS module
+[32;1m│   ├───[0m[1mgaming[0m: NixOS module
+[32;1m│   ├───[0m[1mgitea[0m: NixOS module
+[32;1m│   ├───[0m[1mgitea-runner[0m: NixOS module
+[32;1m│   ├───[0m[1mgog-downloader[0m: NixOS module
+[32;1m│   ├───[0m[1mharmonia-cache[0m: NixOS module
+[32;1m│   ├───[0m[1mimpermanence[0m: NixOS module
+[32;1m│   ├───[0m[1mincus[0m: NixOS module
+[32;1m│   ├───[0m[1mkmscon[0m: NixOS module
+[32;1m│   ├───[0m[1mlocalization[0m: NixOS module
+[32;1m│   ├───[0m[1mmedia[0m: NixOS module
+[32;1m│   ├───[0m[1mmetrics[0m: NixOS module
+[32;1m│   ├───[0m[1mminecraft-server[0m: NixOS module
+[32;1m│   ├───[0m[1mnetwork[0m: NixOS module
+[32;1m│   ├───[0m[1mnetwork-hosts[0m: NixOS module
+[32;1m│   ├───[0m[1mnetwork-mounts[0m: NixOS module
+[32;1m│   ├───[0m[1mnix-builders[0m: NixOS module
+[32;1m│   ├───[0m[1mnix-cache-client[0m: NixOS module
+[32;1m│   ├───[0m[1mnix-core-settings[0m: NixOS module
+[32;1m│   ├───[0m[1mnixarr-stack[0m: NixOS module
+[32;1m│   ├───[0m[1mollama[0m: NixOS module
+[32;1m│   ├───[0m[1mpihole[0m: NixOS module
+[32;1m│   ├───[0m[1mpipewire-audio[0m: NixOS module
+[32;1m│   ├───[0m[1mport-conflict-checker[0m: NixOS module
+[32;1m│   ├───[0m[1mrecovery-builder[0m: NixOS module
+[32;1m│   ├───[0m[1mregistry[0m: NixOS module
+[32;1m│   ├───[0m[1mreverse-proxy[0m: NixOS module
+[32;1m│   ├───[0m[1msecrets[0m: NixOS module
+[32;1m│   ├───[0m[1msecurity[0m: NixOS module
+[32;1m│   ├───[0m[1mshared[0m: NixOS module
+[32;1m│   ├───[0m[1muser-manager[0m: NixOS module
+[32;1m│   ├───[0m[1myubikey[0m: NixOS module
+[32;1m│   └───[0m[1mzerotier[0m: NixOS module
+[32;1m├───[0m[1moverlays[0m
+[32;1m│   └───[0m[1mdefault[0m: Nixpkgs overlay
+[32;1m├───[0m[1mpackages[0m
+[32;1m│   └───[0m[1mx86_64-linux[0m
+[32;1m│       ├───[0m[1mdefault[0m: package
+[32;1m│       ├───[0m[1mgemini-video-gen[0m: package
+[32;1m│       ├───[0m[1mgit-pull-sync[0m: package
+[32;1m│       ├───[0m[1mglobal-just[0m: package
+[32;1m│       ├───[0m[1mgog-sync-script[0m: package
+[32;1m│       ├───[0m[1mharmonia-prefetch[0m: package
+[32;1m│       ├───[0m[1mhypr-screenshot[0m: package
+[32;1m│       ├───[0m[1mhypr-tools[0m: package
+[32;1m│       ├───[0m[1minstaller-iso[0m: package
+[32;1m│       ├───[0m[1mmc-console[0m: package
+[32;1m│       ├───[0m[1mminecraft-server-stop[0m: package
+[32;1m│       ├───[0m[1mnix-activity[0m: package
+[32;1m│       ├───[0m[1mnix-build-log[0m: package
+[32;1m│       ├───[0m[1mnix-metrics-collector[0m: package
+[32;1m│       ├───[0m[1mpython[0m: package
+[32;1m│       ├───[0m[1mpython-rust[0m: package
+[32;1m│       ├───[0m[1mquick-menu[0m: package
+[32;1m│       ├───[0m[1msetup-ddns-config[0m: package
+[32;1m│       ├───[0m[1msystem-nvim[0m: package
+[32;1m│       ├───[0m[1mtekkit-server[0m: package
+[32;1m│       ├───[0m[1mtest-iso[0m: package
+[32;1m│       ├───[0m[1mtgpt-auth[0m: package
+[32;1m│       ├───[0m[1muser-sops[0m: package
+[32;1m│       └───[0m[1mwallpapers[0m: package
+[32;1m├───[0m[1mschemas[0m
+[32;1m│   ├───[0m[1mapps[0m: flake schema
+[32;1m│   ├───[0m[1mbundlers[0m: flake schema
+[32;1m│   ├───[0m[1mchecks[0m: flake schema
+[32;1m│   ├───[0m[1mdarwinConfigurations[0m: flake schema
+[32;1m│   ├───[0m[1mdarwinModules[0m: flake schema
+[32;1m│   ├───[0m[1mdefaultApp[0m: flake schema
+[32;1m│   ├───[0m[1mdefaultPackage[0m: flake schema
+[32;1m│   ├───[0m[1mdeploy[0m: flake schema
+[32;1m│   ├───[0m[1mdevShell[0m: flake schema
+[32;1m│   ├───[0m[1mdevShells[0m: flake schema
+[32;1m│   ├───[0m[1mexportedSchemas[0m: flake schema
+[32;1m│   ├───[0m[1mformatter[0m: flake schema
+[32;1m│   ├───[0m[1mhomeConfigurations[0m: flake schema
+[32;1m│   ├───[0m[1mhomeModules[0m: flake schema
+[32;1m│   ├───[0m[1mhydraJobs[0m: flake schema
+[32;1m│   ├───[0m[1mlegacyPackages[0m: flake schema
+[32;1m│   ├───[0m[1mnixosConfigurations[0m: flake schema
+[32;1m│   ├───[0m[1mnixosContainers[0m: flake schema
+[32;1m│   ├───[0m[1mnixosModules[0m: flake schema
+[32;1m│   ├───[0m[1mociImages[0m: flake schema
+[32;1m│   ├───[0m[1moverlays[0m: flake schema
+[32;1m│   ├───[0m[1mpackages[0m: flake schema
+[32;1m│   ├───[0m[1mschemas[0m: flake schema
+[32;1m│   └───[0m[1mtopology[0m: flake schema
+[32;1m└───[0m[1mtemplates[0m[35;1m unknown flake output[0m
