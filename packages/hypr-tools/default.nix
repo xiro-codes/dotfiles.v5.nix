@@ -1,12 +1,13 @@
 { pkgs, ... }:
 let
+  inherit (pkgs.lib) makeBinPath;
   deps = with pkgs; [
     hyprland
     jq
     bash
     procps
   ];
-  binPath = pkgs.lib.makeBinPath deps;
+  binPath = makeBinPath deps;
   # Scripts logic extracted into discrete writeShellApplication calls
   hypr-workspace-set = pkgs.writeShellApplication {
     name = "hypr-workspace-set";

@@ -5,7 +5,7 @@
   ...
 }:
 let
-  inherit (lib) mkEnableOption mkIf;
+  inherit (lib) mkEnableOption mkIf mkForce;
 
   cfg = config.local.pipewire-audio;
 in
@@ -24,7 +24,7 @@ in
     services.pipewire = {
       enable = true;
       alsa.enable = true;
-      alsa.support32Bit = lib.mkForce false;
+      alsa.support32Bit = mkForce false;
       pulse.enable = true;
       jack.enable = true;
 

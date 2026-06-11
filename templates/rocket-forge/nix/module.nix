@@ -9,6 +9,7 @@
 with lib;
 
 let
+  inherit (lib) mkOverride optionalAttrs;
   cfg = config.services.rocket-forge;
   pkg = self.packages.${pkgs.system}.default;
 in
@@ -100,7 +101,7 @@ in
           ensureDBOwnership = true;
         }
       ];
-      authentication = pkgs.lib.mkOverride 10 ''
+      authentication = mkOverride 10 ''
         local   all             all                                     trust
         host    all             all             127.0.0.1/32            trust
         host    all             all             ::1/128                 trust
@@ -121,7 +122,7 @@ in
         DEFAULT_ADMIN_USERNAME = cfg.defaultAdminUsername;
         ENABLE_SEEDING = if cfg.enableSeeding then "true" else "false";
       }
-      // lib.optionalAttrs (cfg.defaultAdminPassword != null) {
+      // optionalAttrs (cfg.defaultAdminPassword != null) {
         DEFAULT_ADMIN_PASSWORD = cfg.defaultAdminPassword;
       };
       serviceConfig = {

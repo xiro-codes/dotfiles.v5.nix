@@ -2,6 +2,9 @@
   pkgs,
   cfg,
 }:
+let
+  inherit (pkgs.lib) getExe;
+in
 [
   {
     "layer" = "top";
@@ -68,7 +71,7 @@
       "format" = "{} °";
       "tooltip" = true;
       "interval" = 3600;
-      "exec" = "${pkgs.lib.getExe pkgs.wttrbar} --fahrenheit --main-indicator 'temp_F'";
+      "exec" = "${getExe pkgs.wttrbar} --fahrenheit --main-indicator 'temp_F'";
       "return-type" = "json";
     };
     "hyprland/workspaces" = {

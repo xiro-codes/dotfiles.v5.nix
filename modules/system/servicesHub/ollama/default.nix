@@ -10,6 +10,7 @@ let
     mkDefault
     mkEnableOption
     mkIf
+    mkMerge
     mkOption
     types
     ;
@@ -32,8 +33,8 @@ in
       description = "Http port for ollama";
     };
   };
-  config = lib.mkMerge [
-    (lib.mkIf (cfg.webui.enable) {
+  config = mkMerge [
+    (mkIf (cfg.webui.enable) {
       services.open-webui = {
         enable = true;
         port = cfg.webui.port;
@@ -53,7 +54,7 @@ in
         };
       };
     })
-    (lib.mkIf (cfg.ollama.enable) {
+    (mkIf (cfg.ollama.enable) {
       services.ollama = {
         enable = true;
         openFirewall = true;

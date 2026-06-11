@@ -1,7 +1,8 @@
 { pkgs, lib, ... }:
 let
+  inherit (lib) getExe generators;
   configFile = pkgs.writeText "config.yaml" (
-    lib.generators.toYAML { } {
+    generators.toYAML { } {
       anchor = "bottom-right";
       menu = [
         {
@@ -36,6 +37,6 @@ in
 pkgs.writeShellApplication {
   name = "quick-menu";
   text = ''
-    exec ${lib.getExe pkgs.wlr-which-key} ${configFile}
+    exec ${getExe pkgs.wlr-which-key} ${configFile}
   '';
 }

@@ -33,7 +33,11 @@
               python ${./app/main.py}
             '';
           };
-          devShells.default = pkgs.mkShell {
+          devShells.default =
+            let
+              inherit (pkgs.lib) makeLibraryPath;
+            in
+            pkgs.mkShell {
             nativeBuildInputs = with pkgs; [
               uv
               python313
@@ -60,7 +64,7 @@
               echo "Run 'direnv allow' to automatically load this environment."
             '';
 
-            LD_LIBRARY_PATH = pkgs.lib.makeLibraryPath [ pkgs.stdenv.cc.cc.lib ];
+            LD_LIBRARY_PATH = makeLibraryPath [ pkgs.stdenv.cc.cc.lib ];
           };
         };
     };

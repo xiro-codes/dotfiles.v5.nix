@@ -6,7 +6,7 @@
 }:
 let
   cfg = config.local.nixvim;
-  inherit (lib) mkOption mkIf types;
+  inherit (lib) mkOption mkIf types mkForce;
 in
 {
   options.local.nixvim = {
@@ -44,7 +44,7 @@ in
         enable = true;
         defaultEditor = true;
         nixpkgs.source = pkgs.path;
-        #colorscheme = lib.mkForce null;
+        #colorscheme = mkForce null;
         inherit (baseOptions) globals opts extraConfigLua;
         inherit keymaps;
         files."ftplugin/gdscript.lua" = {

@@ -8,6 +8,9 @@
   modulesPath,
   ...
 }:
+let
+  inherit (lib) mkDefault;
+in
 {
   imports = [
     (modulesPath + "/installer/scan/not-detected.nix")
@@ -39,6 +42,6 @@
   # swapDevices =
   #   [ { device = "/dev/disk/by-uuid/55a5097d-10ac-4f79-833f-e253345204c3"; }
   #   ];
-  nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
-  hardware.cpu.amd.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
+  nixpkgs.hostPlatform = mkDefault "x86_64-linux";
+  hardware.cpu.amd.updateMicrocode = mkDefault config.hardware.enableRedistributableFirmware;
 }

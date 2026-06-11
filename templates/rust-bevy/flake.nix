@@ -31,6 +31,7 @@
         let
           overlays = [ (import rust-overlay) ];
           pkgsWithRust = import inputs.nixpkgs { inherit system overlays; };
+          inherit (pkgsWithRust.lib) makeLibraryPath;
 
           nativeBuildInputs = with pkgsWithRust; [ pkg-config ];
           buildInputs = with pkgsWithRust; [
@@ -66,7 +67,7 @@
 
             postInstall = ''
               ${pkgsWithRust.wrapProgram}/bin/wrapProgram $out/bin/my_bevy_game \
-                --prefix LD_LIBRARY_PATH : "${pkgsWithRust.lib.makeLibraryPath buildInputs}"
+                --prefix LD_LIBRARY_PATH : "${makeLibraryPath buildInputs}"
             '';
           };
 
@@ -76,7 +77,7 @@
               inputs.nvim-nix.packages.${system}.python-rust
             ];
             inherit buildInputs;
-            LD_LIBRARY_PATH = pkgsWithRust.lib.makeLibraryPath buildInputs;
+            LD_LIBRARY_PATH = makeLibraryPath buildInputs;
 
             shellHook = ''
               echo "🎮 Bevy Dev Environment Loaded"

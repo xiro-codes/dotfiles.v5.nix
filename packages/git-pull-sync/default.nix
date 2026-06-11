@@ -4,6 +4,9 @@
   repoPath ? "/etc/nixos",
   ...
 }:
+let
+  inherit (lib) getExe;
+in
 pkgs.writeShellApplication {
   name = "git-pull-sync";
   text = ''
@@ -16,12 +19,12 @@ pkgs.writeShellApplication {
     fi
 
     # Check for uncommitted changes
-    if ! ${lib.getExe pkgs.git} diff-index --quiet HEAD --; then
+    if ! ${getExe pkgs.git} diff-index --quiet HEAD --; then
       echo "Local changes detected in ${repoPath}. Skipping auto-pull to avoid conflicts."
       exit 0
     fi
 
     echo "No local changes. Attempting to pull from remote origin..."
-    ${lib.getExe pkgs.git} pull origin main || ${lib.getExe pkgs.git} pull origin master
+    ${getExe pkgs.git} pull origin main || ${getExe pkgs.git} pull origin master
   '';
 }

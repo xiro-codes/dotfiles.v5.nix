@@ -8,6 +8,9 @@
   modulesPath,
   ...
 }:
+let
+  inherit (lib) mkDefault;
+in
 {
   imports = [
     (modulesPath + "/installer/scan/not-detected.nix")
@@ -28,6 +31,6 @@
   ];
   boot.extraModulePackages = [ ];
   boot.kernelParams = [ "amd_pstate=active" ];
-  nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
-  hardware.cpu.amd.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
+  nixpkgs.hostPlatform = mkDefault "x86_64-linux";
+  hardware.cpu.amd.updateMicrocode = mkDefault config.hardware.enableRedistributableFirmware;
 }

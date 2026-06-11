@@ -4,7 +4,7 @@
   ...
 }:
 let
-  inherit (lib.strings) toLower;
+  inherit (lib) toLower;
 in
 {
   local.reverse-proxy = {
