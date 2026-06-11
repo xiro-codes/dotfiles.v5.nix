@@ -17,7 +17,7 @@ in
     ../profiles/limine-uefi.nix
     ../profiles/workstation
     ../profiles/client.nix
-    inputs.tierfs.nixosModules.test
+    inputs.tierfs.nixosModules.default
   ];
 
   programs = {
@@ -30,7 +30,7 @@ in
       };
     };
     nixbit = {
-      enable = true;
+      enable = false;
       repository = "https://github.com/xiro-codes/dotfiles.v5.nix";
     };
   };
@@ -56,8 +56,7 @@ in
   boot.kernelParams = [
     "video=HDMI-A-1:2560x1080@60"
   ];
-  services.tierfs-test.enable = true;
-  services.tierfs.package = inputs.tierfs.packages.x86_64-linux.default;
+
   nxc.daemon = {
     enable = true;
     socketGroup = "wheel";
