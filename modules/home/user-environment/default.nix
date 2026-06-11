@@ -204,6 +204,9 @@ in
 
     # Variables
     (mkIf cfg.variables.enable {
+      home.packages = [
+        self.packages.${pkgs.stdenv.hostPlatform.system}.global-just
+      ];
       home.sessionVariables = {
         EDITOR = cfg.variables.editor;
         VISUAL = cfg.variables.editor;

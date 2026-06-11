@@ -4,7 +4,7 @@ Welcome to the NixOS Dotfiles (v5) repository. This document provides critical i
 
 ## 🏗️ Architecture & Discovery Engine
 
-This repository uses an **external automated discovery engine** via the `inputs-nix` flake. You **do not need to manually register new files or modules in `flake.nix`**. 
+This repository uses an **external automated discovery engine** via the `inputs-nix` flake. You **do not need to manually register new files or modules in `flake.nix`**.
 
 When you create a new module, package, or system, place it in the correct directory, and it will be automatically discovered and integrated into the flake outputs.
 
@@ -66,7 +66,7 @@ Always use `just` commands when available to ensure consistent application of fl
 - **DO NOT** assume service data is declarative by default. Check if the module provides a `declarative` option.
 - **DO NOT** add a new host without updating `topology.nix`.
 - **DO NOT** change flake input URLs to local path overrides (e.g., `path:/home/tod/...`) in `flake.nix`. Always use the remote repository URLs. If you need to test local versions of dependency flakes, instruct the user to use `--override-input` on the command line.
-
+- DO NOT Use modules options in other modules
 ## ⚠️ Gotchas & Important Notes
 - Many commands use the `--impure` flag by default.
 - The project relies heavily on `sops-nix`.
