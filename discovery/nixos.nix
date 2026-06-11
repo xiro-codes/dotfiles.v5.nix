@@ -8,6 +8,7 @@
   discoveredHomeModules,
   globalNixosModules,
   globalHomeModules,
+  discoveredOverlays,
 }:
 let
   inherit (builtins)
@@ -42,6 +43,7 @@ let
             ++ [
               (host.path + "/configuration.nix")
               {
+                nixpkgs.overlays = attrValues discoveredOverlays;
                 networking.hostName = host.name;
                 local.secrets.enable = true;
                 home-manager = {

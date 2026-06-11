@@ -5,6 +5,7 @@
   hostToUsersMap,
   discoveredHomeModules,
   globalHomeModules,
+  discoveredOverlays,
 }:
 let
   inherit (builtins)
@@ -38,6 +39,7 @@ in
             {
               home.username = entry.user;
               home.homeDirectory = "/home/${entry.user}";
+              nixpkgs.overlays = attrValues discoveredOverlays;
             }
           ]
           ++ (attrValues discoveredHomeModules)
