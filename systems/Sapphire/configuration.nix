@@ -22,7 +22,9 @@ in
 
   # Sapphire-specific configuration
   local = {
-    bootloader.recoveryUUID = "0d9dddd8-9511-4101-9177-0a80cfbeb047";
+    security.enable = mkForce false;
+    nix-cache-client.enable = mkForce false;
+    secrets.enable = mkForce false;
 
     secrets.keys = [
       "harmonia_key"
