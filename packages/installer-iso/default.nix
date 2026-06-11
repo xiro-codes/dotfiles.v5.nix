@@ -44,8 +44,8 @@
         local = {
           #cache.enable = true;
           nix-core-settings.enable = true;
-          nix-cache-client.enable = true;
-          nix-builders.enable = true;
+          nix-cache-client.enable = false;
+          nix-builders.enable = false;
         };
         determinate.enable = true;
         imports = [
