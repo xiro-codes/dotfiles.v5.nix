@@ -48,8 +48,6 @@ in
     networking.nftables.enable = true;
     networking.firewall.trustedInterfaces = [ "incusbr0" ];
 
-    networking.bridges.incusbr0.interfaces = [ ];
-
     networking.macvlans = mkIf (cfg.macvlanInterface != null) {
       macvlan0 = {
         interface = cfg.macvlanInterface;
