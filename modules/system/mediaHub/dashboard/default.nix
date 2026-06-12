@@ -107,24 +107,22 @@ in
           # Build service list based on what's enabled
           servicesList = flatten [
             # Services section
-            [
-              {
-                "Open WebUI" = {
-                  icon = "mdi-brain";
-                  href = "http://ui.${primaryHost}.home";
-                  description = "LLM Interface on ${primaryHost}";
-                  siteMonitor = "http://ui.${primaryHost}.home";
-                };
-              }
-              {
-                "VMs" = {
-                  icon = "mdi-server";
-                  href = "http://vm.${primaryHost}.home";
-                  description = "Incus Virtual Machines";
-                  siteMonitor = "http://vm.${primaryHost}.home";
-                };
-              }
-            ]
+            (optional (config.local.ai.webui.enable) {
+              "Open WebUI" = {
+                icon = "mdi-brain";
+                href = "http://ui.${primaryHost}.home";
+                description = "LLM Interface on ${primaryHost}";
+                siteMonitor = "http://ui.${primaryHost}.home";
+              };
+            })
+            (optional (config.local.virtualisation.incus.enable) {
+              "VMs" = {
+                icon = "mdi-server";
+                href = "http://vm.${primaryHost}.home";
+                description = "Incus Virtual Machines";
+                siteMonitor = "http://vm.${primaryHost}.home";
+              };
+            })
             (optional (config.local.gitea.enable) {
               Gitea = {
                 icon = "gitea.png";
