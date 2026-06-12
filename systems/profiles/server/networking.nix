@@ -24,6 +24,18 @@ in
 
         git.target = "http://localhost:${toString config.local.gitea.port}";
 
+        tv.target = "http://localhost:${toString config.local.media.jellyfin.port}";
+        plex.target = "http://localhost:${toString config.local.media.plex.port}";
+
+        ch7.target = "http://localhost:${toString config.local.media.ersatztv.port}";
+
+        comics.target = "http://localhost:${toString config.local.media.komga.port}";
+        audiobooks.target = "http://localhost:${toString config.local.media.audiobookshelf.port}";
+
+        dl.target = "http://localhost:${toString config.local.downloads.qbittorrent.port}";
+
+        yt.target = "http://localhost:${toString config.local.downloads.pinchflat.port}";
+
         cache.target = "http://localhost:5000";
       };
     };

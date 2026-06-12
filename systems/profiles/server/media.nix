@@ -2,8 +2,8 @@
 {
   local = {
     # Old media/downloads modules disabled — replaced by nixarr-stack
-    media.enable = false;
-    downloads.enable = false;
+    media.enable = true;
+    downloads.enable = true;
 
     # New nixarr-based media stack
     nixarr-stack = {
