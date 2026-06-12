@@ -41,6 +41,13 @@ in
   };
 
   config = mkIf cfg.enable {
+    assertions = [
+      {
+        assertion = cfg.vpn.enable -> config.local.secrets.enable;
+        message = "nixarr-stack VPN requires local.secrets to be enabled";
+      }
+    ];
+
     nixarr = {
       enable = true;
       mediaDir = cfg.mediaDir;

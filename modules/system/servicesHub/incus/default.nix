@@ -38,6 +38,13 @@ in
   };
 
   config = mkIf cfg.enable {
+    assertions = [
+      {
+        assertion = cfg.enableReverseProxy -> config.local.reverse-proxy.enable;
+        message = "incus enableReverseProxy requires local.reverse-proxy to be enabled";
+      }
+    ];
+
     networking.nftables.enable = true;
     networking.firewall.trustedInterfaces = [ "incusbr0" ];
 

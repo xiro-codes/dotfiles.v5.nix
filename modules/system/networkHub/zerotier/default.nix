@@ -24,6 +24,12 @@ in
   };
 
   config = mkIf cfg.enable {
+    assertions = [
+      {
+        assertion = config.local.secrets.enable;
+        message = "zerotier requires local.secrets to be enabled";
+      }
+    ];
     sops.secrets."${cfg.networkIdSecret}" = { };
     services.zerotierone.enable = true;
 

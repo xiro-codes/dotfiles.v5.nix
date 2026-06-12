@@ -20,6 +20,12 @@ in
   };
 
   config = mkIf cfg.enable {
+    assertions = [
+      {
+        assertion = config.local.secrets.enable;
+        message = "ddns-updater requires local.secrets to be enabled";
+      }
+    ];
     systemd.services.ddns-updater = {
       serviceConfig.ExecStartPre = [
         (
