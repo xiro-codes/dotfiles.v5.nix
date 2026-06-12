@@ -1,11 +1,9 @@
 keys:
   - &ruby age1gnsqhrf20kx55jpxewp5g9h3u8hffh8tlvstwwett57rp5letu3sndsh9k
-  - &sapphire age1elpmqgednf7hhn04vj832d3flfvzcjn3z9y26cka53ugfft9rdwqx9cext
-  - &onix age1gjp4864pmtvyqmdxtd8lt2f9cv2rtd5mcuzljd4hwjk48ajvd9fqfmgr2p
+  - &sapphire age163tv3axqtnn024jp957f9jp2w8xrp6r0m06yy8fte9j47xn8p3as8u2ndp
   - &slate age1vjx7xp79krpe9csq83yraqresy9xmpk8xca4tgs6je8erusd23tqsrr2n0
   - &tod_ruby age168wrrgww4sag8mmy3c97ylr6uvls8chsseaktxtjxgwpyp95as5szlccwl #tod@Ruby
-  - &tod_sapphire age1ysxvznptn3a4r7vvh3s37qs2th4qcsuum6htfef7d63maafcjg9qxaqvc5 #tod@Sapphire
-  - &tod_onix age103xn7xm5sdee32qnjqpkez90ffrnq3nlk6jv6dj4gkzd4ht5gq7qn5vcvj #tod@Onix
+  - &tod_sapphire age1l0m3xpayduxpq9e06xpzt9kn00f9q2pl6m8nmu7z0cf8majql5sq06p2yf
   - &tod_slate age1ru4amlu0rp0a4qttysk5dw6dsmgrw0ylaqejqrk5uud2vqqd7d7qpwnafw #tod@Slate
 creation_rules:
   - path_regex: secrets/secrets.yaml
@@ -14,9 +12,7 @@ creation_rules:
         age:
           - *ruby
           - *sapphire
-          - *onix
           - *slate
           - *tod_sapphire
           - *tod_ruby
-          - *tod_onix
           - *tod_slate

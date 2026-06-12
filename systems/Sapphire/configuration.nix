@@ -14,7 +14,7 @@ in
     ./hardware-configuration.nix
     ../profiles/base.nix
     ../profiles/limine-uefi.nix
-    ../profiles/client.nix
+    # ../profiles/client.nix
     # ../profiles/workstation
     # ../profiles/workstation/jovian.nix
   ];
@@ -24,7 +24,7 @@ in
     security.enable = mkForce false;
     nix-cache-client.enable = mkForce false;
     secrets.enable = mkForce false;
-
+    bootloader.addRecoveryOption = mkForce false;
     secrets.keys = [
       "harmonia_key"
       "gog_creds"
