@@ -19,6 +19,14 @@ in
     plasma6 = true;
   };
 
+  nixpkgs.overlays = [
+    (final: prev: {
+      gamescope = prev.gamescope.overrideAttrs (old: {
+        patches = builtins.filter (p: ! (builtins.isString p && builtins.match ".*shaders-path\\.patch" p != null) && ! (builtins.isPath p && builtins.match ".*shaders-path\\.patch" (builtins.toString p) != null)) (old.patches or []);
+      });
+    })
+  ];
+
   jovian = {
     steam = {
       enable = true;

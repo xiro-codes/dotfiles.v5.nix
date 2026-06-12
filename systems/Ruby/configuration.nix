@@ -7,7 +7,7 @@
   ...
 }:
 let
-  inherit (lib) range mkForce;
+  inherit (lib) range mkForce mkDefault;
 in
 {
   imports = [
@@ -54,9 +54,19 @@ in
   };
 
   hardware.keyboard.qmk.enable = true;
-  boot.kernelParams = [
+  boot.kernelParams = mkDefault [
     "video=HDMI-A-1:2560x1080@60"
   ];
+
+  specialisation = {
+    desktop.configuration = {
+      boot.kernelParams = [ "video=DP-3:d" ];
+    };
+    console.configuration = {
+      imports = [ ../profiles/workstation/jovian.nix ];
+      boot.kernelParams = mkForce [ "video=HDMI-A-1:d" ];
+    };
+  };
 
   nxc.daemon = {
     enable = true;
