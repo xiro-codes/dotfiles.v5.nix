@@ -46,6 +46,7 @@ in
     secrets.keys = [
       "gog_creds"
       "zerotier_network_id"
+      "onix_creds"
     ];
 
     bootloader.recoveryUUID = "b0cd9860-736a-45c5-a6d2-e69cdb319f24";
@@ -56,6 +57,7 @@ in
   hardware.keyboard.qmk.enable = true;
   boot.kernelParams = mkDefault [
     "video=HDMI-A-1:2560x1080@60"
+    "video=DP-3:d"
   ];
 
   specialisation = {
@@ -63,7 +65,8 @@ in
       boot.kernelParams = [ "video=DP-3:d" ];
     };
     console.configuration = {
-      imports = [ ../profiles/workstation/jovian.nix ];
+      # Temporarily disabled because jovian's gamescope patches fail against nixos-26.05 gamescope 3.16.24
+      # imports = [ ../profiles/workstation/jovian.nix ];
       boot.kernelParams = mkForce [ "video=HDMI-A-1:d" ];
     };
   };
