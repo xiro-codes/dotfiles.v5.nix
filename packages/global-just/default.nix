@@ -145,6 +145,32 @@ let
         cd {{dir}} && nix build . || true
         cd {{dir}} && git commit -m "init commit"
 
+    # --- Backups ---
+    [group('backups')]
+    init-backup:
+        sudo borg-job-$(hostname)-local init -e none
+
+    [group('backups')]
+    run-backup:
+        sudo systemctl start borgbackup-job-$(hostname)-local.service
+
+    [group('backups')]
+    mount-backup host=HOST:
+        sudo mkdir -p /.recovery
+        sudo borg-job-$(hostname)-local mount /media/Backups/{{host}}/ /.recovery
+
+    [group('backups')]
+    umount-backup:
+        sudo umount /.recovery
+
+    [group('backups')]
+    check-timer:
+        systemctl list-timers borgbackup-job-$(hostname)-local.timer
+
+    [group('backups')]
+    list-backups:
+        sudo borg-job-$(hostname)-local list
+
   '';
 in
 pkgs.writeShellApplication {

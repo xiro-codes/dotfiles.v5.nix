@@ -73,7 +73,7 @@ in
       }
     ];
 
-    services.borgbackup.jobs."onix-local" = {
+    services.borgbackup.jobs."${config.networking.hostName}-local" = {
       inherit (cfg) exclude;
       paths = finalPaths;
       repo = cfg.backupLocation + "/${config.networking.hostName}";
@@ -87,7 +87,7 @@ in
       };
     };
 
-    systemd.services.borgbackup-job-onix-local = {
+    systemd.services."borgbackup-job-${config.networking.hostName}-local" = {
       unitConfig = {
         ConditionPathIsMountPoint = cfg.backupLocation;
         RequiresMountsFor = cfg.backupLocation;
