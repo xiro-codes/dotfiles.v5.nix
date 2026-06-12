@@ -38,6 +38,7 @@ in
     virtualisation.incus = {
       enable = true;
       storageSource = "/media/Scratch/incus";
+      ui.enable = true;
     };
 
   };
