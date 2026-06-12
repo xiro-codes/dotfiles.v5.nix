@@ -219,3 +219,9 @@ bake-recovery disk="":
     @echo "Burning ISO to {{ if disk == "" { "recovery partition" } else { disk } }} ..."
     sudo caligula burn $(find result/iso/ -name "*.iso" | head -n 1) -o {{ if disk == "" { "$(readlink -f /dev/disk/by-partlabel/disk-main-recovery)" } else { disk } }} --interactive never --compression none -f --hash skip
     @echo "Failsafe ISO updated successfully."
+
+# Run a command via ssh on a host
+[group('deploy')]
+ssh-run host cmd:
+    ssh tod@{{host}} '{{cmd}}'
+
