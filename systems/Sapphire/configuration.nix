@@ -22,13 +22,10 @@ in
 
   # Sapphire-specific configuration
   local = {
-    security.enable = mkForce true;
-    nix-cache-client.enable = mkForce false;
     nix-builders = {
       enable = mkForce true;
       hosts = [ "ruby" ];
     };
-    secrets.enable = mkForce true;
     bootloader.addRecoveryOption = mkForce false;
     secrets.keys = [
       "harmonia_key"
@@ -38,17 +35,11 @@ in
       "protonvpn_wg_conf"
     ];
 
-    containers.Jade.enable = false;
-    virtualisation.incus.enable = false;
+    virtualisation.incus = {
+      enable = true;
+      storageSource = "/media/Scratch/incus";
+    };
 
-    metrics.domain = "pihole.${config.local.network-hosts.primary}.home";
-
-    # Disable network-mounts since Sapphire is now the server
-    network-mounts.enable = mkForce false;
-
-    backup-manager.paths = mkAfter [
-      "/etc/nixos/"
-    ];
   };
 
   users.users.tod.extraGroups = [
