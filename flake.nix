@@ -85,6 +85,7 @@
       systems = [ "x86_64-linux" ];
 
       imports = [
+        inputs.nix-topology.flakeModule
         (import ./schemas.nix self.outPath)
         (import ./discovery {
           globalNixosModules = [
@@ -133,9 +134,9 @@
         {
           formatter = pkgs.nixfmt-tree;
           packages = inputs.nvim-nix.packages.${system};
-          # topology.modules = [
-          #   ./topology.nix
-          # ];
+          topology.modules = [
+            ./topology.nix
+          ];
         };
     };
 }

@@ -48,8 +48,8 @@
 
   system.stateVersion = "25.11";
 
-  # topology.self.interfaces = {
-  #   enp6s0.network = "home";
-  #   zt0.network = "zerotier";
-  # };
+  topology.self.interfaces = {
+    enp6s0.network = "home";
+    zt0.network = "zerotier";
+  };
 }

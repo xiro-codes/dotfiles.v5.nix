@@ -7,6 +7,10 @@ A declarative, multi-host NixOS configuration built with [Nix Flakes](https://ni
 
 **[📚 Read the Documentation](https://xiro-codes.github.io/dotfiles.v5.nix/)**
 
+<div align="center">
+  <img src="./network.svg" alt="Network Topology" />
+</div>
+
 ## **🚀 Quick Start**
 
 ### **Installation**

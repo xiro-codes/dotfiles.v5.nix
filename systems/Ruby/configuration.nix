@@ -64,4 +64,8 @@ in
   };
 
   system.stateVersion = "25.11";
+
+  topology.self.interfaces = {
+    eth0.network = "home";
+  };
 }

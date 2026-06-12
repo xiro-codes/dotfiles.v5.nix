@@ -31,22 +31,15 @@ in
     networking = {
       hosts = {
         "${primaryIp}" = [
-          "yt.${primaryHost}.home"
           "dashboard.${primaryHost}.home"
-          "files.${primaryHost}.home"
           "wallpapers.${primaryHost}.home"
           "games.${primaryHost}.home"
           "git.${primaryHost}.home"
-          "tv.${primaryHost}.home"
           "plex.${primaryHost}.home"
           "${primaryHost}.home"
-          "ch7.${primaryHost}.home"
           "comics.${primaryHost}.home"
           "audiobooks.${primaryHost}.home"
           "dl.${primaryHost}.home"
-          "pihole.${primaryHost}.home"
-          "docs.${primaryHost}.home"
-          "cache.${primaryHost}.home"
         ];
       };
       # Disable the old wpa_supplicant
