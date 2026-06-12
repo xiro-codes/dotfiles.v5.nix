@@ -222,5 +222,14 @@ in
         GEMINI_API_KEY = "$(cat ${geminiKeyPath})";
       };
     })
+
+    # Network share symlinks
+    {
+      home.file = {
+        "Projects".source = config.lib.file.mkOutOfStoreSymlink "/media/Scratch/Projects";
+        "Downloads".source = config.lib.file.mkOutOfStoreSymlink "/media/Scratch/Downloads";
+        ".backups".source = config.lib.file.mkOutOfStoreSymlink "/media/Backups";
+      };
+    }
   ];
 }
