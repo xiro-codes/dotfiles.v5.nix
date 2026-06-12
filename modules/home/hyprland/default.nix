@@ -30,6 +30,7 @@ in
       cliphist
       jq
       discord
+      nemo
       hypr-tools
     ];
 
@@ -48,6 +49,7 @@ in
           "7, persistent:true"
           "8, persistent:true"
           "9, persistent:true, layout:scrolling"
+          "special:desktop, on-created-empty:nemo-desktop"
         ];
         monitor = [
           "HDMI-A-1,preferred,auto,1"
@@ -91,6 +93,10 @@ in
         ];
         "$mod" = "SUPER";
 
+        windowrulev2 = [
+          "float, workspace:name:special:desktop"
+        ];
+
         bind = [
           "$mod, Return, exec, ${variables.terminal}"
 
@@ -110,7 +116,7 @@ in
 
           # Application launchers
           "$mod, P, exec, ${variables.launcher} "
-          "$mod, D, exec, ${getExe quick-menu}"
+          "$mod, D, togglespecialworkspace, desktop"
           "$mod, minus, exec, hypr-screenshot full"
           "$mod_SHIFT, minus, exec, hypr-screenshot area"
           "$mod, N, exec, caelestia shell drawers toggle sidebar"
