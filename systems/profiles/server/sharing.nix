@@ -21,6 +21,12 @@
           guestOk = true;
           validUsers = [ "tod" ];
         };
+        scratch = {
+          path = "/media/Scratch";
+          comment = "Misc Directory";
+          guestOk = true;
+          validUsers = [ "tod" ];
+        };
       };
     };
   };

@@ -44,21 +44,8 @@
           localPath = "/media/Media";
         }
         {
-          shareName = "storage";
-          localPath = "/media/Storage";
-        }
-        {
-          shareName = "music";
-          localPath = "/media/Music";
-        }
-        {
-          shareName = "books";
-          localPath = "/media/Books";
-        }
-        {
-          shareName = "porn";
-          localPath = "/media/Porn";
-          noShow = true;
+          shareName = "scratch";
+          localPath = "/media/Scratch";
         }
       ];
     };
