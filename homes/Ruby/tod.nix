@@ -30,6 +30,11 @@ in
   local.wallpapers = {
     name = "13054947.png";
   };
+  dconf.settings = {
+    "org/nemo/desktop" = {
+      desktop-icons = true;
+    };
+  };
   services.espanso = {
     enable = true;
     package = pkgs.espanso-wayland;

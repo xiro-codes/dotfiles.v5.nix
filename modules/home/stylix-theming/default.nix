@@ -68,7 +68,7 @@ in
           zen-browser.enable = true;
           zen-browser.profileNames = [ "default" ];
           gtk.enable = true; # Disable GTK theming
-          qt.enable = false; # Disable Qt theming
+          qt.enable = true; # Disable Qt theming
         };
         fonts = {
           monospace = {

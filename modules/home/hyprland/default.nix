@@ -30,7 +30,7 @@ in
       cliphist
       jq
       discord
-      nemo
+      pcmanfm-qt
       hypr-tools
     ];
 
@@ -40,16 +40,16 @@ in
       xwayland.enable = true;
       settings = {
         workspace = [
-          "1, persistent:true"
-          "2, persistent:true"
+          "1, persistent:true, layout:scrolling"
+          "2, persistent:true, layout:scrolling"
           "3, persistent:true, layout:scrolling"
-          "4, persistent:true"
-          "5, persistent:true"
+          "4, persistent:true, layout:scrolling"
+          "5, persistent:true, layout:scrolling"
           "6, persistent:true, layout:scrolling"
-          "7, persistent:true"
-          "8, persistent:true"
+          "7, persistent:true, layout:scrolling"
+          "8, persistent:true, layout:scrolling"
           "9, persistent:true, layout:scrolling"
-          "special:desktop, on-created-empty:nemo-desktop"
+          "special:desktop, on-created-empty:pcmanfm-qt --desktop"
         ];
         monitor = [
           "HDMI-A-1,preferred,auto,1"
@@ -87,15 +87,19 @@ in
           "wl-paste --type text --watch cliphist store"
           "steam -silent"
           "discord --start-minimized"
+          "nemo-desktop"
         ]
         ++ optionals config.local.caelestia-shell.enable [
           "caelestia wallpaper -f $HOME/.wallpaper"
         ];
-        "$mod" = "SUPER";
-
-        windowrulev2 = [
-          "float, workspace:name:special:desktop"
+        windowrules = [
+          "size 100% 100%, ^(pcmanfm-qt)$"
+          "center, ^(pcmanfm-qt)$"
+          "noanim, ^(pcmanfm-qt)$"
+          "noborder, ^(pcmanfm-qt)$"
+          "noblur, ^(pcmanfm-qt)$"
         ];
+        "$mod" = "SUPER";
 
         bind = [
           "$mod, Return, exec, ${variables.terminal}"
