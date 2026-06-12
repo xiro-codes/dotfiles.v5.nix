@@ -44,7 +44,6 @@ in
         default = {
           Sapphire = config.osConfig.local.network-hosts.sapphire or "sapphire.local";
           Ruby = config.osConfig.local.network-hosts.ruby or "ruby.local";
-          Onix = config.osConfig.local.network-hosts.onix or "onix.local";
           Jade = config.osConfig.local.network-hosts.jade or "jade.local";
           Slate = config.osConfig.local.network-hosts.slate or "slate.local";
         };
@@ -222,14 +221,5 @@ in
         GEMINI_API_KEY = "$(cat ${geminiKeyPath})";
       };
     })
-
-    # Network share symlinks
-    {
-      home.file = {
-        "Projects".source = config.lib.file.mkOutOfStoreSymlink "/media/Scratch/Projects";
-        "Downloads".source = config.lib.file.mkOutOfStoreSymlink "/media/Scratch/Downloads";
-        ".backups".source = config.lib.file.mkOutOfStoreSymlink "/media/Backups";
-      };
-    }
   ];
 }

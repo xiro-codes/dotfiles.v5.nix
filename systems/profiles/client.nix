@@ -38,14 +38,17 @@
           shareName = "backups";
           localPath = "/media/Backups";
           noShow = true;
+          options = [ "vers=3.0" ];
         }
         {
           shareName = "media";
           localPath = "/media/Media";
+          options = [ "vers=3.0" ];
         }
         {
           shareName = "scratch";
           localPath = "/media/Scratch";
+          options = [ "vers=3.0" ];
         }
       ];
     };

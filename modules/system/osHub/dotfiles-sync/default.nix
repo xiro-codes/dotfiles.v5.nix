@@ -158,6 +158,11 @@ in
           value = {
             text = ''
               ln -sfn /etc/nixos /home/${username}/.dotfiles.nix
+              ln -sfn /media/Scratch/${username}/Projects /home/${username}/Projects
+              ln -sfn /media/Scratch/${username}/Downloads /home/${username}/Downloads
+              ln -sfn /media/Scratch/${username}/Documents /home/${username}/Documents
+              ln -sfn /media/Scratch/${username}/Pictures /home/${username}/Pictures
+              ln -sfn /media/Backups/${username} /home/${username}/.backups
             '';
           };
         }) currentHostUsers

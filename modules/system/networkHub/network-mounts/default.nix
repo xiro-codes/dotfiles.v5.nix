@@ -39,6 +39,7 @@ let
             "noperm"
             "x-systemd.automount"
             "noauto"
+            "nofail"
             "x-systemd.idle-timeout=60"
             "gid=100"
             "file_mode=0775"
