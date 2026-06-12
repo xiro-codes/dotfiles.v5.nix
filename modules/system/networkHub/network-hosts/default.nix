@@ -10,10 +10,6 @@ let
 
   # Define host mappings
   hostDefs = {
-    onix = {
-      ip = "192.168.1.65";
-      avahi = "onix.local";
-    };
     ruby = {
       ip = "192.168.1.66";
       avahi = "ruby.local";
@@ -48,14 +44,6 @@ in
       description = "The primary host that runs all the centralized services";
     };
 
-    # Expose resolved addresses for other modules to use
-    onix = mkOption {
-      type = types.str;
-      default = getHost "onix";
-      readOnly = true;
-      description = "Address for Onix host";
-    };
-
     ruby = mkOption {
       type = types.str;
       default = getHost "ruby";
@@ -81,11 +69,6 @@ in
   config = {
     # Add entries to /etc/hosts for better reliability
     networking.hosts = {
-      "${hostDefs.onix.ip}" = [
-        "onix"
-        "onix.local"
-        "onix.home"
-      ];
       "${hostDefs.ruby.ip}" = [
         "ruby"
         "ruby.local"

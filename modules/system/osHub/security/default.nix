@@ -26,6 +26,13 @@ in
   };
 
   config = mkIf cfg.enable {
+    assertions = [
+      {
+        assertion = config.local.secrets.enable;
+        message = "security requires local.secrets to be enabled";
+      }
+    ];
+
     # doas setup (Modern, lightweight alternative to sudo)
     security.doas = {
       enable = true;
@@ -58,14 +65,12 @@ in
     users.users.root.openssh.authorizedKeys.keyFiles = [
       config.sops.secrets."ssh_pub_ruby/master".path
       config.sops.secrets."ssh_pub_sapphire/master".path
-      config.sops.secrets."ssh_pub_onix/master".path
       config.sops.secrets."ssh_pub_slate/master".path
     ];
 
     users.users.${cfg.adminUser}.openssh.authorizedKeys.keyFiles = [
       config.sops.secrets."ssh_pub_ruby/master".path
       config.sops.secrets."ssh_pub_sapphire/master".path
-      config.sops.secrets."ssh_pub_onix/master".path
       config.sops.secrets."ssh_pub_slate/master".path
     ];
 
