@@ -24,6 +24,10 @@ in
   local = {
     security.enable = mkForce true;
     nix-cache-client.enable = mkForce false;
+    nix-builders = {
+      enable = mkForce true;
+      hosts = [ "ruby" ];
+    };
     secrets.enable = mkForce true;
     bootloader.addRecoveryOption = mkForce false;
     secrets.keys = [
