@@ -14,6 +14,7 @@ in
     ./hardware-configuration.nix
     ../profiles/base.nix
     ../profiles/limine-uefi.nix
+    ../profiles/server
     # ../profiles/client.nix
     # ../profiles/workstation
     # ../profiles/workstation/jovian.nix
@@ -21,9 +22,9 @@ in
 
   # Sapphire-specific configuration
   local = {
-    security.enable = mkForce false;
+    security.enable = mkForce true;
     nix-cache-client.enable = mkForce false;
-    secrets.enable = mkForce false;
+    secrets.enable = mkForce true;
     bootloader.addRecoveryOption = mkForce false;
     secrets.keys = [
       "harmonia_key"

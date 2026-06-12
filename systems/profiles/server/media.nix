@@ -7,7 +7,7 @@
 
     # New nixarr-based media stack
     nixarr-stack = {
-      enable = true;
+      enable = false;
       mediaDir = "/media/Media";
       vpn.enable = true;
     };
