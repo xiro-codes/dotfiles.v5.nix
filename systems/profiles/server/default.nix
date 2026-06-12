@@ -24,5 +24,5 @@
     nixarr-stack
   ];
 
-  local.metrics.enable = true;
+  local.metrics.enable = false;
 }

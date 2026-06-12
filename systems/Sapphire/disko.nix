@@ -15,7 +15,10 @@
                 format = "vfat";
                 mountpoint = "/boot";
                 mountOptions = [ "umask=0077" ];
-                extraArgs = [ "-n" "boot" ];
+                extraArgs = [
+                  "-n"
+                  "boot"
+                ];
               };
             };
             recovery = {
@@ -23,7 +26,10 @@
               content = {
                 type = "filesystem";
                 format = "ext4";
-                extraArgs = [ "-L" "recovery" ];
+                extraArgs = [
+                  "-L"
+                  "recovery"
+                ];
               };
             };
             root = {
@@ -32,13 +38,16 @@
                 type = "filesystem";
                 format = "ext4";
                 mountpoint = "/";
-                extraArgs = [ "-L" "nixos" ];
+                extraArgs = [
+                  "-L"
+                  "nixos"
+                ];
               };
             };
           };
         };
       };
-      
+
       nix_nvme1 = {
         type = "disk";
         device = "/dev/disk/by-id/nvme-eui.0025385651408688";
@@ -68,7 +77,6 @@
         };
       };
 
-      /*
       media_hdd = {
         type = "disk";
         device = "/dev/disk/by-id/wwn-0x5000c500e3673662";
@@ -86,7 +94,6 @@
           };
         };
       };
-      */
 
       hdd1 = {
         type = "disk";
@@ -170,7 +177,10 @@
           type = "filesystem";
           format = "ext4";
           mountpoint = "/nix";
-          extraArgs = [ "-L" "nix-store" ];
+          extraArgs = [
+            "-L"
+            "nix-store"
+          ];
         };
       };
       backup_raid = {
@@ -181,7 +191,10 @@
           type = "filesystem";
           format = "ext4";
           mountpoint = "/media/Backups";
-          extraArgs = [ "-L" "backups" ];
+          extraArgs = [
+            "-L"
+            "backups"
+          ];
         };
       };
       ssd_raid = {
@@ -192,7 +205,10 @@
           type = "filesystem";
           format = "ext4";
           mountpoint = "/media/Scratch";
-          extraArgs = [ "-L" "scratch" ];
+          extraArgs = [
+            "-L"
+            "scratch"
+          ];
         };
       };
     };

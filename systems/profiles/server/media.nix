@@ -3,8 +3,11 @@
   local = {
     # Old media/downloads modules disabled — replaced by nixarr-stack
     media.enable = true;
+    media.plex.enable = true;
+    media.komga.enable = true;
+    media.audiobookshelf.enable = true;
     downloads.enable = true;
-
+    downloads.qbittorrent.enable = true;
     # New nixarr-based media stack
     nixarr-stack = {
       enable = false;
@@ -13,7 +16,7 @@
     };
 
     gog-downloader = {
-      enable = false;
+      enable = true;
       directory = "/media/Media/games";
       secretFile = config.sops.secrets."gog_creds".path;
     };

@@ -19,7 +19,7 @@
       enable = true;
       signKeyPaths = [ config.sops.secrets."harmonia_key".path ];
       openFirewall = true;
-      prefetch.enable = true;
+      prefetch.enable = false;
     };
     # Git service
     gitea = {
@@ -42,6 +42,6 @@
         motd = "Tekkit Server on Onix";
       };
     };
-    recovery-builder.enable = true;
+    recovery-builder.enable = false;
   };
 }
