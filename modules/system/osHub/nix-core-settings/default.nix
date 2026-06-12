@@ -17,6 +17,7 @@ in
   config = mkIf cfg.enable {
     # Nix configuration
     determinate.enable = true;
+    nixpkgs.flake.source = lib.mkForce null;
     nix.settings = {
       accept-flake-config = true;
       experimental-features = [
