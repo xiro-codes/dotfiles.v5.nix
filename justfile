@@ -115,18 +115,18 @@ gen-keys host=HOST:
 # Initialize backups
 [group('backups')]
 init-backup:
-    sudo borg-job-onix-local init -e none
+    sudo borg-job-{{HOST}}-local init -e none
 
 # Run borg backup
 [group('backups')]
 run-backup:
-    sudo systemctl start borgbackup-job-onix-local.service
+    sudo systemctl start borgbackup-job-{{HOST}}-local.service
 
 # Mount backups
 [group('backups')]
 mount-backup host=HOST:
     sudo mkdir -p /.recovery
-    sudo borg-job-onix-local mount /media/Backups/{{host}}/ /.recovery
+    sudo borg-job-{{HOST}}-local mount /media/Backups/{{host}}/ /.recovery
 
 # Unmount backups
 [group('backups')]
@@ -136,12 +136,12 @@ umount-backup:
 # Check when next backup is scheduled
 [group('backups')]
 check-timer:
-    systemctl list-timers borgbackup-job-onix-local.timer
+    systemctl list-timers borgbackup-job-{{HOST}}-local.timer
 
 # Show all current backups
 [group('backups')]
 list-backups:
-    sudo borg-job-onix-local list
+    sudo borg-job-{{HOST}}-local list
 
 # Build a specific host's configuration
 [group('build')]

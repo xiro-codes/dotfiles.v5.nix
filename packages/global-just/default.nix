@@ -3,7 +3,7 @@
 let
   globalJustfile = pkgs.writeText "global-justfile" ''
     # Global Justfile - Fallback when no local justfile is present
-
+    HOST := `hostname`
     default:
         @just --list
 
