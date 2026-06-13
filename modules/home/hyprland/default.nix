@@ -23,7 +23,19 @@ in
 {
   options.local.hyprland = {
     enable = mkEnableOption "Functional Hyprland setup.";
+    layout = lib.mkOption {
+      type = lib.types.enum [
+        "scrolling"
+        "master"
+      ];
+      default = "scrolling";
+      description = "Which layout to use by default in Hyprland.";
+    };
   };
+  imports = [
+    ./scrolling.nix
+    ./master.nix
+  ];
   config = mkIf cfg.enable {
     home.packages = with pkgs; [
       wl-clipboard
@@ -39,18 +51,6 @@ in
       configType = "hyprlang";
       xwayland.enable = true;
       settings = {
-        workspace = [
-          "1, persistent:true, layout:scrolling"
-          "2, persistent:true, layout:scrolling"
-          "3, persistent:true, layout:scrolling"
-          "4, persistent:true, layout:scrolling"
-          "5, persistent:true, layout:scrolling"
-          "6, persistent:true, layout:scrolling"
-          "7, persistent:true, layout:scrolling"
-          "8, persistent:true, layout:scrolling"
-          "9, persistent:true, layout:scrolling"
-          "special:desktop, on-created-empty:pcmanfm-qt --desktop"
-        ];
         monitor = [
           "HDMI-A-1,preferred,auto,1"
           "DP-3, disabled"
@@ -65,7 +65,6 @@ in
           gaps_in = 5;
           gaps_out = 8;
           border_size = 6;
-          layout = "master";
         };
         misc = {
           disable_hyprland_logo = true;
@@ -87,17 +86,11 @@ in
           "wl-paste --type text --watch cliphist store"
           "steam -silent"
           "discord --start-minimized"
-          "nemo-desktop"
         ]
         ++ optionals config.local.caelestia-shell.enable [
           "caelestia wallpaper -f $HOME/.wallpaper"
         ];
         windowrules = [
-          "size 100% 100%, ^(pcmanfm-qt)$"
-          "center, ^(pcmanfm-qt)$"
-          "noanim, ^(pcmanfm-qt)$"
-          "noborder, ^(pcmanfm-qt)$"
-          "noblur, ^(pcmanfm-qt)$"
         ];
         "$mod" = "SUPER";
 
@@ -123,11 +116,8 @@ in
           "$mod, D, togglespecialworkspace, desktop"
           "$mod, minus, exec, hypr-screenshot full"
           "$mod_SHIFT, minus, exec, hypr-screenshot area"
-          "$mod, N, exec, caelestia shell drawers toggle sidebar"
+
           # Window management
-          "$mod, C, togglespecialworkspace, chromeos"
-          "$mod, Space, layoutmsg, swapwithmaster master"
-          "$mod, M, exec, hypr-layout-toggle"
           "$mod_SHIFT, Q, killactive"
           "$mod, F, fullscreen"
           "$mod_SHIFT, F, togglefloating"
@@ -143,6 +133,9 @@ in
           "$mod_SHIFT, J, movewindow, d"
           "$mod_SHIFT, K, movewindow, u"
           "$mod_SHIFT, L, movewindow, r"
+
+          "$mod, T, togglegroup"
+          "$mod, L, lockactivegroup"
         ];
         bindm = [
           "$mod,mouse:272, movewindow"
