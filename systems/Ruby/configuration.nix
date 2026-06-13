@@ -60,17 +60,6 @@ in
     "video=DP-3:d"
   ];
 
-  specialisation = {
-    desktop.configuration = {
-      boot.kernelParams = [ "video=DP-3:d" ];
-    };
-    console.configuration = {
-      # Temporarily disabled because jovian's gamescope patches fail against nixos-26.05 gamescope 3.16.24
-      # imports = [ ../profiles/workstation/jovian.nix ];
-      boot.kernelParams = mkForce [ "video=HDMI-A-1:d" ];
-    };
-  };
-
   nxc.daemon = {
     enable = true;
     socketGroup = "wheel";
