@@ -28,7 +28,7 @@ in
         "scrolling"
         "master"
       ];
-      default = "scrolling";
+      default = "master";
       description = "Which layout to use by default in Hyprland.";
     };
   };
@@ -42,7 +42,6 @@ in
       cliphist
       jq
       discord
-      pcmanfm-qt
       hypr-tools
     ];
 
@@ -65,6 +64,18 @@ in
           gaps_in = 5;
           gaps_out = 8;
           border_size = 6;
+        };
+        group = {
+          groupbar = {
+            font_size = 12;
+            gradients = false;
+            height = 1;
+            text_offset = -8;
+            indicator_height = 16;
+            rounding = 20;
+            gaps_out = 8;
+            gaps_in = 5;
+          };
         };
         misc = {
           disable_hyprland_logo = true;

@@ -93,23 +93,7 @@ in
   config = mkIf cfg.enable {
     networking.wg-quick.interfaces."${cfg.interface.name}" = {
       autostart = cfg.autostart;
-      dns = if cfg.interface.dns.enable then [ cfg.interface.dns.ip ] else [ ];
-      privateKeyFile = cfg.interface.privateKeyFile;
-      address = [ cfg.interface.ip ];
-      listenPort = cfg.interface.port;
-
-      peers = [
-        {
-          publicKey = cfg.endpoint.publicKey;
-          allowedIPs = [
-            "0.0.0.0/0"
-            "::/0"
-          ];
-          endpoint = "${cfg.endpoint.ip}:${builtins.toString cfg.endpoint.port}";
-        }
-      ];
+      configFile = config.sops.secrets."protonvpn_wg_conf".path;
     };
   };
-
-  meta.maintainers = with maintainers; [ emmanuelrosa ];
 }

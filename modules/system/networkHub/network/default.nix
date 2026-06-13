@@ -20,6 +20,11 @@ in
 {
   options.local.network = {
     enable = mkEnableOption "Standard system networking";
+    useProtonVpn = mkOption {
+      type = types.bool;
+      default = true;
+      description = "enable protonvpn globally";
+    };
     useNetworkManager = mkOption {
       type = types.bool;
       default = true;

@@ -23,9 +23,9 @@ in
         "9, persistent:true, layout:master"
       ];
       master = {
-        mfact = 0.5;
+        mfact = 0.65;
         new_status = "master";
-        new_on_top = true;
+        new_on_top = false;
       };
       bind = [
         # Master layout specific bindings

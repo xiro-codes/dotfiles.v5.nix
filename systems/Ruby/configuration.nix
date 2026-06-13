@@ -17,7 +17,6 @@ in
     ../profiles/limine-uefi.nix
     ../profiles/workstation
     ../profiles/client.nix
-    inputs.tierfs.nixosModules.default
   ];
 
   programs = {
