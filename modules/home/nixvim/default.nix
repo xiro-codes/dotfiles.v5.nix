@@ -6,7 +6,12 @@
 }:
 let
   cfg = config.local.nixvim;
-  inherit (lib) mkOption mkIf types mkForce;
+  inherit (lib)
+    mkOption
+    mkIf
+    types
+    mkForce
+    ;
 in
 {
   options.local.nixvim = {
@@ -29,7 +34,6 @@ in
   config = mkIf cfg.enable {
     home.packages = with pkgs; [
       nixpkgs-fmt
-      neovide
       lazygit
       nixfmt
     ];

@@ -28,6 +28,7 @@ Always use `just` commands when available to ensure consistent application of fl
 - `just switch`: Apply local configuration changes immediately (using `nh`).
 - `just deploy <host>`: Deploy to a remote node using `deploy-rs`.
 - `just run-test`: Build and launch the current configuration in a QEMU VM. **Always use this to test complex changes safely.**
+- `just init-template <template>`: Initialize a new project from a template (e.g., `manim`, `python-uv`).
 - `just edit-secrets`: Edit the SOPS-encrypted secrets file.
 - `just update-keys`: Update system keys for SOPS.
 

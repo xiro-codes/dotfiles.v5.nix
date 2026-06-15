@@ -26,6 +26,7 @@ in
       enable = mkForce true;
       hosts = [ "ruby" ];
     };
+    protonvpn.enable = true;
     bootloader.addRecoveryOption = mkForce false;
     secrets.keys = [
       "harmonia_key"

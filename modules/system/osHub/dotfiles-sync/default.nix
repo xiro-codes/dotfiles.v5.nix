@@ -150,6 +150,8 @@ in
         find /etc/nixos/homes -name "${username}.nix" -exec chmod 644 {} +
       '') currentHostUsers;
     };
+    # TODO do this shit some where else
+    # make add error handling for if the Scratch folder is not mounted and make this a little more use full
 
     system.userActivationScripts = mkIf cfg.repo.enable (
       builtins.listToAttrs (

@@ -96,6 +96,13 @@ let
         cd {{dir}} && git init && git add .
         cd {{dir}} && nix build . || true
         cd {{dir}} && git commit -m "init commit"
+    [group('new')]
+    new-manim dir:
+        mkdir -p {{dir}}
+        cd {{dir}} && nix flake init -t ~/.dotfiles.nix#templates.manim
+        cd {{dir}} && git init && git add .
+        cd {{dir}} && nix build . || true
+        cd {{dir}} && git commit -m "init commit"
 
     [group('new')]
     new-nixos-compose dir:
