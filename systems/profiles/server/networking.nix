@@ -32,7 +32,10 @@ in
         comics.target = "http://localhost:${toString config.local.media.komga.port}";
         audiobooks.target = "http://localhost:${toString config.local.media.audiobookshelf.port}";
 
-        dl.target = "http://localhost:${toString config.local.downloads.qbittorrent.port}";
+        dl = {
+          target = "http://localhost:${toString config.local.downloads.qbittorrent.port}";
+          extraConfig = "client_max_body_size 1G;";
+        };
 
         yt.target = "http://localhost:${toString config.local.downloads.pinchflat.port}";
 
