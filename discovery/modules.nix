@@ -14,32 +14,39 @@ in
   mkModules =
     path:
     let
-      # Directories that contain a default.nix (top-level modules)
-      topLevelNames = fs.getValidSubdirs path;
+      # Directories that contain a module.nix (top-level modules)
+      topLevelNames = fs.getDirsWith path [ "module.nix" ];
 
       # All directories in the path
       allDirs = fs.getDirs path;
 
-      # Hubs are directories that are NOT modules themselves (no default.nix)
-      hubs = filter (d: !(pathExists (path + "/${d}/default.nix"))) allDirs;
+      # Supermodules/Hubs are directories that are NOT modules themselves (no module.nix)
+      hubs = filter (d: !(pathExists (path + "/${d}/module.nix"))) allDirs;
 
-      # Modules inside hubs (1 level deep)
-      hubModules = concatLists (
-        map (hub:
-          let
-            hubPath = path + "/${hub}";
-            hubSubdirs = fs.getValidSubdirs hubPath;
-          in
-          map (name: {
+      # Recursively find modules in subdirectories
+      findModules = dir:
+        let
+          subdirs = fs.getDirs dir;
+          modulesHere = filter (d: pathExists (dir + "/${d}/module.nix")) subdirs;
+          hubsHere = filter (d: !(pathExists (dir + "/${d}/module.nix"))) subdirs;
+          
+          # Convert modules in current directory to name-value pairs
+          localPairs = map (name: {
             inherit name;
-            value = hubPath + "/${name}";
-          }) hubSubdirs
-        ) hubs
-      );
+            value = dir + "/${name}/module.nix";
+          }) modulesHere;
+          
+          # Recursively find in hubs
+          nestedPairs = concatLists (map (hub: findModules (dir + "/${hub}")) hubsHere);
+        in
+        localPairs ++ nestedPairs;
+
+      # Find all modules in hubs
+      hubModules = concatLists (map (hub: findModules (path + "/${hub}")) hubs);
 
       topLevelModules = map (name: {
         inherit name;
-        value = path + "/${name}";
+        value = path + "/${name}/module.nix";
       }) topLevelNames;
     in
     listToAttrs (topLevelModules ++ hubModules);

@@ -24,7 +24,7 @@ in
       ];
       master = {
         mfact = 0.65;
-        new_status = "master";
+        #new_status = "master";
         new_on_top = false;
       };
       bind = [

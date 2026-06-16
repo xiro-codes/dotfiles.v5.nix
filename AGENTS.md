@@ -11,7 +11,7 @@ When you create a new module, package, or system, place it in the correct direct
 ### Repository Structure
 - `systems/<hostname>/`: Host-specific configurations (e.g., Onix, Ruby, Sapphire). Any directory here with a `configuration.nix` and `hardware-configuration.nix` becomes a `nixosConfiguration`.
 - `systems/containers/<container-name>/`: Container configurations (e.g., Amber, Jade). These are auto-discovered by the `modules/system/containers` module using `builtins.readDir` and integrated via `self.nixosContainers`.
-- `modules/system/<module-name>/`: Reusable NixOS modules. Must contain a `default.nix` and `meta.nix`.
+- `modules/system/<module-name>/`: Reusable NixOS modules. Must contain a `module.nix` and `meta.nix`.
 - `modules/home/<module-name>/`: Reusable Home Manager modules. Also supports `meta.nix`.
 - `home/<user>@<hostname>/`: Standalone Home Manager user configurations.
 - `packages/<package-name>/`: Custom Nix packages.
@@ -37,8 +37,9 @@ Always use `just` commands when available to ensure consistent application of fl
 ### 1. Technical Patterns
 - **Inherit Pattern**: NEVER use `lib.<function>` directly. ALWAYS use `inherit (lib) ...` at the top of the file/block.
 - **Option Namespace**: All custom options must reside under the `local` namespace (e.g., `options.local.minecraft-server`). This applies to both system and home modules.
-- **Internal Package Referencing**: Reference internal packages using `self.packages.${pkgs.stdenv.hostPlatform.system}.<package-name>`.
-- **Discovery Pattern**: Use `builtins.readDir` to automate module/container loading. See `modules/system/containers/default.nix` for a reference implementation.
+- **Executable Paths**: NEVER use direct paths like `"${pkgs.package}/bin/command"`. ALWAYS use `inherit (lib) getExe getExe';` and use `getExe pkgs.package` or `getExe' pkgs.package "command"`.
+- **Internal Package Referencing**: Reference internal packages directly through `pkgs.<package-name>` (they are injected via overlays).
+- **Discovery Pattern**: Use `builtins.readDir` to automate module/container loading. See `modules/system/containers/module.nix` for a reference implementation.
 
 ### 2. Specific Systems
 - **Onboarding Mode (`local.onboarding`)**:
@@ -74,6 +75,8 @@ Always use `just` commands when available to ensure consistent application of fl
 - **DO NOT** assume commands/tools are installed on the system (e.g., node, python, grep). ALWAYS use `nix shell nixpkgs#<package> -c <command>` or `nix run nixpkgs#<package>` to run tools ephemerally.
 - **DO NOT** use module options in other modules.
 - **DO NOT** delete modules, systems, or packages. If they are no longer needed or currently broken, mark them as `broken = true;` in their `meta.nix` file instead.
+- YOU MUST use NIX for everything permanent
+- DO NOT leave any test scripts or nix files in the repo
 ## ⚠️ Gotchas & Important Notes
 - Many commands use the `--impure` flag by default.
 - The project relies heavily on `sops-nix`.

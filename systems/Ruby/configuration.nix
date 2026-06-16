@@ -41,7 +41,7 @@ in
       "input"
       "uinput"
     ];
-    nix-cache-client.enable = mkForce true;
+    harmonia-client.enable = mkForce true;
     secrets.keys = [
       "gog_creds"
       "zerotier_network_id"
