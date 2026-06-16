@@ -17,7 +17,7 @@ in
     geminicommit
     crush
     antigravity-fhs
-    z-library-desktop
+    vlc
     (symlinkJoin {
       name = "xivlauncher-wrapped";
       paths = [ xivlauncher ];

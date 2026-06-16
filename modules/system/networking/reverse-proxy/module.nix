@@ -16,19 +16,6 @@ let
 
   cfg = config.local.reverse-proxy;
   primaryHost = config.local.network-hosts.primary;
-  localCert =
-    pkgs.runCommand "local-cert"
-      {
-        buildInputs = [ pkgs.openssl ];
-      }
-      ''
-        mkdir -p $out
-        openssl req -x509 -newkey rsa:4096 -sha256 -days 3650 -nodes \
-          -keyout $out/local.key -out $out/local.crt \
-          -subj "/CN=${cfg.domain}" \
-          -addext "subjectAltName=DNS:${primaryHost}.local,DNS:*${cfg.domain}" \
-          -addext "basicConstraints=CA:FALSE"
-      '';
 in
 {
   options.local.reverse-proxy = {
@@ -104,7 +91,7 @@ in
     ];
 
     # Nginx reverse proxy
-    security.pki.certificateFiles = [ "${localCert}/local.crt" ];
+    security.pki.certificateFiles = [ "${./certs/local.crt}" ];
     services.nginx = {
       enable = true;
 
@@ -116,8 +103,8 @@ in
         (mapAttrs (name: service: {
           serverName = if name == "dashboard" then cfg.domain else "${name}.${cfg.domain}";
           forceSSL = true;
-          sslCertificate = "${localCert}/local.crt";
-          sslCertificateKey = "${localCert}/local.key";
+          sslCertificate = "${./certs/local.crt}";
+          sslCertificateKey = "${./certs/local.key}";
 
           locations."/" = {
             proxyPass = service.target;
@@ -139,8 +126,8 @@ in
         // (mapAttrs (subdomain: path: {
           serverName = "${subdomain}.${cfg.domain}";
           forceSSL = true;
-          sslCertificate = "${localCert}/local.crt";
-          sslCertificateKey = "${localCert}/local.key";
+          sslCertificate = "${./certs/local.crt}";
+          sslCertificateKey = "${./certs/local.key}";
           locations."/" = {
             extraConfig = ''
               root ${path};

@@ -38,6 +38,7 @@ in
         "${primaryIp}" = [
           # todo how could generate this based on how another host is configured
           "dashboard.${primaryHost}.home"
+          "cache.${primaryHost}.home"
           "wallpapers.${primaryHost}.home"
           "games.${primaryHost}.home"
           "git.${primaryHost}.home"

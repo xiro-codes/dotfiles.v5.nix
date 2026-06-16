@@ -18,14 +18,15 @@ let
   cfg = config.local.harmonia-client;
   hostsCfg = config.local.network-hosts;
   primaryHost = hostsCfg.primary;
+  primaryIp = hostsCfg.${primaryHost};
 in
 {
   options.local.harmonia-client = {
     enable = mkEnableOption "Harmonia cache client module";
     serverAddress = mkOption {
       type = types.str;
-      default = "https://cache.${lib.toLower primaryHost}.home/?priority=1";
-      example = "https://cache.example.com/nixos?priority=10";
+      default = "http://${primaryIp}:5000/?priority=1";
+      example = "http://cache.example.com:8080/nixos?priority=10";
       description = "Attic binary cache server URL with optional priority parameter";
     };
     publicKey = mkOption {
@@ -48,7 +49,7 @@ in
               ${lib.getExe' pkgs.systemd "systemd-run"} --unit="nix-upload-$(date +%s%N)" \
                 --description="Upload Nix paths to cache" \
                 --no-block \
-                ${getExe pkgs.nix} copy --to https://cache.${lib.toLower primaryHost}.home $OUT_PATHS
+                ${getExe pkgs.nix} copy --to http://${primaryIp}:5000 $OUT_PATHS
             fi
           '';
         in
