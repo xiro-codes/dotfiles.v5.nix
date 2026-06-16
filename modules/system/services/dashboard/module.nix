@@ -137,6 +137,13 @@ in
                 description = "Live TV streaming";
               };
             })
+            (optional (config.local.coolercontrol.enable) {
+              CoolerControl = {
+                icon = "mdi-fan";
+                href = serviceUrl "stats" config.local.coolercontrol.port;
+                description = "System Cooling Web UI";
+              };
+            })
           ];
 
           mediaList = flatten [

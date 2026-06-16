@@ -39,6 +39,8 @@ in
 
         yt.target = "http://localhost:${toString config.local.downloads.pinchflat.port}";
 
+        stats.target = "http://localhost:${toString config.local.coolercontrol.port}";
+
         cache.target = "http://localhost:5000";
       };
     };

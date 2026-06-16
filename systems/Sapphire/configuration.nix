@@ -42,6 +42,7 @@ in
       ui.enable = true;
     };
 
+    coolercontrol.enable = true;
   };
 
   users.users.tod.extraGroups = [
@@ -78,6 +79,11 @@ in
     Harmonia = {
       name = "Harmonia";
       info = "Binary Cache";
+    };
+    CoolerControl = {
+      name = "CoolerControl";
+      info = "System Cooling Web UI";
+      icon = "services.coolercontrol";
     };
   };
 }

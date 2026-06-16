@@ -20,7 +20,6 @@ in
   ];
 
   programs = {
-    coolercontrol.enable = true;
     gog = {
       enable = true;
       serverUrl = "https://games.${config.local.network-hosts.primary}.home";
@@ -28,13 +27,10 @@ in
         tyranny-game.enable = true;
       };
     };
-    nixbit = {
-      enable = false;
-      repository = "https://github.com/xiro-codes/dotfiles.v5.nix";
-    };
   };
   boot.enableContainers = true;
   local = {
+    coolercontrol.enable = true;
     userManager.extraGroups = [
       "adbusers"
       "dialout"

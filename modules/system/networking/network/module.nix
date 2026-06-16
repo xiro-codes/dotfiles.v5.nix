@@ -48,6 +48,7 @@ in
           "audiobooks.${primaryHost}.home"
           "dl.${primaryHost}.home"
           "vm.${primaryHost}.home"
+          "stats.${primaryHost}.home"
         ];
       };
       # Disable the old wpa_supplicant
