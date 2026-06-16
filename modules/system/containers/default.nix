@@ -18,7 +18,7 @@ let
     ;
   cfg = config.local.containers;
   # Discover containers in systems/containers/
-  containerDir = ../../../../systems/containers;
+  containerDir = ../../../systems/containers;
   containerNames =
     if builtins.pathExists containerDir then
       attrNames (filterAttrs (n: v: v == "directory") (builtins.readDir containerDir))
