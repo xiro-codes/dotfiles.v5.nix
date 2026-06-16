@@ -47,6 +47,8 @@ let
                 networking.hostName = host.name;
                 local.secrets.enable = true;
                 home-manager = {
+                  useGlobalPkgs = true;
+                  useUserPackages = true;
                   backupFileExtension = "backup";
                   backupCommand = "${inputs.nixpkgs.legacyPackages.x86_64-linux.trash-cli}/bin/trash";
                   extraSpecialArgs = {
