@@ -130,13 +130,6 @@ in
                 description = "Self-hosted Git service";
               };
             })
-            (optional (config.local.pihole.enable) {
-              PiHole = {
-                icon = "pi-hole.png";
-                href = "${serviceUrl "pihole" 8053}/admin";
-                description = "AdBlocking and Local dns";
-              };
-            })
             (optional (config.local.media.ersatztv.enable) {
               ErsatzTV = {
                 icon = "ersatztv.png";

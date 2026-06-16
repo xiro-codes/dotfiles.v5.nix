@@ -1,5 +1,5 @@
 {
-  broken = false;
+    broken = true;
   description = "Configures a Pi-hole ad-blocking server.";
   tags = [
     "pihole"

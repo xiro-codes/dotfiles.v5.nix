@@ -20,7 +20,6 @@
     self.nixosModules."virtualization/containers"
     self.nixosModules."virtualization/incus"
     self.nixosModules."services/metrics"
-    self.nixosModules."services/pihole"
     self.nixosModules."services/nixarr-stack"
   ];
 
