@@ -29,14 +29,14 @@ let
   globalNixosModules = [
     {
       imports = [
-        (self.outPath + "/modules/system/bootloader")
-        (self.outPath + "/modules/system/disks")
-        (self.outPath + "/modules/system/network")
-        (self.outPath + "/modules/system/nix-core-settings")
-        (self.outPath + "/modules/system/secrets")
-        (self.outPath + "/modules/system/security")
-        (self.outPath + "/modules/system/user-manager")
-        (self.outPath + "/modules/system/localization")
+        (self.outPath + "/modules/system/core/bootloader")
+        (self.outPath + "/modules/system/core/disks")
+        (self.outPath + "/modules/system/networking/network")
+        (self.outPath + "/modules/system/core/nix-core-settings")
+        (self.outPath + "/modules/system/core/secrets")
+        (self.outPath + "/modules/system/admin/security")
+        (self.outPath + "/modules/system/admin/user-manager")
+        (self.outPath + "/modules/system/core/localization")
         inputs.disko.nixosModules.disko
         inputs.sops-nix.nixosModules.sops
         inputs.home-manager.nixosModules.home-manager
@@ -95,6 +95,12 @@ let
     };
 in
 {
+  options.local.shared = mkOption {
+    type = types.attrs;
+    default = {};
+    description = "Shared state between local modules";
+  };
+
   options.local.cluster = {
     enable = mkEnableOption "Spin up a cluster of containers";
     nameSpace = mkOption {
