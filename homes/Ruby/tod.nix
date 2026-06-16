@@ -10,6 +10,13 @@ in
   imports = [
     ../profiles/workstation
   ];
+  programs.obs-studio = {
+    enable = true;
+    plugins = with pkgs.obs-studio-plugins; [
+      wlrobs
+
+    ];
+  };
   home.packages = with pkgs; [
     godot
     eog
