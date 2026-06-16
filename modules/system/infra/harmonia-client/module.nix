@@ -18,19 +18,16 @@ let
   cfg = config.local.harmonia-client;
   hostsCfg = config.local.network-hosts;
   primaryHost = hostsCfg.primary;
-  primaryIp = hostsCfg.${primaryHost};
 in
 {
   options.local.harmonia-client = {
     enable = mkEnableOption "Harmonia cache client module";
-    # TODO lets move off the ip's and port number;
     serverAddress = mkOption {
       type = types.str;
-      default = "http://${primaryIp}:5000/?priority=1";
-      example = "http://cache.example.com:8080/nixos?priority=10";
+      default = "https://cache.${lib.toLower primaryHost}.home/?priority=1";
+      example = "https://cache.example.com/nixos?priority=10";
       description = "Attic binary cache server URL with optional priority parameter";
     };
-    # TODO need SOPS
     publicKey = mkOption {
       type = types.str;
       default = "cache.onix.home-1:/M1y/hGaD/dB8+mDfZmMdtXaWjq7XtLc1GMycddoNIE=";
@@ -42,20 +39,20 @@ in
   config = mkIf cfg.enable {
     environment.systemPackages = with pkgs; [ ];
     nix.settings = {
-      # TODO shouldnt be here :shurg: its kind of dynamic based on the module options
-      # IDEA queue things to copy and have a deamon watching and uploading in the background should speed up builds
       post-build-hook =
         let
-          uploadScript = pkgs.writeShellScript "upload-to-cache" ''
+          uploadHook = pkgs.writeShellScript "upload-to-cache-hook" ''
             set -eu
             if [ -n "''${OUT_PATHS:-}" ]; then
-              echo "Uploading to ${primaryHost} cache: $OUT_PATHS"
               # shellcheck disable=SC2086
-              ${getExe pkgs.nix} copy --to http://${primaryIp}:5000 $OUT_PATHS || true
+              ${lib.getExe' pkgs.systemd "systemd-run"} --unit="nix-upload-$(date +%s%N)" \
+                --description="Upload Nix paths to cache" \
+                --no-block \
+                ${getExe pkgs.nix} copy --to https://cache.${lib.toLower primaryHost}.home $OUT_PATHS
             fi
           '';
         in
-        "${uploadScript}";
+        "${uploadHook}";
       trusted-users = [ "@wheel" ];
       substituters = [
         cfg.serverAddress
