@@ -19,7 +19,7 @@ in
   config = mkIf cfg.enable {
     local.secrets.enable = mkForce false;
     local.security.enable = mkForce false;
-    local.nix-cache-client.enable = mkForce false;
+    local.harmonia-client.enable = mkForce false;
     local.zerotier.enable = mkForce false;
 
     services.openssh = {

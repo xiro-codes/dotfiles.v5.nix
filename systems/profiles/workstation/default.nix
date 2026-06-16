@@ -12,10 +12,10 @@
     gaming
     flatpak
     desktops
-    nix-cache-client
+    harmonia-client
   ];
   local = {
-    nix-cache-client.enable = false;
+    harmonia-client.enable = false;
     registry.enable = true;
     yubikey.enable = true;
   };

@@ -15,7 +15,7 @@ let
     getExe
     ;
 
-  cfg = config.local.nix-cache-client;
+  cfg = config.local.harmonia-client;
   hostsCfg = config.local.network-hosts;
   primaryHost = hostsCfg.primary;
   primaryIp = hostsCfg.${primaryHost};
