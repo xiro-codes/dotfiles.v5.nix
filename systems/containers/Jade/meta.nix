@@ -1,6 +1,6 @@
 {
   description = "Web services container hosting Nextcloud and personal blog.";
-  broken = false;
+  broken = true;
   tags = [
     "container"
     "web"

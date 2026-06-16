@@ -25,11 +25,8 @@
       "gitea/runner_token"
       "protonvpn_wg_conf"
     ];
-    containers.Jade.enable = false;
     virtualisation.incus.enable = false;
-    metrics = {
-      domain = "pihole.${config.local.network-hosts.primary}.home";
-    };
+
   };
 
   users.users.tod.extraGroups = [
@@ -48,8 +45,5 @@
 
   system.stateVersion = "25.11";
 
-  topology.self.interfaces = {
-    enp6s0.network = "home";
-    zt0.network = "zerotier";
-  };
+
 }

@@ -1,6 +1,6 @@
 {
   description = "Template and testing container configuration.";
-  broken = false;
+  broken = true;
   tags = [
     "container"
     "template"

@@ -76,14 +76,15 @@ let
       "hardware-configuration.nix"
     ];
 
-  topLevelHosts = map (name: {
+  topLevelHosts = builtins.filter (h: !(metaLib.isBroken (h.path + "/meta.nix"))) (map (name: {
     inherit name;
     path = paths.systems + "/${name}";
-  }) (findHosts paths.systems);
-  containerHosts = map (name: {
+  }) (findHosts paths.systems));
+  
+  containerHosts = builtins.filter (h: !(metaLib.isBroken (h.path + "/meta.nix"))) (map (name: {
     inherit name;
     path = paths.systems + "/containers/${name}";
-  }) (findHosts (paths.systems + "/containers"));
+  }) (findHosts (paths.systems + "/containers")));
 in
 {
   hosts = genConfigs topLevelHosts;
