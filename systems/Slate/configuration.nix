@@ -37,6 +37,7 @@ in
   system.stateVersion = "25.11";
 
   topology.self.interfaces = {
+    enp4s0f3u1u3.network = "home";
     wlan0.network = "home";
     zt0.network = "zerotier";
   };

@@ -52,7 +52,32 @@ in
   system.stateVersion = "25.11";
 
   topology.self.interfaces = {
-    eth0.network = "home";
+    enp8s0.network = "home";
+    wg0.network = "vpn";
     zt0.network = "zerotier";
+  };
+
+  topology.self.services = {
+    Dashboard = {
+      name = "Homepage Dashboard";
+      info = "Main Server Dashboard";
+    };
+    Gitea = {
+      name = "Gitea";
+      info = "Git Server";
+      icon = "services.gitea";
+    };
+    Plex = {
+      name = "Plex";
+      info = "Media Server";
+    };
+    Qbittorrent = {
+      name = "qBittorrent";
+      info = "Torrent Client";
+    };
+    Harmonia = {
+      name = "Harmonia";
+      info = "Binary Cache";
+    };
   };
 }

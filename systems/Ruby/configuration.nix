@@ -22,7 +22,7 @@ in
   programs = {
     coolercontrol.enable = true;
     gog = {
-      enable = false;
+      enable = true;
       serverUrl = "https://games.${config.local.network-hosts.primary}.home";
       games = {
         tyranny-game.enable = true;
@@ -67,6 +67,6 @@ in
   system.stateVersion = "25.11";
 
   topology.self.interfaces = {
-    eth0.network = "home";
+    enp7s0.network = "home";
   };
 }
