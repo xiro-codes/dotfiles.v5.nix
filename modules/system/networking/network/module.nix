@@ -36,6 +36,7 @@ in
     networking = {
       hosts = {
         "${primaryIp}" = [
+          # todo how could generate this based on how another host is configured
           "dashboard.${primaryHost}.home"
           "wallpapers.${primaryHost}.home"
           "games.${primaryHost}.home"
