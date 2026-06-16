@@ -225,3 +225,16 @@ bake-recovery disk="":
 ssh-run host cmd:
     ssh tod@{{host}} '{{cmd}}'
 
+# Generate and show the network topology image
+[group('docs')]
+gen-topology:
+    @echo "Building topology diagrams..."
+    nix build .#topology.x86_64-linux.config.output --impure
+    @echo "Copying diagrams to root directory..."
+    rm -f ./network.svg ./services.svg
+    cp result/network.svg ./network.svg
+    cp result/main.svg ./services.svg
+    @echo "Opening topology images..."
+    xdg-open ./network.svg || open ./network.svg || echo "Network image is at ./network.svg"
+    xdg-open ./services.svg || open ./services.svg || echo "Services image is at ./services.svg"
+

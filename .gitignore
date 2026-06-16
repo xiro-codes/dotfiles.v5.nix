@@ -6,3 +6,5 @@ OVMF_VARS.fd
 attic_key
 .undo_dir/
 .aider*
+network.svg
+services.svg
