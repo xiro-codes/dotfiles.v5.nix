@@ -21,14 +21,16 @@ let
   primaryIp = hostsCfg.${primaryHost};
 in
 {
-  options.local.nix-cache-client = {
-    enable = mkEnableOption "cache module";
+  options.local.harmonia-client = {
+    enable = mkEnableOption "Harmonia cache client module";
+    # TODO lets move off the ip's and port number;
     serverAddress = mkOption {
       type = types.str;
       default = "http://${primaryIp}:5000/?priority=1";
       example = "http://cache.example.com:8080/nixos?priority=10";
       description = "Attic binary cache server URL with optional priority parameter";
     };
+    # TODO need SOPS
     publicKey = mkOption {
       type = types.str;
       default = "cache.onix.home-1:/M1y/hGaD/dB8+mDfZmMdtXaWjq7XtLc1GMycddoNIE=";
@@ -40,6 +42,8 @@ in
   config = mkIf cfg.enable {
     environment.systemPackages = with pkgs; [ ];
     nix.settings = {
+      # TODO shouldnt be here :shurg: its kind of dynamic based on the module options
+      # IDEA queue things to copy and have a deamon watching and uploading in the background should speed up builds
       post-build-hook =
         let
           uploadScript = pkgs.writeShellScript "upload-to-cache" ''
@@ -64,7 +68,6 @@ in
       connect-timeout = 3;
       stalled-download-timeout = 15;
       download-attempts = 2;
-
     };
   };
 }

@@ -10,20 +10,19 @@
     currentHostUsers = [ ];
   };
   modules = [
-    self.nixosModules.nix-cache-client
+    self.nixosModules.harmonia-client
     self.nixosModules.nix-builders
-
     self.nixosModules.network-hosts
+    self.nixosModules.bootloader
+    self.nixosModules.disks
+    self.nixosModules.network
+    self.nixosModules.nix-core-settings
+    self.nixosModules.secrets
+    self.nixosModules.security
+    self.nixosModules.user-manager
+    self.nixosModules.localization
     {
       imports = [
-        (self.outPath + "/modules/system/bootloader/module.nix")
-        (self.outPath + "/modules/system/disks/module.nix")
-        (self.outPath + "/modules/system/network/module.nix")
-        (self.outPath + "/modules/system/nix-core-settings/module.nix")
-        (self.outPath + "/modules/system/secrets/module.nix")
-        (self.outPath + "/modules/system/security/module.nix")
-        (self.outPath + "/modules/system/user-manager/module.nix")
-        (self.outPath + "/modules/system/localization/module.nix")
         inputs.disko.nixosModules.disko
         inputs.sops-nix.nixosModules.sops
         inputs.home-manager.nixosModules.home-manager
@@ -42,9 +41,8 @@
       { config, ... }:
       {
         local = {
-          #cache.enable = true;
           nix-core-settings.enable = true;
-          nix-cache-client.enable = false;
+          harmonia-client.enable = false;
           nix-builders.enable = false;
         };
         determinate.enable = true;
@@ -83,8 +81,8 @@
           =======================================================================
           Welcome to the NixOS Installer!
 
-          The 'sapphire' and 'ruby' remote builders are fully configured and trusted out of the box!
-          Nix will automatically offload builds to sapphire and ruby.
+          The remote builders are fully configured and trusted out of the box!
+          Nix will automatically offload builds to Ruby.
 
           Happy building!
           =======================================================================

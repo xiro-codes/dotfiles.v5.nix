@@ -1,6 +1,6 @@
 {
   description = "KMSCon terminal emulator for servers.";
-  broken = false;
+  broken = true;
   tags = [
     "terminal"
     "server"
