@@ -6,11 +6,11 @@
   ...
 }:
 {
-  imports = with self.nixosModules; [
-    dotfiles-sync
-    nix-builders
-    zerotier
-    network-hosts
+  imports = [
+    self.nixosModules."desktop/dotfiles-sync"
+    self.nixosModules."infra/nix-builders"
+    self.nixosModules."networking/zerotier"
+    self.nixosModules."networking/network-hosts"
   ];
   local = {
     zerotier.enable = true;

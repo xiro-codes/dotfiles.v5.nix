@@ -1,27 +1,27 @@
 { self, ... }:
 {
-  imports = with self.nixosModules; [
+  imports = [
     ./networking.nix
     ./media.nix
     ./services.nix
     ./sharing.nix
 
-    reverse-proxy
-    dashboard
-    gitea
-    media
-    gog-downloader
-    downloads
-    file-browser
-    harmonia-cache
-    minecraft-server
-    recovery-builder
-    file-sharing
-    containers
-    incus
-    metrics
-    pihole
-    nixarr-stack
+    self.nixosModules."networking/reverse-proxy"
+    self.nixosModules."services/dashboard"
+    self.nixosModules."services/gitea"
+    self.nixosModules."services/media"
+    self.nixosModules."services/gog-downloader"
+    self.nixosModules."services/downloads"
+    self.nixosModules."services/file-browser"
+    self.nixosModules."infra/harmonia-cache"
+    self.nixosModules."services/minecraft-server"
+    self.nixosModules."infra/recovery-builder"
+    self.nixosModules."services/file-sharing"
+    self.nixosModules."virtualization/containers"
+    self.nixosModules."virtualization/incus"
+    self.nixosModules."services/metrics"
+    self.nixosModules."services/pihole"
+    self.nixosModules."services/nixarr-stack"
   ];
 
   local.metrics.enable = false;

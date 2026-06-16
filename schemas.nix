@@ -6,6 +6,13 @@ in
 {
   flake = {
     schemas = builtins.removeAttrs inputs.flake-schemas.schemas [ "templates" ] // {
+      templates = inputs.flake-schemas.schemas.templates // {
+        inventory = output: {
+          children = builtins.mapAttrs (name: value: {
+            what = "template";
+          }) output;
+        };
+      };
       nixosModules = inputs.flake-schemas.schemas.nixosModules // {
         inventory = output: {
           children = builtins.mapAttrs (name: value: {

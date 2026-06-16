@@ -1,10 +1,10 @@
 # Sapphire client profile - For systems connecting to Sapphire NAS
 { lib, self, ... }:
 {
-  imports = with self.nixosModules; [
-    backup-manager
-    network-mounts
-    recovery-builder
+  imports = [
+    self.nixosModules."admin/backup-manager"
+    self.nixosModules."networking/network-mounts"
+    self.nixosModules."infra/recovery-builder"
   ];
   local = {
     recovery-builder.enable = true;

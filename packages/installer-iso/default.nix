@@ -13,9 +13,9 @@ in
     currentHostUsers = [ ];
   };
   modules = globals.globalNixosModules ++ [
-    self.nixosModules.harmonia-client
-    self.nixosModules.nix-builders
-    self.nixosModules.network-hosts
+    self.nixosModules."infra/harmonia-client"
+    self.nixosModules."infra/nix-builders"
+    self.nixosModules."networking/network-hosts"
     (
       { config, ... }:
       {

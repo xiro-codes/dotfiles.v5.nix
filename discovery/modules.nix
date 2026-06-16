@@ -6,6 +6,8 @@ let
     concatLists
     pathExists
     filter
+    isAttrs
+    attrValues
     ;
   metaLib = import ./meta.nix { };
 in
@@ -24,7 +26,7 @@ in
       hubs = filter (d: !(pathExists (path + "/${d}/module.nix"))) allDirs;
 
       # Recursively find modules in subdirectories
-      findModules = dir:
+      findModules = prefix: dir:
         let
           subdirs = fs.getDirs dir;
           modulesHere = filter (d: pathExists (dir + "/${d}/module.nix")) subdirs;
@@ -32,17 +34,17 @@ in
           
           # Convert modules in current directory to name-value pairs
           localPairs = map (name: {
-            inherit name;
+            name = if prefix == "" then name else "${prefix}/${name}";
             value = dir + "/${name}/module.nix";
           }) modulesHere;
           
           # Recursively find in hubs
-          nestedPairs = concatLists (map (hub: findModules (dir + "/${hub}")) hubsHere);
+          nestedPairs = concatLists (map (hub: findModules (if prefix == "" then hub else "${prefix}/${hub}") (dir + "/${hub}")) hubsHere);
         in
         localPairs ++ nestedPairs;
 
       # Find all modules in hubs
-      hubModules = concatLists (map (hub: findModules (path + "/${hub}")) hubs);
+      hubModules = concatLists (map (hub: findModules hub (path + "/${hub}")) hubs);
 
       topLevelModules = map (name: {
         inherit name;

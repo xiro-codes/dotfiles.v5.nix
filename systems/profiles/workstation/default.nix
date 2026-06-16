@@ -5,14 +5,14 @@
     ./desktop.nix
     ./software.nix
     
-    registry
-    yubikey
-    bluetooth
-    pipewire-audio
-    gaming
-    flatpak
-    desktops
-    harmonia-client
+    self.nixosModules."infra/registry"
+    self.nixosModules."desktop/yubikey"
+    self.nixosModules."networking/bluetooth"
+    self.nixosModules."desktop/pipewire-audio"
+    self.nixosModules."desktop/gaming"
+    self.nixosModules."desktop/flatpak"
+    self.nixosModules."desktop/desktops"
+    self.nixosModules."infra/harmonia-client"
   ];
   local = {
     harmonia-client.enable = false;
