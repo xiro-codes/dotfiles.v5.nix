@@ -13,18 +13,20 @@ let
     mkEnableOption
     mkIf
     mkForce
+    mkOption
+    types
     optionals
     ;
   cfg = config.local.hyprland;
   variables = config.local.variables;
-  hypr-tools = self.packages.${pkgs.stdenv.hostPlatform.system}.hypr-tools;
-  quick-menu = self.packages.${pkgs.stdenv.hostPlatform.system}.quick-menu;
+  hypr-tools = pkgs.hypr-tools;
+  quick-menu = pkgs.quick-menu;
 in
 {
   options.local.hyprland = {
     enable = mkEnableOption "Functional Hyprland setup.";
-    layout = lib.mkOption {
-      type = lib.types.enum [
+    layout = mkOption {
+      type = types.enum [
         "scrolling"
         "master"
       ];

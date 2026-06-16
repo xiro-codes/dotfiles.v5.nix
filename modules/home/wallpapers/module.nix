@@ -14,7 +14,7 @@ let
     ;
   cfg = config.local.wallpapers;
   # Access the wallpapers package from flake outputs
-  wallpapers = self.packages.${pkgs.stdenv.hostPlatform.system}.wallpapers;
+  wallpapers = pkgs.wallpapers;
 in
 {
   options.local.wallpapers = {

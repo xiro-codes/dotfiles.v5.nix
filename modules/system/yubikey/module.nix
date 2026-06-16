@@ -5,7 +5,7 @@
   ...
 }:
 let
-  inherit (lib) mkEnableOption mkIf;
+  inherit (lib) mkEnableOption mkIf getExe;
 
   cfg = config.local.yubikey;
 in
@@ -39,7 +39,7 @@ in
       description = "Detects when your YubiKey is waiting for a touch";
       wantedBy = [ "graphical-session.target" ];
       serviceConfig = {
-        ExecStart = "${pkgs.yubikey-touch-detector}/bin/yubikey-touch-detector";
+        ExecStart = "${getExe pkgs.yubikey-touch-detector}";
         Restart = "on-failure";
       };
     };

@@ -1,4 +1,11 @@
-{ pkgs, ... }:
+{
+  pkgs,
+  lib,
+  ...
+}:
+let
+  inherit (lib) getExe getExe';
+in
 pkgs.writeShellApplication {
   name = "mc-console";
   text = ''
@@ -17,7 +24,7 @@ pkgs.writeShellApplication {
       PORT=$2
       PASSWORD=$3
       echo "Connecting via RCON..."
-      exec ${pkgs.mcrcon}/bin/mcrcon \
+      exec ${getExe pkgs.mcrcon} \
         -H localhost \
         -P "$PORT" \
         -p "$PASSWORD" \
@@ -32,7 +39,7 @@ pkgs.writeShellApplication {
       echo "Type commands and press Enter. Press Ctrl+C to exit."
       echo "----------------------------------------------------"
 
-      ${pkgs.systemd}/bin/journalctl -u "$SERVICE" -f -n 50 &
+      ${getExe' pkgs.systemd "journalctl"} -u "$SERVICE" -f -n 50 &
       JOURNAL_PID=$!
 
       # shellcheck disable=SC2064

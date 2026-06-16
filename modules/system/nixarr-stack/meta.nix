@@ -1,5 +1,5 @@
 {
-  broken = false;
+  broken = true;
   description = "Complete media download and streaming stack via nixarr (Sonarr, Radarr, Prowlarr, qBittorrent, Jellyfin, Plex, Komga, Audiobookshelf).";
   tags = [
     "media"

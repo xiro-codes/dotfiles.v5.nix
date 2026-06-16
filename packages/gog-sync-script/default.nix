@@ -1,6 +1,11 @@
-{ pkgs, ... }:
+{
+  pkgs,
+  lib,
+  ...
+}:
 let
-  gogCmd = "${pkgs.lgogdownloader}/bin/lgogdownloader";
+  inherit (lib) getExe;
+  gogCmd = getExe pkgs.lgogdownloader;
 in
 pkgs.writeShellApplication {
   name = "gog-sync-script";

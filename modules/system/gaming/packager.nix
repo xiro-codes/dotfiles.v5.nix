@@ -4,7 +4,12 @@
   ...
 }:
 let
-  inherit (lib) hasSuffix removeSuffix toLower;
+  inherit (lib)
+    hasSuffix
+    removeSuffix
+    toLower
+    getExe'
+    ;
 
   mkNativeGame =
     name: src:
@@ -32,7 +37,7 @@ let
         mkdir -p $out/share/${name}
         cp -r * $out/share/${name}
         # Create a wrapper that runs the game in its own prefix
-        makeWrapper ${pkgs.wineWow64Packages.stable}/bin/wine $out/bin/${toLower name} \
+        makeWrapper ${getExe' pkgs.wineWow64Packages.stable "wine"} $out/bin/${toLower name} \
           --add-flags "$out/share/${name}/app/game.exe" \
           --set WINEPREFIX "$HOME/.local/share/wineprefixes/${name}"
       '';

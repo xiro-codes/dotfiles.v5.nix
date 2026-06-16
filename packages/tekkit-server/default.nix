@@ -1,4 +1,11 @@
-{ pkgs, ... }:
+{
+  pkgs,
+  lib,
+  ...
+}:
+let
+  inherit (lib) getExe makeBinPath;
+in
 pkgs.stdenv.mkDerivation {
   pname = "tekkit-server";
   version = "3.1.2";
@@ -22,7 +29,7 @@ pkgs.stdenv.mkDerivation {
 
         cat > $out/bin/minecraft-server <<EOF
     #!/bin/sh
-    export PATH="${pkgs.coreutils}/bin:\$PATH"
+    export PATH="${makeBinPath [ pkgs.coreutils ]}:\$PATH"
     for f in $out/lib/tekkit-server/*; do
       target="\$(basename "\$f")"
       if [ ! -e "\$target" ]; then
@@ -31,7 +38,7 @@ pkgs.stdenv.mkDerivation {
       fi
     done
 
-    exec ${pkgs.jre8}/bin/java "\$@" -jar $out/lib/tekkit-server/Tekkit.jar nogui
+    exec ${getExe pkgs.jre8} "\$@" -jar $out/lib/tekkit-server/Tekkit.jar nogui
     EOF
 
         chmod +x $out/bin/minecraft-server

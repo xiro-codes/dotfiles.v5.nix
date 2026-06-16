@@ -25,7 +25,7 @@ let
       type = types.str;
       inherit default;
     };
-  userSops = self.packages.${pkgs.stdenv.hostPlatform.system}.user-sops;
+  userSops = pkgs.user-sops;
   geminiKeyPath = "$HOME/.secrets/gemini/crush_agent_key";
 in
 {
@@ -204,7 +204,7 @@ in
     # Variables
     (mkIf cfg.variables.enable {
       home.packages = [
-        self.packages.${pkgs.stdenv.hostPlatform.system}.global-just
+        pkgs.global-just
       ];
       home.sessionVariables = {
         EDITOR = cfg.variables.editor;

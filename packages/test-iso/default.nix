@@ -1,4 +1,11 @@
-{ pkgs, ... }:
+{
+  pkgs,
+  lib,
+  ...
+}:
+let
+  inherit (lib) getExe getExe';
+in
 pkgs.writeShellApplication {
   name = "test-iso";
   text = ''
@@ -22,11 +29,11 @@ pkgs.writeShellApplication {
     # 2. Create virtual disk
     if [ ! -f "$DISK_PATH" ]; then
       echo "📦 Creating 20GB virtual disk..."
-      ${pkgs.qemu}/bin/qemu-img create -f qcow2 "$DISK_PATH" 20G
+      ${getExe' pkgs.qemu "qemu-img"} create -f qcow2 "$DISK_PATH" 20G
     fi
 
     echo "🚀 Launching VM..."
-    ${pkgs.qemu}/bin/qemu-system-x86_64 \
+    ${getExe' pkgs.qemu "qemu-system-x86_64"} \
       -enable-kvm \
       -m 4G \
       -smp 4 \

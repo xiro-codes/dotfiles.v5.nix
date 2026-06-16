@@ -10,6 +10,7 @@ let
     mkOption
     mkIf
     types
+    getExe'
     ;
   cfg = config.local.zerotier;
 in
@@ -46,10 +47,10 @@ in
         if [ -f ${config.sops.secrets."${cfg.networkIdSecret}".path} ]; then
           NETWORK_ID=$(cat ${config.sops.secrets."${cfg.networkIdSecret}".path})
           if [ -n "$NETWORK_ID" ]; then
-            while ! ${pkgs.zerotierone}/bin/zerotier-cli info >/dev/null 2>&1; do
+            while ! ${getExe' pkgs.zerotierone "zerotier-cli"} info >/dev/null 2>&1; do
               sleep 1
             done
-            ${pkgs.zerotierone}/bin/zerotier-cli join "$NETWORK_ID"
+            ${getExe' pkgs.zerotierone "zerotier-cli"} join "$NETWORK_ID"
           else
             echo "Network ID is empty!"
             exit 1

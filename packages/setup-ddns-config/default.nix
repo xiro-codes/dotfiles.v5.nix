@@ -1,4 +1,11 @@
-{ pkgs, ... }:
+{
+  pkgs,
+  lib,
+  ...
+}:
+let
+  inherit (lib) getExe;
+in
 pkgs.writeShellApplication {
   name = "setup-ddns-config";
   text = ''
@@ -9,7 +16,7 @@ pkgs.writeShellApplication {
     mkdir -p /etc/ddns-updater
     TOKEN=$(cat "$TOKEN_FILE")
     ZONE=$(cat "$ZONE_FILE")
-    ${pkgs.jq}/bin/jq --arg token "$TOKEN" --arg zone "$ZONE" \
+    ${getExe pkgs.jq} --arg token "$TOKEN" --arg zone "$ZONE" \
       '.settings |= map(.token = $token | .zone_identifier = $zone)' \
       < "$CFG_FILE" > /etc/ddns-updater/config.json
     chmod 777 /etc/ddns-updater/config.json

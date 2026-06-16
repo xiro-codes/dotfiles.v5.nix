@@ -92,14 +92,14 @@
             { _module.args.flake-inputs = inputs; }
             {
               imports = [
-                ./modules/system/bootloader
-                ./modules/system/disks
-                ./modules/system/network
-                ./modules/system/nix-core-settings
-                ./modules/system/secrets
-                ./modules/system/security
-                ./modules/system/user-manager
-                ./modules/system/localization
+                ./modules/system/bootloader/module.nix
+                ./modules/system/disks/module.nix
+                ./modules/system/network/module.nix
+                ./modules/system/nix-core-settings/module.nix
+                ./modules/system/secrets/module.nix
+                ./modules/system/security/module.nix
+                ./modules/system/user-manager/module.nix
+                ./modules/system/localization/module.nix
                 inputs.disko.nixosModules.disko
                 inputs.sops-nix.nixosModules.sops
                 inputs.home-manager.nixosModules.home-manager

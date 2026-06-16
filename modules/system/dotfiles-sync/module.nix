@@ -20,7 +20,7 @@ let
 
   cfg = config.local.dotfiles-sync;
   repoPath = "/etc/nixos";
-  gitPullSync = self.packages.${pkgs.stdenv.hostPlatform.system}.git-pull-sync;
+  gitPullSync = pkgs.git-pull-sync;
 in
 {
   options.local.dotfiles-sync = {

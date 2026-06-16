@@ -12,6 +12,7 @@ let
     mkIf
     mkOption
     types
+    getExe
     ;
 
   cfg = config.local.nix-cache-client;
@@ -46,7 +47,7 @@ in
             if [ -n "''${OUT_PATHS:-}" ]; then
               echo "Uploading to ${primaryHost} cache: $OUT_PATHS"
               # shellcheck disable=SC2086
-              ${pkgs.nix}/bin/nix copy --to http://${primaryIp}:5000 $OUT_PATHS || true
+              ${getExe pkgs.nix} copy --to http://${primaryIp}:5000 $OUT_PATHS || true
             fi
           '';
         in

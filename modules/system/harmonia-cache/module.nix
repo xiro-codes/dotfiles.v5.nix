@@ -97,7 +97,7 @@ in
       };
       script =
         let
-          prefetchScript = self.packages.${pkgs.stdenv.hostPlatform.system}.harmonia-prefetch;
+          prefetchScript = pkgs.harmonia-prefetch;
         in
         "${prefetchScript}/bin/prefetch ${cfg.prefetch.path} ${builtins.concatStringsSep " " cfg.prefetch.hostNames}";
     };

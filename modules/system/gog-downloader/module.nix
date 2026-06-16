@@ -12,6 +12,8 @@ let
     mkIf
     mkOption
     types
+    getExe
+    getExe'
     ;
 
   cfg = config.local.gog-downloader;
@@ -68,10 +70,8 @@ in
         Type = "oneshot";
         User = "root"; # Or your specific gaming user
         EnvironmentFile = cfg.secretFile;
-        ExecStartPre = "${pkgs.coreutils}/bin/mkdir -p ${cfg.directory}";
-        ExecStart = "${
-          self.packages.${pkgs.stdenv.hostPlatform.system}.gog-sync-script
-        }/bin/gog-sync-script ${cfg.directory} ${cfg.platforms} ${cfg.extraArgs}";
+        ExecStartPre = "${getExe' pkgs.coreutils "mkdir"} -p ${cfg.directory}";
+        ExecStart = "${getExe pkgs.gog-sync-script} ${cfg.directory} ${cfg.platforms} ${cfg.extraArgs}";
       };
     };
   };

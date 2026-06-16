@@ -22,7 +22,5 @@
       proton-vpn
       unzip
       p7zip
-    ]
-    ++ (with self.packages.${pkgs.stdenv.hostPlatform.system}; [
-    ]);
+    ];
 }
