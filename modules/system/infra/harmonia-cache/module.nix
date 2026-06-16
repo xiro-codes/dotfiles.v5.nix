@@ -50,7 +50,6 @@ in
       hostNames = mkOption {
         type = types.listOf types.str;
         default = [
-          "Onix"
           "Ruby"
           "Sapphire"
           "Slate"
