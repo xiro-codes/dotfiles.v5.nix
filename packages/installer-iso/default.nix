@@ -3,40 +3,19 @@
   self,
   ...
 }:
+let
+  globals = import (self.outPath + "/globals.nix") { inherit inputs; selfPath = self.outPath; };
+in
 (inputs.nixpkgs.lib.nixosSystem {
   system = "x86_64-linux";
   specialArgs = {
     inherit inputs self;
     currentHostUsers = [ ];
   };
-  modules = [
+  modules = globals.globalNixosModules ++ [
     self.nixosModules.harmonia-client
     self.nixosModules.nix-builders
     self.nixosModules.network-hosts
-    self.nixosModules.bootloader
-    self.nixosModules.disks
-    self.nixosModules.network
-    self.nixosModules.nix-core-settings
-    self.nixosModules.secrets
-    self.nixosModules.security
-    self.nixosModules.user-manager
-    self.nixosModules.localization
-    {
-      imports = [
-        inputs.disko.nixosModules.disko
-        inputs.sops-nix.nixosModules.sops
-        inputs.home-manager.nixosModules.home-manager
-        inputs.nix-flatpak.nixosModules.nix-flatpak
-        inputs.gog-nix.nixosModules.gog
-        inputs.rocket-blog.nixosModules.default
-        inputs.silentsddm.nixosModules.default
-        inputs.harmonia.nixosModules.harmonia
-        inputs.impermanence.nixosModules.impermanence
-        inputs.determinate.nixosModules.default
-        inputs.nix-topology.nixosModules.default
-        inputs.nix-compose.nixosModules.daemon
-      ];
-    }
     (
       { config, ... }:
       {

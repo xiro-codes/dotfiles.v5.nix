@@ -87,47 +87,7 @@
       imports = [
         inputs.nix-topology.flakeModule
         (import ./schemas.nix self.outPath)
-        (import ./discovery {
-          globalNixosModules = [
-            { _module.args.flake-inputs = inputs; }
-            {
-              imports = [
-                ./modules/system/core/bootloader/module.nix
-                ./modules/system/core/disks/module.nix
-                ./modules/system/networking/network/module.nix
-                ./modules/system/core/nix-core-settings/module.nix
-                ./modules/system/core/secrets/module.nix
-                ./modules/system/admin/security/module.nix
-                ./modules/system/admin/user-manager/module.nix
-                ./modules/system/core/localization/module.nix
-                inputs.disko.nixosModules.disko
-                inputs.sops-nix.nixosModules.sops
-                inputs.home-manager.nixosModules.home-manager
-                inputs.nix-flatpak.nixosModules.nix-flatpak
-                inputs.gog-nix.nixosModules.gog
-                inputs.rocket-blog.nixosModules.default
-                inputs.silentsddm.nixosModules.default
-                inputs.harmonia.nixosModules.harmonia
-                inputs.impermanence.nixosModules.impermanence
-                inputs.determinate.nixosModules.default
-                inputs.nix-topology.nixosModules.default
-                inputs.nix-compose.nixosModules.daemon
-                inputs.nixarr.nixosModules.default
-              ];
-            }
-          ];
-          globalHomeModules = [
-            {
-              imports = [
-                inputs.fuchsia-nix.homeModules.default
-                inputs.sops-nix.homeModules.sops
-                inputs.caelestia-shell.homeManagerModules.default
-                inputs.nixvim.homeModules.nixvim
-                inputs.stylix.homeModules.stylix
-              ];
-            }
-          ];
-        })
+        (import ./discovery (import ./globals.nix { inherit inputs; selfPath = ./.; }))
       ];
       perSystem =
         { pkgs, system, ... }:

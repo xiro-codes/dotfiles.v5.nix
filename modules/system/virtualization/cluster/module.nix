@@ -26,43 +26,8 @@ let
   hostToUsersMap = usersLib.getUserHostMap paths.home;
 
   # Mirrors flake.nix globals.
-  globalNixosModules = [
-    {
-      imports = [
-        (self.outPath + "/modules/system/core/bootloader")
-        (self.outPath + "/modules/system/core/disks")
-        (self.outPath + "/modules/system/networking/network")
-        (self.outPath + "/modules/system/core/nix-core-settings")
-        (self.outPath + "/modules/system/core/secrets")
-        (self.outPath + "/modules/system/admin/security")
-        (self.outPath + "/modules/system/admin/user-manager")
-        (self.outPath + "/modules/system/core/localization")
-        inputs.disko.nixosModules.disko
-        inputs.sops-nix.nixosModules.sops
-        inputs.home-manager.nixosModules.home-manager
-        inputs.nix-flatpak.nixosModules.nix-flatpak
-        inputs.gog-nix.nixosModules.gog
-        inputs.rocket-blog.nixosModules.default
-        inputs.silentsddm.nixosModules.default
-        inputs.harmonia.nixosModules.harmonia
-        inputs.impermanence.nixosModules.impermanence
-        inputs.determinate.nixosModules.default
-        inputs.nix-topology.nixosModules.default
-        inputs.nix-compose.nixosModules.daemon
-      ];
-    }
-  ];
-  globalHomeModules = [
-    {
-      imports = [
-        inputs.fuchsia-nix.homeModules.default
-        inputs.sops-nix.homeModules.sops
-        inputs.caelestia-shell.homeManagerModules.default
-        inputs.nixvim.homeModules.nixvim
-        inputs.stylix.homeModules.stylix
-      ];
-    }
-  ];
+  globals = import (self.outPath + "/globals.nix") { inherit inputs; selfPath = self.outPath; };
+  inherit (globals) globalNixosModules globalHomeModules;
 
   # Builds a fully-featured container config for a named template, identical to
   # what genConfigs in parts/discovery/nixos.nix produces for a regular system.
