@@ -43,6 +43,7 @@ in
     };
 
     coolercontrol.enable = true;
+    glances.enable = true;
   };
 
   users.users.tod.extraGroups = [
@@ -84,6 +85,10 @@ in
       name = "CoolerControl";
       info = "System Cooling Web UI";
       icon = "services.coolercontrol";
+    };
+    Glances = {
+      name = "Glances";
+      info = "System Monitor Web UI";
     };
   };
 }

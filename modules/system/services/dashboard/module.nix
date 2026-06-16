@@ -144,6 +144,13 @@ in
                 description = "System Cooling Web UI";
               };
             })
+            (optional (config.local.glances.enable) {
+              Glances = {
+                icon = "mdi-monitor-dashboard";
+                href = serviceUrl "metrics" config.local.glances.port;
+                description = "System Monitor Web UI";
+              };
+            })
           ];
 
           mediaList = flatten [

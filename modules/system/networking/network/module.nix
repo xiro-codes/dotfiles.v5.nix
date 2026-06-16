@@ -49,6 +49,7 @@ in
           "dl.${primaryHost}.home"
           "vm.${primaryHost}.home"
           "stats.${primaryHost}.home"
+          "metrics.${primaryHost}.home"
         ];
       };
       # Disable the old wpa_supplicant
