@@ -218,7 +218,7 @@ in
         BROWSER = cfg.variables.browser;
         WALLPAPER = cfg.variables.wallpaper;
         STATUS_BAR = cfg.variables.statusBar;
-        GEMINI_API_KEY = "$(cat ${geminiKeyPath})";
+        #GEMINI_API_KEY = "$(cat ${geminiKeyPath})";
       };
     })
   ];
