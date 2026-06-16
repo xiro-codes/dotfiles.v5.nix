@@ -49,7 +49,8 @@ in
               ${lib.getExe' pkgs.systemd "systemd-run"} --unit="nix-upload-$(date +%s%N)" \
                 --description="Upload Nix paths to cache" \
                 --no-block \
-                ${getExe pkgs.nix} copy --to http://${primaryIp}:5000 $OUT_PATHS
+                env NIX_SSHOPTS="-o StrictHostKeyChecking=accept-new" \
+                ${getExe pkgs.nix} copy --to ssh://root@${primaryIp} $OUT_PATHS
             fi
           '';
         in
