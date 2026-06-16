@@ -47,6 +47,7 @@ in
           "comics.${primaryHost}.home"
           "audiobooks.${primaryHost}.home"
           "dl.${primaryHost}.home"
+          "vm.${primaryHost}.home"
         ];
       };
       # Disable the old wpa_supplicant
