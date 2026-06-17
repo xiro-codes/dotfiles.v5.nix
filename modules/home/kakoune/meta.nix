@@ -1,5 +1,5 @@
 {
-  broken = false;
+  broken = true;
   description = "Kakoune editor configuration mirroring Nixvim.";
   tags = [
     "editor"

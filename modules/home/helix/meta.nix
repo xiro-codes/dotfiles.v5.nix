@@ -1,5 +1,5 @@
 {
-  broken = false;
+  broken = true;
   description = "Helix editor configuration mirroring Nixvim.";
   tags = [
     "editor"

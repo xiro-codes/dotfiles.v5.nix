@@ -1,5 +1,5 @@
 {
-  broken = false;
+  broken = true;
   description = "Hyprpaper wallpaper daemon configuration for Hyprland.";
   tags = [
     "wallpaper"

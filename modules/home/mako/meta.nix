@@ -1,5 +1,5 @@
 {
-  broken = false;
+  broken = true;
   description = "Mako notification daemon configuration for Wayland.";
   tags = [
     "notification"

@@ -1,5 +1,5 @@
 {
-  broken = false;
+  broken = true;
   description = "Hyprlauncher configuration for Hyprland.";
   tags = [
     "launcher"
