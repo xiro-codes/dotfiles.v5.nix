@@ -17,6 +17,12 @@ let
 in
 {
   options.local.media = {
+    openFirewall = mkOption {
+      type = types.bool;
+      default = false;
+      description = "Open firewall port for all enabled media services";
+    };
+
     enable = mkEnableOption "media server stack";
 
     mediaDir = mkOption {
@@ -105,30 +111,46 @@ in
         description = "Open firewall port for Audiobookshelf";
       };
     };
+
+    shoko = {
+      enable = mkEnableOption "Shoko anime server";
+
+      port = mkOption {
+        type = types.port;
+        default = 8111;
+        description = "HTTP port for Shoko";
+      };
+
+      openFirewall = mkOption {
+        type = types.bool;
+        default = false;
+        description = "Open firewall port for Shoko";
+      };
+    };
   };
 
   config = mkIf cfg.enable {
     # Jellyfin
     services.jellyfin = mkIf cfg.jellyfin.enable {
       enable = true;
-      openFirewall = cfg.jellyfin.openFirewall;
+      openFirewall = cfg.openFirewall || cfg.jellyfin.openFirewall;
     };
 
     # Plex
     services.plex = mkIf cfg.plex.enable {
       enable = true;
-      openFirewall = cfg.plex.openFirewall;
+      openFirewall = cfg.openFirewall || cfg.plex.openFirewall;
     };
 
     services.ersatztv = mkIf cfg.ersatztv.enable {
       enable = true;
-      openFirewall = cfg.ersatztv.openFirewall;
+      openFirewall = cfg.openFirewall || cfg.ersatztv.openFirewall;
     };
 
     # Komga
     services.komga = mkIf cfg.komga.enable {
       enable = true;
-      openFirewall = cfg.komga.openFirewall;
+      openFirewall = cfg.openFirewall || cfg.komga.openFirewall;
       settings.server.port = cfg.komga.port;
       settings.server.address = "127.0.0.1";
     };
@@ -136,8 +158,14 @@ in
     # Audiobookshelf
     services.audiobookshelf = mkIf cfg.audiobookshelf.enable {
       enable = true;
-      openFirewall = cfg.audiobookshelf.openFirewall;
+      openFirewall = cfg.openFirewall || cfg.audiobookshelf.openFirewall;
       port = cfg.audiobookshelf.port;
+    };
+
+    # Shoko
+    services.shoko = mkIf cfg.shoko.enable {
+      enable = true;
+      openFirewall = cfg.openFirewall || cfg.shoko.openFirewall;
     };
   };
 }

@@ -17,6 +17,12 @@ let
 in
 {
   options.local.downloads = {
+    openFirewall = mkOption {
+      type = types.bool;
+      default = false;
+      description = "Open firewall port for all enabled download services";
+    };
+
     enable = mkEnableOption "download services";
 
     downloadDir = mkOption {
@@ -94,7 +100,7 @@ in
     services.qbittorrent = mkIf cfg.qbittorrent.enable {
       enable = true;
       package = pkgs.qbittorrent-nox;
-      openFirewall = cfg.qbittorrent.openFirewall;
+      openFirewall = cfg.openFirewall || cfg.qbittorrent.openFirewall;
       webuiPort = cfg.qbittorrent.port;
     };
 
@@ -103,7 +109,7 @@ in
       enable = true;
       mediaDir = "${cfg.downloadDir}/../youtube";
       port = cfg.pinchflat.port;
-      openFirewall = cfg.pinchflat.openFirewall;
+      openFirewall = cfg.openFirewall || cfg.pinchflat.openFirewall;
       selfhosted = true;
     };
   };
