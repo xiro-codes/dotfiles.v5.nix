@@ -30,6 +30,7 @@ in
   };
   boot.enableContainers = true;
   local = {
+    valent.enable = true;
     coolercontrol.enable = true;
     userManager.extraGroups = [
       "adbusers"

@@ -37,6 +37,8 @@ in
   local.wallpapers = {
     name = "13054947.png";
   };
+  local.valent.enable = true;
+  local.kdeconnect.enable = lib.mkForce false;
   dconf.settings = {
     "org/nemo/desktop" = {
       desktop-icons = true;
