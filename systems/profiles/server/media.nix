@@ -4,6 +4,7 @@
     # Old media/downloads modules disabled — replaced by nixarr-stack
     media.enable = true;
     media.jellyfin.enable = true;
+    media.jellyfin.openFirewall = true;
     media.komga.enable = true;
     media.audiobookshelf.enable = true;
     downloads.enable = true;
