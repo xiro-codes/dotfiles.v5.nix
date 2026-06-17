@@ -39,7 +39,10 @@ in
         CapabilityBoundingSet = "";
         PrivateDevices = true;
         ProtectHome = true;
-        RestrictAddressFamilies = [ "AF_INET" "AF_INET6" ];
+        RestrictAddressFamilies = [
+          "AF_INET"
+          "AF_INET6"
+        ];
       };
     };
   };

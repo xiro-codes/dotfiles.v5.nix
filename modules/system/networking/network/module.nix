@@ -1,6 +1,7 @@
 {
   config,
   lib,
+  flake-inputs,
   ...
 }:
 let
@@ -16,6 +17,22 @@ let
   hostsCfg = config.local.network-hosts;
   primaryHost = hostsCfg.primary;
   primaryIp = hostsCfg.${primaryHost};
+
+  capitalize = str:
+    let
+      firstChar = builtins.substring 0 1 str;
+      rest = builtins.substring 1 (-1) str;
+    in
+      lib.toUpper firstChar + rest;
+
+  primaryHostCap = capitalize primaryHost;
+  primaryConfig = flake-inputs.self.nixosConfigurations.${primaryHostCap}.config;
+  reverseProxyCfg = primaryConfig.local.reverse-proxy;
+  
+  serviceDomains = map (name: "${name}.${primaryHost}.home") (builtins.attrNames reverseProxyCfg.services);
+  folderDomains = map (name: "${name}.${primaryHost}.home") (builtins.attrNames reverseProxyCfg.sharedFolders);
+  
+  dynamicDomains = serviceDomains ++ folderDomains ++ [ "${primaryHost}.home" ];
 in
 {
   options.local.network = {
@@ -35,22 +52,7 @@ in
   config = mkIf cfg.enable {
     networking = {
       hosts = {
-        "${primaryIp}" = [
-          # todo how could generate this based on how another host is configured
-          "dashboard.${primaryHost}.home"
-          "cache.${primaryHost}.home"
-          "wallpapers.${primaryHost}.home"
-          "games.${primaryHost}.home"
-          "git.${primaryHost}.home"
-          "plex.${primaryHost}.home"
-          "${primaryHost}.home"
-          "comics.${primaryHost}.home"
-          "audiobooks.${primaryHost}.home"
-          "dl.${primaryHost}.home"
-          "vm.${primaryHost}.home"
-          "stats.${primaryHost}.home"
-          "metrics.${primaryHost}.home"
-        ];
+        "${primaryIp}" = dynamicDomains;
       };
       # Disable the old wpa_supplicant
       wireless.enable = false;
