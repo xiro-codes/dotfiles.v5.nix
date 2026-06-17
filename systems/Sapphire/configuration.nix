@@ -69,9 +69,10 @@ in
       info = "Git Server";
       icon = "services.gitea";
     };
-    Plex = {
-      name = "Plex";
+    Jellyfin = {
+      name = "Jellyfin";
       info = "Media Server";
+      icon = "services.jellyfin";
     };
     Qbittorrent = {
       name = "qBittorrent";

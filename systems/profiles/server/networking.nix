@@ -25,7 +25,6 @@ in
         git.target = "http://localhost:${toString config.local.gitea.port}";
 
         tv.target = "http://localhost:${toString config.local.media.jellyfin.port}";
-        plex.target = "http://localhost:${toString config.local.media.plex.port}";
 
         ch7.target = "http://localhost:${toString config.local.media.ersatztv.port}";
 

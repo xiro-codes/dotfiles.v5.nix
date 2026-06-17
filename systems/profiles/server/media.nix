@@ -3,7 +3,7 @@
   local = {
     # Old media/downloads modules disabled — replaced by nixarr-stack
     media.enable = true;
-    media.plex.enable = true;
+    media.jellyfin.enable = true;
     media.komga.enable = true;
     media.audiobookshelf.enable = true;
     downloads.enable = true;
