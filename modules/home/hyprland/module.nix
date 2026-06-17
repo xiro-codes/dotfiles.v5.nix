@@ -74,7 +74,7 @@ in
             height = 1;
             text_offset = -8;
             indicator_height = 16;
-            rounding = 20;
+            rounding = 5;
             gaps_out = 8;
             gaps_in = 5;
           };
@@ -97,9 +97,8 @@ in
         };
         exec-once = [
           "wl-paste --type text --watch cliphist store"
-          "steam -silent"
-          "discord --start-minimized"
         ]
+        ++ variables.autostart
         ++ optionals config.local.caelestia-shell.enable [
           "caelestia wallpaper -f $HOME/.wallpaper"
         ];

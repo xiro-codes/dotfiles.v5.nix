@@ -6,6 +6,7 @@
   self,
   ...
 }:
+
 let
   inherit (lib)
     genAttrs
@@ -76,68 +77,6 @@ in
       };
     };
 
-    # System variables
-    variables = {
-      enable = mkOption {
-        type = types.bool;
-        default = true;
-        description = "Enable system environment variables for common tools and applications";
-      };
-      editor = mkOption {
-        type = types.str;
-        default = "nvim";
-        example = "vim";
-        description = "Default terminal text editor";
-      };
-      guiEditor = mkOption {
-        type = types.str;
-        default = "neovide";
-        example = "code";
-        description = "Default GUI text editor";
-      };
-      fileManager = mkOption {
-        type = types.str;
-        default = "yazi";
-        example = "lf";
-        description = "Default terminal file manager";
-      };
-      guiFileManager = mkOption {
-        type = types.str;
-        default = "nautilus";
-        example = "nautilus";
-        description = "Default GUI file manager";
-      };
-      terminal = mkOption {
-        type = types.str;
-        default = "kitty";
-        example = "alacritty";
-        description = "Default terminal emulator";
-      };
-      launcher = mkOption {
-        type = types.str;
-        default = "rofi -show drun";
-        example = "wofi --show drun";
-        description = "Default application launcher command";
-      };
-      wallpaper = mkOption {
-        type = types.str;
-        default = "hyprpaper";
-        example = "swaybg";
-        description = "Default wallpaper daemon or manager";
-      };
-      browser = mkOption {
-        type = types.str;
-        default = "firefox";
-        example = "chromium";
-        description = "Default web browser";
-      };
-      statusBar = mkOption {
-        type = types.str;
-        default = "hyprpanel";
-        example = "waybar";
-        description = "Default status bar or panel application";
-      };
-    };
 
     # Caelestia configuration
     caelestia = {
@@ -198,27 +137,6 @@ in
           mode = "0400";
           path = "${config.home.homeDirectory}/.secrets/${name}";
         });
-      };
-    })
-
-    # Variables
-    (mkIf cfg.variables.enable {
-      home.packages = [
-        pkgs.global-just
-      ];
-      home.sessionVariables = {
-        EDITOR = cfg.variables.editor;
-        VISUAL = cfg.variables.editor;
-        GUI_EDITOR = cfg.variables.guiEditor;
-        FILEMANAGER = cfg.variables.fileManager;
-        GUI_FILEMANAGER = cfg.variables.guiFileManager;
-        TERMINAL = cfg.variables.terminal;
-        GUI_TERMINAL = cfg.variables.terminal;
-        LAUNCHER = cfg.variables.launcher;
-        BROWSER = cfg.variables.browser;
-        WALLPAPER = cfg.variables.wallpaper;
-        STATUS_BAR = cfg.variables.statusBar;
-        #GEMINI_API_KEY = "$(cat ${geminiKeyPath})";
       };
     })
   ];
