@@ -1,5 +1,5 @@
 {
-  broken = false;
+  broken = broken;
   description = "Configures the default file browser.";
   tags = [
     "file-manager"
