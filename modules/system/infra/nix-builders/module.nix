@@ -105,7 +105,7 @@ in
             host;
       in
       ''
-        Host ${hostIP} ${host}
+        Match user root host ${hostIP},${host}
           User ${cfg.sshUser}
           IdentityFile ${cfg.sshKey}
           StrictHostKeyChecking no
