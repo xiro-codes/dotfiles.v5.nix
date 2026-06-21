@@ -31,7 +31,7 @@ in
     };
     publicKey = mkOption {
       type = types.str;
-      default = "cache.onix.home-1:/M1y/hGaD/dB8+mDfZmMdtXaWjq7XtLc1GMycddoNIE=";
+      default = "cache.sapphire.home-1:T6/FA9b6BgZvvvoXIzc4y/5MJgPs2GVHpi0KcU/fUMo=";
       example = "cache:AbCdEf1234567890+GhIjKlMnOpQrStUvWxYz==";
       description = "Public key for cache verification";
     };
