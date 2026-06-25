@@ -17,6 +17,7 @@ in
     ../profiles/limine-uefi.nix
     ../profiles/workstation
     ../profiles/client.nix
+    ../profiles/remote-builder.nix
   ];
 
   programs = {
@@ -30,6 +31,7 @@ in
   };
   boot.enableContainers = true;
   local = {
+    nix-builders.hosts = [ ]; # Prevent Ruby from offloading builds to slower machines
     valent.enable = true;
     coolercontrol.enable = true;
     userManager.extraGroups = [
@@ -38,7 +40,10 @@ in
       "input"
       "uinput"
     ];
-    harmonia-client.enable = mkForce true;
+    harmonia-client = {
+      enable = mkForce true;
+      publicKey = "cache.sapphire.home-1:T6/FA9b6BgZvvvoXIzc4y/5MJgPs2GVHpi0KcU/fUMo=";
+    };
     secrets.keys = [
       "gog_creds"
       "zerotier_network_id"
