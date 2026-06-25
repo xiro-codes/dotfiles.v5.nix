@@ -22,7 +22,6 @@ in
     eog
     prismlauncher
     geminicommit
-    crush
     antigravity-fhs
     vlc
     (symlinkJoin {
