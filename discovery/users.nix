@@ -13,6 +13,9 @@ let
 in
 {
   # Parse user configs to create a host -> users mapping
+  # TODO: COMPLEXITY SMELL: This manual string parsing logic is highly complex and brittle.
+  # Re-implementing a filesystem parser via regex is exactly what `snowfall-lib` does for you upstream.
+  # Consider adopting Snowfall Lib or drastically simplifying this if it becomes hard to maintain.
   getUserHostMap =
     path:
     if !(pathExists path) then

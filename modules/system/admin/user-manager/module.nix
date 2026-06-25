@@ -57,9 +57,15 @@ in
 
     users.users = genAttrs currentHostUsers (name: {
       isNormalUser = true;
+      # TODO: SECURITY SMELL: Unconditional assignment of 'wheel', 'docker', etc., to all users.
+      # This defeats multi-user isolation by granting root-equivalent access to everyone.
+      # Consider pulling a `local.isAdmin` boolean from the user's Home Manager config instead.
       extraGroups = cfg.extraGroups ++ cfg.defaultGroups;
     });
 
+    # TODO: ARCHITECTURE SMELL: Imperative bash script running as root.
+    # This script bypasses declarative paradigms, running on every boot to blindly create symlinks.
+    # Consider replacing with declarative `systemd.tmpfiles.rules` or Home Manager `home.file."Projects".source`.
     system.userActivationScripts = builtins.listToAttrs (
       map (username: {
         name = "link-user-folders-${username}";
