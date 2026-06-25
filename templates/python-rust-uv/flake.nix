@@ -7,10 +7,6 @@
       url = "github:hercules-ci/flake-parts/71a3a77326609675e9f8b51084cf23d5d1945899";
       inputs.nixpkgs-lib.follows = "nixpkgs";
     };
-    nvim-nix = {
-      url = "github:xiro-codes/nvim.nix";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
   };
 
   outputs =
@@ -76,7 +72,6 @@
               openssl
 
               # Custom Editor
-              inputs.nvim-nix.packages.${system}.python-rust
             ];
 
             shellHook = ''

@@ -11,10 +11,6 @@
       url = "github:oxalica/rust-overlay/366ea19e0e55b768f74b7a0b2a20f847e7ae828d";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    nvim-nix = {
-      url = "github:xiro-codes/nvim.nix";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
   };
 
   outputs =
@@ -74,7 +70,6 @@
           devShells.default = pkgsWithRust.mkShell {
             nativeBuildInputs = nativeBuildInputs ++ [
               rustToolchain
-              inputs.nvim-nix.packages.${system}.python-rust
             ];
             inherit buildInputs;
             LD_LIBRARY_PATH = makeLibraryPath buildInputs;
