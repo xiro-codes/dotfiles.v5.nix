@@ -4,6 +4,7 @@
   systemd,
   nix,
   coreutils,
+  ...
 }:
 
 writeShellApplication {
