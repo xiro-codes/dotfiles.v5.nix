@@ -42,7 +42,7 @@ let
             ++ (attrValues discoveredSystemModules)
             ++ [
               (host.path + "/configuration.nix")
-              {
+              ({ pkgs, ... }: {
                 nixpkgs.overlays = attrValues discoveredOverlays;
                 networking.hostName = host.name;
                 local.secrets.enable = true;
@@ -50,7 +50,10 @@ let
                   useGlobalPkgs = true;
                   useUserPackages = true;
                   backupFileExtension = "backup";
-                  backupCommand = "${inputs.nixpkgs.legacyPackages.x86_64-linux.trash-cli}/bin/trash";
+                  # TODO: CROSS-COMPILATION SMELL FIXED: 
+                  # This was previously hardcoded to `inputs.nixpkgs.legacyPackages.x86_64-linux.trash-cli`.
+                  # By wrapping this block in a `{ pkgs, ... }:` function, we can dynamically use the host's architecture.
+                  backupCommand = "${pkgs.trash-cli}/bin/trash";
                   extraSpecialArgs = {
                     self = inputs.self;
                     inherit inputs;
@@ -63,7 +66,7 @@ let
                     }) (hostToUsersMap.${host.name} or [ ])
                   );
                 };
-              }
+              })
             ];
         };
       }) hosts
