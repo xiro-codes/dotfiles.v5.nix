@@ -50,7 +50,7 @@ in
                 --description="Upload Nix paths to cache" \
                 --no-block \
                 env NIX_SSHOPTS="-o StrictHostKeyChecking=accept-new" \
-                ${getExe pkgs.nix} copy --to ssh://root@${primaryIp} $OUT_PATHS
+                ${getExe pkgs.nix} copy --to ssh-ng://build@${primaryIp} $OUT_PATHS
             fi
           '';
         in
