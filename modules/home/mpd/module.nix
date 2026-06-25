@@ -18,7 +18,7 @@ in
     enable = mkEnableOption "MPD (Music Player Daemon) with ncmpcpp client";
     path = mkOption {
       type = types.str;
-      default = "/media/Music";
+      default = "/media/Media/music";
       example = "/home/user/Music";
       description = "Path to the music directory for MPD to serve";
     };
