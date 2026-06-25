@@ -24,14 +24,15 @@ in
     geminicommit
     antigravity-fhs
     vlc
-    (symlinkJoin {
-      name = "xivlauncher-wrapped";
-      paths = [ xivlauncher ];
-      buildInputs = [ makeWrapper ];
-      postBuild = ''
-        wrapProgram $out/bin/XIVLauncher.Core --set XL_SECRET_PROVIDER FILE
-      '';
-    })
+
+    #(symlinkJoin {
+    #  name = "xivlauncher-wrapped";
+    #  paths = [ xivlauncher ];
+    #  buildInputs = [ makeWrapper ];
+    #  postBuild = ''
+    #    wrapProgram $out/bin/XIVLauncher.Core --set XL_SECRET_PROVIDER FILE
+    #  '';
+    #})
   ];
   local.wallpapers = {
     name = "13054947.png";
