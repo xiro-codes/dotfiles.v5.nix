@@ -6,7 +6,7 @@
   ...
 }:
 let
-  inherit (lib) mkForce mkAfter;
+  inherit (lib) mkAfter;
 in
 {
   imports = with self.nixosModules; [
@@ -21,11 +21,14 @@ in
   # Sapphire-specific configuration
   local = {
     nix-builders = {
-      enable = mkForce true;
+      enable = true;
       hosts = [ "ruby" ];
     };
     protonvpn.enable = true;
-    bootloader.addRecoveryOption = mkForce false;
+    bootloader.addRecoveryOption = false;
+    
+    harmonia-client.publicKey = "cache.sapphire.home-1:T6/FA9b6BgZvvvoXIzc4y/5MJgPs2GVHpi0KcU/fUMo=";
+    
     secrets.keys = [
       "harmonia_key"
       "gog_creds"

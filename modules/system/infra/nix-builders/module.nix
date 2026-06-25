@@ -16,37 +16,16 @@ let
     ;
 
   cfg = config.local.nix-builders;
+  
+  resolveIp = host:
+    if builtins.hasAttr host config.local.network-hosts then
+      config.local.network-hosts.${host}
+    else
+      host;
 
   # Filter out the current host itself from the builders list to avoid self-loop connections
   activeHosts = filter (h: toLower h != toLower config.networking.hostName) cfg.hosts;
 
-  # Default settings for each known builder host
-  builderDefs = {
-    sapphire = {
-      system = "x86_64-linux";
-      protocol = "ssh-ng";
-      maxJobs = 8;
-      speedFactor = 2;
-      supportedFeatures = [
-        "nixos-test"
-        "benchmark"
-        "big-parallel"
-        "kvm"
-      ];
-    };
-    ruby = {
-      system = "x86_64-linux";
-      protocol = "ssh-ng";
-      maxJobs = 24;
-      speedFactor = 8;
-      supportedFeatures = [
-        "nixos-test"
-        "benchmark"
-        "big-parallel"
-        "kvm"
-      ];
-    };
-  };
 in
 {
   options.local.nix-builders = {
@@ -78,6 +57,38 @@ in
       ];
       description = "List of remote builders to use.";
     };
+
+    nodes = mkOption {
+      type = types.attrsOf (types.submodule {
+        options = {
+          system = mkOption { type = types.str; default = "x86_64-linux"; };
+          protocol = mkOption { type = types.str; default = "ssh-ng"; };
+          maxJobs = mkOption { type = types.int; default = 4; };
+          speedFactor = mkOption { type = types.int; default = 1; };
+          supportedFeatures = mkOption { 
+            type = types.listOf types.str; 
+            default = [ "nixos-test" "benchmark" "big-parallel" "kvm" ]; 
+          };
+        };
+      });
+      default = {
+        sapphire = {
+          system = "x86_64-linux";
+          protocol = "ssh-ng";
+          maxJobs = 8;
+          speedFactor = 2;
+          supportedFeatures = [ "nixos-test" "benchmark" "big-parallel" "kvm" ];
+        };
+        ruby = {
+          system = "x86_64-linux";
+          protocol = "ssh-ng";
+          maxJobs = 24;
+          speedFactor = 8;
+          supportedFeatures = [ "nixos-test" "benchmark" "big-parallel" "kvm" ];
+        };
+      };
+      description = "Remote builder definitions.";
+    };
   };
 
   config = mkIf cfg.enable {
@@ -95,14 +106,9 @@ in
       mode = "0600";
     };
 
-    # Configure SSH to allow the nix daemon to connect to the builder hosts
     programs.ssh.extraConfig = concatMapStringsSep "\n" (host:
       let
-        hostIP =
-          if builtins.hasAttr host config.local.network-hosts then
-            config.local.network-hosts.${host}
-          else
-            host;
+        hostIP = resolveIp host;
       in
       ''
         Match localuser root host ${hostIP},${host}
@@ -118,7 +124,7 @@ in
       distributedBuilds = true;
       buildMachines = map (host:
         let
-          def = builderDefs.${host} or {
+          def = cfg.nodes.${host} or {
             system = "x86_64-linux";
             protocol = "ssh-ng";
             maxJobs = 4;
@@ -130,11 +136,7 @@ in
               "kvm"
             ];
           };
-          hostIP =
-            if builtins.hasAttr host config.local.network-hosts then
-              config.local.network-hosts.${host}
-            else
-              host;
+          hostIP = resolveIp host;
         in
         {
           hostName = hostIP;

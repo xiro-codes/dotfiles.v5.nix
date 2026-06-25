@@ -23,7 +23,7 @@
     };
     userManager.enable = true;
     nix-core-settings.enable = true;
-    nix-builders.enable = true;
+    nix-builders.enable = lib.mkDefault true;
     localization.enable = true;
     disks.enable = true;
     secrets.keys = [

@@ -31,37 +31,23 @@ in
     };
     publicKey = mkOption {
       type = types.str;
-      default = "cache.sapphire.home-1:T6/FA9b6BgZvvvoXIzc4y/5MJgPs2GVHpi0KcU/fUMo=";
+      default = "";
       example = "cache:AbCdEf1234567890+GhIjKlMnOpQrStUvWxYz==";
       description = "Public key for cache verification";
     };
   };
 
   config = mkIf cfg.enable {
-    environment.systemPackages = with pkgs; [ ];
+    environment.systemPackages = with pkgs; [ harmonia-upload-hook ];
+    environment.etc."harmonia-upload-host.conf".text = primaryIp;
     nix.settings = {
-      post-build-hook =
-        let
-          uploadHook = pkgs.writeShellScript "upload-to-cache-hook" ''
-            set -eu
-            if [ -n "''${OUT_PATHS:-}" ]; then
-              # shellcheck disable=SC2086
-              ${lib.getExe' pkgs.systemd "systemd-run"} --unit="nix-upload-$(date +%s%N)" \
-                --description="Upload Nix paths to cache" \
-                --no-block \
-                env NIX_SSHOPTS="-o StrictHostKeyChecking=accept-new" \
-                ${getExe pkgs.nix} copy --to ssh-ng://build@${primaryIp} $OUT_PATHS
-            fi
-          '';
-        in
-        "${uploadHook}";
+      post-build-hook = lib.getExe pkgs.harmonia-upload-hook;
       trusted-users = [ "@wheel" ];
       substituters = [
         cfg.serverAddress
         "https://cache.nixos.org?priority=100"
       ];
-      trusted-public-keys = [
-        cfg.publicKey
+      trusted-public-keys = (if cfg.publicKey != "" then [ cfg.publicKey ] else []) ++ [
         "cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY="
       ];
       connect-timeout = 3;
