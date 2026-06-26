@@ -25,7 +25,7 @@ in
       enable = true;
       serverUrl = "https://games.${config.local.network-hosts.primary}.home";
       games = {
-        tyranny-game.enable = true;
+        tyranny-game.enable = false;
       };
     };
   };
