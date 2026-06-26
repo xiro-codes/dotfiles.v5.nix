@@ -2,18 +2,20 @@
 {
   local = {
     # Old media/downloads modules disabled — replaced by nixarr-stack
-    media.enable = true;
-    media.jellyfin.enable = true;
-    media.jellyfin.openFirewall = true;
-    media.komga.enable = true;
-    media.audiobookshelf.enable = true;
-    downloads.enable = true;
-    downloads.qbittorrent.enable = true;
-    # New nixarr-based media stack
-    nixarr-stack = {
-      enable = false;
-      mediaDir = "/media/Media";
-      vpn.enable = true;
+    media = {
+      enable = true;
+      jellyfin = {
+        enable = true;
+        openFirewall = true;
+      };
+      ersatztv.enable = true;
+      komga.enable = true;
+      audiobookshelf.enable = true;
+    };
+
+    downloads = {
+      enable = true;
+      qbittorrent.enable = true;
     };
 
     gog-downloader = {

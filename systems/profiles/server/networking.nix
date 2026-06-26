@@ -17,6 +17,7 @@ in
       sharedFolders = {
         wallpapers = "/media/Media/wallpapers";
         games = "/media/Media/games";
+        icons = "/media/Media/icons";
       };
 
       services = {
