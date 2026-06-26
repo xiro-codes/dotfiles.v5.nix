@@ -6,4 +6,5 @@
     "theme"
   ];
   maintainers = [ "tod" ];
+  broken = true;
 }

@@ -18,4 +18,4 @@ let
     };
   };
 in
-pkgs.linkFarm "wallpapers" (map fetchAsset manifest)
+pkgs.linkFarm "icons" (map fetchAsset manifest)

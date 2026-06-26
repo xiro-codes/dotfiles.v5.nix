@@ -48,7 +48,7 @@ in
 
       stylix = {
         enable = true;
-        image = pkgs.nixos-artwork.wallpapers.nineish-dark-gray.src;
+        image = config.local.assets.wallpapers.main;
         cursor = {
           size = 16;
         };

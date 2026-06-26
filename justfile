@@ -238,3 +238,11 @@ gen-topology:
     xdg-open ./network.svg || open ./network.svg || echo "Network image is at ./network.svg"
     xdg-open ./services.svg || open ./services.svg || echo "Services image is at ./services.svg"
 
+# Update external assets manifest
+[group('assets')]
+update-assets:
+    @echo "Updating wallpapers manifest..."
+    nix shell nixpkgs#python3 -c python3 packages/wallpapers/update.py
+    @echo "Updating icons manifest..."
+    nix shell nixpkgs#python3 -c python3 packages/icons/update.py
+    @echo "Assets updated successfully."

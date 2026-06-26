@@ -86,50 +86,21 @@ in
     programs.silentSDDM = mkIf (cfg.displayManager == "sddm") {
       enable = true;
       theme = "rei";
-      /*
       profileIcons = {
-        tod = pkgs.fetchurl {
-          name = "disco.png";
-          url = "https://wallpapers.${config.local.network-hosts.primary}.home/Icons/disco.png";
-          sha256 = "sha256-hy1iIDdnPY6ZPM5EYRbh66yFl7CUgLjbQubuGUvRErw=";
-          curlOptsList = [
-            "-X"
-            "GET"
-            "--insecure"
-          ];
-        };
+        tod = config.local.assets.icons.user;
       };
       backgrounds = {
-        main = pkgs.fetchurl {
-          name = "bg.jpg";
-          url = "https://wallpapers.${config.local.network-hosts.primary}.home/ag1.png";
-          sha256 = "";
-          curlOptsList = [
-            "-X"
-            "GET"
-            "--insecure"
-          ];
-        };
-        miku = pkgs.fetchurl {
-          name = "miku.bg.jpeg";
-          url = "https://wallpapers.${config.local.network-hosts.primary}.home/miku.jpeg";
-          sha256 = "sha256-Lp6CAHJc+rJEWDo3z9DtH/J543zdJth079M3nMW1OwM=";
-          curlOptsList = [
-            "-X"
-            "GET"
-            "--insecure"
-          ];
-        };
+        main = config.local.assets.wallpapers.main;
+        miku = config.local.assets.wallpapers.miku;
       };
       settings = {
         "LoginScreen" = {
-          background = "miku.bg.jpeg";
+          background = config.local.assets.wallpapers.miku;
         };
         "LockScreen" = {
-          background = "miku.bg.jpeg";
+          background = config.local.assets.wallpapers.miku;
         };
       };
-      */
     };
 
     # Desktop Selection logic using inputs from your flake

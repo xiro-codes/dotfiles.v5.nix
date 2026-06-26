@@ -1,0 +1,18 @@
+System.InvalidOperationException: Neither DBus nor GTK are available on the system
+   at Avalonia.X11.NativeDialogs.CompositeStorageProvider.EnsureStorageProvider()
+   at Avalonia.X11.NativeDialogs.CompositeStorageProvider.OpenFilePickerAsync(FilePickerOpenOptions options)
+   at UABEAvalonia.MainWindow.MenuOpen_Click(Object sender, RoutedEventArgs e) in /build/source/UABEAvalonia/Forms/MainWindow.axaml.cs:line 193
+   at System.Threading.Tasks.Task.<>c.<ThrowAsync>b__128_0(Object state)
+   at Avalonia.Threading.SendOrPostCallbackDispatcherOperation.InvokeCore()
+   at Avalonia.Threading.DispatcherOperation.Execute()
+   at Avalonia.Threading.Dispatcher.ExecuteJob(DispatcherOperation job)
+   at Avalonia.Threading.Dispatcher.ExecuteJobsCore(Boolean fromExplicitBackgroundProcessingCallback)
+   at Avalonia.Threading.Dispatcher.Signaled()
+   at Avalonia.X11.X11PlatformThreading.CheckSignaled()
+   at Avalonia.X11.X11PlatformThreading.RunLoop(CancellationToken cancellationToken)
+   at Avalonia.Threading.DispatcherFrame.Run(IControlledDispatcherImpl impl)
+   at Avalonia.Threading.Dispatcher.PushFrame(DispatcherFrame frame)
+   at Avalonia.Threading.Dispatcher.MainLoop(CancellationToken cancellationToken)
+   at Avalonia.Controls.ApplicationLifetimes.ClassicDesktopStyleApplicationLifetime.Start(String[] args)
+   at Avalonia.ClassicDesktopStyleApplicationLifetimeExtensions.StartWithClassicDesktopLifetime(AppBuilder builder, String[] args, ShutdownMode shutdownMode)
+   at UABEAvalonia.Program.Main(String[] args) in /build/source/UABEAvalonia/Program.cs:line 53
