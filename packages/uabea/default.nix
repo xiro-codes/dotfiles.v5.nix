@@ -30,6 +30,10 @@ buildDotnetModule rec {
     gnumake
   ];
 
+  dotnetFlags = [
+    "-p:UseAppHost=false"
+  ];
+
   postPatch = ''
     find . -type f -name "*.csproj" -exec sed -i 's/net6.0/net8.0/g' {} +
     dotnet sln ''${projectFile} remove TexToolWrap/TexToolWrap.vcxproj
