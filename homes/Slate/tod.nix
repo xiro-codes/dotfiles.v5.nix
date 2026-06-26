@@ -28,8 +28,8 @@ in
       '';
     })
   ];
-  local.wallpapers = {
-    name = "miku.jpeg";
-  };
+  # local.wallpapers = {
+  #   name = "miku.jpeg";
+  # };
   home.stateVersion = "25.11";
 }

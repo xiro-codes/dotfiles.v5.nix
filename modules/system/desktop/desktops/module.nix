@@ -86,6 +86,7 @@ in
     programs.silentSDDM = mkIf (cfg.displayManager == "sddm") {
       enable = true;
       theme = "rei";
+      /*
       profileIcons = {
         tod = pkgs.fetchurl {
           name = "disco.png";
@@ -128,6 +129,7 @@ in
           background = "miku.bg.jpeg";
         };
       };
+      */
     };
 
     # Desktop Selection logic using inputs from your flake

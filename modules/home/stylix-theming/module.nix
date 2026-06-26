@@ -38,7 +38,7 @@ in
 
     # Stylix
     (mkIf cfg.stylix.enable {
-      local.wallpapers.enable = true;
+      # local.wallpapers.enable = true;
 
       programs.fuchsia-nix = {
         enable = true;
@@ -48,7 +48,7 @@ in
 
       stylix = {
         enable = true;
-        image = config.local.wallpapers.path;
+        image = pkgs.nixos-artwork.wallpapers.nineish-dark-gray.src;
         cursor = {
           size = 16;
         };

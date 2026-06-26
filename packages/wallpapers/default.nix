@@ -23,13 +23,10 @@ pkgs.linkFarm "wallpapers" [
   # ── Root wallpapers ──────────────────────────────────────────────
   {
     name = "AG1.png";
-    path = fetchWallpaper {
-      name = "13054947.png";
-      url = "https://wallpapers.sapphire.home/ag_1.png";
-      sha256 = "sha256-hmMAFWQBfZS96r/QiCGvYCXXvKbtCwodql+WTMVglZI=";
-    };
+    path = pkgs.nixos-artwork.wallpapers.nineish-dark-gray.src;
   }
   # ── Icons ────────────────────────────────────────────────────────
+  /*
   {
     name = "icons-disco.png";
     path = fetchWallpaper {
@@ -38,4 +35,5 @@ pkgs.linkFarm "wallpapers" [
       sha256 = "sha256-hy1iIDdnPY6ZPM5EYRbh66yFl7CUgLjbQubuGUvRErw=";
     };
   }
+  */
 ]
