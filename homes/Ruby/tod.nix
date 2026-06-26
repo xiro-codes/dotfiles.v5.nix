@@ -35,7 +35,7 @@ in
     #})
   ];
   local.wallpapers = {
-    name = "13054947.png";
+    name = "AG1.png";
   };
   local.valent.enable = true;
   local.kdeconnect.enable = lib.mkForce false;

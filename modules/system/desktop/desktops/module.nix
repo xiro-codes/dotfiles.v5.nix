@@ -101,8 +101,8 @@ in
       backgrounds = {
         main = pkgs.fetchurl {
           name = "bg.jpg";
-          url = "https://wallpapers.${config.local.network-hosts.primary}.home/Deskmat/1.jpg";
-          sha256 = "sha256-MDIjJVlhXCLgCMsc9aGEx8A09hgJasjjvWdTTrTVL5c=";
+          url = "https://wallpapers.${config.local.network-hosts.primary}.home/ag1.png";
+          sha256 = "";
           curlOptsList = [
             "-X"
             "GET"
