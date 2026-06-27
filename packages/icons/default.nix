@@ -5,11 +5,13 @@
 }:
 let
   manifest = builtins.fromJSON (builtins.readFile ./manifest.json);
-  
+  sanitize = builtins.replaceStrings [" " "%20" "(" ")"] ["_" "_" "_" "_"];
+
   fetchAsset = item: {
-    name = item.name;
+    name = sanitize item.name;
     path = pkgs.fetchurl {
-      inherit (item) name url sha256;
+      name = sanitize (builtins.baseNameOf item.name);
+      inherit (item) url sha256;
       curlOptsList = [
         "-X"
         "GET"

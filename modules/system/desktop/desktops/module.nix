@@ -95,10 +95,10 @@ in
       };
       settings = {
         "LoginScreen" = {
-          background = config.local.assets.wallpapers.miku;
+          background = config.local.assets.wallpapers.main;
         };
         "LockScreen" = {
-          background = config.local.assets.wallpapers.miku;
+          background = config.local.assets.wallpapers.main;
         };
       };
     };

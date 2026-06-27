@@ -51,13 +51,13 @@ in
   config = {
     local.assets.wallpapers.main =
       if cfg.enableExternal then
-        "${pkgs.wallpapers}/Muse Dash - All Illustrations/interlude_46.png"
+        "${pkgs.wallpapers}/Muse_Dash_-_All_Illustrations/interlude_46.png"
       else
         pkgs.nixos-artwork.wallpapers.nineish-dark-gray.src;
 
     local.assets.wallpapers.miku =
       if cfg.enableExternal then
-        "${pkgs.wallpapers}/Muse Dash - All Illustrations/06022025114952_interlude_105.png"
+        "${pkgs.wallpapers}/Muse_Dash_-_All_Illustrations/06022025114952_interlude_105.png"
       else
         pkgs.nixos-artwork.wallpapers.nineish-dark-gray.src;
 
@@ -66,5 +66,10 @@ in
         "${pkgs.icons}/evil_genius_avatars/Eli_b.jpg"
       else
         pkgs.nixos-artwork.wallpapers.nineish-dark-gray.src;
+
+    home.file.".wallpaper".source = config.local.assets.wallpapers.main;
+    
+    home.file.".assets/wallpapers".source = pkgs.wallpapers;
+    home.file.".assets/icons".source = pkgs.icons;
   };
 }

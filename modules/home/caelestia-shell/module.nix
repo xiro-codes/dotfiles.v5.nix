@@ -75,19 +75,25 @@ in
           "mpv"
           "nixos-help"
         ];
-        bar.status = {
-          showBattery = false;
-          showAudio = true;
-          showBluetooth = true;
-          showWifi = false;
+        bar = {
+          tray.recolour = true;
+          workspaces.shown = 3;
+          popouts = {
+            "activeWindow" = false;
+          };
+          status = {
+            showBattery = false;
+            showAudio = true;
+            showBluetooth = true;
+            showWifi = false;
+          };
         };
-        bar.workspaces.shown = 3;
-        bar.tray.recolour = true;
         osd.enableBrightness = false;
 
         paths = {
           "mediaGif" = "$HOME/.music.gif";
           "sessionGif" = "";
+          "wallpaperDir" = "$HOME/.assets/wallpapers";
         };
         services.useFahrenheit = false;
       };
