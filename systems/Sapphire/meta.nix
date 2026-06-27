@@ -3,6 +3,6 @@
   broken = false;
   tags = [
     "server"
-    "ai"
+    "media"
   ];
 }
