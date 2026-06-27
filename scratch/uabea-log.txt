@@ -1,3 +1,0 @@
-/nix/store/nz7fwr7czy0nw6il0rqdx76yqff8ni88-dotnet-sdk-8.0.421/share/dotnet/sdk/8.0.421/Microsoft.Common.CurrentVersion.targets(4857,5): error MSB3030: Could not copy the file "obj/Release/net8.0/UABEAvalonia.dll" because it was not found. [/build/source/UABEAvalonia/UABEAvalonia.csproj]
-/nix/store/nz7fwr7czy0nw6il0rqdx76yqff8ni88-dotnet-sdk-8.0.421/share/dotnet/sdk/8.0.421/Microsoft.Common.CurrentVersion.targets(4857,5): error MSB3030: Could not copy the file "obj/Release/net8.0/UABEAvalonia.dll" because it was not found. [/build/source/UABEAvalonia/UABEAvalonia.csproj]
-    1 Error(s)
