@@ -38,13 +38,7 @@ in
     network.useNetworkManager = mkForce false;
     disks.enable = mkForce false;
     secrets.keys = [
-      "ssh_pub_jade/master"
-      "ssh_pub_onix/master"
-      "ssh_pub_ruby/master"
-      "ssh_pub_sapphire/master"
       "apps/blog_key"
-      "apps/cloudflare_token"
-      "apps/cloudflare_zone_id"
     ];
   };
   services.ddns-updater = {

@@ -18,6 +18,7 @@ let
     mkMerge
     mkOption
     types
+    unique
     ;
   cfg = config.local;
   mkStrOpt =
@@ -27,7 +28,6 @@ let
       inherit default;
     };
   userSops = pkgs.user-sops;
-  geminiKeyPath = "$HOME/.secrets/gemini/crush_agent_key";
 in
 {
   options.local = {
@@ -133,7 +133,7 @@ in
       sops = {
         age.sshKeyPaths = [ "${config.home.homeDirectory}/.ssh/id_sops" ];
         defaultSopsFile = cfg.secrets.sopsFile;
-        secrets = genAttrs cfg.secrets.keys (name: {
+        secrets = genAttrs (unique cfg.secrets.keys) (name: {
           mode = "0400";
           path = "${config.home.homeDirectory}/.secrets/${name}";
         });

@@ -31,7 +31,7 @@ in
         message = "zerotier requires local.secrets to be enabled";
       }
     ];
-    sops.secrets."${cfg.networkIdSecret}" = { };
+    local.secrets.keys = [ cfg.networkIdSecret ];
     services.zerotierone.enable = true;
 
     systemd.services.zerotier-join = {

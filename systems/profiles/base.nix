@@ -26,13 +26,7 @@
     nix-builders.enable = lib.mkDefault true;
     localization.enable = true;
     disks.enable = true;
-    secrets.keys = [
-      "gemini/api_key"
-      "ssh_pub_ruby/master"
-      "ssh_pub_sapphire/master"
-      "ssh_pub_slate/master"
-      "onix_creds"
-    ];
+
     network = {
       enable = true;
       useNetworkManager = true;

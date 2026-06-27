@@ -44,11 +44,7 @@ in
       enable = mkForce true;
       publicKey = "cache.sapphire.home-1:T6/FA9b6BgZvvvoXIzc4y/5MJgPs2GVHpi0KcU/fUMo=";
     };
-    secrets.keys = [
-      "gog_creds"
-      "zerotier_network_id"
-      "onix_creds"
-    ];
+
 
     bootloader.recoveryUUID = "b0cd9860-736a-45c5-a6d2-e69cdb319f24";
 

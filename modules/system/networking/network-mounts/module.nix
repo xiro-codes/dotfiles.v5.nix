@@ -140,5 +140,7 @@ in
       where = m.localPath;
       wantedBy = [ "multi-user.target" ];
     }) cfg.mounts;
+
+    local.secrets.keys = lib.mkIf (!cfg.noAuth) [ cfg.secretName ];
   };
 }

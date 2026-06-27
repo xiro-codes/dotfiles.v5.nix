@@ -81,5 +81,11 @@ in
       "root"
       cfg.adminUser
     ];
+
+    local.secrets.keys = [
+      "ssh_pub_ruby/master"
+      "ssh_pub_sapphire/master"
+      "ssh_pub_slate/master"
+    ];
   };
 }

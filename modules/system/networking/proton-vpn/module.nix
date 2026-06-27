@@ -29,5 +29,6 @@ in
       autostart = cfg.autostart;
       configFile = config.sops.secrets."protonvpn_wg_conf".path;
     };
+    local.secrets.keys = [ "protonvpn_wg_conf" ];
   };
 }

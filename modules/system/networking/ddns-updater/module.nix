@@ -39,5 +39,9 @@ in
       ];
     };
     services.ddns-updater.environment.CONFIG_FILEPATH = "/etc/ddns-updater/config.json";
+    local.secrets.keys = [
+      "apps/cloudflare_token"
+      "apps/cloudflare_zone_id"
+    ];
   };
 }

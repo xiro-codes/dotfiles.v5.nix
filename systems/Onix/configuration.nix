@@ -18,13 +18,7 @@
     # System settings
     bootloader.recoveryUUID = "017aa821-7b75-492a-98cf-1174f1b15ea1";
 
-    secrets.keys = [
-      "harmonia_key"
-      "gog_creds"
-      "zerotier_network_id"
-      "gitea/runner_token"
-      "protonvpn_wg_conf"
-    ];
+
     virtualisation.incus.enable = false;
 
   };

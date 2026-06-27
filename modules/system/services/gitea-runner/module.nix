@@ -32,11 +32,10 @@ in
       description = "URL of the Gitea instance to connect to";
     };
 
-    tokenFile = mkOption {
+    secretName = mkOption {
       type = types.str;
-      # Assumes sops secret exists at this path by default, but can be overridden
-      default = "/run/secrets/gitea/runner_token";
-      description = "Path to the file containing the runner registration token";
+      default = "gitea/runner_token";
+      description = "Name of the sops secret containing the runner registration token";
     };
 
     labels = mkOption {
@@ -52,6 +51,8 @@ in
   };
 
   config = mkIf cfg.enable {
+    local.secrets.keys = [ cfg.secretName ];
+
     # Use Podman with Docker compatibility
     virtualisation.oci-containers.backend = "podman";
     virtualisation.podman = {
@@ -66,7 +67,7 @@ in
         enable = true;
         name = cfg.instanceName;
         url = cfg.giteaUrl;
-        token = "HzO7Yi38427r000XXA1KqgX48blsyfjMIz60CK1j";
+        tokenFile = config.sops.secrets."${cfg.secretName}".path;
         labels = cfg.labels;
         settings = {
           log.level = "info";

@@ -154,5 +154,7 @@ in
       radarr.settings.auth.required = "DisabledForLocalAddresses";
       lidarr.settings.auth.required = "DisabledForLocalAddresses";
     };
+
+    local.secrets.keys = lib.mkIf cfg.vpn.enable [ "protonvpn_wg_conf" ];
   };
 }

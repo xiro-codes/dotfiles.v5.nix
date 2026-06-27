@@ -29,13 +29,7 @@ in
     
     harmonia-client.publicKey = "cache.sapphire.home-1:T6/FA9b6BgZvvvoXIzc4y/5MJgPs2GVHpi0KcU/fUMo=";
     
-    secrets.keys = [
-      "harmonia_key"
-      "gog_creds"
-      "zerotier_network_id"
-      "gitea/runner_token"
-      "protonvpn_wg_conf"
-    ];
+
 
     virtualisation.incus = {
       enable = true;

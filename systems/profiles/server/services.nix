@@ -21,6 +21,7 @@
       openFirewall = true;
       prefetch.enable = false;
     };
+    secrets.keys = [ "harmonia_key" ];
     # Git service
     gitea = {
       enable = true;

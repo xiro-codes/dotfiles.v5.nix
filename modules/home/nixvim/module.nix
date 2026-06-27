@@ -37,6 +37,7 @@ in
       lazygit
       nixfmt
     ];
+    local.secrets.keys = [ "gemini/api_key" ];
     programs.nixvim =
       let
         baseOptions = import ./options.nix { inherit config lib; };

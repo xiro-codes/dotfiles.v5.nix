@@ -13,6 +13,7 @@ let
     mkIf
     mkOption
     types
+    unique
     ;
 
   cfg = config.local.secrets;
@@ -42,7 +43,7 @@ in
       defaultSopsFile = cfg.sopsFile;
       defaultSopsFormat = "yaml";
       age.sshKeyPaths = [ "/etc/ssh/ssh_host_ed25519_key" ];
-      secrets = genAttrs cfg.keys (name: {
+      secrets = genAttrs (unique cfg.keys) (name: {
         mode = "0440";
         owner = "root";
         group = "wheel";

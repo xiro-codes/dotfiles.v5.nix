@@ -41,10 +41,11 @@ in
       default = "--repair --download";
       description = "Extra arguments passed to lgogdownloader";
     };
-    secretFile = mkOption {
-      type = types.path;
+    secretName = mkOption {
+      type = types.str;
+      default = "gog_creds";
       description = ''
-        Path to a file containing environment variables for GOG login.
+        Name of the sops secret containing environment variables for GOG login.
         Expected format:
         GOG_EMAIL=user@example.com
         GOG_PASSWORD=yourpassword
@@ -53,6 +54,7 @@ in
   };
   config = mkIf cfg.enable {
     environment.systemPackages = [ pkgs.lgogdownloader ];
+    local.secrets.keys = [ cfg.secretName ];
     systemd.timers.gog-downloader = {
       description = "Timer for GOG Library Sync";
       wantedBy = [ "timers.target" ];
@@ -69,7 +71,7 @@ in
       serviceConfig = {
         Type = "oneshot";
         User = "root"; # Or your specific gaming user
-        EnvironmentFile = cfg.secretFile;
+        EnvironmentFile = config.sops.secrets."${cfg.secretName}".path;
         ExecStartPre = "${getExe' pkgs.coreutils "mkdir"} -p ${cfg.directory}";
         ExecStart = "${getExe pkgs.gog-sync-script} ${cfg.directory} ${cfg.platforms} ${cfg.extraArgs}";
       };
