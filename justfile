@@ -7,7 +7,7 @@ default:
 # Build the ISO and launch it immediately
 [group('dev')]
 run-test:
-    nix build .#installer-iso
+    nix build .#nixosConfigurations.Nucleus.config.system.build.isoImage --impure
     nix run .#test-iso
 
 # Clear the test environment
@@ -215,7 +215,7 @@ rescue:
 [group('install')]
 bake-recovery disk="":
     @echo "Building recovery ISO ..."
-    nix build .#installer-iso
+    nix build .#nixosConfigurations.Nucleus.config.system.build.isoImage --impure
     @echo "Burning ISO to {{ if disk == "" { "recovery partition" } else { disk } }} ..."
     sudo caligula burn $(find result/iso/ -name "*.iso" | head -n 1) -o {{ if disk == "" { "$(readlink -f /dev/disk/by-partlabel/disk-main-recovery)" } else { disk } }} --interactive never --compression none -f --hash skip
     @echo "Failsafe ISO updated successfully."

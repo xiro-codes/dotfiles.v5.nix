@@ -15,7 +15,7 @@ pkgs.writeShellApplication {
     VARS_PATH="./OVMF_VARS.fd"
 
     if [ -z "$ISO_PATH" ]; then
-      echo "❌ No ISO found! Run 'nix build .#installer-iso' first."
+      echo "❌ No ISO found! Run 'nix build .#nixosConfigurations.Nucleus.config.system.build.isoImage' first."
       exit 1
     fi
 
@@ -42,7 +42,7 @@ pkgs.writeShellApplication {
       -drive file="$DISK_PATH",format=qcow2,if=virtio \
       -cdrom "$ISO_PATH" \
       -boot d \
-      -net nic,model=virtio -net user \
+      -net nic,model=virtio -net user,hostfwd=tcp::2222-:22 \
       -vga virtio \
       -display gtk,gl=on
   '';

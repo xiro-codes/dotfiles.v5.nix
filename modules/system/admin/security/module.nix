@@ -62,17 +62,19 @@ in
     };
 
     # Apply keys to root and the admin user
-    users.users.root.openssh.authorizedKeys.keyFiles = [
-      config.sops.secrets."ssh_pub_ruby/master".path
-      config.sops.secrets."ssh_pub_sapphire/master".path
-      config.sops.secrets."ssh_pub_slate/master".path
-    ];
-
-    users.users.${cfg.adminUser}.openssh.authorizedKeys.keyFiles = [
-      config.sops.secrets."ssh_pub_ruby/master".path
-      config.sops.secrets."ssh_pub_sapphire/master".path
-      config.sops.secrets."ssh_pub_slate/master".path
-    ];
+    users.users = {
+      root.openssh.authorizedKeys.keyFiles = [
+        config.sops.secrets."ssh_pub_ruby/master".path
+        config.sops.secrets."ssh_pub_sapphire/master".path
+        config.sops.secrets."ssh_pub_slate/master".path
+      ];
+    } // lib.optionalAttrs (cfg.adminUser != "root") {
+      ${cfg.adminUser}.openssh.authorizedKeys.keyFiles = [
+        config.sops.secrets."ssh_pub_ruby/master".path
+        config.sops.secrets."ssh_pub_sapphire/master".path
+        config.sops.secrets."ssh_pub_slate/master".path
+      ];
+    };
 
     # Nix Daemon trust (Crucial for remote deployments)
     nix.settings.trusted-users = [

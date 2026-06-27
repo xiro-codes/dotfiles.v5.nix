@@ -2,6 +2,7 @@ keys:
   - &ruby age1gnsqhrf20kx55jpxewp5g9h3u8hffh8tlvstwwett57rp5letu3sndsh9k
   - &sapphire age163tv3axqtnn024jp957f9jp2w8xrp6r0m06yy8fte9j47xn8p3as8u2ndp
   - &slate age1vjx7xp79krpe9csq83yraqresy9xmpk8xca4tgs6je8erusd23tqsrr2n0
+  - &nucleus age1eljkra9z8ypc7vlzktyvz8csjfemfqqj5gzefczk3g7nz43kkces4puz6z
   - &tod_ruby age168wrrgww4sag8mmy3c97ylr6uvls8chsseaktxtjxgwpyp95as5szlccwl #tod@Ruby
   - &tod_sapphire age1l0m3xpayduxpq9e06xpzt9kn00f9q2pl6m8nmu7z0cf8majql5sq06p2yf
   - &tod_slate age1ru4amlu0rp0a4qttysk5dw6dsmgrw0ylaqejqrk5uud2vqqd7d7qpwnafw #tod@Slate
@@ -13,6 +14,7 @@ creation_rules:
           - *ruby
           - *sapphire
           - *slate
+          - *nucleus
           - *tod_sapphire
           - *tod_ruby
           - *tod_slate
