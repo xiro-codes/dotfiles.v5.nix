@@ -87,13 +87,18 @@
       imports = [
         inputs.nix-topology.flakeModule
         (import ./schemas.nix self.outPath)
-        (import ./discovery (import ./globals.nix { inherit inputs; selfPath = ./.; }))
+        (import ./discovery (
+          import ./globals.nix {
+            inherit inputs;
+            selfPath = ./.;
+          }
+        ))
       ];
       perSystem =
         { pkgs, system, ... }:
         {
           formatter = pkgs.nixfmt-tree;
-          packages = inputs.nvim-nix.packages.${system};
+          #packages = inputs.nvim-nix.packages.${system};
           topology.modules = [
             ./topology.nix
           ];
