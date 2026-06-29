@@ -60,9 +60,9 @@ in
           ];
         };
         background = {
-          enabled = true;
+          enabled = false;
           visualiser = {
-            enabled = true;
+            enabled = false;
             autoHide = false;
           };
         };

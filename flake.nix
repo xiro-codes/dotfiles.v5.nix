@@ -11,6 +11,7 @@
     nvim-nix.url = "github:xiro-codes/nvim.nix";
     harmonia.url = "github:nix-community/harmonia";
     tierfs.url = "github:xiro-codes/tierfs";
+    mvis.url = "github:xiro-codes/mvis/v0.1.0";
     fuchsia-nix = {
       url = "github:xiro-codes/fuchsia.nix";
       inputs.nixpkgs.follows = "nixpkgs";

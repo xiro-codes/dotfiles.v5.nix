@@ -10,6 +10,7 @@ let
   inherit (lib)
     generators
     getExe
+    getExe'
     mkEnableOption
     mkIf
     mkForce
@@ -21,6 +22,7 @@ let
   variables = config.local.variables;
   hypr-tools = pkgs.hypr-tools;
   quick-menu = pkgs.quick-menu;
+  mvis = inputs.mvis.packages.${pkgs.system}.default;
 in
 {
   options.local.hyprland = {
@@ -45,6 +47,8 @@ in
       jq
       discord
       hypr-tools
+      mvis
+      mpvpaper
     ];
 
     wayland.windowManager.hyprland = {
@@ -89,7 +93,7 @@ in
           inactive_opacity = "0.95";
           fullscreen_opacity = "1.0";
           blur = {
-            enabled = false;
+            enabled = true;
           };
         };
         binds = {
@@ -97,6 +101,7 @@ in
         };
         exec-once = [
           "wl-paste --type text --watch cliphist store"
+          "${getExe pkgs.mpvpaper} -o \"loop --mute=yes --keepaspect=no\" '*' $HOME/.wallpaper.video"
         ]
         ++ variables.autostart
         ++ optionals config.local.caelestia-shell.enable [
@@ -147,7 +152,7 @@ in
           "$mod_SHIFT, L, movewindow, r"
 
           "$mod, T, togglegroup"
-          "$mod, L, lockactivegroup"
+          "$mod, N, changegroupactive, f"
         ];
         bindm = [
           "$mod,mouse:272, movewindow"
