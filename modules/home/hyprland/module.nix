@@ -22,6 +22,7 @@ let
   variables = config.local.variables;
   hypr-tools = pkgs.hypr-tools;
   quick-menu = pkgs.quick-menu;
+  cosmic-live = inputs.cosmic-live.packages.${pkgs.system}.default;
 in
 {
   options.local.hyprland = {
@@ -99,6 +100,7 @@ in
         exec-once = [
           "wl-paste --type text --watch cliphist store"
           # "${getExe pkgs.mpvpaper} -o \"loop --mute=yes --keepaspect=no\" '*' $HOME/.wallpaper.video"
+          "${getExe cosmic-live} "
         ]
         ++ variables.autostart
         ++ optionals config.local.caelestia-shell.enable [
