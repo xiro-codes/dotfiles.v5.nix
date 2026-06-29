@@ -3,16 +3,19 @@
   lib,
   inputs,
   ...
-}: let in {
-  imports = [ 
+}:
+let
+in
+{
+  imports = [
     ../profiles/workstation
-    ../profiles/nsfw
-  ]
+    # ../profiles/nsfw
+  ];
   home.packages = with pkgs; [
     vlc
   ];
   services.espanso = {
-    package = pkgs..espanso-wayland;
+    package = pkgs.espanso-wayland;
     matches.base.matches = [
       {
         trigger = "dto";
@@ -23,3 +26,4 @@
   };
   home.stateVersion = "26.05";
 }
+
