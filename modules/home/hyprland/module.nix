@@ -22,7 +22,6 @@ let
   variables = config.local.variables;
   hypr-tools = pkgs.hypr-tools;
   quick-menu = pkgs.quick-menu;
-  mvis = inputs.mvis.packages.${pkgs.system}.default;
 in
 {
   options.local.hyprland = {
@@ -47,8 +46,6 @@ in
       jq
       discord
       hypr-tools
-      mvis
-      mpvpaper
     ];
 
     wayland.windowManager.hyprland = {
@@ -101,7 +98,7 @@ in
         };
         exec-once = [
           "wl-paste --type text --watch cliphist store"
-          "${getExe pkgs.mpvpaper} -o \"loop --mute=yes --keepaspect=no\" '*' $HOME/.wallpaper.video"
+          # "${getExe pkgs.mpvpaper} -o \"loop --mute=yes --keepaspect=no\" '*' $HOME/.wallpaper.video"
         ]
         ++ variables.autostart
         ++ optionals config.local.caelestia-shell.enable [
