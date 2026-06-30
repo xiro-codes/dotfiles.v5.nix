@@ -11,17 +11,8 @@ in
   imports = [
     ../profiles/workstation
   ];
-  programs.obs-studio = {
-    enable = true;
-    plugins = with pkgs.obs-studio-plugins; [
-      wlrobs
-
-    ];
-  };
   home.packages = with pkgs; [
-    godot
     eog
-    prismlauncher
     geminicommit
     antigravity-fhs
     vlc
@@ -38,13 +29,7 @@ in
   # local.wallpapers = {
   #   name = "AG1.png";
   # };
-  local.valent.enable = true;
-  local.kdeconnect.enable = lib.mkForce false;
-  dconf.settings = {
-    "org/nemo/desktop" = {
-      desktop-icons = true;
-    };
-  };
+  # TODO make this more useful the auto complete function is good at catching minor typos but i wish it could learn or i could log my typos 
   services.espanso = {
     enable = true;
     package = pkgs.espanso-wayland;
