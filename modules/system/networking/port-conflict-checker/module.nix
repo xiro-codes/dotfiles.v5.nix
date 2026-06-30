@@ -20,20 +20,20 @@ let
 
   # Collect all configured ports
   configuredPorts = flatten [
-    (optional (cfg.dashboard.enable) (mkPort "Dashboard" cfg.dashboard.port))
-    (optional (cfg.gitea.enable) (mkPort "Gitea Web" cfg.gitea.port))
-    (optional (cfg.gitea.enable) (mkPort "Gitea SSH" (cfg.gitea.sshPort or 2222)))
-    (optional (cfg.file-browser.enable) (mkPort "File Browser" cfg.file-browser.port))
-    (optional (cfg.media.jellyfin.enable) (mkPort "Jellyfin" cfg.media.jellyfin.port))
-    (optional (cfg.media.plex.enable) (mkPort "Plex" cfg.media.plex.port))
-    (optional (cfg.media.ersatztv.enable) (mkPort "ErsatzTV" cfg.media.ersatztv.port))
-    (optional (cfg.media.komga.enable) (mkPort "Komga" cfg.media.komga.port))
-    (optional (cfg.media.audiobookshelf.enable) (mkPort "Audiobookshelf" cfg.media.audiobookshelf.port))
-    (optional (cfg.downloads.qbittorrent.enable) (mkPort "Qbittorrent" cfg.downloads.qbittorrent.port))
-    (optional (cfg.downloads.pinchflat.enable) (mkPort "Pinchflat" cfg.downloads.pinchflat.port))
-    (optional (cfg.harmonia-cache.enable) (mkPort "Cache Server" cfg.harmonia-cache.port))
-    (optional (cfg.reverse-proxy.enable) (mkPort "Reverse Proxy HTTP" 80))
-    (optional (cfg.reverse-proxy.enable) (mkPort "Reverse Proxy HTTPS" 443))
+    (optional (cfg.dashboard.enable or false) (mkPort "Dashboard" cfg.dashboard.port))
+    (optional (cfg.gitea.enable or false) (mkPort "Gitea Web" cfg.gitea.port))
+    (optional (cfg.gitea.enable or false) (mkPort "Gitea SSH" (cfg.gitea.sshPort or 2222)))
+    (optional (cfg.file-browser.enable or false) (mkPort "File Browser" cfg.file-browser.port))
+    (optional (cfg.media.jellyfin.enable or false) (mkPort "Jellyfin" cfg.media.jellyfin.port))
+    (optional (cfg.media.plex.enable or false) (mkPort "Plex" cfg.media.plex.port))
+    (optional (cfg.media.ersatztv.enable or false) (mkPort "ErsatzTV" cfg.media.ersatztv.port))
+    (optional (cfg.media.komga.enable or false) (mkPort "Komga" cfg.media.komga.port))
+    (optional (cfg.media.audiobookshelf.enable or false) (mkPort "Audiobookshelf" cfg.media.audiobookshelf.port))
+    (optional (cfg.downloads.qbittorrent.enable or false) (mkPort "Qbittorrent" cfg.downloads.qbittorrent.port))
+    (optional (cfg.downloads.pinchflat.enable or false) (mkPort "Pinchflat" cfg.downloads.pinchflat.port))
+    (optional (cfg.harmonia-cache.enable or false) (mkPort "Cache Server" cfg.harmonia-cache.port))
+    (optional (cfg.reverse-proxy.enable or false) (mkPort "Reverse Proxy HTTP" 80))
+    (optional (cfg.reverse-proxy.enable or false) (mkPort "Reverse Proxy HTTPS" 443))
   ];
 
   # Helper to find duplicates
