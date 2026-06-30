@@ -122,11 +122,11 @@
         "rust-overlay": "rust-overlay"
       },
       "locked": {
-        "lastModified": 1782789540,
-        "narHash": "sha256-MGIN6Xt/RhRPAlrgJCe24QvYCqCDYCMUvYlzK7cemA0=",
+        "lastModified": 1782790249,
+        "narHash": "sha256-bjsoVTL7i6Z37Jk0Oazw6uNStz73raHSjWsLZUcxmKg=",
         "owner": "xiro-codes",
         "repo": "cosmic-live",
-        "rev": "6ae025e65436f5ad769452abced623d2a9e688d6",
+        "rev": "a63cf98669da0412edbaeca8fb9d3bc3d1a2af85",
         "type": "github"
       },
       "original": {
