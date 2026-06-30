@@ -56,7 +56,7 @@ in
 
     wayland.windowManager.hyprland = {
       enable = true;
-      configType = "lua";
+      configType = "hyprlang";
       xwayland.enable = true;
       settings = {
         monitor = [
