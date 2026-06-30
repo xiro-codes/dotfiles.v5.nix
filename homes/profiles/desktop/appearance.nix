@@ -8,7 +8,7 @@ let
 in
 {
   local = {
-    stylix.enable = false;
+    stylix.enable = true;
     fonts.enable = true;
   };
 
