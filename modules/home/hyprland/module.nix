@@ -50,6 +50,8 @@ in
       discord
       hypr-tools
       cosmic-live
+      webcam
+      webcam-menu
     ];
 
     wayland.windowManager.hyprland = {
@@ -103,8 +105,15 @@ in
         exec-once = [
           "wl-paste --type text --watch cliphist store"
           "${getExe cosmic-live} "
+          "${getExe pkgs.webcam}"
         ]
         ++ variables.autostart;
+        windowrulev2 = [
+          "float, class:^(webcam)$"
+          "pin, class:^(webcam)$"
+          "size 320 240, class:^(webcam)$"
+          "move 100%-340 100%-260, class:^(webcam)$"
+        ];
         windowrules = [
         ];
         "$mod" = "SUPER";
@@ -128,6 +137,7 @@ in
 
           # Application launchers
           "$mod, P, exec, ${variables.launcher} "
+          "$mod, C, exec, ${getExe pkgs.webcam-menu}"
           "$mod, D, togglespecialworkspace, desktop"
           "$mod, minus, exec, hypr-screenshot full"
           "$mod_SHIFT, minus, exec, hypr-screenshot area"

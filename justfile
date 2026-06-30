@@ -246,3 +246,9 @@ update-assets:
     @echo "Updating icons manifest..."
     nix shell nixpkgs#python3 -c python3 packages/icons/update.py
     @echo "Assets updated successfully."
+
+# Open webcam with mpv
+[group('utils')]
+webcam:
+    nix run .#webcam
+
