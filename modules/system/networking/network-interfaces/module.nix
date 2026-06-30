@@ -13,7 +13,7 @@ let
     types
     ;
 
-  cfg = config.local.network;
+  cfg = config.local.network-interfaces;
   hostsCfg = config.local.network-hosts;
   primaryHost = hostsCfg.primary;
   primaryIp = hostsCfg.${primaryHost};
@@ -35,8 +35,7 @@ let
   dynamicDomains = serviceDomains ++ folderDomains ++ [ "${primaryHost}.home" ];
 in
 {
-  #TODO rename networking/network ??? that so bad like what does it even mean 
-  options.local.network = {
+  options.local.network-interfaces = {
     enable = mkEnableOption "Standard system networking";
     useProtonVpn = mkOption {
       type = types.bool;

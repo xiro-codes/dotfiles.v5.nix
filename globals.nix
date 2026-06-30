@@ -9,7 +9,7 @@
       imports = [
         (selfPath + "/modules/system/core/bootloader/module.nix")
         (selfPath + "/modules/system/core/disks/module.nix")
-        (selfPath + "/modules/system/networking/network/module.nix")
+        (selfPath + "/modules/system/networking/network-interfaces/module.nix")
         (selfPath + "/modules/system/core/nix-core-settings/module.nix")
         (selfPath + "/modules/system/core/secrets/module.nix")
         (selfPath + "/modules/system/admin/security/module.nix")

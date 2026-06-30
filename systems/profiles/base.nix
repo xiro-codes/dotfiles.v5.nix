@@ -27,7 +27,7 @@
     localization.enable = true;
     disks.enable = true;
 
-    network = {
+    network-interfaces = {
       enable = true;
       useNetworkManager = true;
     };
