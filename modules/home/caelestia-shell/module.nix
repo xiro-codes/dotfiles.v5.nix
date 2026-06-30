@@ -95,6 +95,11 @@ in
           "sessionGif" = "";
           "wallpaperDir" = "$HOME/.assets/wallpapers";
         };
+        session = {
+          commands = {
+            logout = [ "hyprctl" "dispatch" "exit" ];
+          };
+        };
         services.useFahrenheit = false;
       };
     };
