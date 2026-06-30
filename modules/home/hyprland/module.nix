@@ -47,6 +47,7 @@ in
       jq
       discord
       hypr-tools
+      cosmic-live
     ];
 
     wayland.windowManager.hyprland = {
@@ -99,13 +100,9 @@ in
         };
         exec-once = [
           "wl-paste --type text --watch cliphist store"
-          # "${getExe pkgs.mpvpaper} -o \"loop --mute=yes --keepaspect=no\" '*' $HOME/.wallpaper.video"
           "${getExe cosmic-live} "
         ]
-        ++ variables.autostart
-        ++ optionals config.local.caelestia-shell.enable [
-          "caelestia wallpaper -f $HOME/.wallpaper"
-        ];
+        ++ variables.autostart;
         windowrules = [
         ];
         "$mod" = "SUPER";
