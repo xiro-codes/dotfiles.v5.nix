@@ -15,14 +15,26 @@ in
 
   config = mkIf cfg.enable {
     # Make dotfiles flake available as 'dotfiles' registry entry
-    nix.registry.dotfiles = {
-      from = {
-        type = "indirect";
-        id = "dotfiles";
+    nix.registry = {
+        dotfiles = {
+          from = {
+            type = "indirect";
+            id = "dotfiles";
+          };
+          to = {
+            type = "path";
+            path = "/etc/nixos";
+          };
       };
-      to = {
-        type = "path";
-        path = "/etc/nixos";
+      templates = {
+        from = {
+          type = "indirect";
+          id = "templates";
+        };
+        to = {
+          type = "path";
+          path = "/media/Scratch/templates";
+        };
       };
     };
 
@@ -30,6 +42,7 @@ in
     nix.nixPath = [
       "nixpkgs=/nix/var/nix/profiles/per-user/root/channels/nixpkgs"
       "dotfiles=/etc/nixos"
+      "templates=/media/Scratch/templates"
     ];
   };
 }
