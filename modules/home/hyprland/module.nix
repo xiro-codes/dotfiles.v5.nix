@@ -18,11 +18,13 @@ let
     types
     optionals
     ;
+  getSystem = p: p.stdenv.hostPlatform.system;
+
   cfg = config.local.hyprland;
   variables = config.local.variables;
   hypr-tools = pkgs.hypr-tools;
   quick-menu = pkgs.quick-menu;
-  cosmic-live = inputs.cosmic-live.packages.${pkgs.system}.default;
+  cosmic-live = inputs.cosmic-live.packages.${getSystem pkgs}.default;
 in
 {
   options.local.hyprland = {
