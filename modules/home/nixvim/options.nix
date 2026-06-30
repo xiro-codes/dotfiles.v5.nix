@@ -18,6 +18,13 @@ in
     undofile = true;
     undolevels = 10000;
     termguicolors = false;
+    guifont = "Cascadia Code:h10";
+    foldmethod = "expr";
+    foldexpr = "v:lua.vim.treesitter.foldexpr()";
+    foldcolumn = "1";
+    foldlevel = 99;
+    foldlevelstart = 99;
+    foldenable = true;
   };
   extraConfigLua = mkIf cfg.smartUndo ''
     local function setup_smart_undo()
