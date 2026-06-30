@@ -163,9 +163,12 @@ in
     };
 
     # Shoko
-    services.shoko = mkIf cfg.shoko.enable {
+    local.shoko-server = mkIf cfg.shoko.enable {
       enable = true;
-      openFirewall = cfg.openFirewall || cfg.shoko.openFirewall;
     };
+    
+    networking.firewall.allowedTCPPorts = mkIf (cfg.shoko.enable && (cfg.openFirewall || cfg.shoko.openFirewall)) [
+      cfg.shoko.port
+    ];
   };
 }

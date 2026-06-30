@@ -36,7 +36,7 @@ in
           target = "http://localhost:${toString config.local.downloads.qbittorrent.port}";
           extraConfig = "client_max_body_size 1G;";
         };
-
+        shoko.target = "http://localhost:${toString config.local.media.shoko-server.port}";
         yt.target = "http://localhost:${toString config.local.downloads.pinchflat.port}";
 
         stats.target = "http://localhost:${toString config.local.coolercontrol.port}";
