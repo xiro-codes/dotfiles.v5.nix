@@ -56,7 +56,7 @@ in
 
     wayland.windowManager.hyprland = {
       enable = true;
-      configType = "hyprlang";
+      configType = "lua";
       xwayland.enable = true;
       settings = {
         monitor = [
@@ -108,12 +108,13 @@ in
           "${getExe pkgs.webcam}"
         ]
         ++ variables.autostart;
-        windowrulev2 = [
-          "float, class:^(webcam)$"
-          "pin, class:^(webcam)$"
-          "size 320 240, class:^(webcam)$"
-          "move 100%-340 100%-260, class:^(webcam)$"
-        ];
+        #TODO port to new syntax
+        #windowrulev2 = [
+        #  "float, class:^(webcam)$"
+        #  "pin, class:^(webcam)$"
+        #  "size 320 240, class:^(webcam)$"
+        #  "move 100%-340 100%-260, class:^(webcam)$"
+        #];
         windowrules = [
         ];
         "$mod" = "SUPER";
