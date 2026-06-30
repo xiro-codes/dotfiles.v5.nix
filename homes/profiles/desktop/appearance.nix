@@ -26,11 +26,6 @@ in
     };
   };
 
-  programs.kitty.font = {
-    name = "Cascadia Code";
-    size = 10;
-  };
-
   home.packages = with pkgs; [
     # Fonts (for GUI)
     cascadia-code
