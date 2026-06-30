@@ -1,8 +1,0 @@
-# Global Rules for AI Tools (Cursor, Antigravity)
-
-1. **NixOS Environment**: This is a NixOS environment. DO NOT assume any tools (like `node`, `python`, `grep`, `sed`, `awk`, etc.) are installed on the host system.
-2. **Ephemeral Tools**: ALWAYS use `nix shell nixpkgs#<package> -c <command>` or `nix run nixpkgs#<package>` to run tools you need.
-3. **Save Tokens**: Do not try standard Linux paths or package managers (apt, dnf). Go straight to Nix.
-4. **Discovery Engine**: A custom auto-discovery engine in `discovery/` registers files based on their directory. Do not manually register new systems, modules, or packages in `flake.nix`.
-5. **Inherit Pattern**: Never use `lib.<function>` directly. Always use `inherit (lib) ...` at the top of the file/block.
-6. **Never Delete**: Never delete modules, systems, or packages. If they are broken or unused, mark them with `broken = true;` in their `meta.nix` file.
