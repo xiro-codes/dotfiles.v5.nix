@@ -22,5 +22,6 @@
       proton-vpn
       unzip
       p7zip
+      video-to-gif
     ];
 }
