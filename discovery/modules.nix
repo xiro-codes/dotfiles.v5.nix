@@ -35,7 +35,7 @@ in
           # Convert modules in current directory to name-value pairs
           localPairs = map (name: {
             name = if prefix == "" then name else "${prefix}/${name}";
-            value = dir + "/${name}/module.nix";
+            value = if metaLib.isBroken (dir + "/${name}/meta.nix") then {} else dir + "/${name}/module.nix";
           }) modulesHere;
           
           # Recursively find in hubs
@@ -48,7 +48,7 @@ in
 
       topLevelModules = map (name: {
         inherit name;
-        value = path + "/${name}/module.nix";
+        value = if metaLib.isBroken (path + "/${name}/meta.nix") then {} else path + "/${name}/module.nix";
       }) topLevelNames;
     in
     listToAttrs (topLevelModules ++ hubModules);
