@@ -104,10 +104,12 @@ in
         };
         exec-once = [
           "wl-paste --type text --watch cliphist store"
-          "${getExe cosmic-live} "
-          "${getExe pkgs.webcam}"
+          "${getExe cosmic-live} --wallpaper $HOME/.wallpaper"
         ]
-        ++ variables.autostart;
+        ++ variables.autostart
+        ++ optionals config.local.caelestia-shell.enable [
+          "caelestia wallpaper -f $HOME/.wallpaper"
+        ];
         windowrules = [
           "float, class:^(webcam)$"
           "pin, class:^(webcam)$"

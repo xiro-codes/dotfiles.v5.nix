@@ -8,11 +8,7 @@
     nix-flatpak.url = "github:gmodena/nix-flatpak";
     nvim-nix.url = "github:xiro-codes/nvim.nix";
     harmonia.url = "github:nix-community/harmonia";
-    cosmic-live.url = "github:xiro-codes/cosmic-live/v0.1.0";
-    tagstudio = {
-      url = "github:TagStudioDev/TagStudio";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
+    cosmic-live.url = "github:xiro-codes/cosmic-live";
     fuchsia-nix = {
       url = "github:xiro-codes/fuchsia.nix";
       inputs.nixpkgs.follows = "nixpkgs";
