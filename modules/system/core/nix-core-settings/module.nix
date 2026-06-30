@@ -25,7 +25,7 @@ in
           else
             "unknown";
       in
-      lib.mkDefault "${config.system.nixos.release}-${config.system.nixos.versionSuffix}-commits-${count}";
+      lib.mkForce "${config.system.nixos.release}${config.system.nixos.versionSuffix}-commits-${count}";
 
     # Nix configuration
     determinate.enable = true;
