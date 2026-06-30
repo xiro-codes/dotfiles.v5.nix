@@ -108,14 +108,11 @@ in
           "${getExe pkgs.webcam}"
         ]
         ++ variables.autostart;
-        #TODO port to new syntax
-        #windowrulev2 = [
-        #  "float, class:^(webcam)$"
-        #  "pin, class:^(webcam)$"
-        #  "size 320 240, class:^(webcam)$"
-        #  "move 100%-340 100%-260, class:^(webcam)$"
-        #];
         windowrules = [
+          "float, class:^(webcam)$"
+          "pin, class:^(webcam)$"
+          "size 320 240, class:^(webcam)$"
+          "move 100%-340 100%-260, class:^(webcam)$"
         ];
         "$mod" = "SUPER";
 
