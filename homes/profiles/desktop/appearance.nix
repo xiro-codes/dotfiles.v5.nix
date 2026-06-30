@@ -13,7 +13,7 @@ in
   };
 
   gtk = {
-    enable = mkForce false;
+    enable = mkForce true;
     gtk4.theme = mkForce null;
     font = {
       name = "Cascadia Code";
