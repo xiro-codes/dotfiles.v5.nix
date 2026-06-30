@@ -48,7 +48,9 @@ in
 
       stylix = {
         enable = true;
+        #TODO how do i do what it does but with ./.local/caelstia/sheme.json colors
         image = config.local.assets.wallpapers.main;
+
         cursor = {
           size = 16;
         };
