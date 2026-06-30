@@ -4,14 +4,10 @@
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-26.05";
     nixpkgs-unstable.url = "github:nixos/nixpkgs/nixos-unstable";
-    nixarr.url = "github:nix-media-server/nixarr";
     flake-parts.url = "github:hercules-ci/flake-parts";
     nix-flatpak.url = "github:gmodena/nix-flatpak";
-    rocket-blog.url = "github:xiro-codes/rocket_blog";
     nvim-nix.url = "github:xiro-codes/nvim.nix";
     harmonia.url = "github:nix-community/harmonia";
-    tierfs.url = "github:xiro-codes/tierfs";
-    mvis.url = "github:xiro-codes/mvis/v0.1.0";
     cosmic-live.url = "github:xiro-codes/cosmic-live/v0.1.0";
     fuchsia-nix = {
       url = "github:xiro-codes/fuchsia.nix";
@@ -64,17 +60,11 @@
     nix-topology.url = "github:oddlama/nix-topology";
     determinate.url = "https://flakehub.com/f/DeterminateSystems/determinate/*";
     flake-schemas.url = "https://flakehub.com/f/DeterminateSystems/flake-schemas/*";
-    millennium.url = "github:SteamClientHomebrew/Millennium?dir=packages/nix";
 
     jovian = {
       url = "github:Jovian-Experiments/Jovian-NixOS";
     };
 
-    impermanence.url = "github:nix-community/impermanence";
-    nix-compose = {
-      url = "github:xiro-codes/nix-compose";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
   };
 
   outputs =

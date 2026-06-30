@@ -20,14 +20,10 @@
         inputs.home-manager.nixosModules.home-manager
         inputs.nix-flatpak.nixosModules.nix-flatpak
         inputs.gog-nix.nixosModules.gog
-        inputs.rocket-blog.nixosModules.default
         inputs.silentsddm.nixosModules.default
         inputs.harmonia.nixosModules.harmonia
-        inputs.impermanence.nixosModules.impermanence
         inputs.determinate.nixosModules.default
         inputs.nix-topology.nixosModules.default
-        inputs.nix-compose.nixosModules.daemon
-        inputs.nixarr.nixosModules.default
       ];
     }
   ];

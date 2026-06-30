@@ -45,7 +45,6 @@ in
       publicKey = "cache.sapphire.home-1:T6/FA9b6BgZvvvoXIzc4y/5MJgPs2GVHpi0KcU/fUMo=";
     };
 
-
     bootloader.recoveryUUID = "b0cd9860-736a-45c5-a6d2-e69cdb319f24";
 
     dotfiles-sync.maintenance.upgradeFlake = "github:xiro-codes/dotfiles.v5.nix";
@@ -56,11 +55,6 @@ in
     "video=HDMI-A-1:2560x1080@60"
     "video=DP-3:d"
   ];
-
-  nxc.daemon = {
-    enable = true;
-    socketGroup = "wheel";
-  };
 
   system.stateVersion = "25.11";
 
