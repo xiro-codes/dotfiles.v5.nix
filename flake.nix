@@ -9,6 +9,10 @@
     nvim-nix.url = "github:xiro-codes/nvim.nix";
     harmonia.url = "github:nix-community/harmonia";
     cosmic-live.url = "github:xiro-codes/cosmic-live/v0.1.0";
+    tagstudio = {
+      url = "github:TagStudioDev/TagStudio";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     fuchsia-nix = {
       url = "github:xiro-codes/fuchsia.nix";
       inputs.nixpkgs.follows = "nixpkgs";

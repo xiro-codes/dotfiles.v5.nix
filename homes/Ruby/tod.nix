@@ -5,6 +5,7 @@
   ...
 }:
 let
+  getSystem = p: p.stdenv.hostPlatform.system;
 in
 {
   imports = [
@@ -24,7 +25,7 @@ in
     geminicommit
     antigravity-fhs
     vlc
-
+    inputs.tagstudio.packages.${getSystem pkgs}.tagstudio
     #(symlinkJoin {
     #  name = "xivlauncher-wrapped";
     #  paths = [ xivlauncher ];
