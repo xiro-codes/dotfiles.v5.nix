@@ -35,7 +35,7 @@ in
           format = "[$hostname]($style) ";
           style = "white";
         };
-
+        # TODO just show the current dir, although i do like the full path its not that useful i know where i am most of the time 
         directory = {
           style = "blue";
           truncation_length = 3;
