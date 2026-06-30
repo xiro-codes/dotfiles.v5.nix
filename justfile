@@ -171,30 +171,40 @@ gc host:
 
 # Standard nixos-rebuild with impure flag
 [group('life')]
-rebuild:
+rebuild: _check-clean
     sudo nixos-rebuild switch --flake . --impure
 
 [group('life')]
-rebuild-no-cache:
+rebuild-no-cache: _check-clean
     sudo nixos-rebuild switch --flake . --impure --option substituters "https://cache.nixos.org/"
 
 # Switch local system configuration using nh
 [group('life')]
-switch:
+switch: _check-clean
     nh os switch . -- --impure
 
 [group('life')]
-switch-no-cache:
+switch-no-cache: _check-clean
     nh os switch . -- --impure --option substituters "https://cache.nixos.org/"
 
 # Set next boot generation using nh
 [group('life')]
-boot:
+boot: _check-clean
     nh os boot . -- --impure
 
 [group('life')]
-boot-no-cache:
+boot-no-cache: _check-clean
     nh os boot . -- --impure --option substituters "https://cache.nixos.org/"
+
+# Ensure git working tree is clean before deploying or switching
+[private]
+_check-clean:
+    #!/usr/bin/env bash
+    set -euo pipefail
+    if ! git diff --quiet || ! git diff --cached --quiet || [ -n "$(git ls-files --others --exclude-standard)" ]; then
+        echo "❌ Error: Working directory is not clean. Please commit all changes."
+        exit 1
+    fi
 
 # Install a system from scratch using disko
 [group('install')]
