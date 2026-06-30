@@ -68,7 +68,7 @@ let
     [group('new')]
     new-rust-bevy dir:
         mkdir -p {{dir}}
-        cd {{dir}} && nix flake init -t ~/.dotfiles.nix#templates.rust-bevy
+        cd {{dir}} && nix flake init -t templates#rust-bevy
         cd {{dir}} && git init && git add .
         cd {{dir}} && nix build . || true
         cd {{dir}} && git commit -m "init commit"
@@ -76,7 +76,7 @@ let
     [group('new')]
     new-esp32-rust dir:
         mkdir -p {{dir}}
-        cd {{dir}} && nix flake init -t ~/.dotfiles.nix#templates.esp32-rust
+        cd {{dir}} && nix flake init -t templates#esp32-rust
         cd {{dir}} && git init && git add .
         cd {{dir}} && nix build . || true
         cd {{dir}} && git commit -m "init commit"
@@ -84,7 +84,7 @@ let
     [group('new')]
     new-odin dir:
         mkdir -p {{dir}}
-        cd {{dir}} && nix flake init -t ~/.dotfiles.nix#templates.odin
+        cd {{dir}} && nix flake init -t templates#odin
         cd {{dir}} && git init && git add .
         cd {{dir}} && nix build . || true
         cd {{dir}} && git commit -m "init commit"
@@ -92,14 +92,14 @@ let
     [group('new')]
     new-flutter dir:
         mkdir -p {{dir}}
-        cd {{dir}} && nix flake init -t ~/.dotfiles.nix#templates.flutter
+        cd {{dir}} && nix flake init -t templates#flutter
         cd {{dir}} && git init && git add .
         cd {{dir}} && nix build . || true
         cd {{dir}} && git commit -m "init commit"
     [group('new')]
     new-manim dir:
         mkdir -p {{dir}}
-        cd {{dir}} && nix flake init -t ~/.dotfiles.nix#templates.manim
+        cd {{dir}} && nix flake init -t templates#manim
         cd {{dir}} && git init && git add .
         cd {{dir}} && nix build . || true
         cd {{dir}} && git commit -m "init commit"
@@ -107,7 +107,7 @@ let
     [group('new')]
     new-nixos-compose dir:
         mkdir -p {{dir}}
-        cd {{dir}} && nix flake init -t ~/.dotfiles.nix#templates.nixos-compose
+        cd {{dir}} && nix flake init -t templates#nixos-compose
         cd {{dir}} && git init && git add .
         cd {{dir}} && nix build . || true
         cd {{dir}} && git commit -m "init commit"
@@ -115,7 +115,7 @@ let
     [group('new')]
     new-rust-cli dir:
         mkdir -p {{dir}}
-        cd {{dir}} && nix flake init -t ~/.dotfiles.nix#templates.rust-cli
+        cd {{dir}} && nix flake init -t templates#rust-cli
         cd {{dir}} && git init && git add .
         cd {{dir}} && nix build . || true
         cd {{dir}} && git commit -m "init commit"
@@ -123,7 +123,7 @@ let
     [group('new')]
     new-platformio dir:
         mkdir -p {{dir}}
-        cd {{dir}} && nix flake init -t ~/.dotfiles.nix#templates.platformio
+        cd {{dir}} && nix flake init -t templates#platformio
         cd {{dir}} && git init && git add .
         cd {{dir}} && nix build . || true
         cd {{dir}} && git commit -m "init commit"
@@ -131,7 +131,7 @@ let
     [group('new')]
     new-rocket-forge dir:
         mkdir -p {{dir}}
-        cd {{dir}} && nix flake init -t ~/.dotfiles.nix#templates.rocket-forge
+        cd {{dir}} && nix flake init -t templates#rocket-forge
         cd {{dir}} && git init && git add .
         cd {{dir}} && nix build . || true
         cd {{dir}} && git commit -m "init commit"
@@ -139,7 +139,7 @@ let
     [group('new')]
     new-python-uv dir:
         mkdir -p {{dir}}
-        cd {{dir}} && nix flake init -t ~/.dotfiles.nix#templates.python-uv
+        cd {{dir}} && nix flake init -t templates#python-uv
         cd {{dir}} && git init && git add .
         cd {{dir}} && nix build . || true
         cd {{dir}} && git commit -m "init commit"
@@ -147,7 +147,7 @@ let
     [group('new')]
     new-python-rust-uv dir:
         mkdir -p {{dir}}
-        cd {{dir}} && nix flake init -t ~/.dotfiles.nix#templates.python-rust-uv
+        cd {{dir}} && nix flake init -t templates#python-rust-uv
         cd {{dir}} && git init && git add .
         cd {{dir}} && nix build . || true
         cd {{dir}} && git commit -m "init commit"

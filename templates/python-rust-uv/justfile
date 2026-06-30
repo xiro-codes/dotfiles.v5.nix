@@ -1,8 +1,0 @@
-build:
-    maturin build
-
-develop:
-    maturin develop
-
-run:
-    python app/main.py

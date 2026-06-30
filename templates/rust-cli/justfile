@@ -1,9 +1,0 @@
-build:
-    cargo build
-
-run:
-    cargo run
-
-check:
-    cargo clippy
-    cargo fmt --check

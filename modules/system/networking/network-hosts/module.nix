@@ -36,6 +36,7 @@ let
     hostname: if builtins.hasAttr hostname hostDefs then getHost hostname else hostname; # fallback to hostname as-is
 in
 {
+  # TODO does this really tell me what it does
   options.local.network-hosts = {
 
     primary = mkOption {

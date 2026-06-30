@@ -35,6 +35,7 @@ let
   dynamicDomains = serviceDomains ++ folderDomains ++ [ "${primaryHost}.home" ];
 in
 {
+  #TODO rename networking/network ??? that so bad like what does it even mean 
   options.local.network = {
     enable = mkEnableOption "Standard system networking";
     useProtonVpn = mkOption {
