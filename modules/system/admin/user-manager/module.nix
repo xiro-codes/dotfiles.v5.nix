@@ -72,13 +72,13 @@ in
         value = {
           text = ''
             if [ -d "/media/Scratch" ]; then
-              mkdir -p /media/Scratch/${username}/{Downloads,Documents,Pictures,Videos,Music,vimwiki}
+              mkdir -p /media/Scratch/${username}/{Downloads,Documents,Pictures,Videos,Music}
               ln -sfn /media/Scratch/${username}/Downloads /home/${username}/Downloads
               ln -sfn /media/Scratch/${username}/Documents /home/${username}/Documents
               ln -sfn /media/Scratch/${username}/Pictures /home/${username}/Pictures
               ln -sfn /media/Scratch/${username}/Videos /home/${username}/Videos
               ln -sfn /media/Scratch/${username}/Music /home/${username}/Music
-              ln -sfn /media/Scratch/${username}/vimwiki /home/${username}/vimwiki
+              ln -sfn /media/Scratch/${username}/Templates /home/${username}/Templates
             else
               echo "Scratch directory not found. Skipping media folder links."
             fi

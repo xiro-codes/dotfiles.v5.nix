@@ -16,7 +16,6 @@ in
     geminicommit
     antigravity-fhs
     vlc
-    inputs.tagstudio.packages.${getSystem pkgs}.tagstudio
     #(symlinkJoin {
     #  name = "xivlauncher-wrapped";
     #  paths = [ xivlauncher ];
@@ -29,7 +28,7 @@ in
   # local.wallpapers = {
   #   name = "AG1.png";
   # };
-  # TODO make this more useful the auto complete function is good at catching minor typos but i wish it could learn or i could log my typos 
+  # TODO make this more useful the auto complete function is good at catching minor typos but i wish it could learn or i could log my typos
   services.espanso = {
     enable = true;
     package = pkgs.espanso-wayland;
