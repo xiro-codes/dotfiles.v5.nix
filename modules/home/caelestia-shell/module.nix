@@ -32,71 +32,71 @@ in
     programs.caelestia = {
       enable = true;
       cli.enable = true;
-      settings = {
-        appearance.rounding.scale = 0.8;
-        appearance.transparency = {
-          enabled = true;
-          base = 0.95;
-          layers = 0.80;
-        };
-        general.apps = {
-          terminal = [ "kitty" ];
-          audio = [ "pavucontrol" ];
-          playback = [ "celluloid" ];
-          explorer = [ "nautilus" ];
-        };
-        general.idle = {
-          timeouts = [
-            {
-              timeout = 1800; # Shortened for testing
-              idleAction = "dpms off";
-              returnAction = "dpms on";
-            }
-            {
-              timeout = 5400; # Shortened for testing
-              idleAction = "exec shutdown +1";
-              returnAction = "exec shutdown -c";
-            }
-          ];
-        };
-        background = {
-          enabled = false;
-          visualiser = {
-            enabled = false;
-            autoHide = false;
-          };
-        };
-        launcher.hiddenApps = [
-          "qt5ct"
-          "qt6ct"
-          "neovim"
-          "blueman-manager"
-          "blueman-adapters"
-          "mpv"
-          "nixos-help"
-        ];
-        bar = {
-          tray.recolour = true;
-          workspaces.shown = 3;
-          popouts = {
-            "activeWindow" = false;
-          };
-          status = {
-            showBattery = false;
-            showAudio = true;
-            showBluetooth = true;
-            showWifi = false;
-          };
-        };
-        osd.enableBrightness = false;
-
-        paths = {
-          "mediaGif" = "$HOME/.music.gif";
-          "sessionGif" = "";
-          "wallpaperDir" = "$HOME/.assets/wallpapers";
-        };
-        services.useFahrenheit = false;
-      };
+      # settings = {
+      #   appearance.rounding.scale = 0.8;
+      #   appearance.transparency = {
+      #     enabled = true;
+      #     base = 0.95;
+      #     layers = 0.80;
+      #   };
+      #   general.apps = {
+      #     terminal = [ "kitty" ];
+      #     audio = [ "pavucontrol" ];
+      #     playback = [ "celluloid" ];
+      #     explorer = [ "nautilus" ];
+      #   };
+      #   general.idle = {
+      #     timeouts = [
+      #       {
+      #         timeout = 1800; # Shortened for testing
+      #         idleAction = "dpms off";
+      #         returnAction = "dpms on";
+      #       }
+      #       {
+      #         timeout = 5400; # Shortened for testing
+      #         idleAction = "exec shutdown +1";
+      #         returnAction = "exec shutdown -c";
+      #       }
+      #     ];
+      #   };
+      #   background = {
+      #     enabled = false;
+      #     visualiser = {
+      #       enabled = false;
+      #       autoHide = false;
+      #     };
+      #   };
+      #   launcher.hiddenApps = [
+      #     "qt5ct"
+      #     "qt6ct"
+      #     "neovim"
+      #     "blueman-manager"
+      #     "blueman-adapters"
+      #     "mpv"
+      #     "nixos-help"
+      #   ];
+      #   bar = {
+      #     tray.recolour = true;
+      #     workspaces.shown = 3;
+      #     popouts = {
+      #       "activeWindow" = false;
+      #     };
+      #     status = {
+      #       showBattery = false;
+      #       showAudio = true;
+      #       showBluetooth = true;
+      #       showWifi = false;
+      #     };
+      #   };
+      #   osd.enableBrightness = false;
+      #
+      #   paths = {
+      #     "mediaGif" = "$HOME/.music.gif";
+      #     "sessionGif" = "";
+      #     "wallpaperDir" = "$HOME/.assets/wallpapers";
+      #   };
+      #   services.useFahrenheit = false;
+      # };
     };
     local.variables.launcher = "caelestia shell drawers toggle launcher";
     home.file.".music.gif".source = ./media.gif;
