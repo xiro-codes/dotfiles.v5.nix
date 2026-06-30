@@ -8,7 +8,18 @@ let
   cfg = config.local.nixvim;
 in
 {
-  vimwiki.enable = true;
+  vimwiki = {
+    enable = true;
+    settings = {
+      list = [
+        {
+          path = "$HOME/Documents/";
+          syntax = "markdown";
+          ext = ".md";
+        }
+      ];
+    };
+  };
 
   codecompanion = {
     enable = true;
