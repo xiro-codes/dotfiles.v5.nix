@@ -123,10 +123,10 @@ in
                 siteMonitor = "http://vm.${primaryHost}.home";
               };
             })
-            (optional (config.local.media.shoko-server.enable) {
+            (optional (config.local.media.shoko.enable) {
               Shoko = {
                 icon = "shoko.png";
-                href = serviceUrl "shoko" config.local.shoko-server.port;
+                href = serviceUrl "shoko" config.local.media.shoko.port;
                 description = "Anime meta data tracker";
               };
             }) 
