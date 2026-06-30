@@ -48,7 +48,7 @@ in
 
       stylix = {
         enable = true;
-        #TODO how do i do what it does but with ./.local/caelstia/sheme.json colors
+        #TODO how do i get it to match
         image = config.local.assets.wallpapers.main;
 
         cursor = {
