@@ -33,5 +33,6 @@ in
         WantedBy = [ "graphical-session.target" ];
       };
     };
+    # TODO add an assertion on kde connect
   };
 }
