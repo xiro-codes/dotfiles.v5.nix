@@ -24,7 +24,7 @@ let
   variables = config.local.variables;
   hypr-tools = pkgs.hypr-tools;
   quick-menu = pkgs.quick-menu;
-  cosmic-live = inputs.cosmic-live.packages.${getSystem pkgs}.default;
+  caelestia-live = inputs.caelestia-live.packages.${getSystem pkgs}.default;
 in
 {
   options.local.hyprland = {
@@ -49,9 +49,8 @@ in
       jq
       discord
       hypr-tools
-      cosmic-live
+      caelestia-live
       webcam
-      webcam-menu
     ];
 
     wayland.windowManager.hyprland = {
@@ -104,7 +103,7 @@ in
         };
         exec-once = [
           "wl-paste --type text --watch cliphist store"
-          "${getExe cosmic-live} --wallpaper $HOME/.wallpaper"
+          "${getExe caelestia-live} --wallpaper $HOME/.wallpaper"
         ]
         ++ variables.autostart
         ++ optionals config.local.caelestia-shell.enable [

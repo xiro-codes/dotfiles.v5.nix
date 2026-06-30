@@ -92,6 +92,27 @@
         "type": "github"
       }
     },
+    "caelestia-live": {
+      "inputs": {
+        "flake-parts": "flake-parts",
+        "nixpkgs": "nixpkgs",
+        "rust-overlay": "rust-overlay"
+      },
+      "locked": {
+        "lastModified": 1782819127,
+        "narHash": "sha256-FkFUbQmW/k9gIb47P1exZg+4cZgdZQ/rWlzMW8XHAgE=",
+        "owner": "xiro-codes",
+        "repo": "caelestia-live",
+        "rev": "71da6786c84881d6e8f6ceb45ccea412d10870dd",
+        "type": "github"
+      },
+      "original": {
+        "owner": "xiro-codes",
+        "ref": "v0.1.0_final",
+        "repo": "caelestia-live",
+        "type": "github"
+      }
+    },
     "caelestia-shell": {
       "inputs": {
         "caelestia-cli": "caelestia-cli",
@@ -112,26 +133,6 @@
       "original": {
         "owner": "caelestia-dots",
         "repo": "shell",
-        "type": "github"
-      }
-    },
-    "cosmic-live": {
-      "inputs": {
-        "flake-parts": "flake-parts",
-        "nixpkgs": "nixpkgs",
-        "rust-overlay": "rust-overlay"
-      },
-      "locked": {
-        "lastModified": 1782790249,
-        "narHash": "sha256-bjsoVTL7i6Z37Jk0Oazw6uNStz73raHSjWsLZUcxmKg=",
-        "owner": "xiro-codes",
-        "repo": "cosmic-live",
-        "rev": "a63cf98669da0412edbaeca8fb9d3bc3d1a2af85",
-        "type": "github"
-      },
-      "original": {
-        "owner": "xiro-codes",
-        "repo": "cosmic-live",
         "type": "github"
       }
     },
@@ -299,7 +300,7 @@
     "flake-parts": {
       "inputs": {
         "nixpkgs-lib": [
-          "cosmic-live",
+          "caelestia-live",
           "nixpkgs"
         ]
       },
@@ -1163,8 +1164,8 @@
     },
     "root": {
       "inputs": {
+        "caelestia-live": "caelestia-live",
         "caelestia-shell": "caelestia-shell",
-        "cosmic-live": "cosmic-live",
         "deploy-rs": "deploy-rs",
         "determinate": "determinate",
         "disko": "disko",
@@ -1190,7 +1191,7 @@
     "rust-overlay": {
       "inputs": {
         "nixpkgs": [
-          "cosmic-live",
+          "caelestia-live",
           "nixpkgs"
         ]
       },
