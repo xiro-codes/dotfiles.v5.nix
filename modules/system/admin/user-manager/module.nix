@@ -72,7 +72,7 @@ in
         value = {
           text = ''
             if [ -d "/media/Scratch" ]; then
-              mkdir -p /media/Scratch/${username}/{Downloads,Documents,Pictures,Videos,Music}
+              mkdir -p /media/Scratch/${username}/{Downloads,Documents,Pictures,Videos,Music,Templates}
               ln -sfn /media/Scratch/${username}/Downloads /home/${username}/Downloads
               ln -sfn /media/Scratch/${username}/Documents /home/${username}/Documents
               ln -sfn /media/Scratch/${username}/Pictures /home/${username}/Pictures
