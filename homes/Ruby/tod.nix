@@ -27,9 +27,11 @@ in
     #  '';
     #})
   ];
-  # local.wallpapers = {
-  #   name = "AG1.png";
-  # };
+  programs.zen-browser = {
+    enable = true;
+    default = {
+    };
+  };
   # TODO make this more useful the auto complete function is good at catching minor typos but i wish it could learn or i could log my typos
   services.espanso = {
     enable = true;
