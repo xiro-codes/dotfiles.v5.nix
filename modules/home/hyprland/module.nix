@@ -110,10 +110,6 @@ in
           "caelestia wallpaper -f $HOME/.wallpaper"
         ];
         windowrules = [
-          "float, class:^(webcam)$"
-          "pin, class:^(webcam)$"
-          "size 320 240, class:^(webcam)$"
-          "move 100%-340 100%-260, class:^(webcam)$"
           "float, class:^(org\.gnome\.Nautilus)$"
           "size 800 600, class:^(org\.gnome\.Nautilus)$"
           "center, class:^(org\.gnome\.Nautilus)$"
