@@ -13,6 +13,12 @@
     action = "<cmd>LazyGit<CR>";
     options.desc = "Open Lazygit";
   }
+  {
+    mode = "n";
+    key = "<leader>cd";
+    action = "<cmd>Telescope zoxide list<CR>";
+    options.desc = "Zoxide (Telescope)";
+  }
 
   # Formatting & Source Control
   {

@@ -89,7 +89,10 @@ in
   lazygit.enable = true;
   web-devicons.enable = true;
   lualine.enable = true;
-  telescope.enable = true;
+  telescope = {
+    enable = true;
+    extensions.zoxide.enable = true;
+  };
   which-key.enable = true;
   toggleterm = {
     enable = true;
