@@ -17,7 +17,6 @@
   # virtualisation.waydroid.enable = true;
 
   programs = {
-    firefox.enable = false;
     gpu-screen-recorder.enable = true;
   };
 }

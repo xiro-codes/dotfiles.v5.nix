@@ -29,7 +29,7 @@ in
   ];
   programs.zen-browser = {
     enable = true;
-    default = {
+    profiles.default = {
     };
   };
   # TODO make this more useful the auto complete function is good at catching minor typos but i wish it could learn or i could log my typos
