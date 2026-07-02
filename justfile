@@ -21,15 +21,14 @@ clean-test:
 [group('dev')]
 init-undo:
     @touch .undo
-    @echo ".undo_dir/" >> .gitignore
-    @echo "✅ Repo initialized. Nixvim will now track undos in .undo_dir/"
+    @echo "✅ Repo initialized. Nixvim will now track undos in ~/.local/state/nvim/$(basename \"$(pwd)\")"
 
 # Clear the ephemeral undo directory for the current repo only
 [group('dev')]
 clear-undos:
-    @if [ -d ".undo_dir" ]; then \
-        rm -rf .undo_dir/*; \
-        echo "🧹 Local .undo_dir files cleared for this repository."; \
+    @if [ -d "$HOME/.local/state/nvim/$(basename \"$(pwd)\")" ]; then \
+        rm -rf "$HOME/.local/state/nvim/$(basename \"$(pwd)\")"/*; \
+        echo "🧹 Local undo files cleared for this repository."; \
     fi
 
 # Edit system secrets
