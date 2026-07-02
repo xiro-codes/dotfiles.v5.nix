@@ -137,7 +137,6 @@ in
           # Application launchers
           "$mod, P, exec, ${variables.launcher} "
           "$mod, C, exec, ${getExe pkgs.webcam-menu}"
-          "$mod, D, togglespecialworkspace, desktop"
           "$mod, minus, exec, hypr-screenshot full"
           "$mod_SHIFT, minus, exec, hypr-screenshot area"
 
@@ -145,7 +144,7 @@ in
           "$mod_SHIFT, Q, killactive"
           "$mod, F, fullscreen"
           "$mod_SHIFT, F, togglefloating"
-          "$mod, M, exec, hypr-show-desktop"
+          "$mod, D, exec, hypr-show-desktop"
 
           # Focus movement
           "$mod, H, movefocus, l"
