@@ -106,5 +106,11 @@ in
     local.variables.launcher = "caelestia shell drawers toggle launcher";
     home.file.".music.gif".source = ./media.gif;
     local.secrets.keys = [ "gemini/crush_agent_key" ];
+    xdg.mimeApps = {
+      enable = true;
+      defaultApplications = {
+        "inode/directory" = [ "org.gnome.Nautilus.desktop" ];
+      };
+    };
   };
 }
