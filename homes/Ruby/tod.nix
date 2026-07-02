@@ -16,6 +16,8 @@ in
     geminicommit
     antigravity-fhs
     vlc
+    termius
+    inkscape
     #(symlinkJoin {
     #  name = "xivlauncher-wrapped";
     #  paths = [ xivlauncher ];
