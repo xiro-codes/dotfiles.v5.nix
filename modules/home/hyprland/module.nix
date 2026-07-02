@@ -145,6 +145,7 @@ in
           "$mod_SHIFT, Q, killactive"
           "$mod, F, fullscreen"
           "$mod_SHIFT, F, togglefloating"
+          "$mod, M, exec, hypr-show-desktop"
 
           # Focus movement
           "$mod, H, movefocus, l"

@@ -121,6 +121,41 @@ let
     '';
   };
 
+  hypr-show-desktop = pkgs.writeShellApplication {
+    name = "hypr-show-desktop";
+    text = ''
+      workspace_id=$(hyprctl activeworkspace -j | jq -r '.id')
+      monitor_info=$(hyprctl monitors -j | jq -r '.[] | select(.focused == true)')
+      mon_width=$(echo "$monitor_info" | jq -r '.width')
+      mon_height=$(echo "$monitor_info" | jq -r '.height')
+      mon_x=$(echo "$monitor_info" | jq -r '.x')
+      mon_y=$(echo "$monitor_info" | jq -r '.y')
+
+      target_w=$((mon_width * 25 / 100))
+      target_h=$((mon_height * 40 / 100))
+
+      base_x=$((mon_x + mon_width - target_w - 40))
+      base_y=$((mon_y + 40))
+
+      client_addresses=$(hyprctl clients -j | jq -r ".[] | select(.workspace.id == $workspace_id) | .address")
+
+      offset=0
+      offset_step=40
+
+      for addr in $client_addresses; do
+        hyprctl dispatch setfloating "address:$addr"
+        
+        pos_x=$((base_x - offset))
+        pos_y=$((base_y + offset))
+        
+        hyprctl dispatch resizewindowpixel "exact $target_w $target_h,address:$addr"
+        hyprctl dispatch movewindowpixel "exact $pos_x $pos_y,address:$addr"
+        
+        offset=$((offset + offset_step))
+      done
+    '';
+  };
+
   hypr-screenshot = import ../hypr-screenshot { inherit pkgs; };
   tgpt-auth = import ../tgpt-auth { inherit pkgs; };
 in
@@ -132,6 +167,7 @@ pkgs.symlinkJoin {
     hypr-switch-set
     hypr-gaming-mode
     hypr-layout-toggle
+    hypr-show-desktop
     hypr-screenshot
     tgpt-auth
   ];
