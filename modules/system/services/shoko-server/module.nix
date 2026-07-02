@@ -62,7 +62,6 @@ in
         ProtectKernelTunables = true;
         ProtectKernelModules = true;
         RestrictAddressFamilies = [
-          "AF_INET"
           "AF_INET6"
         ];
         ReadWritePaths = [ cfg.dataDir ];
