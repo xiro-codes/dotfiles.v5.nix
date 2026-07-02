@@ -8,7 +8,7 @@ let
   cfg = config.local.nixvim;
 in
 {
-  globals.mapleader = ";";
+  globals.mapleader = "-";
   opts = {
     number = true;
     relativenumber = true;
@@ -21,10 +21,12 @@ in
     guifont = "Cascadia Code:h10";
     foldmethod = "expr";
     foldexpr = "v:lua.vim.treesitter.foldexpr()";
+    foldtext = "v:lua.vim.treesitter.foldtext()";
     foldcolumn = "1";
     foldlevel = 99;
     foldlevelstart = 99;
     foldenable = true;
+    fillchars = "fold: ";
   };
   extraConfigLua = mkIf cfg.smartUndo ''
     local function setup_smart_undo()
