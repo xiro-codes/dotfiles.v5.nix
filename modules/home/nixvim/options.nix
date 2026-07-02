@@ -35,7 +35,8 @@ in
         local repo_root = vim.fn.fnamemodify(dot_git, ":h")
         local marker = repo_root .. "/.undo"
         if vim.fn.filereadable(marker) == 1 or vim.fn.isdirectory(marker) == 1 then
-          local undo_path = repo_root .. "/.undo_dir"
+          local project_name = vim.fn.fnamemodify(repo_root, ":t")
+          local undo_path = vim.fn.expand("~/.local/state/nvim/") .. project_name
           if vim.fn.isdirectory(undo_path) == 0 then vim.fn.mkdir(undo_path, "p") end
           vim.opt.undodir = undo_path
           return
@@ -53,7 +54,8 @@ in
         local marker = repo_root .. "/.undo"
         local f = io.open(marker, "w")
         if f then f:close() end
-        local undo_path = repo_root .. "/.undo_dir"
+        local project_name = vim.fn.fnamemodify(repo_root, ":t")
+        local undo_path = vim.fn.expand("~/.local/state/nvim/") .. project_name
         if vim.fn.isdirectory(undo_path) == 0 then vim.fn.mkdir(undo_path, "p") end
         vim.opt.undodir = undo_path
         print("Smart Undo initialized for this repo")
