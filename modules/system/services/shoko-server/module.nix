@@ -51,19 +51,6 @@ in
         ExecStart = "${getExe pkgs.shoko-server}";
         Restart = "on-failure";
 
-        # Hardening
-        CapabilityBoundingSet = "";
-        NoNewPrivileges = true;
-        ProtectSystem = "strict";
-        ProtectHome = true;
-        PrivateTmp = true;
-        PrivateDevices = true;
-        ProtectControlGroups = true;
-        ProtectKernelTunables = true;
-        ProtectKernelModules = true;
-        RestrictAddressFamilies = [
-          "AF_INET6"
-        ];
         ReadWritePaths = [ cfg.dataDir ];
       };
     };
