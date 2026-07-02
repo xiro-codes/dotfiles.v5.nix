@@ -61,6 +61,13 @@ in
           desktop = 1.0;
           popups = 0.95;
         };
+        iconTheme = {
+          enable = true;
+          package = pkgs.papirus-icon-theme;
+          dark = "Papirus-Dark";
+          light = "Papirus-Light";
+        };
+
         targets = {
           nixvim.colors.enable = true;
           nixvim.fonts.enable = true;
@@ -71,8 +78,8 @@ in
           firefox.profileNames = [ "default" ];
           zen-browser.enable = true;
           zen-browser.profileNames = [ "default" ];
-          gtk.enable = true; # Disable GTK theming
-          qt.enable = true; # Disable Qt theming
+          gtk.enable = true; # Let Stylix handle GTK theming
+          qt.enable = true; # Let Stylix handle Qt theming
         };
         fonts = {
           monospace = {
