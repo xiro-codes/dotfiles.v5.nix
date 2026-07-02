@@ -103,7 +103,7 @@ in
         };
         exec-once = [
           "wl-paste --type text --watch cliphist store"
-          "${getExe caelestia-live} --wallpaper $HOME/.wallpaper"
+          "${getExe' caelestia-live "caelestia-live"} --wallpaper $HOME/.wallpaper"
         ]
         ++ variables.autostart
         ++ optionals config.local.caelestia-shell.enable [
