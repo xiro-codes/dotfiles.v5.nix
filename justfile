@@ -42,6 +42,7 @@ update-keys:
     @user-sops updatekeys secrets/secrets.yaml
 
 # Generate host SSH keys for user and root, and output their public/age keys for registration
+# TODO turn this into a package
 [group('secrets')]
 gen-keys host=HOST:
     #!/usr/bin/env bash
