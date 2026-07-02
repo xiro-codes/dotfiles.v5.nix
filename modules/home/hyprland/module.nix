@@ -111,7 +111,7 @@ in
         ];
         windowrules = [
           "float, class:^(org\.gnome\.Nautilus)$"
-          "size 800 600, class:^(org\.gnome\.Nautilus)$"
+          "size 50% 60%, class:^(org\.gnome\.Nautilus)$"
           "center, class:^(org\.gnome\.Nautilus)$"
         ];
         "$mod" = "SUPER";
