@@ -18,6 +18,7 @@ in
     vlc
     termius
     inkscape
+    godot
     #(symlinkJoin {
     #  name = "xivlauncher-wrapped";
     #  paths = [ xivlauncher ];
