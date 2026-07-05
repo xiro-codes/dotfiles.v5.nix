@@ -3,7 +3,7 @@
 
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-26.05";
-    inputs-nix.url = "path:/home/tod/WorkSpace/Nix/inputs.nix";
+    inputs-nix.url = "github:xiro-codes/inputs.nix";
   };
 
   outputs =

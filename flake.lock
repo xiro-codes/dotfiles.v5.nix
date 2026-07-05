@@ -748,13 +748,17 @@
         "zen-browser": "zen-browser"
       },
       "locked": {
-        "narHash": "sha256-KcIHBw9fC5dye6vg1Q1WdcIbGFzyP6J+M7cXN3CFEWI=",
-        "path": "/home/tod/WorkSpace/Nix/inputs.nix",
-        "type": "path"
+        "lastModified": 1783261554,
+        "narHash": "sha256-BEg3z8B3wuPLEsmbm7qNjtJELcDRQ7XNWgmffHFC86w=",
+        "owner": "xiro-codes",
+        "repo": "inputs.nix",
+        "rev": "1b4547126676eaddf725178f9d92dfc08beb6922",
+        "type": "github"
       },
       "original": {
-        "path": "/home/tod/WorkSpace/Nix/inputs.nix",
-        "type": "path"
+        "owner": "xiro-codes",
+        "repo": "inputs.nix",
+        "type": "github"
       }
     },
     "ixx": {
