@@ -12,6 +12,9 @@ rec {
   isBroken = file: 
     (readMeta file).broken or false;
     
+  isUnstable = file:
+    (readMeta file).unstable or false;
+
   getDescription = file: 
     (readMeta file).description or null;
 

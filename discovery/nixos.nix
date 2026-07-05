@@ -28,9 +28,13 @@ let
   genConfigs =
     hosts:
     listToAttrs (
-      map (host: {
+      map (host:
+        let
+          isUnstable = metaLib.isUnstable (host.path + "/meta.nix");
+          pkgSource = if isUnstable then inputs.nixpkgs-unstable else inputs.nixpkgs;
+        in {
         name = host.name;
-        value = inputs.nixpkgs.lib.nixosSystem {
+        value = pkgSource.lib.nixosSystem {
           specialArgs = {
             self = inputs.self;
             inherit inputs;
