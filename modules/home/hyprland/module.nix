@@ -110,9 +110,9 @@ in
           "caelestia wallpaper -f $HOME/.wallpaper"
         ];
         windowrules = [
-          "float, class:^(org\.gnome\.Nautilus)$"
-          "size 50% 60%, class:^(org\.gnome\.Nautilus)$"
-          "center, class:^(org\.gnome\.Nautilus)$"
+          "float, class:^(org.gnome.Nautilus)$"
+          "size 50% 60%, class:^(org.gnome.Nautilus)$"
+          "center, class:^(org.gnome.Nautilus)$"
         ];
         "$mod" = "SUPER";
 
