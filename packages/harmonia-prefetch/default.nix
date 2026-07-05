@@ -14,7 +14,8 @@ pkgs.writeShellApplication {
 
     nix --version
     cd "$FLAKE_PATH"
-    nix flake update
+    # FIX: Lets Not update the flake.lock 
+    # nix flake update
 
     for TARGET in "''${HOSTS[@]}"; do
       echo "Prefetching for $TARGET..."
