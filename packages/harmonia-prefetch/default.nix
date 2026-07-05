@@ -14,6 +14,7 @@ pkgs.writeShellApplication {
 
     nix --version
     cd "$FLAKE_PATH"
+    git pull
     # FIX: Lets Not update the flake.lock 
     # nix flake update
 
