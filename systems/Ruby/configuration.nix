@@ -51,6 +51,7 @@ in
   };
 
   hardware.keyboard.qmk.enable = true;
+  nix.settings.cores = 12;
   boot.kernelParams = mkDefault [
     "video=HDMI-A-1:2560x1080@60"
     "video=DP-3:d"
