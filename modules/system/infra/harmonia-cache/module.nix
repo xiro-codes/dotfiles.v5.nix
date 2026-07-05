@@ -52,7 +52,6 @@ in
         default = [
           "Ruby"
           "Sapphire"
-          "Slate"
         ];
         description = "System Configurations to prefetch";
       };

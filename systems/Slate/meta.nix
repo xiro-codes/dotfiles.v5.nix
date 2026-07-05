@@ -6,5 +6,4 @@
     "gaming"
   ];
   maintainers = [ "tod" ];
-  unstable = true;
 }
