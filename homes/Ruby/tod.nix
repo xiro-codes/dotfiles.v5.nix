@@ -33,6 +33,17 @@ in
     profiles.default = {
     };
   };
+  
+  xdg.desktopEntries."zen-beta" = {
+    name = "Zen Browser (Beta)";
+    genericName = "Web Browser";
+    exec = "hypr-summon zen-beta zen-beta --name zen-beta %U";
+    icon = "zen-browser";
+    terminal = false;
+    categories = [ "Network" "WebBrowser" ];
+    mimeType = [ "text/html" "text/xml" "application/xhtml+xml" "application/vnd.mozilla.xul+xml" "x-scheme-handler/http" "x-scheme-handler/https" ];
+    type = "Application";
+  };
   # TODO make this more useful the auto complete function is good at catching minor typos but i wish it could learn or i could log my typos
   services.espanso = {
     enable = true;

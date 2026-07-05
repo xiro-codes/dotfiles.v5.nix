@@ -156,6 +156,21 @@ let
     '';
   };
 
+  hypr-summon = pkgs.writeShellApplication {
+    name = "hypr-summon";
+    text = ''
+      CLASS=$1
+      shift
+      if hyprctl clients -j | jq -e ".[] | select(.class == \"$CLASS\")" > /dev/null; then
+        WORKSPACE=$(hyprctl activeworkspace -j | jq -r '.id')
+        hyprctl dispatch movetoworkspacesilent "$WORKSPACE,class:^($CLASS)$"
+        hyprctl dispatch focuswindow "class:^($CLASS)$"
+      else
+        "$@" &
+      fi
+    '';
+  };
+
   hypr-screenshot = import ../hypr-screenshot { inherit pkgs; };
   tgpt-auth = import ../tgpt-auth { inherit pkgs; };
 in
@@ -168,6 +183,7 @@ pkgs.symlinkJoin {
     hypr-gaming-mode
     hypr-layout-toggle
     hypr-show-desktop
+    hypr-summon
     hypr-screenshot
     tgpt-auth
   ];
