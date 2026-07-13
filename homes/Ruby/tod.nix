@@ -20,6 +20,7 @@ in
     inkscape
     godot
     crush
+    z-library
     #(symlinkJoin {
     #  name = "xivlauncher-wrapped";
     #  paths = [ xivlauncher ];
