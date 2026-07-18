@@ -17,10 +17,8 @@ in
     antigravity-fhs
     vlc
     termius
-    inkscape
     godot
     crush
-    z-library
     #(symlinkJoin {
     #  name = "xivlauncher-wrapped";
     #  paths = [ xivlauncher ];
