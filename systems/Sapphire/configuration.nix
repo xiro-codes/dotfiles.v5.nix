@@ -39,6 +39,7 @@ in
 
     coolercontrol.enable = true;
     glances.enable = true;
+    services.jupyter.enable = true;
   };
 
   users.users.tod.extraGroups = [

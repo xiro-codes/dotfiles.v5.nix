@@ -130,6 +130,13 @@ in
                 description = "Anime meta data tracker";
               };
             }) 
+            (optional (config.local.services.jupyter.enable) {
+              Jupyter = {
+                icon = "mdi-notebook";
+                href = serviceUrl "jupyter" config.local.services.jupyter.port;
+                description = "Jupyter Notebook Environment";
+              };
+            })
             (optional (config.local.gitea.enable) {
               Gitea = {
                 icon = "gitea.png";
