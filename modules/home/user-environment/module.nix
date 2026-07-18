@@ -77,7 +77,6 @@ in
       };
     };
 
-
     # Caelestia configuration
     caelestia = {
       colorScheme = mkOption {
@@ -130,13 +129,29 @@ in
       home.packages = [
         userSops
       ];
+      home.sessionVariables = {
+        GITHUB_TOKEN = "$(cat ${config.home.homeDirectory}/.secrets/github/token)";
+        GITEA_TOKEN = "$(cat ${config.home.homeDirectory}/.secrets/gitea/token)";
+        GITEA_URL = "https://git.sapphire.home/";
+        GITHUB_USERNAME = "xiro-codes";
+        GITEA_USERNAME = "xiro";
+      };
       sops = {
         age.sshKeyPaths = [ "${config.home.homeDirectory}/.ssh/id_sops" ];
         defaultSopsFile = cfg.secrets.sopsFile;
-        secrets = genAttrs (unique cfg.secrets.keys) (name: {
-          mode = "0400";
-          path = "${config.home.homeDirectory}/.secrets/${name}";
-        });
+        secrets =
+          genAttrs
+            (unique (
+              cfg.secrets.keys
+              ++ [
+                "github/token"
+                "gitea/token"
+              ]
+            ))
+            (name: {
+              mode = "0400";
+              path = "${config.home.homeDirectory}/.secrets/${name}";
+            });
       };
     })
   ];
