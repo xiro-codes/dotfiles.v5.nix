@@ -41,6 +41,7 @@ in
 
         stats.target = "http://localhost:${toString config.local.coolercontrol.port}";
         metrics.target = "http://localhost:${toString config.local.glances.port}";
+        jupyter.target = "http://localhost:${toString config.local.services.jupyter.port}";
 
         cache.target = "http://localhost:5000";
       };

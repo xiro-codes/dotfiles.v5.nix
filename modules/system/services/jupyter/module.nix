@@ -46,9 +46,5 @@ in
     ];
     
     networking.firewall.allowedTCPPorts = [ cfg.port ];
-
-    local.reverse-proxy.proxies.jupyter = {
-      port = cfg.port;
-    };
   };
 }
