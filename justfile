@@ -180,7 +180,7 @@ rebuild-no-cache: _check-clean
 
 # Switch local system configuration using nh
 [group('life')]
-switch: _check-clean
+switch:
     nh os switch . -- --impure
 
 [group('life')]
