@@ -54,7 +54,7 @@ in
         cursor = {
           size = 16;
         };
-        polarity = "light";
+        polarity = "dark";
         opacity = {
           applications = 1.0;
           terminal = 0.95;
