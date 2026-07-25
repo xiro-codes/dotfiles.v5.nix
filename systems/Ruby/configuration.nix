@@ -39,6 +39,7 @@ in
       "dialout"
       "input"
       "uinput"
+      "libvirtd"
     ];
     harmonia-client = {
       enable = mkForce true;
@@ -62,4 +63,11 @@ in
   topology.self.interfaces = {
     enp7s0.network = "home";
   };
+
+  virtualisation.libvirtd.enable = true;
+
+  boot.extraModprobeConfig = ''
+    options kvm_amd nested=1
+    options kvm ignore_msrs=1
+  '';
 }
