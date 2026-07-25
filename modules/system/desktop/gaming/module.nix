@@ -43,6 +43,8 @@ in
       KERNEL=="hidraw*", ATTRS{idVendor}=="054c", ATTRS{idProduct}=="0ce6", MODE="0666"
       # PS5 DualSense Bluetooth
       KERNEL=="hidraw*", KERNELS=="*054C:0CE6*", MODE="0666"
+      # PS5 DualSense Touchpad as mouse
+      SUBSYSTEM=="input", ATTRS{name}=="*Wireless Controller Touchpad", ENV{LIBINPUT_IGNORE_DEVICE}="1"
     '';
   };
 }
