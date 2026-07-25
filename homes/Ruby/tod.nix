@@ -19,14 +19,16 @@ in
     termius
     godot
     crush
-    #(symlinkJoin {
-    #  name = "xivlauncher-wrapped";
-    #  paths = [ xivlauncher ];
-    #  buildInputs = [ makeWrapper ];
-    #  postBuild = ''
-    #    wrapProgram $out/bin/XIVLauncher.Core --set XL_SECRET_PROVIDER FILE
-    #  '';
-    #})
+    heroic
+    ludusavi
+    (symlinkJoin {
+      name = "xivlauncher-wrapped";
+      paths = [ xivlauncher ];
+      buildInputs = [ makeWrapper ];
+      postBuild = ''
+        wrapProgram $out/bin/XIVLauncher.Core --set XL_SECRET_PROVIDER FILE
+      '';
+    })
   ];
   programs.zen-browser = {
     enable = true;
