@@ -54,14 +54,14 @@ in
         cursor = {
           size = 16;
         };
-        polarity = "dark";
+        polarity = "light";
         opacity = {
           applications = 1.0;
           terminal = 0.95;
           desktop = 1.0;
           popups = 0.95;
         };
-        iconTheme = {
+        icons = {
           enable = true;
           package = pkgs.papirus-icon-theme;
           dark = "Papirus-Dark";
