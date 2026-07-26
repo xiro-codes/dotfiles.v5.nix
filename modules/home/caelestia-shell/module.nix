@@ -89,7 +89,7 @@ in
           };
         };
         osd.enableBrightness = false;
-      
+
         paths = {
           "mediaGif" = "$HOME/.music.gif";
           "sessionGif" = "";
@@ -97,7 +97,11 @@ in
         };
         session = {
           commands = {
-            logout = [ "hyprctl" "dispatch" "exit" ];
+            logout = [
+              "hyprctl"
+              "dispatch"
+              "exit"
+            ];
           };
         };
         services.useFahrenheit = false;
@@ -105,6 +109,7 @@ in
     };
     local.variables.launcher = "caelestia shell drawers toggle launcher";
     home.file.".music.gif".source = ./media.gif;
+    # TODO fucking ai dumbass why is this here;
     local.secrets.keys = [ "gemini/crush_agent_key" ];
     xdg.mimeApps = {
       enable = true;
