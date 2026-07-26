@@ -103,11 +103,11 @@ in
         };
         exec-once = [
           "wl-paste --type text --watch cliphist store"
-          "${getExe' caelestia-live "caelestia-live"} --wallpaper $HOME/.wallpaper"
+          "${getExe' caelestia-live "caelestia-live"}"
         ]
         ++ variables.autostart
         ++ optionals config.local.caelestia-shell.enable [
-          "caelestia wallpaper -f $HOME/.wallpaper"
+          # "caelestia wallpaper -f $HOME/.wallpaper"
         ];
         windowrules = [
           "float, class:^(org.gnome.Nautilus)$"
