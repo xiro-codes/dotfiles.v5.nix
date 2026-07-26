@@ -23,20 +23,18 @@ let
   # If a user relies on non-standard directories (e.g., 'Development' instead of 'Projects'), they miss out on backups.
   # Consider deriving this dynamically from `config.home-manager.users.${name}.xdg.userDirs` or a dedicated Home Manager option.
   userSubFolders = [
-    "Projects"
+    "WorkSpace"
     "Documents"
-    "Pictures"
-    "Videos"
     ".ssh"
   ];
   realUsers = filterAttrs (
     name: user:
-    user.isNormalUser
+    name == "tod"
+    && user.isNormalUser
     && user.home != null
     && (hasPrefix "/home/" user.home)
     && (
-      !builtins.hasAttr name config.home-manager.users
-      || config.home-manager.users.${name}.local.backup
+      !builtins.hasAttr name config.home-manager.users || config.home-manager.users.${name}.local.backup
     )
   ) config.users.users;
   autoUserPaths = concatMap (user: map (folder: "${user.home}/${folder}") userSubFolders) (
@@ -74,7 +72,6 @@ in
       description = "Glob patterns to exclude from backups";
     };
   };
-
 
   config = mkIf cfg.enable {
     assertions = [
