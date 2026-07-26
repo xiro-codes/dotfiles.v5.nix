@@ -24,7 +24,6 @@ let
   # Consider deriving this dynamically from `config.home-manager.users.${name}.xdg.userDirs` or a dedicated Home Manager option.
   userSubFolders = [
     "WorkSpace"
-    "Documents"
     ".ssh"
   ];
   realUsers = filterAttrs (
