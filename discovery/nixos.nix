@@ -51,7 +51,7 @@ let
                 networking.hostName = host.name;
                 local.secrets.enable = true;
                 home-manager = {
-                  useGlobalPkgs = true;
+                  useGlobalPkgs = false;
                   useUserPackages = true;
                   backupFileExtension = "backup";
                   # TODO: CROSS-COMPILATION SMELL FIXED: 
@@ -62,7 +62,12 @@ let
                     self = inputs.self;
                     inherit inputs;
                   };
-                  sharedModules = (attrValues discoveredHomeModules) ++ globalHomeModules ++ [ ];
+                  sharedModules = (attrValues discoveredHomeModules) ++ globalHomeModules ++ [ 
+                    {
+                      nixpkgs.overlays = attrValues discoveredOverlays;
+                      nixpkgs.config.allowUnfree = true;
+                    }
+                  ];
                   users = listToAttrs (
                     map (u: {
                       name = u.user;
