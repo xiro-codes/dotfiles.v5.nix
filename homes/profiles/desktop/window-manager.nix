@@ -2,6 +2,7 @@
 {
   local = {
     hyprland.enable = true;
+    hyprland.layout = "scrolling";
   };
 
   home.packages = with pkgs; [
