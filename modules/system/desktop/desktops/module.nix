@@ -36,6 +36,14 @@ in
       default = "sddm";
       description = "The display manager to use";
     };
+    windowManger = mkOption {
+      type = enum [
+        "hyprland"
+        "niri"
+        "mango"
+        "plasma6"
+      ];
+    };
     hyprland = mkOption {
       type = bool;
       default = false;
