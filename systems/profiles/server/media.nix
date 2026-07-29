@@ -11,7 +11,7 @@
       ersatztv.enable = true;
       komga.enable = true;
       audiobookshelf.enable = true;
-      shoko.enable = true;
+      shoko.enable = false;
     };
 
     downloads = {
