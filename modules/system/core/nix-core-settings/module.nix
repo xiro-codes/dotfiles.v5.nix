@@ -16,17 +16,6 @@ in
   };
 
   config = mkIf cfg.enable {
-    system.nixos.label =
-      let
-        rev = flake-inputs.self.sourceInfo.shortRev or "dirty";
-        count =
-          if flake-inputs.self.sourceInfo ? revCount then
-            toString flake-inputs.self.sourceInfo.revCount
-          else
-            "unknown";
-      in
-      lib.mkForce "${config.system.nixos.release}${config.system.nixos.versionSuffix}-commits-${count}";
-
     # Nix configuration
     determinate.enable = true;
     nix.settings = {
