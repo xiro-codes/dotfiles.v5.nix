@@ -25,12 +25,6 @@ in
   };
 
   config = mkIf cfg.enable {
-    assertions = [
-      {
-        assertion = config.local.secrets.enable;
-        message = "zerotier requires local.secrets to be enabled";
-      }
-    ];
     local.secrets.keys = [ cfg.networkIdSecret ];
     services.zerotierone.enable = true;
 
